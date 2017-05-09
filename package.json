@@ -7,6 +7,9 @@
     "pretest": "tsc",
     "test": "mocha \"build/test/**/*.js\""
   },
+  "bin": {
+    "tsc": "./bin/tsc"
+  },
   "author": "Adrian Toșcă",
   "license": "Apache License, Version 2.0",
   "dependencies": {
@@ -18,6 +21,7 @@
     "@types/node": "^7.0.18",
     "@types/seedrandom": "^2.4.27",
     "mocha": "^3.3.0",
-    "seedrandom": "^2.4.3"
+    "seedrandom": "^2.4.3",
+    "typescript": "^2.3.2"
   }
 }
