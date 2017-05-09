@@ -1,0 +1,88 @@
+"use strict";
+/*
+ * Copyright 2008 ZXing authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+/*namespace com.google.zxing {*/
+/**
+ * Represents some type of metadata about the result of the decoding that the decoder
+ * wishes to communicate back to the caller.
+ *
+ * @author Sean Owen
+ */
+var ResultMetadataType;
+(function (ResultMetadataType) {
+    /**
+     * Unspecified, application-specific metadata. Maps to an unspecified {@link Object}.
+     */
+    ResultMetadataType[ResultMetadataType["OTHER"] = 0] = "OTHER";
+    /**
+     * Denotes the likely approximate orientation of the barcode in the image. This value
+     * is given as degrees rotated clockwise from the normal, upright orientation.
+     * For example a 1D barcode which was found by reading top-to-bottom would be
+     * said to have orientation "90". This key maps to an {@link Integer} whose
+     * value is in the range [0,360).
+     */
+    ResultMetadataType[ResultMetadataType["ORIENTATION"] = 1] = "ORIENTATION";
+    /**
+     * <p>2D barcode formats typically encode text, but allow for a sort of 'byte mode'
+     * which is sometimes used to encode binary data. While {@link Result} makes available
+     * the complete raw bytes in the barcode for these formats, it does not offer the bytes
+     * from the byte segments alone.</p>
+     *
+     * <p>This maps to a {@link java.util.List} of byte arrays corresponding to the
+     * raw bytes in the byte segments in the barcode, in order.</p>
+     */
+    ResultMetadataType[ResultMetadataType["BYTE_SEGMENTS"] = 2] = "BYTE_SEGMENTS";
+    /**
+     * Error correction level used, if applicable. The value type depends on the
+     * format, but is typically a String.
+     */
+    ResultMetadataType[ResultMetadataType["ERROR_CORRECTION_LEVEL"] = 3] = "ERROR_CORRECTION_LEVEL";
+    /**
+     * For some periodicals, indicates the issue number as an {@link Integer}.
+     */
+    ResultMetadataType[ResultMetadataType["ISSUE_NUMBER"] = 4] = "ISSUE_NUMBER";
+    /**
+     * For some products, indicates the suggested retail price in the barcode as a
+     * formatted {@link String}.
+     */
+    ResultMetadataType[ResultMetadataType["SUGGESTED_PRICE"] = 5] = "SUGGESTED_PRICE";
+    /**
+     * For some products, the possible country of manufacture as a {@link String} denoting the
+     * ISO country code. Some map to multiple possible countries, like "US/CA".
+     */
+    ResultMetadataType[ResultMetadataType["POSSIBLE_COUNTRY"] = 6] = "POSSIBLE_COUNTRY";
+    /**
+     * For some products, the extension text
+     */
+    ResultMetadataType[ResultMetadataType["UPC_EAN_EXTENSION"] = 7] = "UPC_EAN_EXTENSION";
+    /**
+     * PDF417-specific metadata
+     */
+    ResultMetadataType[ResultMetadataType["PDF417_EXTRA_METADATA"] = 8] = "PDF417_EXTRA_METADATA";
+    /**
+     * If the code format supports structured append and the current scanned code is part of one then the
+     * sequence number is given with it.
+     */
+    ResultMetadataType[ResultMetadataType["STRUCTURED_APPEND_SEQUENCE"] = 9] = "STRUCTURED_APPEND_SEQUENCE";
+    /**
+     * If the code format supports structured append and the current scanned code is part of one then the
+     * parity is given with it.
+     */
+    ResultMetadataType[ResultMetadataType["STRUCTURED_APPEND_PARITY"] = 10] = "STRUCTURED_APPEND_PARITY";
+})(ResultMetadataType || (ResultMetadataType = {}));
+exports.default = ResultMetadataType;
+//# sourceMappingURL=ResultMetadataType.js.map

@@ -1,0 +1,37 @@
+{
+    "configurations": [
+        {
+            "name": "Run app",
+            "type": "node",
+            "program": "index.js", 
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "stopOnEntry": false,
+            "runtimeExecutable": null,
+            "env": { "NODE_ENV": "production"}
+        }, {
+            "name": "Unit tests",
+            "type": "node",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "--colors",
+                "--timeout", "999999",
+                "./build/test/**/*.js"
+            ],
+            "cwd": "${workspaceRoot}",
+            "stopOnEntry": false,
+            "runtimeExecutable": null,
+            "sourceMaps": true,
+            "outFiles": ["${workspaceRoot}/build/test/**/*.js"],
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "env": {
+                "NODE_ENV": "test"
+            }
+        }
+    ]
+    
+}

@@ -1,0 +1,23 @@
+{
+  "name": "zxing-typescript",
+  "version": "0.0.1",
+  "description": "TypeScript port of ZXing open-source, multi-format 1D/2D barcode image processing library",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "tsc",
+    "test": "mocha \"build/test/**/*.js\""
+  },
+  "author": "Adrian Toșcă",
+  "license": "Apache License, Version 2.0",
+  "dependencies": {
+    "@types/text-encoding": "0.0.30",
+    "text-encoding": "^0.6.4"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^7.0.18",
+    "@types/seedrandom": "^2.4.27",
+    "mocha": "^3.3.0",
+    "seedrandom": "^2.4.3"
+  }
+}
