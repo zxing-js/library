@@ -140,7 +140,7 @@ export default class AlignmentPatternFinder {
       return this.possibleCenters[0]
     }
 
-    throw new Exception("NotFoundException")
+    throw new Exception(Exception.NotFoundException)
   }
 
   /**

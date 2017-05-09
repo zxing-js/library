@@ -185,7 +185,7 @@ export default class GlobalHistogramBinarizer extends Binarizer {
     // If there is too little contrast in the image to pick a meaningful black point, throw rather
     // than waste time trying to decode the image, and risk false positives.
     if (secondPeak - firstPeak <= numBuckets / 16) {
-      throw new Exception("NotFoundException")
+      throw new Exception(Exception.NotFoundException)
     }
 
     // Find a valley between them that is low and closer to the white peak.

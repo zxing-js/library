@@ -38,7 +38,7 @@ export default class BitMatrixParser {
   public constructor(bitMatrix: BitMatrix) /*throws FormatException*/ {
     const dimension = bitMatrix.getHeight()
     if (dimension < 21 || (dimension & 0x03) != 1) {
-      throw new Exception("FormatException")
+      throw new Exception(Exception.FormatException)
     }
     this.bitMatrix = bitMatrix
   }
@@ -85,7 +85,7 @@ export default class BitMatrixParser {
     if (this.parsedFormatInfo !== null) {
       return this.parsedFormatInfo
     }
-    throw new Exception("FormatException")
+    throw new Exception(Exception.FormatException)
   }
 
   /**
@@ -136,7 +136,7 @@ export default class BitMatrixParser {
       this.parsedVersion = theParsedVersion
       return theParsedVersion
     }
-    throw new Exception("FormatException")
+    throw new Exception(Exception.FormatException)
   }
 
   private copyBit(i: number/*int*/, j: number/*int*/, versionBits: number/*int*/): number/*int*/ {
@@ -201,7 +201,7 @@ export default class BitMatrixParser {
       readingUp = !readingUp//readingUp ^= true; // readingUp = !readingUp; // switch directions
     }
     if (resultOffset != version.getTotalCodewords()) {
-      throw new Exception("FormatException")
+      throw new Exception(Exception.FormatException)
     }
     return result
   }

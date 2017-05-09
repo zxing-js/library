@@ -58,11 +58,11 @@ export default class ReedSolomonEncoder {
 
   public encode(toEncode: Int32Array, ecBytes: number/*int*/): void {
     if (ecBytes === 0) {
-      throw new Exception("IllegalArgumentException", "No error correction bytes")
+      throw new Exception(Exception.IllegalArgumentException, "No error correction bytes")
     }
     const dataBytes = toEncode.length - ecBytes
     if (dataBytes <= 0) {
-      throw new Exception("IllegalArgumentException", "No data bytes provided")
+      throw new Exception(Exception.IllegalArgumentException, "No data bytes provided")
     }
     const generator = this.buildGenerator(ecBytes)
     const infoCoefficients: Int32Array = new Int32Array(dataBytes)

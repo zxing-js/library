@@ -24,7 +24,7 @@ import Exception from './Exception'
 export default class Dimension {
   public constructor(private width: number/*int*/, private height: number/*int*/) {
     if (width < 0 || height < 0) {
-      throw new Exception("IllegalArgumentException")
+      throw new Exception(Exception.IllegalArgumentException)
     }
   }
 

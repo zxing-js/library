@@ -100,7 +100,7 @@ export default class MultiFormatWriter implements Writer {
       //   writer = new AztecWriter()
       //   break
       default:
-        throw new Exception("IllegalArgumentException", "No encoder available for format " + format)
+        throw new Exception(Exception.IllegalArgumentException, "No encoder available for format " + format)
     }
     return writer.encode(contents, format, width, height, hints)
   }

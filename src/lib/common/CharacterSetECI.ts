@@ -142,7 +142,7 @@ export default class CharacterSetECI {
    */
   public static getCharacterSetECIByValue(value: number/*int*/): CharacterSetECI /*throws FormatException*/ {
     if (value < 0 || value >= 900) {
-      throw new Exception("FormatException", "incorect value")
+      throw new Exception(Exception.FormatException, "incorect value")
     }
     return CharacterSetECI.VALUE_IDENTIFIER_TO_ECI.get(value)
   }

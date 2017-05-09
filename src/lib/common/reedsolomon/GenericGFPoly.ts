@@ -45,7 +45,7 @@ export default class GenericGFPoly {
    */
   public constructor(field: GenericGF, coefficients: Int32Array) {
     if (coefficients.length === 0) {
-      throw new Exception("IllegalArgumentException")
+      throw new Exception(Exception.IllegalArgumentException)
     }
     this.field = field
     const coefficientsLength = coefficients.length
@@ -125,7 +125,7 @@ export default class GenericGFPoly {
 
   public addOrSubtract(other: GenericGFPoly): GenericGFPoly {
     if (!this.field.equals(other.field)) {
-      throw new Exception("IllegalArgumentException", "GenericGFPolys do not have same GenericGF field")
+      throw new Exception(Exception.IllegalArgumentException, "GenericGFPolys do not have same GenericGF field")
     }
     if (this.isZero()) {
       return other
@@ -155,7 +155,7 @@ export default class GenericGFPoly {
 
   public multiply(other: GenericGFPoly): GenericGFPoly {
     if (!this.field.equals(other.field)) {
-      throw new Exception("IllegalArgumentException", "GenericGFPolys do not have same GenericGF field")
+      throw new Exception(Exception.IllegalArgumentException, "GenericGFPolys do not have same GenericGF field")
     }
     if (this.isZero() || other.isZero()) {
       return this.field.getZero()
@@ -195,7 +195,7 @@ export default class GenericGFPoly {
 
   public multiplyByMonomial(degree: number/*int*/, coefficient: number/*int*/): GenericGFPoly {
     if (degree < 0) {
-      throw new Exception("IllegalArgumentException")
+      throw new Exception(Exception.IllegalArgumentException)
     }
     if (coefficient === 0) {
       return this.field.getZero()
@@ -212,10 +212,10 @@ export default class GenericGFPoly {
 
   public divide(other: GenericGFPoly): GenericGFPoly[] {
     if (!this.field.equals(other.field)) {
-      throw new Exception("IllegalArgumentException", "GenericGFPolys do not have same GenericGF field")
+      throw new Exception(Exception.IllegalArgumentException, "GenericGFPolys do not have same GenericGF field")
     }
     if (other.isZero()) {
-      throw new Exception("IllegalArgumentException", "Divide by 0")
+      throw new Exception(Exception.IllegalArgumentException, "Divide by 0")
     }
 
     const field = this.field

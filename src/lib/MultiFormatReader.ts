@@ -173,7 +173,7 @@ export default class MultiFormatReader implements Reader {
         }
       }
     }
-    throw new Exception("NotFoundException")
+    throw new Exception(Exception.NotFoundException)
   }
 
 }

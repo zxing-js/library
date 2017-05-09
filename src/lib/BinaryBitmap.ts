@@ -34,7 +34,7 @@ export default class BinaryBitmap {
 
   public constructor(private binarizer: Binarizer) {
     if (binarizer === null) {
-      throw new Exception("IllegalArgumentException", "Binarizer must be non-null.")
+      throw new Exception(Exception.IllegalArgumentException, "Binarizer must be non-null.")
     }
   }
 

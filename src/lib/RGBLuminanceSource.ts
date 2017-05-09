@@ -62,14 +62,14 @@ export default class RGBLuminanceSource extends LuminanceSource {
                              height: number/*int*/) {
     super(width, height)
     if (left + width > dataWidth || top + height > dataHeight) {
-      throw new Exception("IllegalArgumentException", "Crop rectangle does not fit within image data.")
+      throw new Exception(Exception.IllegalArgumentException, "Crop rectangle does not fit within image data.")
     }
   }
 
   /*@Override*/
   public getRow(y: number/*int*/, row: Uint8Array): Uint8Array {
     if (y < 0 || y >= this.getHeight()) {
-      throw new Exception("IllegalArgumentException", "Requested row is outside the image: " + y)
+      throw new Exception(Exception.IllegalArgumentException, "Requested row is outside the image: " + y)
     }
     const width = this.getWidth()
     if (row === null || row.length < width) {

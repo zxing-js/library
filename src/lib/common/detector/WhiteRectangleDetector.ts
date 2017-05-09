@@ -72,7 +72,7 @@ export default class WhiteRectangleDetector {
     this.upInit = y - halfsize
     this.downInit = y + halfsize
     if (this.upInit < 0 || this.leftInit < 0 || this.downInit >= this.height || this.rightInit >= this.width) {
-      throw new Exception("NotFoundException")
+      throw new Exception(Exception.NotFoundException)
     }
   }
 
@@ -208,7 +208,7 @@ export default class WhiteRectangleDetector {
       }
 
       if (z == null) {
-        throw new Exception("NotFoundException")
+        throw new Exception(Exception.NotFoundException)
       }
 
       let t: ResultPoint = null
@@ -218,7 +218,7 @@ export default class WhiteRectangleDetector {
       }
 
       if (t == null) {
-        throw new Exception("NotFoundException")
+        throw new Exception(Exception.NotFoundException)
       }
 
       let x: ResultPoint = null
@@ -228,7 +228,7 @@ export default class WhiteRectangleDetector {
       }
 
       if (x == null) {
-        throw new Exception("NotFoundException")
+        throw new Exception(Exception.NotFoundException)
       }
 
       let y: ResultPoint = null
@@ -238,13 +238,13 @@ export default class WhiteRectangleDetector {
       }
 
       if (y == null) {
-        throw new Exception("NotFoundException")
+        throw new Exception(Exception.NotFoundException)
       }
 
       return this.centerEdges(y, z, x, t)
 
     } else {
-      throw new Exception("NotFoundException")
+      throw new Exception(Exception.NotFoundException)
     }
   }
 

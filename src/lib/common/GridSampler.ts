@@ -129,7 +129,7 @@ abstract class GridSampler {
       const x = points[offset]
       const y = points[offset + 1]
       if (x < -1 || x > width || y < -1 || y > height) {
-        throw new Exception("NotFoundException")
+        throw new Exception(Exception.NotFoundException)
       }
       nudged = false
       if (x == -1) {
@@ -153,7 +153,7 @@ abstract class GridSampler {
       const x = points[offset]
       const y = points[offset + 1]
       if (x < -1 || x > width || y < -1 || y > height) {
-        throw new Exception("NotFoundException")
+        throw new Exception(Exception.NotFoundException)
       }
       nudged = false
       if (x == -1) {

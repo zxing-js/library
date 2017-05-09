@@ -15,7 +15,7 @@ export default class Arrays {
         if (first.length !== second.length) {
             return false
         }
-        for (let i = 0, length = this.length; i < length; i++) {
+        for (let i = 0, length = first.length; i < length; i++) {
             if (first[i] !== second[i]) {
                 return false
             }

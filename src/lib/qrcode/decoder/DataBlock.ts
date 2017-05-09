@@ -49,7 +49,7 @@ export default class DataBlock {
                                   ecLevel: ErrorCorrectionLevel): DataBlock[] {
 
     if (rawCodewords.length != version.getTotalCodewords()) {
-      throw new Exception("IllegalArgumentException")
+      throw new Exception(Exception.IllegalArgumentException)
     }
 
     // Figure out the number and size of data blocks used by this version and

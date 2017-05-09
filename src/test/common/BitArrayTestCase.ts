@@ -1,7 +1,7 @@
 /*
  * Copyright 2007 ZXing authors
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -16,16 +16,12 @@
 
 /*package com.google.zxing.common;*/
 
-// import org.junit.Assert;
-// import org.junit.Test;
-
-// import java.util.Random;
-
 import 'mocha'
 import * as assert from 'assert'
 import Random from './../util/Random'
 import BitArray from './../../lib/common/BitArray'
 import Integer from './../../lib/util/Integer'
+import AssertUtils from './../util/AssertUtils'
 
 /**
  * @author Sean Owen
@@ -75,7 +71,7 @@ describe("BitArrayTestCase", () => {
       let expected
       if (i <= 31) {
         expected = 31
-      } else if (i == 32) {
+      } else if (i === 32) {
         expected = 32
       } else {
         expected = 63
@@ -86,17 +82,17 @@ describe("BitArrayTestCase", () => {
 
   
   it("testGetNextSet4", () => {
-    const array = new BitArray(63);
-    array.set(33);
-    array.set(40);
+    const array = new BitArray(63)
+    array.set(33)
+    array.set(40)
     for (let i = 0; i < array.getSize(); i++) {
-      let expected;
+      let expected
       if (i <= 33) {
-        expected = 33;
+        expected = 33
       } else if (i <= 40) {
-        expected = 40;
+        expected = 40
       } else {
-        expected = 63;
+        expected = 63
       }
       assert.strictEqual(array.getNextSet(i), expected, "" + i)
     }
@@ -210,7 +206,7 @@ describe("BitArrayTestCase", () => {
       const newBitArray = new BitArray(size, oldBits.slice())
       newBitArray.reverse()
       const newBitsNew = newBitArray.getBitArray()
-      assert.strictEqual(arraysAreEqual(newBitsOriginal, newBitsNew, size / 32 + 1), true)
+      assert.strictEqual(AssertUtils.int32ArraysAreEqual(newBitsOriginal, newBitsNew, size / 32 + 1), true)
     }
   })
 
@@ -243,20 +239,10 @@ describe("BitArrayTestCase", () => {
         newBits[Math.floor(i / 32)] |= 1 << (i & 0x1F)
       }
     }
-    return newBits;
+    return newBits
   }
 
   function bitSet(bits: Int32Array, i: number): boolean {
-    return (bits[Math.floor(i / 32)] & (1 << (i & 0x1F))) != 0;
+    return (bits[Math.floor(i / 32)] & (1 << (i & 0x1F))) !== 0
   }
-
-  function arraysAreEqual(left: Int32Array, right: Int32Array, size: number): boolean {
-    for (let i = 0; i < size; i++) {
-      if (left[i] != right[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
-
 })

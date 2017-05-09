@@ -186,7 +186,7 @@ export default class MaskUtil {
         intermediate = ((temp % 3) + ((y + x) & 0x1)) & 0x1
         break
       default:
-        throw new Exception("IllegalArgumentException", "Invalid mask pattern: " + maskPattern)
+        throw new Exception(Exception.IllegalArgumentException, "Invalid mask pattern: " + maskPattern)
     }
     return intermediate === 0
   }

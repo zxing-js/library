@@ -93,7 +93,7 @@ export default class Detector {
 
     const moduleSize: number/*float*/ = this.calculateModuleSize(topLeft, topRight, bottomLeft)
     if (moduleSize < 1.0) {
-      throw new Exception("NotFoundException")
+      throw new Exception(Exception.NotFoundException)
     }
     const dimension = Detector.computeDimension(topLeft, topRight, bottomLeft, moduleSize)
     const provisionalVersion: Version = Version.getProvisionalVersionForDimension(dimension)
@@ -122,7 +122,7 @@ export default class Detector {
               i)
           break
         } catch (re/*NotFoundException*/) {
-          if (re.getType() !== "NotFoundException") {
+          if (!Exception.isOfType(re, Exception.NotFoundException)) {
             throw re
           }
           // try next round
@@ -215,7 +215,7 @@ export default class Detector {
         dimension--
         break
       case 3:
-        throw new Exception("NotFoundException")
+        throw new Exception(Exception.NotFoundException)
     }
     return dimension
   }
@@ -385,13 +385,13 @@ export default class Detector {
     const alignmentAreaLeftX = Math.max(0, estAlignmentX - allowance)
     const alignmentAreaRightX = Math.min(this.image.getWidth() - 1, estAlignmentX + allowance)
     if (alignmentAreaRightX - alignmentAreaLeftX < overallEstModuleSize * 3) {
-      throw new Exception("NotFoundException")
+      throw new Exception(Exception.NotFoundException)
     }
 
     const alignmentAreaTopY = Math.max(0, estAlignmentY - allowance)
     const alignmentAreaBottomY = Math.min(this.image.getHeight() - 1, estAlignmentY + allowance)
     if (alignmentAreaBottomY - alignmentAreaTopY < overallEstModuleSize * 3) {
-      throw new Exception("NotFoundException")
+      throw new Exception(Exception.NotFoundException)
     }
 
     const alignmentFinder =

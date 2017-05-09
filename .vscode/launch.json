@@ -1,15 +1,7 @@
 {
+    "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run app",
-            "type": "node",
-            "program": "index.js", 
-            "args": [],
-            "cwd": "${workspaceRoot}",
-            "stopOnEntry": false,
-            "runtimeExecutable": null,
-            "env": { "NODE_ENV": "production"}
-        }, {
             "name": "Unit tests",
             "type": "node",
             "request": "launch",

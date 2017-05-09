@@ -592,7 +592,7 @@ export default class FinderPatternFinder {
     const startSize = this.possibleCenters.length
     if (startSize < 3) {
       // Couldn't find enough finder patterns
-      throw new Exception("NotFoundException")
+      throw new Exception(Exception.NotFoundException)
     }
     
     const possibleCenters = this.possibleCenters

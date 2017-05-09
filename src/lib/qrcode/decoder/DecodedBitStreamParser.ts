@@ -84,7 +84,7 @@ export default class DecodedBitStreamParser {
             break
           case Mode.STRUCTURED_APPEND:
             if (bits.available() < 16) {
-              throw new Exception("FormatException")
+              throw new Exception(Exception.FormatException)
             }
             // sequence number and parity is added later to the result metadata
             // Read next 8 bits (symbol sequence #) and 8 bits (data: parity), then continue
@@ -96,7 +96,7 @@ export default class DecodedBitStreamParser {
             const value = DecodedBitStreamParser.parseECIValue(bits)
             currentCharacterSetECI = CharacterSetECI.getCharacterSetECIByValue(value)
             if (currentCharacterSetECI === null) {
-              throw new Exception("FormatException")
+              throw new Exception(Exception.FormatException)
             }
             break
           case Mode.HANZI:
@@ -126,14 +126,14 @@ export default class DecodedBitStreamParser {
                 DecodedBitStreamParser.decodeKanjiSegment(bits, result, count)
                 break
               default:
-                throw new Exception("FormatException")
+                throw new Exception(Exception.FormatException)
             }
             break
         }
       } while (mode !== Mode.TERMINATOR)
     } catch (iae/*: IllegalArgumentException*/) {
       // from readBits() calls
-      throw new Exception("FormatException")
+      throw new Exception(Exception.FormatException)
     }
 
     return new DecoderResult(bytes,
@@ -152,7 +152,7 @@ export default class DecodedBitStreamParser {
                                       count: number/*int*/): void /*throws FormatException*/ {
     // Don't crash trying to read more bits than we have available.
     if (count * 13 > bits.available()) {
-      throw new Exception("FormatException")
+      throw new Exception(Exception.FormatException)
     }
 
     // Each character will require 2 bytes. Read the characters as 2-byte pairs
@@ -180,7 +180,7 @@ export default class DecodedBitStreamParser {
       result.append(StringEncoding.decode(buffer, StringUtils.GB2312))
       // TYPESCRIPTPORT: TODO: implement GB2312 decode. StringView from MDN could be a starting point
     } catch (ignored/*: UnsupportedEncodingException*/) {
-      throw new Exception("FormatException")
+      throw new Exception(Exception.FormatException)
     }
   }
 
@@ -189,7 +189,7 @@ export default class DecodedBitStreamParser {
                                         count: number/*int*/): void /*throws FormatException*/ {
     // Don't crash trying to read more bits than we have available.
     if (count * 13 > bits.available()) {
-      throw new Exception("FormatException")
+      throw new Exception(Exception.FormatException)
     }
 
     // Each character will require 2 bytes. Read the characters as 2-byte pairs
@@ -217,7 +217,7 @@ export default class DecodedBitStreamParser {
       result.append(StringEncoding.decode(buffer, StringUtils.SHIFT_JIS))
       // TYPESCRIPTPORT: TODO: implement SHIFT_JIS decode. StringView from MDN could be a starting point
     } catch (ignored/*: UnsupportedEncodingException*/) {
-      throw new Exception("FormatException")
+      throw new Exception(Exception.FormatException)
     }
   }
 
@@ -229,7 +229,7 @@ export default class DecodedBitStreamParser {
                                         hints: Map<DecodeHintType, any>): void /*throws FormatException*/ {
     // Don't crash trying to read more bits than we have available.
     if (8 * count > bits.available()) {
-      throw new Exception("FormatException")
+      throw new Exception(Exception.FormatException)
     }
 
     const readBytes = new Uint8Array(count)
@@ -250,14 +250,14 @@ export default class DecodedBitStreamParser {
     try {
       result.append(StringEncoding.decode(readBytes, encoding))
     } catch (ignored/*: UnsupportedEncodingException*/) {
-      throw new Exception("FormatException")
+      throw new Exception(Exception.FormatException)
     }
     byteSegments.push(readBytes)
   }
 
   private static toAlphaNumericChar(value: number/*int*/): string /*throws FormatException*/ {
     if (value >= DecodedBitStreamParser.ALPHANUMERIC_CHARS.length) {
-      throw new Exception("FormatException")
+      throw new Exception(Exception.FormatException)
     }
     return DecodedBitStreamParser.ALPHANUMERIC_CHARS[value]
   }
@@ -270,7 +270,7 @@ export default class DecodedBitStreamParser {
     const start = result.length()
     while (count > 1) {
       if (bits.available() < 11) {
-        throw new Exception("FormatException")
+        throw new Exception(Exception.FormatException)
       }
       const nextTwoCharsBits = bits.readBits(11)
       result.append(DecodedBitStreamParser.toAlphaNumericChar(nextTwoCharsBits / 45))
@@ -280,7 +280,7 @@ export default class DecodedBitStreamParser {
     if (count == 1) {
       // special case: one character left
       if (bits.available() < 6) {
-        throw new Exception("FormatException")
+        throw new Exception(Exception.FormatException)
       }
       result.append(DecodedBitStreamParser.toAlphaNumericChar(bits.readBits(6)))
     }
@@ -308,11 +308,11 @@ export default class DecodedBitStreamParser {
     while (count >= 3) {
       // Each 10 bits encodes three digits
       if (bits.available() < 10) {
-        throw new Exception("FormatException")
+        throw new Exception(Exception.FormatException)
       }
       const threeDigitsBits = bits.readBits(10)
       if (threeDigitsBits >= 1000) {
-        throw new Exception("FormatException")
+        throw new Exception(Exception.FormatException)
       }
       result.append(DecodedBitStreamParser.toAlphaNumericChar(threeDigitsBits / 100))
       result.append(DecodedBitStreamParser.toAlphaNumericChar((threeDigitsBits / 10) % 10))
@@ -322,22 +322,22 @@ export default class DecodedBitStreamParser {
     if (count == 2) {
       // Two digits left over to read, encoded in 7 bits
       if (bits.available() < 7) {
-        throw new Exception("FormatException")
+        throw new Exception(Exception.FormatException)
       }
       const twoDigitsBits = bits.readBits(7)
       if (twoDigitsBits >= 100) {
-        throw new Exception("FormatException")
+        throw new Exception(Exception.FormatException)
       }
       result.append(DecodedBitStreamParser.toAlphaNumericChar(twoDigitsBits / 10))
       result.append(DecodedBitStreamParser.toAlphaNumericChar(twoDigitsBits % 10))
     } else if (count == 1) {
       // One digit left over to read
       if (bits.available() < 4) {
-        throw new Exception("FormatException")
+        throw new Exception(Exception.FormatException)
       }
       const digitBits = bits.readBits(4)
       if (digitBits >= 10) {
-        throw new Exception("FormatException")
+        throw new Exception(Exception.FormatException)
       }
       result.append(DecodedBitStreamParser.toAlphaNumericChar(digitBits))
     }
@@ -359,7 +359,7 @@ export default class DecodedBitStreamParser {
       const secondThirdBytes = bits.readBits(16)
       return ((firstByte & 0x1F) << 16) | secondThirdBytes
     }
-    throw new Exception("FormatException")
+    throw new Exception(Exception.FormatException)
   }
 
 }

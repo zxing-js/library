@@ -424,18 +424,18 @@ export default class Version {
    */
   public static getProvisionalVersionForDimension(dimension: number/*int*/): Version /*throws FormatException */ {
     if (dimension % 4 != 1) {
-      throw new Exception("FormatException")
+      throw new Exception(Exception.FormatException)
     }
     try {
       return this.getVersionForNumber((dimension - 17) / 4)
     } catch (ignored/*: IllegalArgumentException*/) {
-      throw new Exception("FormatException")
+      throw new Exception(Exception.FormatException)
     }
   }
 
   public static getVersionForNumber(versionNumber: number/*int*/): Version {
     if (versionNumber < 1 || versionNumber > 40) {
-      throw new Exception("IllegalArgumentException")
+      throw new Exception(Exception.IllegalArgumentException)
     }
     return Version.VERSIONS[versionNumber - 1]
   }

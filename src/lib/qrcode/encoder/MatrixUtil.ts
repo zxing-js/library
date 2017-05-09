@@ -266,7 +266,7 @@ export default class MatrixUtil {
     }
     // All bits should be consumed.
     if (bitIndex !== dataBits.getSize()) {
-      throw new Exception("WriterException", "Not all bits consumed: " + bitIndex + '/' + dataBits.getSize())
+      throw new Exception(Exception.WriterException, "Not all bits consumed: " + bitIndex + '/' + dataBits.getSize())
     }
   }
 
@@ -306,7 +306,7 @@ export default class MatrixUtil {
   // operations. We don't care if coefficients are positive or negative.
   public static calculateBCHCode(value: number/*int*/, poly: number/*int*/): number/*int*/ {
     if (poly === 0) {
-      throw new Exception("IllegalArgumentException", "0 polynomial")
+      throw new Exception(Exception.IllegalArgumentException, "0 polynomial")
     }
     // If poly is "1 1111 0010 0101" (version info poly), msbSetInPoly is 13. We'll subtract 1
     // from 13 to make it 12.
@@ -326,7 +326,7 @@ export default class MatrixUtil {
   public static makeTypeInfoBits(ecLevel: ErrorCorrectionLevel, maskPattern: number/*int*/, bits: BitArray): void
       /*throws WriterException*/ {
     if (!QRCode.isValidMaskPattern(maskPattern)) {
-      throw new Exception("WriterException", "Invalid mask pattern")
+      throw new Exception(Exception.WriterException, "Invalid mask pattern")
     }
     const typeInfo = (ecLevel.getBits() << 3) | maskPattern
     bits.appendBits(typeInfo, 5)
@@ -339,7 +339,7 @@ export default class MatrixUtil {
     bits.xor(maskBits)
 
     if (bits.getSize() !== 15) {  // Just in case.
-      throw new Exception("WriterException", "should not happen but we got: " + bits.getSize())
+      throw new Exception(Exception.WriterException, "should not happen but we got: " + bits.getSize())
     }
   }
 
@@ -351,7 +351,7 @@ export default class MatrixUtil {
     bits.appendBits(bchCode, 12)
 
     if (bits.getSize() !== 18) {  // Just in case.
-      throw new Exception("WriterException", "should not happen but we got: " + bits.getSize())
+      throw new Exception(Exception.WriterException, "should not happen but we got: " + bits.getSize())
     }
   }
 
@@ -379,7 +379,7 @@ export default class MatrixUtil {
   // Embed the lonely dark dot at left bottom corner. JISX0510:2004 (p.46)
   private static embedDarkDotAtLeftBottomCorner(matrix: ByteMatrix): void /*throws WriterException*/ {
     if (matrix.get(8, matrix.getHeight() - 8) === 0) {
-      throw new Exception("WriterException")
+      throw new Exception(Exception.WriterException)
     }
     matrix.setNumber(8, matrix.getHeight() - 8, 1)
   }
@@ -389,7 +389,7 @@ export default class MatrixUtil {
                                                        matrix: ByteMatrix): void /*throws WriterException*/ {
     for (let x = 0; x < 8; ++x) {
       if (!MatrixUtil.isEmpty(matrix.get(xStart + x, yStart))) {
-        throw new Exception("WriterException")
+        throw new Exception(Exception.WriterException)
       }
       matrix.setNumber(xStart + x, yStart, 0)
     }
@@ -400,7 +400,7 @@ export default class MatrixUtil {
                                                      matrix: ByteMatrix): void /*throws WriterException*/ {
     for (let y = 0; y < 7; ++y) {
       if (!MatrixUtil.isEmpty(matrix.get(xStart, yStart + y))) {
-        throw new Exception("WriterException")
+        throw new Exception(Exception.WriterException)
       }
       matrix.setNumber(xStart, yStart + y, 0)
     }

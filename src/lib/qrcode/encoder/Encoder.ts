@@ -119,7 +119,7 @@ export default class Encoder {
       version = Version.getVersionForNumber(versionNumber)
       const bitsNeeded = this.calculateBitsNeeded(mode, headerBits, dataBits, version)
       if (!this.willFit(bitsNeeded, version, ecLevel)) {
-        throw new Exception("WriterException", "Data too big for requested version")
+        throw new Exception(Exception.WriterException, "Data too big for requested version")
       }
     } else {
       version = this.recommendVersion(ecLevel, mode, headerBits, dataBits)
@@ -282,7 +282,7 @@ export default class Encoder {
         return version
       }
     }
-    throw new Exception("WriterException", "Data too big")
+    throw new Exception(Exception.WriterException, "Data too big")
   }
   
   /**
@@ -308,7 +308,7 @@ export default class Encoder {
   public static terminateBits(numDataBytes: number/*int*/, bits: BitArray): void /*throws WriterException*/ {
     const capacity = numDataBytes * 8;
     if (bits.getSize() > capacity) {
-      throw new Exception("WriterException", "data bits cannot fit in the QR Code" + bits.getSize() + " > " +
+      throw new Exception(Exception.WriterException, "data bits cannot fit in the QR Code" + bits.getSize() + " > " +
           capacity)
     }
     for (let i = 0; i < 4 && bits.getSize() < capacity; ++i) {
@@ -328,7 +328,7 @@ export default class Encoder {
       bits.appendBits((i & 0x01) == 0 ? 0xEC : 0x11, 8)
     }
     if (bits.getSize() != capacity) {
-      throw new Exception("WriterException", "Bits size does not equal capacity")
+      throw new Exception(Exception.WriterException, "Bits size does not equal capacity")
     }
   }
 
@@ -344,7 +344,7 @@ export default class Encoder {
                                                         numDataBytesInBlock: Int32Array,
                                                         numECBytesInBlock: Int32Array): void /*throws WriterException*/ {
     if (blockID >= numRSBlocks) {
-      throw new Exception("WriterException", "Block ID too large")
+      throw new Exception(Exception.WriterException, "Block ID too large")
     }
     // numRsBlocksInGroup2 = 196 % 5 = 1
     const numRsBlocksInGroup2 = numTotalBytes % numRSBlocks
@@ -365,11 +365,11 @@ export default class Encoder {
     // Sanity checks.
     // 26 = 26
     if (numEcBytesInGroup1 != numEcBytesInGroup2) {
-      throw new Exception("WriterException", "EC bytes mismatch")
+      throw new Exception(Exception.WriterException, "EC bytes mismatch")
     }
     // 5 = 4 + 1.
     if (numRSBlocks != numRsBlocksInGroup1 + numRsBlocksInGroup2) {
-      throw new Exception("WriterException", "RS blocks mismatch")
+      throw new Exception(Exception.WriterException, "RS blocks mismatch")
     }
     // 196 = (13 + 26) * 4 + (14 + 26) * 1
     if (numTotalBytes !=
@@ -377,7 +377,7 @@ export default class Encoder {
             numRsBlocksInGroup1) +
             ((numDataBytesInGroup2 + numEcBytesInGroup2) *
                 numRsBlocksInGroup2)) {
-      throw new Exception("WriterException", "Total bytes mismatch")
+      throw new Exception(Exception.WriterException, "Total bytes mismatch")
     }
 
     if (blockID < numRsBlocksInGroup1) {
@@ -400,7 +400,7 @@ export default class Encoder {
 
     // "bits" must have "getNumDataBytes" bytes of data.
     if (bits.getSizeInBytes() != numDataBytes) {
-      throw new Exception("WriterException", "Number of bits and data bytes does not match")
+      throw new Exception(Exception.WriterException, "Number of bits and data bytes does not match")
     }
 
     // Step 1.  Divide data bytes into blocks and generate error correction bytes for them. We'll
@@ -430,7 +430,7 @@ export default class Encoder {
       dataBytesOffset += numDataBytesInBlock[0]
     }
     if (numDataBytes != dataBytesOffset) {
-      throw new Exception("WriterException", "Data bytes does not match offset")
+      throw new Exception(Exception.WriterException, "Data bytes does not match offset")
     }
 
     const result = new BitArray()
@@ -490,7 +490,7 @@ export default class Encoder {
   public static appendLengthInfo(numLetters: number/*int*/, version: Version, mode: Mode, bits: BitArray): void /*throws WriterException*/ {
     const numBits = mode.getCharacterCountBits(version)
     if (numLetters >= (1 << numBits)) {
-      throw new Exception("WriterException", numLetters + " is bigger than " + ((1 << numBits) - 1))
+      throw new Exception(Exception.WriterException, numLetters + " is bigger than " + ((1 << numBits) - 1))
     }
     bits.appendBits(numLetters, numBits)
   }
@@ -516,7 +516,7 @@ export default class Encoder {
         Encoder.appendKanjiBytes(content, bits)
         break
       default:
-        throw new Exception("WriterException", "Invalid mode: " + mode)
+        throw new Exception(Exception.WriterException, "Invalid mode: " + mode)
     }
   }
 
@@ -550,12 +550,12 @@ export default class Encoder {
     while (i < length) {
       const code1 = Encoder.getAlphanumericCode(content.charCodeAt(i))
       if (code1 == -1) {
-        throw new Exception("WriterException")
+        throw new Exception(Exception.WriterException)
       }
       if (i + 1 < length) {
         const code2 = Encoder.getAlphanumericCode(content.charCodeAt(i + 1))
         if (code2 == -1) {
-          throw new Exception("WriterException")
+          throw new Exception(Exception.WriterException)
         }
         // Encode two alphanumeric letters in 11 bits.
         bits.appendBits(code1 * 45 + code2, 11);
@@ -574,7 +574,7 @@ export default class Encoder {
     try {
       bytes = StringEncoding.encode(content, encoding)
     } catch (uee/*: UnsupportedEncodingException*/) {
-      throw new Exception("WriterException", uee)
+      throw new Exception(Exception.WriterException, uee)
     }
     for (let i = 0, length = bytes.length; i != length; i++) {
       const b = bytes[i]
@@ -587,7 +587,7 @@ export default class Encoder {
     try {
       bytes = StringEncoding.encode(content, "Shift_JIS")
     } catch (uee/*: UnsupportedEncodingException*/) {
-      throw new Exception("WriterException", uee)
+      throw new Exception(Exception.WriterException, uee)
     }
     const length = bytes.length
     for (let i = 0; i < length; i += 2) {
@@ -601,7 +601,7 @@ export default class Encoder {
         subtracted = code - 0xc140
       }
       if (subtracted == -1) {
-        throw new Exception("WriterException", "Invalid byte sequence")
+        throw new Exception(Exception.WriterException, "Invalid byte sequence")
       }
       const encoded = ((subtracted >> 8) * 0xc0) + (subtracted & 0xff);
       bits.appendBits(encoded, 13)

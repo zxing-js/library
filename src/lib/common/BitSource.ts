@@ -61,7 +61,7 @@ export default class BitSource {
    */
   public readBits(numBits: number/*int*/): number/*int*/ {
     if (numBits < 1 || numBits > 32 || numBits > this.available()) {
-      throw new Exception("IllegalArgumentException", "" + numBits)
+      throw new Exception(Exception.IllegalArgumentException, "" + numBits)
     }
 
     let result = 0

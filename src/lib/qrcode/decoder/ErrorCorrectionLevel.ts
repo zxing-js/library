@@ -64,7 +64,7 @@ export default class ErrorCorrectionLevel {
       case "M": return ErrorCorrectionLevel.M
       case "Q": return ErrorCorrectionLevel.Q
       case "H": return ErrorCorrectionLevel.H
-      default: throw new Exception("ArgumentException", s + "not available")
+      default: throw new Exception(Exception.ArgumentException, s + "not available")
     }
   }
 
@@ -74,7 +74,7 @@ export default class ErrorCorrectionLevel {
    */
   public static forBits(bits: number/*int*/): ErrorCorrectionLevel {
     if (bits < 0 || bits >= ErrorCorrectionLevel.FOR_BITS.size) {
-      throw new Exception("IllegalArgumentException")
+      throw new Exception(Exception.IllegalArgumentException)
     }
     return ErrorCorrectionLevel.FOR_BITS[bits]
   }

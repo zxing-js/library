@@ -96,7 +96,7 @@ export default class GenericGF {
    */
   public buildMonomial(degree: number/*int*/, coefficient: number/*int*/): GenericGFPoly {
     if (degree < 0) {
-      throw new Exception("IllegalArgumentException")
+      throw new Exception(Exception.IllegalArgumentException)
     }
     if (coefficient === 0) {
       return this.zero
@@ -127,7 +127,7 @@ export default class GenericGF {
    */
   public log(a: number/*int*/): number/*int*/ {
     if (a === 0) {
-      throw new Exception("IllegalArgumentException")
+      throw new Exception(Exception.IllegalArgumentException)
     }
     return this.logTable[a]
   }
@@ -137,7 +137,7 @@ export default class GenericGF {
    */
   public inverse(a: number/*int*/): number/*int*/ {
     if (a === 0) {
-      throw new Exception("ArithmeticException")
+      throw new Exception(Exception.ArithmeticException)
     }
     return this.expTable[this.size - this.logTable[a] - 1]
   }
