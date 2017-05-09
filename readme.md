@@ -14,7 +14,7 @@ See [TypeScript Port Info](typescriptport.md)
 Status and Roadmap
 ==================
 
-- [x] Port root, common and qrcode formats and make it compile
+- [x] Port root, common and qrcode format and make it compile
 - [x] Add unit test infrastructure, a first unit test and make it pass (common/BitArrayTestCase)
 - [ ] Add all unit tests for everything in root, common and qrcode
 - [ ] Create browser integration module and test UI for qrcode
