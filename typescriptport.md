@@ -1,7 +1,7 @@
-ZXing TypeScript
-================
+Porting Info
+============
 
-This is a TypeScript port of ZXing library from [https://github.com/zxing/zxing]
+This document contains rules and guidelines for porting the library from Java to TypeScript.
 
 
 Porting Version
@@ -10,6 +10,17 @@ Porting Version
 Initial port from 3.3.1-SNAPSHOT on May 2017 by Adrian Toșcă
 Please update here with subsequent port updates:
 * ...
+
+Tooling
+=======
+
+Local development using Node and npm, see package.json for dependencies.
+
+*Note:* Keep dependencies at minimum necessary, ideally none for distribution.
+
+Unit tests: Mocha
+
+If using Visual Studio Code IDE hava a look at tsconfig.json and .vscode for default configurations
 
 Porting Rules
 =============

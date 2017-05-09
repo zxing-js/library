@@ -8,7 +8,7 @@ See [https://github.com/zxing/zxing] for original Java project.
 Porting guidelines
 ==================
 
-See [typescriptport.md]
+See [TypeScript Port Info](typescriptport.md)
 
 
 Status and Roadmap
