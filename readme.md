@@ -30,3 +30,8 @@ Status and Roadmap
 - [ ] Port pdf417 format with unit and browser tests and documentation
 - [ ] Create tests for all major current browsers
 
+
+Etcetera
+========
+
+[![Build Status](https://travis-ci.org/aleris/zxing-typescript.png?branch=master)](https://travis-ci.org/aleris/zxing-typescript)
