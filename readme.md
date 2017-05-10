@@ -34,4 +34,4 @@ Status and Roadmap
 Etcetera
 ========
 
-[![Build Status](https://travis-ci.org/aleris/zxing-typescript.png?branch=master)](https://travis-ci.org/aleris/zxing-typescript)
+[![Build Status](https://travis-ci.org/aleris/zxing-typescript.svg?branch=master)](https://travis-ci.org/aleris/zxing-typescript)
