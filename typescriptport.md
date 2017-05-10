@@ -22,6 +22,14 @@ Unit tests: Mocha
 
 If using Visual Studio Code IDE hava a look at tsconfig.json and .vscode for default configurations
 
+Porting Approach
+================
+
+The java files are transformed using regexps for some obvious syntax transformation (see ./autotransform) and then modified manually.
+
+Using http://www.jsweet.org was considered but rejected because of loosing type information early on (for example 
+number versus int is esential for bitwise operations), language style and older typescript version.
+
 Porting Rules
 =============
 
@@ -35,6 +43,13 @@ Porting Rules
 * Package level visibility will transform to public to avoid module complexity.
 * Keep enum as similar with the original interface as possible (transform to class and use static fields for enum values).
 * Allways use `===` for `==` to avoid gliches from type transforms.
+
+Things to look for
+==================
+
+* Take care of int -> number port when doing bitwise transformation expecially <<.
+* Take care of array initialization, in java new Array(N) initializes capacity NOT size/length.
+
 
 TODO
 ====

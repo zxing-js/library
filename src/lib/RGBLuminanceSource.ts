@@ -16,6 +16,7 @@
 
 /*namespace com.google.zxing {*/
 
+import './InvertedLuminanceSource' // required because of circular dependencies between LuminanceSource and InvertedLuminanceSource
 import LuminanceSource from './LuminanceSource'
 import Exception from './Exception'
 import System from './util/System'
@@ -53,26 +54,57 @@ export default class RGBLuminanceSource extends LuminanceSource {
   //   }
   // }
   
-  public constructor(private luminances: Uint8Array,
-                             private dataWidth: number/*int*/,
-                             private dataHeight: number/*int*/,
-                             private left: number/*int*/,
-                             private top: number/*int*/,
+  private luminances: Uint8Array
+
+  public constructor(luminances: Uint8Array|Int32Array,
                              width: number/*int*/,
-                             height: number/*int*/) {
+                             height: number/*int*/,
+                             private dataWidth?: number/*int*/,
+                             private dataHeight?: number/*int*/,
+                             private left?: number/*int*/,
+                             private top?: number/*int*/) {
     super(width, height)
-    if (left + width > dataWidth || top + height > dataHeight) {
+
+    if (luminances.BYTES_PER_ELEMENT === 4) {
+      const size = width * height;
+      const luminancesUint8Array = new Uint8Array(size)
+      for (let offset = 0; offset < size; offset++) {
+        const pixel = luminances[offset]
+        const r = (pixel >> 16) & 0xff; // red
+        const g2 = (pixel >> 7) & 0x1fe; // 2 * green
+        const b = pixel & 0xff; // blue
+        // Calculate green-favouring average cheaply
+        luminancesUint8Array[offset] = /*(byte) */((r + g2 + b) / 4)
+      }
+      this.luminances = luminancesUint8Array
+    } else {
+      this.luminances = <Uint8Array> luminances
+    }
+
+    if (undefined === dataWidth) {
+      this.dataWidth = width
+    }
+    if (undefined === dataHeight) {
+      this.dataHeight = height
+    }
+    if (undefined === left) {
+      this.left = 0
+    }
+    if (undefined === top) {
+      this.top = 0
+    }
+    if (this.left + width > this.dataWidth || this.top + height > this.dataHeight) {
       throw new Exception(Exception.IllegalArgumentException, "Crop rectangle does not fit within image data.")
     }
   }
 
   /*@Override*/
-  public getRow(y: number/*int*/, row: Uint8Array): Uint8Array {
+  public getRow(y: number/*int*/, row?: Uint8Array): Uint8Array {
     if (y < 0 || y >= this.getHeight()) {
       throw new Exception(Exception.IllegalArgumentException, "Requested row is outside the image: " + y)
     }
     const width = this.getWidth()
-    if (row === null || row.length < width) {
+    if (row === null || row === undefined || row.length < width) {
       row = new Uint8Array(width)
     }
     const offset = (y + this.top) * this.dataWidth + this.left
@@ -118,12 +150,12 @@ export default class RGBLuminanceSource extends LuminanceSource {
   /*@Override*/
   public crop(left: number/*int*/, top: number/*int*/, width: number/*int*/, height: number/*int*/): LuminanceSource {
     return new RGBLuminanceSource(this.luminances,
+                                  width,
+                                  height,
                                   this.dataWidth,
                                   this.dataHeight,
                                   this.left + left,
-                                  this.top + top,
-                                  width,
-                                  height)
+                                  this.top + top,)
   }
 
 }

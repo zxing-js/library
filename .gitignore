@@ -1,3 +1,5 @@
 staging/
+autotransform/input/*
+autotransform/output/*
 node_modules/
 build/*

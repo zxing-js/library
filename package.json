@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "pretest": "tsc",
-    "test": "mocha \"build/test/**/*.js\""
+    "test": "mocha \"build/test/**/*.js\"",
+    "autotransform": "node ./autotransform/transform.js"
   },
   "bin": {
     "tsc": "./bin/tsc"

@@ -37,6 +37,8 @@ export default class BitSource {
    * Bits are read within a byte from most-significant to least-significant bit.
    */
   public constructor(private bytes: Uint8Array) {
+    this.byteOffset = 0
+    this.bitOffset = 0
   }
 
   /**

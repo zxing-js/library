@@ -4,7 +4,6 @@ const path = require('path')
 function walkDirectory(dirPath) {
     const results = []
     const dir = path.resolve(__dirname, dirPath)
-    console.log("Applying in dir =", dir)
     const list = fs.readdirSync(dir)
     list.forEach(function(file) {
         file = path.join(dir, file)
@@ -12,49 +11,113 @@ function walkDirectory(dirPath) {
         if (stat && stat.isDirectory()) results = results.concat(walk(file))
         else results.push(file)
     })
+
+    if (results.length === 0) {
+        console.log("No files in folder " + dir)
+    }
+
     return results
 }
 
-function replaceInOneFile(file, regexp, replacement) {
-    const data = fs.readFileSync(file, 'utf8')
-    const result = data.replace(regexp, replacement)
-
-    if (result !== data) {
-        fs.writeFileSync(file, result, 'utf8')
-        console.log("Transform " + regexp + " applied for file ", file, "OK")
+function replaceContentInOneFile(filePath, replacements, outputDirName) {
+    console.log("File " + filePath + ":")
+    const originalContent = fs.readFileSync(filePath, 'utf8')
+    let result = originalContent
+    let modified = false
+    for (const ra of replacements) {
+        const regexp = ra[0]
+        const replacement = ra[1]
+        const modifiedResult = result.replace(regexp, replacement)
+        if (result !== modifiedResult) {
+            console.log("\tapplied " + regexp + " ok")
+            result = modifiedResult
+            modified = true
+        }
+    }
+    if (modified === true) {
+        const ext = path.extname(filePath)
+        const fileName = path.basename(filePath, ext)
+        const outputFile = path.join(__dirname, outputDirName, fileName + ".ts")
+        fs.writeFileSync(outputFile, result, 'utf8')
+        console.log("\tfile " + outputFile + " written to output ok")
+    } else {
+        console.log("\tfile " + filePath + " not modified")
     }
 }
 
-function replaceAllInDirectory(dirPath) {
-    const files = walkDirectory(dirPath)
+function replaceAllInDirectory(inputDirName, outputDirName) {
+    const allFilesInInput = walkDirectory(inputDirName)
 
-    for(const file of files) {
-        for (const ra of replacements) {
-            replaceInOneFile(file, ra[0], ra[1])
-        }
+    for(const filePath of allFilesInInput) {
+        replaceContentInOneFile(filePath, replacements, outputDirName)
     }
 }
 
 const replacements = [
-    [/^(package com\.google\.zxing\..+?;)$/gm, "/*$1*/"],
-    [/public final class /g, "export default class "],
+    [/^(package com\.google\.zxing.*?;)$/gm, "/*$1*/"],
     [/import org.junit.Assert;/g, "import 'mocha'\r\nimport * as assert from 'assert'"],
     [/import org.junit.Test;\r\n/g, ""],
-    [/for \(int ([a-zA-Z0-9_]+) =/g, "for (let $1: number/*int*/ ="],
+    [/^(import java.+)$/gm, "/*$1*/"],
+    [/^import com\.google\.zxing\.([a-zA-Z0-9_]+)\.([a-zA-Z0-9_]+)\.([a-zA-Z0-9_]+);?$/gm, "import './$1/$2/$3'"],
+    [/^import com\.google\.zxing\.([a-zA-Z0-9_]+)\.([a-zA-Z0-9_]+);?$/gm, "import './$1/$2'"],
+    [/^import com\.google\.zxing\.([a-zA-Z0-9_]+);?$/gm, "import './$1'"],
+
+    [/public final class /g, "export default class "],
+    [/public abstract class ([a-zA-Z0-9_]+)/g, "/*export default $1*/abstract class $1"],
     [/  @Test\r\n(\s+)public void ([a-zA-Z0-9_]+)\(\)\s+{/g, "$1it(\"$2\", () => {"],
     [/export default class ([a-zA-Z0-9_]+) extends Assert {/g, "describe(\"$1\", () => {"],
+
+    [/^  (public|protected|private)( static)?( final)? ([a-zA-Z0-9_<>]+) ([a-zA-Z0-9_]+\(.*?\))/gm, "  $1$2 $5: $4"],
+
+    [/((?!(?:[a-zA-Z0-9_])).)int ([a-zA-Z0-9_]+)/g, "$1$2: number/*int*/"],
+    [/((?!(?:[a-zA-Z0-9_])).)float ([a-zA-Z0-9_]+)/g, "$1$2: number/*float*/"],
+    [/((?!(?:[a-zA-Z0-9_])).)double ([a-zA-Z0-9_]+)/g, "$1$2: number/*double*/"],
+    [/((?!(?:[a-zA-Z0-9_])).)int\[\] ([a-zA-Z0-9_]+)/g, "$1$2: Int32Array"],
+    [/((?!(?:[a-zA-Z0-9_])).)byte\[\] ([a-zA-Z0-9_]+)/g, "$1$2: Uint8Array"],
+    [/((?!(?:[a-zA-Z0-9_])).)List<([a-zA-Z0-9_]+)> ([a-zA-Z0-9_]+)/g, "$1$3: Array<$2>"],
+    [/((?!(?:[a-zA-Z0-9_])).)Collection<([a-zA-Z0-9_]+)> ([a-zA-Z0-9_]+)/g, "$1$3: Array<$2>"],
+    [/((?!(?:[a-zA-Z0-9_])).)String ([a-zA-Z0-9_]+)/g, "$1$2: string"],
+    [/((?!(?:[a-zA-Z0-9_])).)boolean ([a-zA-Z0-9_]+)/g, "$1$2: boolean"],
+
+    [/^(\s+)([a-zA-Z0-9_]+) ([a-zA-Z0-9_]+) = /gm, "$1const $3: $2 = "],
+
+    [/^(\s+)([a-zA-Z0-9_]+): ([a-zA-Z0-9_<>/\\\*]+)/gm, "$1const $2: $3"],
+
+
+    [/new int\[([a-zA-Z0-9_]+)\]/g, "new Int32Array()/*Int32Array($1)*/"],
+    [/new byte\[([a-zA-Z0-9_]+)\]/g, "new Uint8Array()/*Uint8Array($1)*/"],
+    [/new byte\[\] { /g, "Uint8Array.from(["],
+    [/new int\[\] {/g, "Int32Array.from(["],
+    [/\(byte\) /g, "/*(byte)*/ "],
+    [/\(int\) /g, "/*(int)*/ "],
+
+    [/for \(([a-zA-Z0-9_]+): ([a-zA-Z0-9_<>]+)/g, "for (let $1: $2"],
+    [/(throws [[a-zA-Z0-9_]+Exception )/g, "/*$1*/"],
+
+    [/for \(int ([a-zA-Z0-9_]+) =/g, "for (let $1: number/*int*/ ="],
     [/^    ((?:(?!const|let)[a-zA-Z0-9+])+) ([a-zA-Z0-9+]+) = new /gm, "    const $2: $1 = new "],
-    [/  private static ([a-zA-Z0-9_]+) ([a-zA-Z0-9_]+\(.+?\)) {/g, "  private static $2: $1 {"],
-    [/  public static ([a-zA-Z0-9_]+) ([a-zA-Z0-9_]+\(.+?\)) {/g, "  public static $2: $1 {"],
-    [/\): String/g, "): string"],
-    [/assertEquals\(/g, "assert.strictEqual("],
-    [/^    assertNull(\(.+)$/gm, "    assert.strictEqual(null === $1, true)"],
-    [/^    assertArrayEquals(\(.+)$/gm, "    assert.strictEqual(AssertUtils.int32ArraysAreEqual($1), true)"],
-    [/^    assertTrue(\(.+)$/gm, "    assert.strictEqual($1, true)"],
-    [/^    assertFalse(\(.+)$/gm, "    assert.strictEqual($1, false)"],
+    [/^  private static final ([a-zA-Z0-9_]+) ([a-zA-Z0-9_]+) =/gm, "  private static $2: $1 ="],
+    [/^  public static final ([a-zA-Z0-9_]+) ([a-zA-Z0-9_]+) =/gm, "  public static $2: $1 ="],
+    [/^  private static ([a-zA-Z0-9_]+) ([a-zA-Z0-9_]+\(.+?\)) {/gm, "  private static $2: $1 {"],
+    [/^  public static ([a-zA-Z0-9_]+) ([a-zA-Z0-9_]+\(.+?\)) {/gm, "  public static $2: $1 {"],
+    [/^  private final ([a-zA-Z0-9_]+) ([a-zA-Z0-9_]+)/gm, "  private $2: $1"],
+    [/^  public final ([a-zA-Z0-9_]+) ([a-zA-Z0-9_]+)/gm, "  public $2: $1"],
+    [/^  private final /gm, "  private "],
+    [/^  public final /gm, "  public "],
+
+    [/assertFalse\((".+?"), (.+)\)/g, "assert.strictEqual($1, false, $2)"],
+    [/assertFalse\((.+?)\)/g, "assert.strictEqual($1, false)"],
+    [/assertTrue\((".+?"), (.+)\)/g, "assert.strictEqual($1, true, $2)"],
+    [/assertTrue\((.+?)\)/g, "assert.strictEqual($1, true)"],
+
+    [/assertEquals\((.+?), (.+)\)/g, "assert.strictEqual($2, $1)"],
+
+    [/: ([a-zA-Z0-9_]+) = new \1/g, " = new $1"],
+
     [/^((?:(?!for|while|do).)+?);$/gm, "$1"],
+
     [/ == /g, " === "],
     [/ != /g, " !== "]
 ]
 
-replaceAllInDirectory('../src/test/common/')
+replaceAllInDirectory('input', 'output')

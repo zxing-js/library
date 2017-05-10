@@ -31,7 +31,7 @@ export default class InvertedLuminanceSource extends LuminanceSource {
   }
 
   /*@Override*/
-  public getRow(y: number/*int*/, row: Uint8Array): Uint8Array {
+  public getRow(y: number/*int*/, row?: Uint8Array): Uint8Array {
     const sourceRow = this.delegate.getRow(y, row)
     const width: number/*int*/ = this.getWidth()
     for (let i = 0; i < width; i++) {

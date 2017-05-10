@@ -10,4 +10,16 @@ export default class AssertUtils {
         }
         return true
     }
+
+    public static uInt8ArraysAreEqual(left: Uint8Array, right: Uint8Array, size?: number): boolean {
+        if (undefined === size) {
+            size = Math.max(left.length, right.length)
+        }
+        for (let i = 0; i < size; i++) {
+            if (left[i] !== right[i]) {
+                return false
+            }
+        }
+        return true
+    }
 }

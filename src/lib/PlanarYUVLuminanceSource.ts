@@ -18,6 +18,7 @@
 
 import System from './util/System'
 import Exception from './Exception'
+import './InvertedLuminanceSource' // required because of circular dependencies between LuminanceSource and InvertedLuminanceSource
 import LuminanceSource from './LuminanceSource'
 
 /**
@@ -54,12 +55,12 @@ export default class PlanarYUVLuminanceSource extends LuminanceSource {
   }
 
   /*@Override*/
-  public getRow(y: number/*int*/, row: Uint8Array): Uint8Array {
+  public getRow(y: number/*int*/, row?: Uint8Array): Uint8Array {
     if (y < 0 || y >= this.getHeight()) {
       throw new Exception(Exception.IllegalArgumentException, "Requested row is outside the image: " + y)
     }
     const width: number/*int*/ = this.getWidth();
-    if (row == null || row.length < width) {
+    if (row === null || row === undefined || row.length < width) {
       row = new Uint8Array(width)
     }
     const offset = (y + this.top) * this.dataWidth + this.left
