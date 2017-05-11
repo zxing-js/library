@@ -35,7 +35,7 @@ Porting Rules
 
 * Keep all types as close to the original as possible.
 * Keep detailed type information in comments where applicable (example int will become `number/*int*/`).
-* Use TypedArray whenever possible (example `int[]` will become `Int32Array`).
+* Use TypedArray whenever possible (example `int[]` will become `Int32Array`) - see below for more info.
 * Use constructor property whenever possible.
 * Take care of array initialisation with capacity, especially when using length and push later on. Basically only use when setting with index accesor only .
 * Use utility classes to implement platform dependencies (like `System` or `Arrays`), avoid inline implementation for anything that is not trivial.
@@ -43,6 +43,27 @@ Porting Rules
 * Package level visibility will transform to public to avoid module complexity.
 * Keep enum as similar with the original interface as possible (transform to class and use static fields for enum values).
 * Allways use `===` for `==` to avoid gliches from type transforms.
+
+Types
+=====
+
+*Java types*:
+https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
+
+*JavasSript TypedArray*:
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
+
+Java byte has 8 bits, signed (eg -127 to 127)
+So byte[] trasnforms to Int8Array
+
+Java int has 32 bits, signed
+So int[] transforms to Int32Array
+
+Java char has 2 bytes
+So char[] transfomrs to Uint16Array
+
+Java long has 64-bit two's complement integer, can be signed or unsigned
+
 
 Things to look for
 ==================

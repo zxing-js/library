@@ -29,12 +29,12 @@ import StringBuilder from './../../util/StringBuilder'
  */
 export default class ByteMatrix {
 
-  private bytes: Array<Uint8Array>
+  private bytes: Array<Int8Array>
 
   public constructor(private width: number/*int*/, private height: number/*int*/) {
-    const bytes = new Array<Uint8Array>(height)//[height][width]
+    const bytes = new Array<Int8Array>(height)//[height][width]
     for(let i = 0; i != height; i++) {
-      bytes[i] = new Uint8Array(width)
+      bytes[i] = new Int8Array(width)
     }
     this.bytes = bytes
   }
@@ -54,7 +54,7 @@ export default class ByteMatrix {
   /**
    * @return an internal representation as bytes, in row-major order. array[y][x] represents point (x,y)
    */
-  public getArray(): Array<Uint8Array> {
+  public getArray(): Array<Int8Array> {
     return this.bytes
   }
 
@@ -73,7 +73,7 @@ export default class ByteMatrix {
 
   public clear(value: number/*byte*/): void {
     for (const aByte of this.bytes) {
-      Arrays.fillUint8Array(aByte, value)
+      Arrays.fillInt8Array(aByte, value)
     }
   }
 

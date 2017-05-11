@@ -33,6 +33,9 @@ const enum ErrorCorrectionLevelValues {
  */
 export default class ErrorCorrectionLevel {
 
+  private static FOR_BITS = new Map<number, ErrorCorrectionLevel>()
+  private static FOR_VALUE = new Map<ErrorCorrectionLevelValues, ErrorCorrectionLevel>()
+
   /** L = ~7% correction */
   public static L = new ErrorCorrectionLevel(ErrorCorrectionLevelValues.L, 0x01)
   /** M = ~15% correction */
@@ -41,9 +44,6 @@ export default class ErrorCorrectionLevel {
   public static Q = new ErrorCorrectionLevel(ErrorCorrectionLevelValues.Q, 0x03)
   /** H = ~30% correction */
   public static H = new ErrorCorrectionLevel(ErrorCorrectionLevelValues.H, 0x02)
-
-  private static FOR_BITS = new Map<number, ErrorCorrectionLevel>()
-  private static FOR_VALUE = new Map<ErrorCorrectionLevelValues, ErrorCorrectionLevel>()
 
   private constructor(public value: ErrorCorrectionLevelValues, public bits: number/*int*/) {
       ErrorCorrectionLevel.FOR_BITS.set(bits, this)

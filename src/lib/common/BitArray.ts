@@ -30,6 +30,7 @@ import Exception from './../Exception'
  */
 export default class BitArray /*implements Cloneable*/ {
 
+  private size: number
   private bits: Int32Array
 
   // public constructor() {
@@ -47,11 +48,17 @@ export default class BitArray /*implements Cloneable*/ {
   // }
 
   // For testing only
-  public constructor(private size: number/*int*/ = 0, bits?: Int32Array) {
-    if (undefined === bits || null === bits) {
-      this.bits = BitArray.makeArray(size)
+  public constructor(size?: number/*int*/, bits?: Int32Array) {
+    if (undefined === size) {
+      this.size = 0
+      this.bits = new Int32Array(1)
     } else {
-      this.bits = bits
+      this.size = size
+      if (undefined === bits || null === bits) {
+        this.bits = BitArray.makeArray(size)
+      } else {
+        this.bits = bits
+      }
     }
   }
 
@@ -256,7 +263,7 @@ export default class BitArray /*implements Cloneable*/ {
     this.ensureCapacity(this.size + numBits)
     const appendBit = this.appendBit
     for (let numBitsLeft = numBits; numBitsLeft > 0; numBitsLeft--) {
-      appendBit(((value >> (numBitsLeft - 1)) & 0x01) == 1)
+      this.appendBit(((value >> (numBitsLeft - 1)) & 0x01) == 1)
     }
   }
 
@@ -265,7 +272,7 @@ export default class BitArray /*implements Cloneable*/ {
     this.ensureCapacity(this.size + otherSize)
     const appendBit = this.appendBit
     for (let i = 0; i < otherSize; i++) {
-      appendBit(other.get(i))
+      this.appendBit(other.get(i))
     }
   }
 
@@ -367,7 +374,7 @@ export default class BitArray /*implements Cloneable*/ {
     let result = ""
     for (let i = 0, size = this.size; i < size; i++) {
       if ((i & 0x07) === 0) {
-        result += ": "
+        result += " "
       }
       result += this.get(i) ? "X" : "."
     }

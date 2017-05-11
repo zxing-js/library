@@ -348,7 +348,7 @@ export default class BitMatrix /*implements Cloneable*/ {
           }
           if (x32 * 32 + 31 > right) {
             let bit = 31
-            while (((theBits >>> bit) & 0xFFFFFFFF) === 0) {
+            while ((theBits >>> bit) === 0) {
               bit--
             }
             if ((x32 * 32 + bit) > right) {
@@ -411,7 +411,7 @@ export default class BitMatrix /*implements Cloneable*/ {
 
     const theBits = bits[bitsOffset]
     let bit = 31
-    while (((theBits >>> bit) & 0xFFFFFFFF) === 0) {
+    while ((theBits >>> bit) === 0) {
       bit--
     }
     x += bit

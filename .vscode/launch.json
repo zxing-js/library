@@ -10,7 +10,8 @@
             "args": [
                 "--colors",
                 "--timeout", "999999",
-                "./build/test/**/*.js"
+                "./build/test/**/*.js",
+                "-g", "BitVectorTestCase"
             ],
             "cwd": "${workspaceRoot}",
             "stopOnEntry": false,

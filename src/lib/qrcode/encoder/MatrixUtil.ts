@@ -117,18 +117,18 @@ export default class MatrixUtil {
   ])
 
   // From Appendix D in JISX0510:2004 (p. 67)
-  private static VERSION_INFO_POLY = 0x1f25;  // 1 1111 0010 0101
+  private static VERSION_INFO_POLY = 0x1f25  // 1 1111 0010 0101
 
   // From Appendix C in JISX0510:2004 (p.65).
-  private static TYPE_INFO_POLY = 0x537;
-  private static TYPE_INFO_MASK_PATTERN = 0x5412;
+  private static TYPE_INFO_POLY = 0x537
+  private static TYPE_INFO_MASK_PATTERN = 0x5412
 
   // Set all cells to -1.  -1 means that the cell is empty (not set yet).
   //
   // JAVAPORT: We shouldn't need to do this at all. The code should be rewritten to begin encoding
   // with the ByteMatrix initialized all to zero.
   public static clearMatrix(matrix: ByteMatrix): void {
-    matrix.clear(/*(byte) */-1);
+    matrix.clear(/*(byte) */-1)
   }
 
   // Build 2D matrix of QR Code from "dataBits" with "ecLevel", "version" and "getMaskPattern". On
