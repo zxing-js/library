@@ -3,12 +3,12 @@ ZXing TypeScript
 
 ZXing ("zebra crossing") TypeScript is an open-source, multi-format 1D/2D barcode image processing library ported to TypeScript from Java.
 
-See [https://github.com/zxing/zxing] for original Java project.
+See https://github.com/zxing/zxing for original Java project.
 
 Porting guidelines
 ==================
 
-See [TypeScript Port Info](typescriptport.md)
+See [TypeScript Port Info](typescriptport.md).
 
 
 Status and Roadmap

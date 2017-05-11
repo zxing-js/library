@@ -16,7 +16,7 @@
             "stopOnEntry": false,
             "runtimeExecutable": null,
             "sourceMaps": true,
-            "outFiles": ["${workspaceRoot}/build/test/**/*.js"],
+            "outFiles": ["${workspaceRoot}/build/**/*.js"],
             "runtimeArgs": [
                 "--nolazy"
             ],

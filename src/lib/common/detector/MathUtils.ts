@@ -34,8 +34,12 @@ export default class MathUtils {
    * @return nearest {@code int}
    */
   public static round(d: number/*float*/): number/*int*/ {
-    return /*(int) */Math.floor(d + (d < 0.0 ? -0.5 : 0.5))
+    if (NaN === d) return 0
+    if (d <= Number.MIN_SAFE_INTEGER) return Number.MIN_SAFE_INTEGER
+    if (d >= Number.MAX_SAFE_INTEGER) return Number.MAX_SAFE_INTEGER
+    return /*(int) */(d + (d < 0.0 ? -0.5 : 0.5)) | 0
   }
+  // TYPESCRIPTPORT: maybe remove round method and call directly Math.round, it looks like it doesn't make sense for js
 
   /**
    * @param aX point A x coordinate

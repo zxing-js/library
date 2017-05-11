@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "pretest": "tsc",
-    "test": "mocha \"build/test/**/*.js\"",
+    "test": "mocha \"build/test/**/*.js\" --timeout 30000",
     "autotransform": "node ./autotransform/transform.js"
   },
   "bin": {

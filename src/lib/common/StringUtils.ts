@@ -30,12 +30,12 @@ import CharacterSetECI from './CharacterSetECI'
  */
 export default class StringUtils {
 
-  private static PLATFORM_DEFAULT_ENCODING = "UTF8"//Charset.defaultCharset().name()
-  public static SHIFT_JIS = "SJIS"
+  public static SHIFT_JIS = CharacterSetECI.SJIS.getName()//"SJIS"
   public static GB2312 = "GB2312"
   private static EUC_JP = "EUC_JP"
-  private static UTF8 = "UTF8"
-  private static ISO88591 = "ISO8859_1"
+  private static UTF8 = CharacterSetECI.UTF8.getName()//"UTF8"
+  private static PLATFORM_DEFAULT_ENCODING = StringUtils.UTF8//"UTF8"//Charset.defaultCharset().name()
+  private static ISO88591 = CharacterSetECI.ISO8859_1.getName()//"ISO8859_1"
   private static ASSUME_SHIFT_JIS = false
       // SHIFT_JIS.equalsIgnoreCase(PLATFORM_DEFAULT_ENCODING) ||
       // EUC_JP.equalsIgnoreCase(PLATFORM_DEFAULT_ENCODING);

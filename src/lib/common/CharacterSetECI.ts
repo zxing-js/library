@@ -60,6 +60,9 @@ const enum CharacterSetValueIdentifiers {
 
 export default class CharacterSetECI {
 
+  private static VALUE_IDENTIFIER_TO_ECI = new Map<number, CharacterSetECI>()
+  private static NAME_TO_ECI = new Map<string, CharacterSetECI>()
+
   // Enum name is a Java encoding valid for java.lang and java.io
   public static Cp437 = new CharacterSetECI(CharacterSetValueIdentifiers.Cp437, Int32Array.from([0,2]), "Cp437")
   public static ISO8859_1 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_1, Int32Array.from([1,3]), "ISO8859_1", "ISO-8859-1")
@@ -88,9 +91,6 @@ export default class CharacterSetECI {
   public static Big5 = new CharacterSetECI(CharacterSetValueIdentifiers.Big5, 28, "Big5")
   public static GB18030 = new CharacterSetECI(CharacterSetValueIdentifiers.GB18030, 29, "GB18030", "GB2312", "EUC_CN", "GBK")
   public static EUC_KR = new CharacterSetECI(CharacterSetValueIdentifiers.EUC_KR, 30, "EUC_KR", "EUC-KR")
-
-  private static VALUE_IDENTIFIER_TO_ECI = new Map<number, CharacterSetECI>()
-  private static NAME_TO_ECI = new Map<string, CharacterSetECI>()
 
   public values: Int32Array
   public otherEncodingNames: string[]

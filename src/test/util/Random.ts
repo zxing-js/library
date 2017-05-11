@@ -7,6 +7,6 @@ export default class Random {
     }
     
     public next(max: number): number {
-        return Math.round(this.r() * max)
+        return Math.floor(this.r() * max)
     }
 }

@@ -55,3 +55,7 @@ TODO
 ====
 
 * Check for aaa[] arrays, check for push check for == length
+* Skipped:
+..* BufferedImageLuminanceSource.java
+..* common/AbstractNegativeBlackBoxTestCase.java
+..* common/AbstractBlackBoxTestCase.java
