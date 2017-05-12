@@ -48,10 +48,11 @@ describe("MatrixUtilTestCase", () => {
   it("testClearMatrix", () => {
     const matrix = new ByteMatrix(2, 2)
     MatrixUtil.clearMatrix(matrix)
-    assert.strictEqual(matrix.get(0, 0), -1)
-    assert.strictEqual(matrix.get(1, 0), -1)
-    assert.strictEqual(matrix.get(0, 1), -1)
-    assert.strictEqual(matrix.get(1, 1), -1)
+    // TYPESCRIPTPORT: we use UintArray se changed here from -1 to 255
+    assert.strictEqual(matrix.get(0, 0), 255)
+    assert.strictEqual(matrix.get(1, 0), 255)
+    assert.strictEqual(matrix.get(0, 1), 255)
+    assert.strictEqual(matrix.get(1, 1), 255)
   })
 
   it("testEmbedBasicPatterns1", () => {
@@ -187,7 +188,7 @@ describe("MatrixUtilTestCase", () => {
     MatrixUtil.clearMatrix(matrix)
     MatrixUtil.embedBasicPatterns(Version.getVersionForNumber(1), matrix)
     const bits = new BitArray()
-    MatrixUtil.embedDataBits(bits, -1, matrix)
+    MatrixUtil.embedDataBits(bits, 255, matrix)
     const expected: string =
         " 1 1 1 1 1 1 1 0 0 0 0 0 0 0 1 1 1 1 1 1 1\n" +
         " 1 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 1\n" +

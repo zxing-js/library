@@ -51,7 +51,7 @@ export default class MaskUtil {
    */
   public static applyMaskPenaltyRule2(matrix: ByteMatrix): number/*int*/ {
     let penalty = 0
-    const array: Array<Int8Array> = matrix.getArray()
+    const array: Array<Uint8Array> = matrix.getArray()
     const width: number/*int*/ = matrix.getWidth();
     const height: number/*int*/ = matrix.getHeight();
     for (let y = 0; y < height - 1; y++) {
@@ -73,12 +73,12 @@ export default class MaskUtil {
    */
   public static applyMaskPenaltyRule3(matrix: ByteMatrix): number/*int*/ {
     let numPenalties = 0
-    const array: Array<Int8Array> = matrix.getArray()
+    const array: Array<Uint8Array> = matrix.getArray()
     const width: number/*int*/ = matrix.getWidth();
     const height: number/*int*/ = matrix.getHeight();
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        const arrayY: Int8Array = array[y];  // We can at least optimize this access
+        const arrayY: Uint8Array = array[y];  // We can at least optimize this access
         if (x + 6 < width &&
             arrayY[x] === 1 &&
             arrayY[x + 1] === 0 &&
@@ -106,7 +106,7 @@ export default class MaskUtil {
     return numPenalties * MaskUtil.N3
   }
 
-  private static isWhiteHorizontal(rowArray: Int8Array, from: number/*int*/, to: number/*int*/): boolean {
+  private static isWhiteHorizontal(rowArray: Uint8Array, from: number/*int*/, to: number/*int*/): boolean {
     from = Math.max(from, 0)
     to = Math.min(to, rowArray.length)
     for (let i = from; i < to; i++) {
@@ -117,7 +117,7 @@ export default class MaskUtil {
     return true
   }
 
-  private static isWhiteVertical(array: Int8Array[], col: number/*int*/, from: number/*int*/, to: number/*int*/): boolean {
+  private static isWhiteVertical(array: Uint8Array[], col: number/*int*/, from: number/*int*/, to: number/*int*/): boolean {
     from = Math.max(from, 0)
     to = Math.min(to, array.length)
     for (let i = from; i < to; i++) {
@@ -134,11 +134,11 @@ export default class MaskUtil {
    */
   public static applyMaskPenaltyRule4(matrix: ByteMatrix): number/*int*/ {
     let numDarkCells = 0
-    const array: Array<Int8Array> = matrix.getArray()
+    const array: Array<Uint8Array> = matrix.getArray()
     const width: number/*int*/ = matrix.getWidth();
     const height: number/*int*/ = matrix.getHeight();
     for (let y = 0; y < height; y++) {
-      const arrayY: Int8Array = array[y]
+      const arrayY: Uint8Array = array[y]
       for (let x = 0; x < width; x++) {
         if (arrayY[x] === 1) {
           numDarkCells++
@@ -199,7 +199,7 @@ export default class MaskUtil {
     let penalty = 0
     const iLimit = isHorizontal ? matrix.getHeight() : matrix.getWidth()
     const jLimit = isHorizontal ? matrix.getWidth() : matrix.getHeight()
-    const array: Array<Int8Array> = matrix.getArray()
+    const array: Array<Uint8Array> = matrix.getArray()
     for (let i = 0; i < iLimit; i++) {
       let numSameBitCells = 0
       let prevBit = -1

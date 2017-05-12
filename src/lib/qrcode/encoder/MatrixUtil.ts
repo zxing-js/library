@@ -123,12 +123,13 @@ export default class MatrixUtil {
   private static TYPE_INFO_POLY = 0x537
   private static TYPE_INFO_MASK_PATTERN = 0x5412
 
-  // Set all cells to -1.  -1 means that the cell is empty (not set yet).
+  // Set all cells to -1 (TYPESCRIPTPORT: 255).  -1 (TYPESCRIPTPORT: 255) means that the cell is empty (not set yet).
   //
   // JAVAPORT: We shouldn't need to do this at all. The code should be rewritten to begin encoding
   // with the ByteMatrix initialized all to zero.
   public static clearMatrix(matrix: ByteMatrix): void {
-    matrix.clear(/*(byte) */-1)
+    // TYPESCRIPTPORT: we use UintArray se changed here from -1 to 255
+    matrix.clear(/*(byte) *//*-1*/255)
   }
 
   // Build 2D matrix of QR Code from "dataBits" with "ecLevel", "version" and "getMaskPattern". On
@@ -221,7 +222,7 @@ export default class MatrixUtil {
   }
 
   // Embed "dataBits" using "getMaskPattern". On success, modify the matrix and return true.
-  // For debugging purposes, it skips masking process if "getMaskPattern" is -1.
+  // For debugging purposes, it skips masking process if "getMaskPattern" is -1(TYPESCRIPTPORT: 255).
   // See 8.7 of JISX0510:2004 (p.38) for how to embed data bits.
   public static embedDataBits(dataBits: BitArray, maskPattern: number/*int*/, matrix: ByteMatrix): void
       /*throws WriterException*/ {
@@ -252,8 +253,8 @@ export default class MatrixUtil {
             bit = false
           }
 
-          // Skip masking if mask_pattern is -1.
-          if (maskPattern !== -1 && MaskUtil.getDataMaskBit(maskPattern, xx, y)) {
+          // Skip masking if mask_pattern is -1 (TYPESCRIPTPORT: 255).
+          if (maskPattern !== 255 && MaskUtil.getDataMaskBit(maskPattern, xx, y)) {
             bit = !bit
           }
           matrix.setBoolean(xx, y, bit)
@@ -357,7 +358,7 @@ export default class MatrixUtil {
 
   // Check if "value" is empty.
   private static isEmpty(value: number/*int*/): boolean {
-    return value === -1
+    return value === 255//-1
   }
 
   private static embedTimingPatterns(matrix: ByteMatrix): void {
@@ -463,10 +464,10 @@ export default class MatrixUtil {
     }
     const index = version.getVersionNumber() - 1
     const coordinates: Int32Array = MatrixUtil.POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE[index]
-    for (let i = 0, lenght = coordinates.length; i != lenght; i++) {
+    for (let i = 0, length = coordinates.length; i != length; i++) {
       const y = coordinates[i]
       if (y >= 0) {
-        for (let j = 0; j != lenght; j++) {
+        for (let j = 0; j != length; j++) {
           const x = coordinates[j]
           if (x >= 0 && MatrixUtil.isEmpty(matrix.get(x, y))) {
             // If the cell is unset, we embed the position adjustment pattern here.

@@ -41,26 +41,25 @@ const enum ModeValues {
  */
 export default class Mode {
 
-  public static TERMINATOR = new Mode(ModeValues.TERMINATOR, Int32Array.from([0, 0, 0]), 0x00) // Not really a mode... 
-  public static NUMERIC = new Mode(ModeValues.TERMINATOR, Int32Array.from([10, 12, 14]), 0x01)
-  public static ALPHANUMERIC = new Mode(ModeValues.TERMINATOR, Int32Array.from([9, 11, 13]), 0x02)
-  public static STRUCTURED_APPEND = new Mode(ModeValues.TERMINATOR, Int32Array.from([0, 0, 0]), 0x03) // Not supported
-  public static BYTE = new Mode(ModeValues.TERMINATOR, Int32Array.from([8, 16, 16]), 0x04)
-  public static ECI = new Mode(ModeValues.TERMINATOR, Int32Array.from([0, 0, 0]), 0x07) // character counts don't apply
-  public static KANJI = new Mode(ModeValues.TERMINATOR, Int32Array.from([8, 10, 12]), 0x08)
-  public static FNC1_FIRST_POSITION = new Mode(ModeValues.TERMINATOR, Int32Array.from([0, 0, 0]), 0x05)
-  public static FNC1_SECOND_POSITION = new Mode(ModeValues.TERMINATOR, Int32Array.from([0, 0, 0]), 0x09)
+  private static FOR_BITS = new Map<number, Mode>()
+  private static FOR_VALUE = new Map<ModeValues, Mode>()
+
+  public static TERMINATOR = new Mode(ModeValues.TERMINATOR, "TERMINATOR", Int32Array.from([0, 0, 0]), 0x00) // Not really a mode... 
+  public static NUMERIC = new Mode(ModeValues.NUMERIC, "NUMERIC", Int32Array.from([10, 12, 14]), 0x01)
+  public static ALPHANUMERIC = new Mode(ModeValues.ALPHANUMERIC, "ALPHANUMERIC", Int32Array.from([9, 11, 13]), 0x02)
+  public static STRUCTURED_APPEND = new Mode(ModeValues.STRUCTURED_APPEND, "STRUCTURED_APPEND", Int32Array.from([0, 0, 0]), 0x03) // Not supported
+  public static BYTE = new Mode(ModeValues.BYTE, "BYTE", Int32Array.from([8, 16, 16]), 0x04)
+  public static ECI = new Mode(ModeValues.ECI, "ECI", Int32Array.from([0, 0, 0]), 0x07) // character counts don't apply
+  public static KANJI = new Mode(ModeValues.KANJI, "KANJI", Int32Array.from([8, 10, 12]), 0x08)
+  public static FNC1_FIRST_POSITION = new Mode(ModeValues.FNC1_FIRST_POSITION, "FNC1_FIRST_POSITION", Int32Array.from([0, 0, 0]), 0x05)
+  public static FNC1_SECOND_POSITION = new Mode(ModeValues.FNC1_SECOND_POSITION, "FNC1_SECOND_POSITION", Int32Array.from([0, 0, 0]), 0x09)
   /** See GBT 18284-2000; "Hanzi" is a transliteration of this mode name. */
-  public static HANZI = new Mode(ModeValues.TERMINATOR, Int32Array.from([8, 10, 12]), 0x0D)
+  public static HANZI = new Mode(ModeValues.HANZI, "HANZI", Int32Array.from([8, 10, 12]), 0x0D)
 
-
-  private constructor(private value: ModeValues, private characterCountBitsForVersions: Int32Array, private bits: number/*int*/) {
+  private constructor(private value: ModeValues, private stringValue: string, private characterCountBitsForVersions: Int32Array, private bits: number/*int*/) {
       Mode.FOR_BITS.set(bits, this)
       Mode.FOR_VALUE.set(value, this)
   }
-
-  private static FOR_BITS = new Map<number, Mode>()
-  private static FOR_VALUE = new Map<ModeValues, Mode>()
 
   /**
    * @param bits four bits encoding a QR Code data mode
@@ -99,5 +98,16 @@ export default class Mode {
   public getBits(): number/*int*/ {
     return this.bits
   }
+  
+  public equals(o: any): boolean {
+    if (!(o instanceof Mode)) {
+      return false
+    }
+    const other = <Mode> o
+    return this.value === other.value
+  }
 
+  public toString(): string {
+    return this.stringValue
+  }
 }

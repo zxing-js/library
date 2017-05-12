@@ -39,10 +39,4 @@ export default class Arrays {
             a[i] = value
         }
     }
-
-    public static fillInt8Array(a: Int8Array, value: number) {
-        for(let i = 0; i != a.length; i++) {
-            a[i] = value
-        }
-    }
 }

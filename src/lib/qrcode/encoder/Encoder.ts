@@ -54,7 +54,8 @@ export default class Encoder {
       25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1,  // 0x50-0x5f
   ])
 
-  public static DEFAULT_BYTE_MODE_ENCODING = "ISO-8859-1"
+  public static DEFAULT_BYTE_MODE_ENCODING = CharacterSetECI.UTF8.getName()//"ISO-8859-1"
+  // TYPESCRIPTPORT: changed to UTF8, the default for js
 
   private constructor() {}
 
@@ -80,11 +81,11 @@ export default class Encoder {
 
   public static encode(content: string,
                               ecLevel: ErrorCorrectionLevel,
-                              hints: Map<EncodeHintType, any>): QRCode /*throws WriterException*/ {
+                              hints: Map<EncodeHintType, any> = null): QRCode /*throws WriterException*/ {
 
     // Determine what character encoding has been specified by the caller, if any
     let encoding: string = Encoder.DEFAULT_BYTE_MODE_ENCODING
-    const hasEncodingHint: boolean = (hints !== null && hints !== undefined) && undefined !== hints.get(EncodeHintType.CHARACTER_SET)
+    const hasEncodingHint: boolean = hints !== null && undefined !== hints.get(EncodeHintType.CHARACTER_SET)
     if (hasEncodingHint) {
       encoding = hints.get(EncodeHintType.CHARACTER_SET).toString()
     }
@@ -100,7 +101,7 @@ export default class Encoder {
     // Append ECI segment if applicable
     if (mode == Mode.BYTE && (hasEncodingHint || Encoder.DEFAULT_BYTE_MODE_ENCODING !== encoding)) {
       const eci = CharacterSetECI.getCharacterSetECIByName(encoding)
-      if (eci !== null) {
+      if (eci !== undefined) {
         this.appendECI(eci, headerBits)
       }
     }
@@ -114,7 +115,7 @@ export default class Encoder {
     this.appendBytes(content, mode, dataBits, encoding)
 
     let version: Version
-    if (hints !== null && hints !== undefined && undefined !== hints.get(EncodeHintType.QR_VERSION)) {
+    if (hints !== null && undefined !== hints.get(EncodeHintType.QR_VERSION)) {
       const versionNumber = Number.parseInt(hints.get(EncodeHintType.QR_VERSION).toString(), 10)
       version = Version.getVersionForNumber(versionNumber)
       const bitsNeeded = this.calculateBitsNeeded(mode, headerBits, dataBits, version)
@@ -210,8 +211,8 @@ export default class Encoder {
    * Choose the best mode by examining the content. Note that 'encoding' is used as a hint;
    * if it is Shift_JIS, and the input is only double-byte Kanji, then we return {@link Mode#KANJI}.
    */
-  private static chooseMode(content: string, encoding: string): Mode {
-    if ("Shift_JIS" === encoding && this.isOnlyDoubleByteKanji(content)) {
+  public static chooseMode(content: string, encoding: string = null): Mode {
+    if (CharacterSetECI.SJIS.getName() === encoding && this.isOnlyDoubleByteKanji(content)) {
       // Choose Kanji mode if all input are double-byte characters
       return Mode.KANJI
     }
@@ -239,7 +240,7 @@ export default class Encoder {
   private static isOnlyDoubleByteKanji(content: string): boolean {
     let bytes: Uint8Array
     try {
-      bytes = StringEncoding.encode(content, "Shift_JIS")//content.getBytes("Shift_JIS")
+      bytes = StringEncoding.encode(content, CharacterSetECI.SJIS.getName())//content.getBytes("Shift_JIS")
     } catch (ignored/*: UnsupportedEncodingException*/) {
       return false
     }
@@ -351,11 +352,11 @@ export default class Encoder {
     // numRsBlocksInGroup1 = 5 - 1 = 4
     const numRsBlocksInGroup1 = numRSBlocks - numRsBlocksInGroup2
     // numTotalBytesInGroup1 = 196 / 5 = 39
-    const numTotalBytesInGroup1 = numTotalBytes / numRSBlocks
+    const numTotalBytesInGroup1 = Math.floor(numTotalBytes / numRSBlocks)
     // numTotalBytesInGroup2 = 39 + 1 = 40
     const numTotalBytesInGroup2 = numTotalBytesInGroup1 + 1
     // numDataBytesInGroup1 = 66 / 5 = 13
-    const numDataBytesInGroup1 = numDataBytes / numRSBlocks
+    const numDataBytesInGroup1 = Math.floor(numDataBytes / numRSBlocks)
     // numDataBytesInGroup2 = 13 + 1 = 14
     const numDataBytesInGroup2 = numDataBytesInGroup1 + 1
     // numEcBytesInGroup1 = 39 - 13 = 26
@@ -364,15 +365,15 @@ export default class Encoder {
     const numEcBytesInGroup2 = numTotalBytesInGroup2 - numDataBytesInGroup2
     // Sanity checks.
     // 26 = 26
-    if (numEcBytesInGroup1 != numEcBytesInGroup2) {
+    if (numEcBytesInGroup1 !== numEcBytesInGroup2) {
       throw new Exception(Exception.WriterException, "EC bytes mismatch")
     }
     // 5 = 4 + 1.
-    if (numRSBlocks != numRsBlocksInGroup1 + numRsBlocksInGroup2) {
+    if (numRSBlocks !== numRsBlocksInGroup1 + numRsBlocksInGroup2) {
       throw new Exception(Exception.WriterException, "RS blocks mismatch")
     }
     // 196 = (13 + 26) * 4 + (14 + 26) * 1
-    if (numTotalBytes !=
+    if (numTotalBytes !==
         ((numDataBytesInGroup1 + numEcBytesInGroup1) *
             numRsBlocksInGroup1) +
             ((numDataBytesInGroup2 + numEcBytesInGroup2) *
@@ -399,7 +400,7 @@ export default class Encoder {
                                         numRSBlocks: number/*int*/): BitArray /*throws WriterException*/ {
 
     // "bits" must have "getNumDataBytes" bytes of data.
-    if (bits.getSizeInBytes() != numDataBytes) {
+    if (bits.getSizeInBytes() !== numDataBytes) {
       throw new Exception(Exception.WriterException, "Number of bits and data bytes does not match")
     }
 
@@ -585,7 +586,7 @@ export default class Encoder {
   public static appendKanjiBytes(content: string, bits: BitArray): void /*throws WriterException*/ {
     let bytes: Uint8Array
     try {
-      bytes = StringEncoding.encode(content, "Shift_JIS")
+      bytes = StringEncoding.encode(content, CharacterSetECI.SJIS.getName())
     } catch (uee/*: UnsupportedEncodingException*/) {
       throw new Exception(Exception.WriterException, uee)
     }
@@ -593,14 +594,14 @@ export default class Encoder {
     for (let i = 0; i < length; i += 2) {
       const byte1 = bytes[i] & 0xFF
       const byte2 = bytes[i + 1] & 0xFF
-      const code = (byte1 << 8) | byte2
+      const code = ((byte1 << 8) & 0xFFFFFFFF) | byte2
       let subtracted = -1
       if (code >= 0x8140 && code <= 0x9ffc) {
         subtracted = code - 0x8140
       } else if (code >= 0xe040 && code <= 0xebbf) {
         subtracted = code - 0xc140
       }
-      if (subtracted == -1) {
+      if (subtracted === -1) {
         throw new Exception(Exception.WriterException, "Invalid byte sequence")
       }
       const encoded = ((subtracted >> 8) * 0xc0) + (subtracted & 0xff);

@@ -297,11 +297,10 @@ export default class BitArray /*implements Cloneable*/ {
    * @param numBytes how many bytes to write
    */
   public toBytes(bitOffset: number/*int*/, array: Uint8Array, offset: number/*int*/, numBytes: number/*int*/): void {
-    const get = this.get
     for (let i = 0; i < numBytes; i++) {
       let theByte = 0
       for (let j = 0; j < 8; j++) {
-        if (get(bitOffset)) {
+        if (this.get(bitOffset)) {
           theByte |= 1 << (7 - j)
         }
         bitOffset++

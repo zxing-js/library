@@ -73,7 +73,7 @@ const replacements = [
     [/((?!(?:[a-zA-Z0-9_])).)float ([a-zA-Z0-9_]+)/g, "$1$2: number/*float*/"],
     [/((?!(?:[a-zA-Z0-9_])).)double ([a-zA-Z0-9_]+)/g, "$1$2: number/*double*/"],
     [/((?!(?:[a-zA-Z0-9_])).)int\[\] ([a-zA-Z0-9_]+)/g, "$1$2: Int32Array"],
-    [/((?!(?:[a-zA-Z0-9_])).)byte\[\] ([a-zA-Z0-9_]+)/g, "$1$2: Uint8Array"],
+    [/((?!(?:[a-zA-Z0-9_])).)byte\[\] ([a-zA-Z0-9_]+)/g, "$1$2: Int8Array"],
     [/((?!(?:[a-zA-Z0-9_])).)List<([a-zA-Z0-9_]+)> ([a-zA-Z0-9_]+)/g, "$1$3: Array<$2>"],
     [/((?!(?:[a-zA-Z0-9_])).)Collection<([a-zA-Z0-9_]+)> ([a-zA-Z0-9_]+)/g, "$1$3: Array<$2>"],
     [/((?!(?:[a-zA-Z0-9_])).)String ([a-zA-Z0-9_]+)/g, "$1$2: string"],
@@ -85,8 +85,8 @@ const replacements = [
 
 
     [/new int\[([a-zA-Z0-9_]+)\]/g, "new Int32Array()/*Int32Array($1)*/"],
-    [/new byte\[([a-zA-Z0-9_]+)\]/g, "new Uint8Array()/*Uint8Array($1)*/"],
-    [/new byte\[\] { /g, "Uint8Array.from(["],
+    [/new byte\[([a-zA-Z0-9_]+)\]/g, "new Int8Array()/*Int8Array($1)*/"],
+    [/new byte\[\] { /g, "Int8Array.from(["],
     [/new int\[\] {/g, "Int32Array.from(["],
     [/\(byte\) /g, "/*(byte)*/ "],
     [/\(int\) /g, "/*(int)*/ "],

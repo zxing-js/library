@@ -144,7 +144,7 @@ export default class FormatInformation {
 
   /*@Override*/
   public hashCode(): number/*int*/ {
-    return (this.errorCorrectionLevel.bits << 3) | this.dataMask
+    return (this.errorCorrectionLevel.getBits() << 3) | this.dataMask
   }
 
   /*@Override*/

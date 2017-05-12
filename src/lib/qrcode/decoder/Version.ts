@@ -410,7 +410,7 @@ export default class Version {
   }
 
   public getECBlocksForLevel(ecLevel: ErrorCorrectionLevel): ECBlocks {
-    return this.ecBlocks[ecLevel.value]
+    return this.ecBlocks[ecLevel.getValue()]
     // TYPESCRIPTPORT: original was using ordinal, and using the order of levels as defined in ErrorCorrectionLevel enum (LMQH)
     // I will use the direct value from ErrorCorrectionLevelValues enum which in typescript goes to a number
   }

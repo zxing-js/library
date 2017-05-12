@@ -106,6 +106,9 @@ export default class CharacterSetECI {
 
     CharacterSetECI.VALUE_IDENTIFIER_TO_ECI.set(valueIdentifier, this)
     CharacterSetECI.NAME_TO_ECI.set(name, this)
+    for(const otherName of otherEncodingNames) {
+      CharacterSetECI.NAME_TO_ECI.set(otherName, this)
+    }
   }
 
   // CharacterSetECI(value: number/*int*/) {

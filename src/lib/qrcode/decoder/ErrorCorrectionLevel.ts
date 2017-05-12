@@ -37,15 +37,15 @@ export default class ErrorCorrectionLevel {
   private static FOR_VALUE = new Map<ErrorCorrectionLevelValues, ErrorCorrectionLevel>()
 
   /** L = ~7% correction */
-  public static L = new ErrorCorrectionLevel(ErrorCorrectionLevelValues.L, 0x01)
+  public static L = new ErrorCorrectionLevel(ErrorCorrectionLevelValues.L, "L", 0x01)
   /** M = ~15% correction */
-  public static M = new ErrorCorrectionLevel(ErrorCorrectionLevelValues.M, 0x00)
+  public static M = new ErrorCorrectionLevel(ErrorCorrectionLevelValues.M, "M", 0x00)
   /** Q = ~25% correction */
-  public static Q = new ErrorCorrectionLevel(ErrorCorrectionLevelValues.Q, 0x03)
+  public static Q = new ErrorCorrectionLevel(ErrorCorrectionLevelValues.Q, "Q", 0x03)
   /** H = ~30% correction */
-  public static H = new ErrorCorrectionLevel(ErrorCorrectionLevelValues.H, 0x02)
+  public static H = new ErrorCorrectionLevel(ErrorCorrectionLevelValues.H, "H", 0x02)
 
-  private constructor(public value: ErrorCorrectionLevelValues, public bits: number/*int*/) {
+  private constructor(private value: ErrorCorrectionLevelValues, private stringValue: string, private bits: number/*int*/) {
       ErrorCorrectionLevel.FOR_BITS.set(bits, this)
       ErrorCorrectionLevel.FOR_VALUE.set(value, this)
   }
@@ -68,6 +68,17 @@ export default class ErrorCorrectionLevel {
     }
   }
 
+  public toString(): string {
+    return this.stringValue
+  }
+
+  public equals(o: any): boolean {
+    if (!(o instanceof ErrorCorrectionLevel)) {
+      return false
+    }
+    const other = <ErrorCorrectionLevel> o
+    return this.value === other.value
+  }
   /**
    * @param bits int containing the two bits encoding a QR Code's error correction level
    * @return ErrorCorrectionLevel representing the encoded error correction level

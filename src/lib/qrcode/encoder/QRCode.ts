@@ -65,18 +65,18 @@ export default class QRCode {
     const result = new StringBuilder()//(200)
     result.append("<<\n")
     result.append(" mode: ")
-    result.append(this.mode.toString())
+    result.append(this.mode ? this.mode.toString() : "null")
     result.append("\n ecLevel: ")
-    result.append(this.ecLevel.toString())
+    result.append(this.ecLevel ? this.ecLevel.toString() : "null")
     result.append("\n version: ")
-    result.append(this.version.toString())
+    result.append(this.version ? this.version.toString() : "null")
     result.append("\n maskPattern: ")
     result.append(this.maskPattern.toString())
-    if (this.matrix === null) {
-      result.append("\n matrix: null\n")
-    } else {
+    if (this.matrix) {
       result.append("\n matrix:\n");
       result.append(this.matrix.toString())
+    } else {
+      result.append("\n matrix: null\n")
     }
     result.append(">>\n")
     return result.toString()

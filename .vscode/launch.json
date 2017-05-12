@@ -11,7 +11,7 @@
                 "--colors",
                 "--timeout", "999999",
                 "./build/test/**/*.js",
-                "-g", "BitVectorTestCase"
+                "-g", "QRCodeTestCase"
             ],
             "cwd": "${workspaceRoot}",
             "stopOnEntry": false,
