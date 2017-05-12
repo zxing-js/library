@@ -18,8 +18,8 @@
 
 import 'mocha'
 import * as assert from 'assert'
-import ByteMatrix from './../../lib/qrcode/encoder/ByteMatrix'
-import MaskUtil from './../../lib/qrcode/encoder/MaskUtil'
+import ByteMatrix from './../../../lib/qrcode/encoder/ByteMatrix'
+import MaskUtil from './../../../lib/qrcode/encoder/MaskUtil'
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator

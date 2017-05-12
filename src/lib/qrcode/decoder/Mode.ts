@@ -70,7 +70,7 @@ export default class Mode {
     if (bits < 0 || bits >= Mode.FOR_BITS.size) {
       throw new Exception(Exception.IllegalArgumentException)
     }
-    return Mode.FOR_BITS[bits]
+    return Mode.FOR_BITS.get(bits)
   }
 
   /**

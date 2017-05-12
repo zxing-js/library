@@ -18,7 +18,7 @@
 
 import 'mocha'
 import * as assert from 'assert'
-import BitArray from './../../lib/common/BitArray'
+import BitArray from './../../../lib/common/BitArray'
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator

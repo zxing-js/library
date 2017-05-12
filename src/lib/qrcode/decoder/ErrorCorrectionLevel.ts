@@ -87,7 +87,7 @@ export default class ErrorCorrectionLevel {
     if (bits < 0 || bits >= ErrorCorrectionLevel.FOR_BITS.size) {
       throw new Exception(Exception.IllegalArgumentException)
     }
-    return ErrorCorrectionLevel.FOR_BITS[bits]
+    return ErrorCorrectionLevel.FOR_BITS.get(bits)
   }
 
 }

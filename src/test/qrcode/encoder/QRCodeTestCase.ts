@@ -18,11 +18,11 @@
 
 import 'mocha'
 import * as assert from 'assert'
-import ErrorCorrectionLevel from './../../lib/qrcode/decoder/ErrorCorrectionLevel'
-import Mode from './../../lib/qrcode/decoder/Mode'
-import Version from './../../lib/qrcode/decoder/Version'
-import QRCode from './../../lib/qrcode/encoder/QRCode'
-import ByteMatrix from './../../lib/qrcode/encoder/ByteMatrix'
+import ErrorCorrectionLevel from './../../../lib/qrcode/decoder/ErrorCorrectionLevel'
+import Mode from './../../../lib/qrcode/decoder/Mode'
+import Version from './../../../lib/qrcode/decoder/Version'
+import QRCode from './../../../lib/qrcode/encoder/QRCode'
+import ByteMatrix from './../../../lib/qrcode/encoder/ByteMatrix'
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator
