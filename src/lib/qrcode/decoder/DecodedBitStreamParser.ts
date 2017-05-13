@@ -105,7 +105,7 @@ export default class DecodedBitStreamParser {
             // Chinese mode contains a sub set indicator right after mode indicator
             const subset = bits.readBits(4)
             const countHanzi = bits.readBits(mode.getCharacterCountBits(version))
-            if (subset == DecodedBitStreamParser.GB2312_SUBSET) {
+            if (subset === DecodedBitStreamParser.GB2312_SUBSET) {
               DecodedBitStreamParser.decodeHanziSegment(bits, result, countHanzi)
             }
             break
@@ -181,7 +181,7 @@ export default class DecodedBitStreamParser {
       result.append(StringEncoding.decode(buffer, StringUtils.GB2312))
       // TYPESCRIPTPORT: TODO: implement GB2312 decode. StringView from MDN could be a starting point
     } catch (ignored/*: UnsupportedEncodingException*/) {
-      throw new Exception(Exception.FormatException)
+      throw new Exception(Exception.FormatException, ignored)
     }
   }
 
@@ -218,7 +218,7 @@ export default class DecodedBitStreamParser {
       result.append(StringEncoding.decode(buffer, StringUtils.SHIFT_JIS))
       // TYPESCRIPTPORT: TODO: implement SHIFT_JIS decode. StringView from MDN could be a starting point
     } catch (ignored/*: UnsupportedEncodingException*/) {
-      throw new Exception(Exception.FormatException)
+      throw new Exception(Exception.FormatException, ignored)
     }
   }
 
@@ -251,7 +251,7 @@ export default class DecodedBitStreamParser {
     try {
       result.append(StringEncoding.decode(readBytes, encoding))
     } catch (ignored/*: UnsupportedEncodingException*/) {
-      throw new Exception(Exception.FormatException)
+      throw new Exception(Exception.FormatException, ignored)
     }
     byteSegments.push(readBytes)
   }
