@@ -28,6 +28,7 @@ const enum DataMaskValues {
   DATA_MASK_110,
   DATA_MASK_111
 }
+
 /**
  * <p>Encapsulates data masks for the data bits in a QR code, per ISO 18004:2006 6.8. Implementations
  * of this class can un-mask a raw BitMatrix. For simplicity, they will unmask the entire BitMatrix,
@@ -70,7 +71,7 @@ export default class DataMask {
     /**
      * 100: mask bits for which (x/2 + y/3) mod 2 == 0
      */
-    [DataMaskValues.DATA_MASK_100, new DataMask(DataMaskValues.DATA_MASK_100, (i: number/*int*/, j: number/*int*/) => { return (((i / 2) + (j / 3)) & 0x01) === 0 })],
+    [DataMaskValues.DATA_MASK_100, new DataMask(DataMaskValues.DATA_MASK_100, (i: number/*int*/, j: number/*int*/) => { return ((Math.floor(i / 2) + Math.floor(j / 3)) & 0x01) === 0 })],
 
     /**
      * 101: mask bits for which xy mod 2 + xy mod 3 == 0

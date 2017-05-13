@@ -72,7 +72,8 @@ export default class DecodedBitStreamParser {
           // OK, assume we're done. Really, a TERMINATOR mode should have been recorded here
           mode = Mode.TERMINATOR
         } else {
-          mode = Mode.forBits(bits.readBits(4)); // mode is encoded by 4 bits
+          const modeBits = bits.readBits(4)
+          mode = Mode.forBits(modeBits) // mode is encoded by 4 bits
         }
         switch (mode) {
           case Mode.TERMINATOR:
@@ -139,7 +140,7 @@ export default class DecodedBitStreamParser {
     return new DecoderResult(bytes,
                              result.toString(),
                              byteSegments.length === 0 ? null : byteSegments,
-                             ecLevel == null ? null : ecLevel.toString(),
+                             ecLevel === null ? null : ecLevel.toString(),
                              symbolSequence,
                              parityData)
   }

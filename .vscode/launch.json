@@ -11,7 +11,7 @@
                 "--colors",
                 "--timeout", "999999",
                 "./build/test/**/*.js",
-                "-g", "FormatInformationTestCase"
+                "-g", "DecodedBitStreamParserTestCase"
             ],
             "cwd": "${workspaceRoot}",
             "stopOnEntry": false,

@@ -29,7 +29,7 @@ export default class BitSourceBuilder {
   private nextByte: number/*int*/
   private bitsLeftInNextByte: number/*int*/
 
-  public BitSourceBuilder() {
+  public constructor() {
     this.output = new Array<number>()
     this.nextByte = 0
     this.bitsLeftInNextByte = 8
@@ -37,16 +37,17 @@ export default class BitSourceBuilder {
 
   public write(value: number/*int*/, numBits: number/*int*/): void {
     if (numBits <= this.bitsLeftInNextByte) {
-      this.nextByte <<= numBits
-      this.nextByte |= value
+      const nb = (this.nextByte << numBits) & 0xFFFFFFFF
+      this.nextByte = nb | value
       this.bitsLeftInNextByte -= numBits
       if (this.bitsLeftInNextByte === 0) {
-        this.output.push(this.nextByte)
+        const byte = this.nextByte & 0xFF
+        this.output.push(byte)
         this.nextByte = 0
         this.bitsLeftInNextByte = 8
       }
     } else {
-      const bitsToWriteNow: number/*int*/ =this. bitsLeftInNextByte
+      const bitsToWriteNow: number/*int*/ = this. bitsLeftInNextByte
       const numRestOfBits: number/*int*/ = numBits - bitsToWriteNow
       const mask: number/*int*/ = 0xFF >> (8 - bitsToWriteNow)
       const valueToWriteNow: number/*int*/ = (value >>> numRestOfBits) & mask

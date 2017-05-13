@@ -67,10 +67,11 @@ export default class Mode {
    * @throws IllegalArgumentException if bits do not correspond to a known mode
    */
   public static forBits(bits: number/*int*/): Mode {
-    if (bits < 0 || bits >= Mode.FOR_BITS.size) {
+    const mode = Mode.FOR_BITS.get(bits)
+    if (undefined === mode) {
       throw new Exception(Exception.IllegalArgumentException)
     }
-    return Mode.FOR_BITS.get(bits)
+    return mode
   }
 
   /**

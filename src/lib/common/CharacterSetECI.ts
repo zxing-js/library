@@ -61,25 +61,27 @@ const enum CharacterSetValueIdentifiers {
 export default class CharacterSetECI {
 
   private static VALUE_IDENTIFIER_TO_ECI = new Map<number, CharacterSetECI>()
+  private static VALUES_TO_ECI = new Map<number, CharacterSetECI>()
   private static NAME_TO_ECI = new Map<string, CharacterSetECI>()
 
   // Enum name is a Java encoding valid for java.lang and java.io
+  // TYPESCRIPTPORT: changed the main label for ISO as the TextEncoder did not recognized them in the form from java (eg ISO8859_1 must be ISO88591 or ISO8859-1 or ISO-8859-1)
   public static Cp437 = new CharacterSetECI(CharacterSetValueIdentifiers.Cp437, Int32Array.from([0,2]), "Cp437")
-  public static ISO8859_1 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_1, Int32Array.from([1,3]), "ISO8859_1", "ISO-8859-1")
-  public static ISO8859_2 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_2, 4, "ISO8859_2", "ISO-8859-2")
-  public static ISO8859_3 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_3, 5, "ISO8859_3", "ISO-8859-3")
-  public static ISO8859_4 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_4, 6, "ISO8859_4", "ISO-8859-4")
-  public static ISO8859_5 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_5, 7, "ISO8859_5", "ISO-8859-5")
-  public static ISO8859_6 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_6, 8, "ISO8859_6", "ISO-8859-6")
-  public static ISO8859_7 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_7, 9, "ISO8859_7", "ISO-8859-7")
-  public static ISO8859_8 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_8, 10, "ISO8859_8", "ISO-8859-8")
-  public static ISO8859_9 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_9, 11, "ISO8859_9", "ISO-8859-9")
-  public static ISO8859_10 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_10, 12, "ISO8859_10", "ISO-8859-10")
-  public static ISO8859_11 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_11, 13, "ISO8859_11", "ISO-8859-11")
-  public static ISO8859_13 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_13, 15, "ISO8859_13", "ISO-8859-13")
-  public static ISO8859_14 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_14, 16, "ISO8859_14", "ISO-8859-14")
-  public static ISO8859_15 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_15, 17, "ISO8859_15", "ISO-8859-15")
-  public static ISO8859_16 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_16, 18, "ISO8859_16", "ISO-8859-16")
+  public static ISO8859_1 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_1, Int32Array.from([1,3]), "ISO88591", "ISO8859_1", "ISO-8859-1")
+  public static ISO8859_2 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_2, 4, "ISO88592", "ISO8859_2", "ISO-8859-2")
+  public static ISO8859_3 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_3, 5, "ISO88593", "ISO8859_3", "ISO-8859-3")
+  public static ISO8859_4 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_4, 6, "ISO88594", "ISO8859_4", "ISO-8859-4")
+  public static ISO8859_5 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_5, 7, "ISO88595", "ISO8859_5", "ISO-8859-5")
+  public static ISO8859_6 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_6, 8, "ISO88596", "ISO8859_6", "ISO-8859-6")
+  public static ISO8859_7 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_7, 9, "ISO88597", "ISO8859_7", "ISO-8859-7")
+  public static ISO8859_8 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_8, 10, "ISO88598", "ISO8859_8", "ISO-8859-8")
+  public static ISO8859_9 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_9, 11, "ISO88599", "ISO8859_9", "ISO-8859-9")
+  public static ISO8859_10 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_10, 12, "ISO885910", "ISO8859_10", "ISO-8859-10")
+  public static ISO8859_11 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_11, 13, "ISO885911", "ISO8859_11", "ISO-8859-11")
+  public static ISO8859_13 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_13, 15, "ISO885913", "ISO8859_13", "ISO-8859-13")
+  public static ISO8859_14 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_14, 16, "ISO885914", "ISO8859_14", "ISO-8859-14")
+  public static ISO8859_15 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_15, 17, "ISO885915", "ISO8859_15", "ISO-8859-15")
+  public static ISO8859_16 = new CharacterSetECI(CharacterSetValueIdentifiers.ISO8859_16, 18, "ISO885916", "ISO8859_16", "ISO-8859-16")
   public static SJIS = new CharacterSetECI(CharacterSetValueIdentifiers.SJIS, 20, "SJIS", "Shift_JIS")
   public static Cp1250 = new CharacterSetECI(CharacterSetValueIdentifiers.Cp1250, 21, "Cp1250", "windows-1250")
   public static Cp1251 = new CharacterSetECI(CharacterSetValueIdentifiers.Cp1251, 22, "Cp1251", "windows-1251")
@@ -106,6 +108,11 @@ export default class CharacterSetECI {
 
     CharacterSetECI.VALUE_IDENTIFIER_TO_ECI.set(valueIdentifier, this)
     CharacterSetECI.NAME_TO_ECI.set(name, this)
+    const values = this.values
+    for(let i = 0, length = values.length; i !== length; i++) {
+      const v = values[i]
+      CharacterSetECI.VALUES_TO_ECI.set(v, this)
+    }
     for(const otherName of otherEncodingNames) {
       CharacterSetECI.NAME_TO_ECI.set(otherName, this)
     }
@@ -147,7 +154,7 @@ export default class CharacterSetECI {
     if (value < 0 || value >= 900) {
       throw new Exception(Exception.FormatException, "incorect value")
     }
-    return CharacterSetECI.VALUE_IDENTIFIER_TO_ECI.get(value)
+    return CharacterSetECI.VALUES_TO_ECI.get(value)
   }
 
   /**
