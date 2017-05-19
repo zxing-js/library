@@ -306,8 +306,8 @@ abstract class AbstractBlackBoxTestCase {
     const resultText: string = result.getText()
     // WORKAROUND: ignore new line diferences between systems
     // TODO: check if a real problem or only because test result is stored in a file with modified new line chars
-    const expectedTextR = expectedText.replace('\r\n', '\n')
-    const resultTextR = resultText.replace('\r\n', '\n')
+    const expectedTextR = expectedText.replace(/\r\n/g, '\n')
+    const resultTextR = resultText.replace(/\r\n/g, '\n')
     if (expectedTextR !== resultTextR) {
       const expectedTextHexCodes = AbstractBlackBoxTestCase.toDebugHexStringCodes(expectedTextR)
       const resultTextHexCodes = AbstractBlackBoxTestCase.toDebugHexStringCodes(resultTextR)
