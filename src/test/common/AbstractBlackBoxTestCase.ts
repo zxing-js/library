@@ -306,10 +306,12 @@ abstract class AbstractBlackBoxTestCase {
     const resultText: string = result.getText()
     // WORKAROUND: ignore new line diferences between systems
     // TODO: check if a real problem or only because test result is stored in a file with modified new line chars
-    if (expectedText.replace('\r\n', '\n') !== resultText.replace('\r\n', '\n')) {
-      const expectedTextHexCodes = AbstractBlackBoxTestCase.toDebugHexStringCodes(expectedText)
-      const resultTextHexCodes = AbstractBlackBoxTestCase.toDebugHexStringCodes(resultText)
-      console.warn(`Content mismatch: expected '${expectedText}' (${expectedTextHexCodes}) but got '${resultText}'${suffix} (${resultTextHexCodes})`)
+    const expectedTextR = expectedText.replace('\r\n', '\n')
+    const resultTextR = resultText.replace('\r\n', '\n')
+    if (expectedTextR !== resultTextR) {
+      const expectedTextHexCodes = AbstractBlackBoxTestCase.toDebugHexStringCodes(expectedTextR)
+      const resultTextHexCodes = AbstractBlackBoxTestCase.toDebugHexStringCodes(resultTextR)
+      console.warn(`Content mismatch: expected '${expectedTextR}' (${expectedTextHexCodes}) but got '${resultTextR}'${suffix} (${resultTextHexCodes})`)
       return false
     }
 
@@ -334,9 +336,9 @@ abstract class AbstractBlackBoxTestCase {
     let r = ""
     for(let i = 0, length = text.length; i != length; i++) {
       if (i > 0) r += ', '
-      r += '0x' + text.charCodeAt(i).toString(16)
+      r += '0x' + text.charCodeAt(i).toString(16).toUpperCase()
     }
-    return r.toUpperCase()
+    return r
   }
 
   private static valueOfResultMetadataTypeFromString(value: string) {
