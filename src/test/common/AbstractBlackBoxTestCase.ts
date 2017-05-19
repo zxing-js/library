@@ -305,7 +305,9 @@ abstract class AbstractBlackBoxTestCase {
 
     const resultText: string = result.getText()
     if (expectedText !== resultText) {
-      console.warn(`Content mismatch: expected '${expectedText}' but got '${resultText}'${suffix}`)
+      const expectedTextHexCodes = AbstractBlackBoxTestCase.toDebugHexStringCodes(expectedText)
+      const resultTextHexCodes = AbstractBlackBoxTestCase.toDebugHexStringCodes(resultText)
+      console.warn(`Content mismatch: expected '${expectedText}' (${expectedTextHexCodes}) but got '${resultText}'${suffix} (${resultTextHexCodes})`)
       return false
     }
 
@@ -324,6 +326,15 @@ abstract class AbstractBlackBoxTestCase {
     }
 
     return true
+  }
+
+  private static toDebugHexStringCodes(text: string): string {
+    let r = ""
+    for(let i = 0, length = text.length; i != length; i++) {
+      if (i > 0) r += ', '
+      r += '0x' + text.charCodeAt(i).toString(16)
+    }
+    return r.toUpperCase()
   }
 
   private static valueOfResultMetadataTypeFromString(value: string) {
