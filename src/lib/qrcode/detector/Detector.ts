@@ -22,6 +22,7 @@ import ResultPointCallback from './../../ResultPointCallback'
 import BitMatrix from './../../common/BitMatrix'
 import DetectorResult from './../../common/DetectorResult'
 import GridSampler from './../../common/GridSampler'
+import GridSamplerInstance from './../../common/GridSamplerInstance'
 import PerspectiveTransform from './../../common/PerspectiveTransform'
 import MathUtils from './../../common/detector/MathUtils'
 import Version from './../decoder/Version'
@@ -191,7 +192,7 @@ export default class Detector {
                                       transform: PerspectiveTransform,
                                       dimension: number/*int*/): BitMatrix /*throws NotFoundException*/ {
 
-    const sampler = GridSampler.getInstance()
+    const sampler = GridSamplerInstance.getInstance()
     return sampler.sampleGridWithTransform(image, dimension, dimension, transform)
   }
 
@@ -205,7 +206,7 @@ export default class Detector {
                                       moduleSize: number/*float*/): number/*int*/ /*throws NotFoundException*/ {
     const tltrCentersDimension = MathUtils.round(ResultPoint.distance(topLeft, topRight) / moduleSize)
     const tlblCentersDimension = MathUtils.round(ResultPoint.distance(topLeft, bottomLeft) / moduleSize)
-    let dimension = ((tltrCentersDimension + tlblCentersDimension) / 2) + 7
+    let dimension = Math.floor((tltrCentersDimension + tlblCentersDimension) / 2) + 7
     switch (dimension & 0x03) { // mod 4
       case 0:
         dimension++
@@ -346,7 +347,7 @@ export default class Detector {
 
       error += dy
       if (error > 0) {
-        if (y == toY) {
+        if (y === toY) {
           break
         }
         y += ystep
@@ -356,7 +357,7 @@ export default class Detector {
     // Found black-white-black; give the benefit of the doubt that the next pixel outside the image
     // is "white" so this last point at (toX+xStep,toY) is the right ending. This is really a
     // small approximation; (toX+xStep,toY+yStep) might be really correct. Ignore this.
-    if (state == 2) {
+    if (state === 2) {
       return MathUtils.distance(toX + xstep, toY, fromX, fromY)
     }
     // else we didn't find even black-white-black; no estimate is really possible

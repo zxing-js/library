@@ -16,7 +16,6 @@
 
 /*namespace com.google.zxing.common {*/
 
-import DefaultGridSampler from './DefaultGridSampler'
 import BitMatrix from './BitMatrix'
 import PerspectiveTransform from './PerspectiveTransform'
 import Exception from './../Exception'
@@ -35,28 +34,6 @@ import Exception from './../Exception'
  * @author Sean Owen
  */
 abstract class GridSampler {
-
-  private static gridSampler: GridSampler = new DefaultGridSampler()
-
-  /**
-   * Sets the implementation of GridSampler used by the library. One global
-   * instance is stored, which may sound problematic. But, the implementation provided
-   * ought to be appropriate for the entire platform, and all uses of this library
-   * in the whole lifetime of the JVM. For instance, an Android activity can swap in
-   * an implementation that takes advantage of native platform libraries.
-   * 
-   * @param newGridSampler The platform-specific object to install.
-   */
-  public static setGridSampler(newGridSampler: GridSampler): void {
-    GridSampler.gridSampler = newGridSampler
-  }
-
-  /**
-   * @return the current implementation of GridSampler
-   */
-  public static getInstance(): GridSampler {
-    return GridSampler.gridSampler
-  }
 
   /**
    * Samples an image for a rectangular matrix of bits of the given dimension. The sampling
@@ -126,8 +103,8 @@ abstract class GridSampler {
     // Check and nudge points from start until we see some that are OK:
     let nudged: boolean = true
     for (let offset = 0; offset < points.length && nudged; offset += 2) {
-      const x = points[offset]
-      const y = points[offset + 1]
+      const x = Math.floor(points[offset])
+      const y = Math.floor(points[offset + 1])
       if (x < -1 || x > width || y < -1 || y > height) {
         throw new Exception(Exception.NotFoundException)
       }
@@ -150,8 +127,8 @@ abstract class GridSampler {
     // Check and nudge points from end:
     nudged = true
     for (let offset = points.length - 2; offset >= 0 && nudged; offset -= 2) {
-      const x = points[offset]
-      const y = points[offset + 1]
+      const x = Math.floor(points[offset])
+      const y = Math.floor(points[offset + 1])
       if (x < -1 || x > width || y < -1 || y > height) {
         throw new Exception(Exception.NotFoundException)
       }

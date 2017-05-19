@@ -13,6 +13,7 @@
     "node_modules",
     "staging",
     "autotransform",
-    "autotransform/output"
+    "autotransform/output",
+    "build"
   ]
 }

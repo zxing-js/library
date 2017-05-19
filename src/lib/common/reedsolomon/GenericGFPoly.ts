@@ -103,18 +103,18 @@ export default class GenericGFPoly {
       // Just return the x^0 coefficient
       return this.getCoefficient(0)
     }
+    const coefficients = this.coefficients
+    let result
     if (a === 1) {
       // Just the sum of the coefficients
-      let result = 0
-      const coefficients = this.coefficients
-      for (let i = 0, length = coefficients.length; i != length; i++) {
+      result = 0
+      for (let i = 0, length = coefficients.length; i !== length; i++) {
         const coefficient = coefficients[i]
         result = GenericGF.addOrSubtract(result, coefficient)
       }
       return result
     }
-    const coefficients = this.coefficients
-    let result = coefficients[0]
+    result = coefficients[0]
     const size = coefficients.length
     const field = this.field
     for (let i = 1; i < size; i++) {

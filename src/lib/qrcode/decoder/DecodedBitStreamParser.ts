@@ -163,7 +163,7 @@ export default class DecodedBitStreamParser {
     while (count > 0) {
       // Each 13 bits encodes a 2-byte character
       const twoBytes = bits.readBits(13)
-      let assembledTwoBytes = ((twoBytes / 0x060) << 8) | (twoBytes % 0x060)
+      let assembledTwoBytes = (((twoBytes / 0x060) << 8) & 0xFFFFFFFF) | (twoBytes % 0x060)
       if (assembledTwoBytes < 0x003BF) {
         // In the 0xA1A1 to 0xAAFE range
         assembledTwoBytes += 0x0A1A1
@@ -200,7 +200,7 @@ export default class DecodedBitStreamParser {
     while (count > 0) {
       // Each 13 bits encodes a 2-byte character
       const twoBytes = bits.readBits(13)
-      let assembledTwoBytes = ((twoBytes / 0x0C0) << 8) | (twoBytes % 0x0C0)
+      let assembledTwoBytes = (((twoBytes / 0x0C0) << 8) & 0xFFFFFFFF) | (twoBytes % 0x0C0)
       if (assembledTwoBytes < 0x01F00) {
         // In the 0x8140 to 0x9FFC range
         assembledTwoBytes += 0x08140
@@ -274,7 +274,7 @@ export default class DecodedBitStreamParser {
         throw new Exception(Exception.FormatException)
       }
       const nextTwoCharsBits = bits.readBits(11)
-      result.append(DecodedBitStreamParser.toAlphaNumericChar(nextTwoCharsBits / 45))
+      result.append(DecodedBitStreamParser.toAlphaNumericChar(Math.floor(nextTwoCharsBits / 45)))
       result.append(DecodedBitStreamParser.toAlphaNumericChar(nextTwoCharsBits % 45))
       count -= 2
     }
@@ -315,8 +315,8 @@ export default class DecodedBitStreamParser {
       if (threeDigitsBits >= 1000) {
         throw new Exception(Exception.FormatException)
       }
-      result.append(DecodedBitStreamParser.toAlphaNumericChar(threeDigitsBits / 100))
-      result.append(DecodedBitStreamParser.toAlphaNumericChar((threeDigitsBits / 10) % 10))
+      result.append(DecodedBitStreamParser.toAlphaNumericChar(Math.floor(threeDigitsBits / 100)))
+      result.append(DecodedBitStreamParser.toAlphaNumericChar(Math.floor(threeDigitsBits / 10) % 10))
       result.append(DecodedBitStreamParser.toAlphaNumericChar(threeDigitsBits % 10))
       count -= 3
     }
@@ -329,7 +329,7 @@ export default class DecodedBitStreamParser {
       if (twoDigitsBits >= 100) {
         throw new Exception(Exception.FormatException)
       }
-      result.append(DecodedBitStreamParser.toAlphaNumericChar(twoDigitsBits / 10))
+      result.append(DecodedBitStreamParser.toAlphaNumericChar(Math.floor(twoDigitsBits / 10)))
       result.append(DecodedBitStreamParser.toAlphaNumericChar(twoDigitsBits % 10))
     } else if (count == 1) {
       // One digit left over to read
@@ -346,19 +346,19 @@ export default class DecodedBitStreamParser {
 
   private static parseECIValue(bits: BitSource): number/*int*/ /*throws FormatException*/ {
     const firstByte = bits.readBits(8)
-    if ((firstByte & 0x80) == 0) {
+    if ((firstByte & 0x80) === 0) {
       // just one byte
       return firstByte & 0x7F
     }
-    if ((firstByte & 0xC0) == 0x80) {
+    if ((firstByte & 0xC0) === 0x80) {
       // two bytes
       const secondByte = bits.readBits(8)
-      return ((firstByte & 0x3F) << 8) | secondByte
+      return (((firstByte & 0x3F) << 8) & 0xFFFFFFFF) | secondByte
     }
-    if ((firstByte & 0xE0) == 0xC0) {
+    if ((firstByte & 0xE0) === 0xC0) {
       // three bytes
       const secondThirdBytes = bits.readBits(16)
-      return ((firstByte & 0x1F) << 16) | secondThirdBytes
+      return (((firstByte & 0x1F) << 16) & 0xFFFFFFFF) | secondThirdBytes
     }
     throw new Exception(Exception.FormatException)
   }

@@ -64,7 +64,7 @@ enum ResultMetadataType {
    * For some products, indicates the suggested retail price in the barcode as a
    * formatted {@link String}.
    */
-  SUGGESTED_PRICE ,
+  SUGGESTED_PRICE,
 
   /**
    * For some products, the possible country of manufacture as a {@link String} denoting the

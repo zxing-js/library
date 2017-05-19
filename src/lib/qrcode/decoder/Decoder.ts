@@ -170,10 +170,12 @@ export default class Decoder {
   private correctErrors(codewordBytes: Uint8Array, numDataCodewords: number/*int*/): void /*throws ChecksumException*/ {
     const numCodewords = codewordBytes.length
     // First read into an array of ints
-    const codewordsInts = new Int32Array(numCodewords)
-    for (let i = 0; i < numCodewords; i++) {
-      codewordsInts[i] = codewordBytes[i] & 0xFF
-    }
+    const codewordsInts = new Int32Array(codewordBytes)
+    // TYPESCRIPTPORT: not realy necessary to transform to ints? could redesign everything to work with unsigned bytes?
+    // const codewordsInts = new Int32Array(numCodewords)
+    // for (let i = 0; i < numCodewords; i++) {
+    //   codewordsInts[i] = codewordBytes[i] & 0xFF
+    // }
     try {
       this.rsDecoder.decode(codewordsInts, codewordBytes.length - numDataCodewords)
     } catch (ignored/*: ReedSolomonException*/) {

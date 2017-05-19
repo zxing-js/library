@@ -34,7 +34,7 @@ Porting Rules
 =============
 
 * Keep all types as close to the original as possible.
-* Keep detailed type information in comments where applicable (example int will become `number/*int*/`).
+* Keep detailed type information in comments where applicable (example int will become `number/*int*/`) as the code is extensively using bitwise operations that can overflow.
 * Use TypedArray whenever possible (example `int[]` will become `Int32Array`) - see below for more info.
 * Use constructor property whenever possible.
 * Take care of array initialisation with capacity, especially when using length and push later on. Basically only use when setting with index accesor only .
@@ -68,16 +68,20 @@ Java long has 64-bit two's complement integer, can be signed or unsigned
 Things to look for
 ==================
 
-* Take care of int -> number port when doing bitwise transformation expecially <<.
+* Take care of int -> number port when doing bitwise transformation expecially <<. Do a & 0xFFFFFFFF for ints, a &0xFF for bytes.
 * Take care of array initialization, in java new Array(N) initializes capacity NOT size/length.
+* Use Math.floor for any divison of ints otherwise the number type is a floating point and keeps the numbers after the dot.
 
 
 TODO
 ====
 
-* Check for aaa[] arrays, check for push check for == length
+* Check for sometype[] arrays: check for push, check for == length etc, to spot size comparison bugs
 * Skipped:
 ..* BufferedImageLuminanceSource.java
 ..* common/AbstractNegativeBlackBoxTestCase.java
 ..* common/AbstractBlackBoxTestCase.java
-* Cp437 see DecodedBitStreamParserTestCase
+* Cp437 not supported by TextEncoding library see DecodedBitStreamParserTestCase
+* Need to completely redesign exception based "not found" pattern as exceptions do not work on node async environment
+* replace instanceof with something more robust
+* simplify double null !== something && undefined !== something checks

@@ -11,8 +11,9 @@
                 "--colors",
                 "--timeout", "999999",
                 "./build/test/**/*.js",
-                "-g", "DecodedBitStreamParserTestCase"
+                "-g", "QRCodeBlackBox1TestCase"
             ],
+            "protocol": "inspector",
             "cwd": "${workspaceRoot}",
             "stopOnEntry": false,
             "runtimeExecutable": null,

@@ -52,7 +52,7 @@ export default class BitMatrixParser {
    */
   public readFormatInformation(): FormatInformation /*throws FormatException*/ {
 
-    if (this.parsedFormatInfo !== null) {
+    if (this.parsedFormatInfo !== null && this.parsedFormatInfo !== undefined) {
       return this.parsedFormatInfo
     }
 
@@ -97,13 +97,13 @@ export default class BitMatrixParser {
    */
   public readVersion(): Version /*throws FormatException*/ {
 
-    if (this.parsedVersion !== null) {
+    if (this.parsedVersion !== null && this.parsedVersion !== undefined) {
       return this.parsedVersion
     }
 
     const dimension = this.bitMatrix.getHeight()
 
-    const provisionalVersion = (dimension - 17) / 4
+    const provisionalVersion = Math.floor((dimension - 17) / 4)
     if (provisionalVersion <= 6) {
       return Version.getVersionForNumber(provisionalVersion)
     }
@@ -159,7 +159,7 @@ export default class BitMatrixParser {
 
     // Get the data mask for the format used in this QR Code. This will exclude
     // some bits from reading as we wind through the bit matrix.
-    const dataMask = DataMask.values[formatInfo.getDataMask()]
+    const dataMask = DataMask.values.get(formatInfo.getDataMask())
     const dimension = this.bitMatrix.getHeight()
     dataMask.unmaskBitMatrix(this.bitMatrix, dimension)
 
@@ -235,8 +235,8 @@ export default class BitMatrixParser {
   /** Mirror the bit matrix in order to attempt a second reading. */
   public mirror(): void {
     const bitMatrix = this.bitMatrix
-    for (let x = 0; x < bitMatrix.getWidth(); x++) {
-      for (let y = x + 1; y < bitMatrix.getHeight(); y++) {
+    for (let x = 0, width = bitMatrix.getWidth(); x < width; x++) {
+      for (let y = x + 1, height = bitMatrix.getHeight(); y < height; y++) {
         if (bitMatrix.get(x, y) !== bitMatrix.get(y, x)) {
           bitMatrix.flip(y, x);
           bitMatrix.flip(x, y);          

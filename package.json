@@ -18,11 +18,18 @@
     "text-encoding": "^0.6.4"
   },
   "devDependencies": {
+    "@types/async": "^2.0.40",
+    "@types/jimp": "^0.2.1",
     "@types/mocha": "^2.2.41",
     "@types/node": "^7.0.18",
     "@types/seedrandom": "^2.4.27",
+    "@types/sharp": "^0.17.1",
+    "async": "^2.4.0",
+    "jimp": "^0.2.27",
     "mocha": "^3.3.0",
+    "pngjs": "^3.2.0",
     "seedrandom": "^2.4.3",
+    "sharp": "^0.17.3",
     "typescript": "^2.3.2"
   }
 }

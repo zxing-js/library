@@ -82,7 +82,7 @@ export default class BinaryBitmap {
     // 1. This work will never be done if the caller only installs 1D Reader objects, or if a
     //    1D Reader finds a barcode before the 2D Readers run.
     // 2. This work will only be done once even if the caller installs multiple 2D Readers.
-    if (this.matrix === null) {
+    if (this.matrix === null || this.matrix === undefined) {
       this.matrix = this.binarizer.getBlackMatrix()
     }
     return this.matrix

@@ -18,8 +18,8 @@
 
 import System from './util/System'
 import Exception from './Exception'
-import './InvertedLuminanceSource' // required because of circular dependencies between LuminanceSource and InvertedLuminanceSource
 import LuminanceSource from './LuminanceSource'
+import InvertedLuminanceSource from './InvertedLuminanceSource'
 
 /**
  * This object extends LuminanceSource around an array of YUV data returned from the camera driver,
@@ -157,6 +157,10 @@ export default class PlanarYUVLuminanceSource extends LuminanceSource {
         yuvData[x2] = temp
       }
     }
+  }
+
+  public invert(): LuminanceSource {
+    return new InvertedLuminanceSource(this)
   }
 
 }

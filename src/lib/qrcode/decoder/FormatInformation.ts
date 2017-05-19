@@ -72,7 +72,7 @@ export default class FormatInformation {
   private errorCorrectionLevel: ErrorCorrectionLevel
   private dataMask: number/*byte*/
 
-  private constructor(private formatInfo: number/*int*/) {
+  private constructor(formatInfo: number/*int*/) {
     // Bits 3,4
     this.errorCorrectionLevel = ErrorCorrectionLevel.forBits((formatInfo >> 3) & 0x03)
     // Bottom 3 bits

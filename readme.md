@@ -16,7 +16,9 @@ Status and Roadmap
 
 - [x] Port root, common and qrcode format and make it compile
 - [x] Add unit test infrastructure, a first unit test and make it pass (common/BitArrayTestCase)
-- [ ] Add all unit tests for everything in root, common and qrcode
+- [x] Add all unit tests for everything in root, common and qrcode
+- [x] Add one "back box" test for qrcode
+- [ ] Add all "back box" tests for qrcode
 - [ ] Create browser integration module and test UI for qrcode
 - [ ] Create tests for node.js usage for qrcode
 - [ ] Adapt documentation for JSDoc, generate documentation

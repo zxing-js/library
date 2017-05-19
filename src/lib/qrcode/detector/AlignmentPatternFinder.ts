@@ -84,7 +84,7 @@ export default class AlignmentPatternFinder {
     const image = this.image
     for (let iGen = 0; iGen < height; iGen++) {
       // Search from middle outwards
-      const i = middleI + ((iGen & 0x01) == 0 ? (iGen + 1) / 2 : -((iGen + 1) / 2))
+      const i = middleI + ((iGen & 0x01) == 0 ? Math.floor((iGen + 1) / 2) : -Math.floor((iGen + 1) / 2))
       stateCount[0] = 0
       stateCount[1] = 0
       stateCount[2] = 0
@@ -99,10 +99,10 @@ export default class AlignmentPatternFinder {
       while (j < maxJ) {
         if (image.get(j, i)) {
           // Black pixel
-          if (currentState == 1) { // Counting black pixels
+          if (currentState === 1) { // Counting black pixels
             stateCount[1]++
           } else { // Counting white pixels
-            if (currentState == 2) { // A winner?
+            if (currentState === 2) { // A winner?
               if (this.foundPatternCross(stateCount)) { // Yes
                 const confirmed = this.handlePossibleCenter(stateCount, i, j)
                 if (confirmed !== null) {
@@ -118,7 +118,7 @@ export default class AlignmentPatternFinder {
             }
           }
         } else { // White pixel
-          if (currentState == 1) { // Counting black pixels
+          if (currentState === 1) { // Counting black pixels
             currentState++
           }
           stateCount[currentState]++
@@ -257,7 +257,7 @@ export default class AlignmentPatternFinder {
       // Hadn't found this before; save it
       const point = new AlignmentPattern(centerJ, centerI, estimatedModuleSize)
       this.possibleCenters.push(point)
-      if (this.resultPointCallback !== null) {
+      if (this.resultPointCallback !== null && this.resultPointCallback !== undefined) {
         this.resultPointCallback.foundPossibleResultPoint(point)
       }
     }

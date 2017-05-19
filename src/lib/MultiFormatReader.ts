@@ -96,7 +96,7 @@ export default class MultiFormatReader implements Reader {
     /*@SuppressWarnings("unchecked")*/
     const formats = hints === null || hints === undefined ? null : hints.get(DecodeHintType.POSSIBLE_FORMATS)
     const readers = new Array<Reader>()
-    if (formats !== null) {
+    if (formats !== null && formats !== undefined) {
       const addOneDReader: boolean =
           formats.contains(BarcodeFormat.UPC_A) ||
           formats.contains(BarcodeFormat.UPC_E) ||

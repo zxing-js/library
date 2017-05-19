@@ -69,11 +69,11 @@ export default class QRCodeReader implements Reader {
     let points: Array<ResultPoint>
     if (hints !== undefined && hints  !== null && undefined !== hints.get(DecodeHintType.PURE_BARCODE)) {
       const bits = QRCodeReader.extractPureBits(image.getBlackMatrix())
-      const decoderResult = this.decoder.decodeBitMatrix(bits, hints)
+      decoderResult = this.decoder.decodeBitMatrix(bits, hints)
       points = QRCodeReader.NO_POINTS
     } else {
       const detectorResult = new Detector(image.getBlackMatrix()).detect(hints)
-      const decoderResult = this.decoder.decodeBitMatrix(detectorResult.getBits(), hints)
+      decoderResult = this.decoder.decodeBitMatrix(detectorResult.getBits(), hints)
       points = detectorResult.getPoints()
     }
 

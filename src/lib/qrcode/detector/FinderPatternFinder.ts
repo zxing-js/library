@@ -85,7 +85,7 @@ export default class FinderPatternFinder {
     // image, and then account for the center being 3 modules in size. This gives the smallest
     // number of pixels the center could be, so skip this often. When trying harder, look for all
     // QR versions regardless of how dense they are.
-    let iSkip = (3 * maxI) / (4 * FinderPatternFinder.MAX_MODULES);
+    let iSkip = Math.floor((3 * maxI) / (4 * FinderPatternFinder.MAX_MODULES))
     if (iSkip < FinderPatternFinder.MIN_SKIP || tryHarder) {
       iSkip = FinderPatternFinder.MIN_SKIP
     }
@@ -510,7 +510,7 @@ export default class FinderPatternFinder {
         if (!found) {
           const point: FinderPattern = new FinderPattern(centerJ, centerI, estimatedModuleSize)
           possibleCenters.push(point)
-          if (this.resultPointCallback !== null) {
+          if (this.resultPointCallback !== null && this.resultPointCallback !== undefined) {
             this.resultPointCallback.foundPossibleResultPoint(point)
           }
         }
@@ -543,8 +543,8 @@ export default class FinderPatternFinder {
           // difference in the x / y coordinates of the two centers.
           // This is the case where you find top left last.
           this.hasSkipped = true
-          return /*(int) */Math.floor(Math.abs(firstConfirmedCenter.getX() - center.getX()) -
-              Math.abs(firstConfirmedCenter.getY() - center.getY())) / 2
+          return /*(int) */Math.floor((Math.abs(firstConfirmedCenter.getX() - center.getX()) -
+              Math.abs(firstConfirmedCenter.getY() - center.getY())) / 2)
         }
       }
     }

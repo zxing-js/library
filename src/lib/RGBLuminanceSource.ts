@@ -17,6 +17,7 @@
 /*namespace com.google.zxing {*/
 
 import './InvertedLuminanceSource' // required because of circular dependencies between LuminanceSource and InvertedLuminanceSource
+import InvertedLuminanceSource from './InvertedLuminanceSource'
 import LuminanceSource from './LuminanceSource'
 import Exception from './Exception'
 import System from './util/System'
@@ -158,4 +159,7 @@ export default class RGBLuminanceSource extends LuminanceSource {
                                   this.top + top,)
   }
 
+  public invert(): LuminanceSource {
+    return new InvertedLuminanceSource(this)
+  }
 }

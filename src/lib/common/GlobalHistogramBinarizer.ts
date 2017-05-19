@@ -106,8 +106,8 @@ export default class GlobalHistogramBinarizer extends Binarizer {
     for (let y = 1; y < 5; y++) {
       const row = height * y / 5;
       const localLuminances = source.getRow(row, this.luminances)
-      const right = (width * 4) / 5;
-      for (let x = width / 5; x < right; x++) {
+      const right = Math.floor((width * 4) / 5)
+      for (let x = Math.floor(width / 5); x < right; x++) {
         const pixel = localLuminances[x] & 0xff
         localBuckets[pixel >> GlobalHistogramBinarizer.LUMINANCE_SHIFT]++
       }
