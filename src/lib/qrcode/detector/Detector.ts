@@ -244,11 +244,11 @@ export default class Detector {
    * width of each, measuring along the axis between their centers.</p>
    */
   private calculateModuleSizeOneWay(pattern: ResultPoint, otherPattern: ResultPoint): number/*float*/ {
-    const moduleSizeEst1: number/*float*/ = this.sizeOfBlackWhiteBlackRunBothWays(/*(int) */pattern.getX(),
+    const moduleSizeEst1: number/*float*/ = this.sizeOfBlackWhiteBlackRunBothWays(/*(int) */Math.floor(pattern.getX()),
         /*(int) */Math.floor(pattern.getY()),
         /*(int) */Math.floor(otherPattern.getX()),
         /*(int) */Math.floor(otherPattern.getY()))
-    const moduleSizeEst2: number/*float*/ = this.sizeOfBlackWhiteBlackRunBothWays(/*(int) */otherPattern.getX(),
+    const moduleSizeEst2: number/*float*/ = this.sizeOfBlackWhiteBlackRunBothWays(/*(int) */Math.floor(otherPattern.getX()),
         /*(int) */Math.floor(otherPattern.getY()),
         /*(int) */Math.floor(pattern.getX()),
         /*(int) */Math.floor(pattern.getY()))

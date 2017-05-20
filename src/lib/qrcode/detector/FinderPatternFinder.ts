@@ -92,7 +92,6 @@ export default class FinderPatternFinder {
 
     let done: boolean = false
     const stateCount = new Int32Array(5)
-    const hasSkipped = this.hasSkipped
     for (let i = iSkip - 1; i < maxI && !done; i += iSkip) {
       // Get a row of black/white values
       stateCount[0] = 0
@@ -104,20 +103,20 @@ export default class FinderPatternFinder {
       for (let j = 0; j < maxJ; j++) {
         if (image.get(j, i)) {
           // Black pixel
-          if ((currentState & 1) == 1) { // Counting white pixels
+          if ((currentState & 1) === 1) { // Counting white pixels
             currentState++
           }
           stateCount[currentState]++
         } else { // White pixel
-          if ((currentState & 1) == 0) { // Counting black pixels
-            if (currentState == 4) { // A winner?
+          if ((currentState & 1) === 0) { // Counting black pixels
+            if (currentState === 4) { // A winner?
               if (FinderPatternFinder.foundPatternCross(stateCount)) { // Yes
                 const confirmed: boolean = this.handlePossibleCenter(stateCount, i, j, pureBarcode)
-                if (confirmed) {
+                if (confirmed === true) {
                   // Start examining every other line. Checking each line turned out to be too
                   // expensive and didn't improve performance.
                   iSkip = 2
-                  if (hasSkipped) {
+                  if (this.hasSkipped === true) {
                     done = this.haveMultiplyConfirmedCenters()
                   } else {
                     const rowSkip = this.findRowSkip()
@@ -168,9 +167,9 @@ export default class FinderPatternFinder {
       }
       if (FinderPatternFinder.foundPatternCross(stateCount)) {
         const confirmed: boolean = this.handlePossibleCenter(stateCount, i, maxJ, pureBarcode)
-        if (confirmed) {
+        if (confirmed === true) {
           iSkip = stateCount[0]
-          if (hasSkipped) {
+          if (this.hasSkipped) {
             // Found a third one
             done = this.haveMultiplyConfirmedCenters()
           }
@@ -597,6 +596,7 @@ export default class FinderPatternFinder {
     
     const possibleCenters = this.possibleCenters
 
+    let average: number/*float*/
     // Filter outlier possibilities whose module size is too different
     if (startSize > 3) {
       // But we can only afford to do so if we have at least 4 possibilities to choose from
@@ -607,8 +607,8 @@ export default class FinderPatternFinder {
         totalModuleSize += size
         square += size * size
       }
-      const average: number/*float*/ = totalModuleSize / startSize
-      const stdDev: number/*float*/ = /*(float) */Math.sqrt(square / startSize - average * average)
+      average = totalModuleSize / startSize
+      let stdDev: number/*float*/ = /*(float) */Math.sqrt(square / startSize - average * average)
 
       possibleCenters.sort(
         /**
@@ -623,7 +623,7 @@ export default class FinderPatternFinder {
 
       const limit: number/*float*/ = Math.max(0.2 * average, stdDev);
 
-      for (let i = 0, length = possibleCenters.length; i < length && length > 3; i++) {
+      for (let i = 0; i < possibleCenters.length && possibleCenters.length > 3; i++) {
         const pattern: FinderPattern = possibleCenters[i]
         if (Math.abs(pattern.getEstimatedModuleSize() - average) > limit) {
           possibleCenters.splice(i, 1)
@@ -640,7 +640,7 @@ export default class FinderPatternFinder {
         totalModuleSize += possibleCenter.getEstimatedModuleSize()
       }
 
-      const average: number/*float*/ = totalModuleSize / possibleCenters.length
+      average = totalModuleSize / possibleCenters.length
 
       possibleCenters.sort(
         /**
@@ -648,7 +648,7 @@ export default class FinderPatternFinder {
          */
         // CenterComparator implements Comparator<FinderPattern>
         (center1: FinderPattern, center2: FinderPattern) => {
-            if (center2.getCount() == center1.getCount()) {
+            if (center2.getCount() === center1.getCount()) {
               const dA: number/*float*/ = Math.abs(center2.getEstimatedModuleSize() - average)
               const dB: number/*float*/ = Math.abs(center1.getEstimatedModuleSize() - average)
               return dA < dB ? 1 : dA > dB ? -1 : 0
@@ -657,7 +657,7 @@ export default class FinderPatternFinder {
             }
         })
 
-      possibleCenters.splice(3, possibleCenters.length)
+      possibleCenters.splice(3)// this is not realy necessary as we only return first 3 anyway
     }
 
     return [

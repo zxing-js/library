@@ -11,7 +11,7 @@
                 "--colors",
                 "--timeout", "999999",
                 "./build/test/**/*.js",
-                "-g", "QRCodeBlackBox1TestCase"
+                "-g", "QRCodeBlackBox2TestCase"
             ],
             "protocol": "inspector",
             "cwd": "${workspaceRoot}",
