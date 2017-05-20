@@ -18,8 +18,8 @@
 
 import * as assert from 'assert'
 import * as async from 'async'
-import BufferedImage from './../util/BufferedImage'
-import BufferedImageLuminanceSource from './../BufferedImageLuminanceSource'
+import SharpImage from './../util/SharpImage'
+import SharpImageLuminanceSource from './../SharpImageLuminanceSource'
 import BarcodeFormat from './../../lib/BarcodeFormat'
 import BinaryBitmap from './../../lib/BinaryBitmap'
 import DecodeHintType from './../../lib/DecodeHintType'
@@ -164,7 +164,7 @@ abstract class AbstractBlackBoxTestCase {
     async.eachSeries(imageFiles, (testImage, callback) => {
       console.log(`Starting ${testImage}`)
       const rotations: number[] = [0, 90, 180, 270]//TODO: take rotations from testResults input
-      BufferedImage.load(testImage, rotations, (err, images: Map<number, BufferedImage>) => {
+      SharpImage.load(testImage, rotations, (err, images: Map<number, SharpImage>) => {
         if (err) {
           callback(err)
         } else {
@@ -187,8 +187,8 @@ abstract class AbstractBlackBoxTestCase {
 
           for (let x: number/*int*/ = 0; x < testCount; x++) {
             const rotation: number/*float*/ = this.testResults[x].getRotation()
-            const rotatedImage: BufferedImage = images.get(rotation)
-            const source: LuminanceSource = new BufferedImageLuminanceSource(rotatedImage)
+            const rotatedImage: SharpImage = images.get(rotation)
+            const source: LuminanceSource = new SharpImageLuminanceSource(rotatedImage)
             const bitmap = new BinaryBitmap(new HybridBinarizer(source))
             try {
               if (me.decode(bitmap, rotation, expectedText, expectedMetadata, false)) {

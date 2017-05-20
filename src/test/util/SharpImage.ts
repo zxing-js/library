@@ -1,7 +1,7 @@
 import * as sharp from 'sharp'
 import * as async from 'async'
 
-export default class BufferedImage {
+export default class SharpImage {
     
     public constructor(
         private wrapper: sharp.SharpInstance, 
@@ -9,7 +9,7 @@ export default class BufferedImage {
         private width: number, 
         private height: number) {}
 
-    public static load(path: string, rotations: number[], done: (err: any, images?: Map<number, BufferedImage>) => any): void {
+    public static load(path: string, rotations: number[], done: (err: any, images?: Map<number, SharpImage>) => any): void {
         const wrapper = sharp(path)./*grayscale().*/raw()
         wrapper.metadata((err, metadata) => {
             if (err) {
@@ -20,7 +20,7 @@ export default class BufferedImage {
                     wrapper.toColorspace("sRGB")
                 }
 
-                const images = new Map<number, BufferedImage>()
+                const images = new Map<number, SharpImage>()
                 async.eachSeries(rotations, (rotation, callback) => {
                     const wrapperClone = wrapper.clone()
                     wrapperClone.rotate(rotation).toBuffer((err, data, info) => {
@@ -30,8 +30,8 @@ export default class BufferedImage {
                             const channels = info.channels
                             const width = info.width
                             const height = info.height
-                            const grayscaleBuffer = BufferedImage.toGrayscaleBuffer(new Uint8Array(data.buffer), info.width, info.height, info.channels)
-                            const image = new BufferedImage(wrapperClone, grayscaleBuffer, info.width, info.height)
+                            const grayscaleBuffer = SharpImage.toGrayscaleBuffer(new Uint8Array(data.buffer), info.width, info.height, info.channels)
+                            const image = new SharpImage(wrapperClone, grayscaleBuffer, info.width, info.height)
                             images.set(rotation, image)
                             callback()
                         }

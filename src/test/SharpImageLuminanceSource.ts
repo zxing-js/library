@@ -21,7 +21,7 @@
 /*import java.awt.image.BufferedImage;*/
 /*import java.awt.image.WritableRaster;*/
 
-import BufferedImage from './util/BufferedImage'
+import SharpImage from './util/SharpImage'
 import LuminanceSource from './../lib/LuminanceSource'
 import InvertedLuminanceSource from './../lib/InvertedLuminanceSource'
 import Exception from './../lib/Exception'
@@ -33,9 +33,9 @@ import Exception from './../lib/Exception'
  * @author Sean Owen
  * @author code@elektrowolle.de (Wolfgang Jung)
  */
-export default class BufferedImageLuminanceSource extends LuminanceSource {
+export default class SharpImageLuminanceSource extends LuminanceSource {
 
-  public constructor(private image: BufferedImage) {
+  public constructor(private image: SharpImage) {
     super(image.getWidth(), image.getHeight())
     // if (undefined === width) {
     //   this.width = image.getWidth()
