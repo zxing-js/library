@@ -1,6 +1,8 @@
 import * as sharp from 'sharp'
 import * as async from 'async'
 
+import BitMatrix from './../../lib/common/BitMatrix'
+
 export default class SharpImage {
     
     public constructor(
@@ -9,8 +11,8 @@ export default class SharpImage {
         private width: number, 
         private height: number) {}
 
-    public static load(path: string, rotations: number[], done: (err: any, images?: Map<number, SharpImage>) => any): void {
-        const wrapper = sharp(path)./*grayscale().*/raw()
+    public static loadWithRotations(path: string, rotations: number[], done: (err: any, images?: Map<number, SharpImage>) => any): void {
+        const wrapper = sharp(path).raw()
         wrapper.metadata((err, metadata) => {
             if (err) {
                 done(err)
@@ -30,8 +32,8 @@ export default class SharpImage {
                             const channels = info.channels
                             const width = info.width
                             const height = info.height
-                            const grayscaleBuffer = SharpImage.toGrayscaleBuffer(new Uint8Array(data.buffer), info.width, info.height, info.channels)
-                            const image = new SharpImage(wrapperClone, grayscaleBuffer, info.width, info.height)
+                            const grayscaleBuffer = SharpImage.toGrayscaleBuffer(new Uint8Array(data.buffer), width, height, channels)
+                            const image = new SharpImage(wrapperClone, grayscaleBuffer, width, height)
                             images.set(rotation, image)
                             callback()
                         }
@@ -45,7 +47,42 @@ export default class SharpImage {
                 })
             }
         })
-        
+    }
+    
+    public static loadAsBitMatrix(path: string, done: (err: any, bitMatrix?: BitMatrix) => any): void {
+        const wrapper = sharp(path).raw()
+        wrapper.metadata((err, metadata) => {
+            if (err) {
+                done(err)
+            } else {
+                if (metadata.channels !== 3) {
+                    //console.log(`Image ${path} has ${metadata.channels} channels and will be transformed to sRGB`)
+                    wrapper.toColorspace("sRGB")
+                }
+
+                wrapper.toBuffer((err, data, info) => {
+                    if (err) {
+                        done(err)
+                    } else {
+                        const channels = info.channels
+                        const width = info.width
+                        const height = info.height
+                        const grayscaleBuffer = SharpImage.toGrayscaleBuffer(new Uint8Array(data.buffer), width, height, channels)
+                        //const image = new SharpImage(wrapper, grayscaleBuffer, info.width, info.height)
+                        const matrix = new BitMatrix(width, height)
+                        for (let y = 0; y < height; y++) {
+                            for (let x = 0; x < width; x++) {
+                                const pixel = grayscaleBuffer[y * width + x]
+                                if (pixel <= 0x7F) {
+                                    matrix.set(x, y)
+                                }
+                            }
+                        }
+                        done(null, matrix)
+                    }
+                })
+            }
+        })
     }
 
     private static toGrayscaleBuffer(imageBuffer: Uint8Array, width: number, height: number, channels: number): Uint8Array {

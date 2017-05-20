@@ -164,7 +164,7 @@ abstract class AbstractBlackBoxTestCase {
     async.eachSeries(imageFiles, (testImage, callback) => {
       console.log(`Starting ${testImage}`)
       const rotations: number[] = [0, 90, 180, 270]//TODO: take rotations from testResults input
-      SharpImage.load(testImage, rotations, (err, images: Map<number, SharpImage>) => {
+      SharpImage.loadWithRotations(testImage, rotations, (err, images: Map<number, SharpImage>) => {
         if (err) {
           callback(err)
         } else {
@@ -215,7 +215,7 @@ abstract class AbstractBlackBoxTestCase {
       })
     }, (err) => {
       if (err) {
-        console.error(err)
+        assert.ok(false, err.toString())
       } else {
         // Print the results of all tests first
         let totalFound: number/*int*/ = 0
