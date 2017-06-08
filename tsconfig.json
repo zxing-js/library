@@ -4,16 +4,17 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
-    "lib": ["es5", "es6"],
-    "noImplicitAny": true,
+    "lib": ["es5", "es6", "dom"],
+    "outDir": "./build-node/",
     "suppressImplicitAnyIndexErrors": true,
-    "outDir": "./build/"
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "declaration": true
   },
+  "include": [
+    "src"
+  ],
   "exclude": [
-    "node_modules",
-    "staging",
-    "autotransform",
-    "autotransform/output",
-    "build"
+    "node_modules"
   ]
 }

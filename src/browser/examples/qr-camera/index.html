@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Adrian Toșcă">
+		<meta name="description" content="">
+		<title>ZXing TypeScript | Demo</title>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+		<link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+	</head>
+	<body>
+
+		<main class="wrapper">
+
+			<section class="container" id="demo-content">
+				<h1 class="title">Scan Code With Videocamera</h5>
+				
+				<div>
+					<a class="button" id="startButton">Start</a>
+					<a class="button" id="resetButton">Reset</a>
+				</div>
+
+				<div>
+					<video id="video" width="300" height="200" style="border: 1px solid gray"></video>
+				</div>
+				
+				<div id="sourceSelectPanel" style="display:none">
+					<label for="sourceSelect">Change video source:</label>
+					<select id="sourceSelect" style="max-width:400px">
+					</select>
+				</div>
+
+				<label>Result:</label>
+				<blockquote>
+					<p id="result"></p>
+				</blockquote>
+
+			</section>
+
+			<footer class="footer">
+				<section class="container">
+					<p>ZXing TypeScript Demo. Licensed under the <a target="_blank" href="https://github.com/aleris/zxing-typescript#license" title="Apache License, Version 2.0">Apache License, Version 2.0</a>.</p>
+				</section>
+			</footer>
+
+		</main>
+
+		<script type="text/javascript" src="../../zxing.qrcodereader.js"></script>
+        <script type="text/javascript">
+			window.addEventListener('load', function() {
+				const codeReader = new ZXing.BrowserQRCodeReader()
+				console.log('ZXing code reader initialized')
+				codeReader.getVideoInputDevices()
+					.then((videoInputDevices) => {
+						const sourceSelect = document.getElementById('sourceSelect')
+						const firstDeviceId = videoInputDevices[0].deviceId
+						if (videoInputDevices.length > 1) {
+							videoInputDevices.forEach(function(element) {
+								const sourceOption = document.createElement('option')
+								sourceOption.text = element.label
+								sourceOption.value = element.deviceId
+								sourceSelect.appendChild(sourceOption)
+							})
+
+							const sourceSelectPanel = document.getElementById('sourceSelectPanel')
+							sourceSelectPanel.style.display = 'block'
+						}
+
+						document.getElementById('startButton').addEventListener('click', () => {
+							codeReader.decodeFromInputVideoDevice(firstDeviceId, 'video').then((result) => {
+								console.log(result)
+								document.getElementById('result').textContent = result.text
+							}).catch((err) => {
+								console.error(err)
+								document.getElementById('result').textContent = err
+							})
+							console.log(`Started continous decode from camera with id ${firstDeviceId}`)
+						})
+
+						document.getElementById('resetButton').addEventListener('click', () => {
+							codeReader.reset()
+							console.log('Reset.')
+						})
+
+					})
+					.catch((err) => {
+						console.error(err)
+					})
+			})
+		</script>
+
+	</body>
+</html>

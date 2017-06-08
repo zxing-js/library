@@ -1,0 +1,1 @@
+import QRCodeWriter from './../core/qrcode/QRCodeWriter'

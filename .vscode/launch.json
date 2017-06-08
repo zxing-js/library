@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+        
         {
             "name": "Unit tests",
             "type": "node",
@@ -11,7 +12,7 @@
                 "--colors",
                 "--timeout", "999999",
                 "./build/test/**/*.js",
-                "-g", "QRCodeWriterTestCase"
+                "-g", "QRCodeBlackBox7TestCase"
             ],
             "protocol": "inspector",
             "cwd": "${workspaceRoot}",

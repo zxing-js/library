@@ -54,7 +54,9 @@ https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
 
 Java byte has 8 bits, signed (eg -127 to 127)
-So byte[] would trasnforms to Int8Array however because of using TextEncoder will use Uint8Array
+So byte[] would trasnforms to Int8Array however:
+- because of using TextEncoder will use Uint8Array
+- because canvas image data will use Uint8ClampedArray
 
 Java int has 32 bits, signed
 So int[] transforms to Int32Array

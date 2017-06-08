@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Adrian Toșcă">
+		<meta name="description" content="">
+		<title>ZXing TypeScript | Demo</title>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+		<link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+	</head>
+	<body>
+
+		<main class="wrapper">
+
+			<section class="container" id="demo-content">
+				<h1 class="title">Scan QR Code From Image</h5>
+				
+				<div>
+					<a class="button" id="decodeButton">Decode</a>
+				</div>
+
+				<div>
+					<img id="img" src="qrcode-image.png" width="200" height="300" style="border: 1px solid gray"></img>
+				</div>
+
+				<label>Result:</label>
+				<blockquote>
+					<p id="result"></p>
+				</blockquote>
+				
+			</section>
+
+			<footer class="footer">
+				<section class="container">
+					<p>ZXing TypeScript Demo. Licensed under the <a target="_blank" href="https://github.com/aleris/zxing-typescript#license" title="Apache License, Version 2.0">Apache License, Version 2.0</a>.</p>
+				</section>
+			</footer>
+
+		</main>
+
+		<script type="text/javascript" src="../../zxing.qrcodereader.js"></script>
+        <script type="text/javascript">
+			window.addEventListener('load', function() {
+				const codeReader = new ZXing.BrowserQRCodeReader('video')
+				console.log('ZXing code reader initialized')
+
+				document.getElementById('decodeButton').addEventListener('click', () => {
+					const img = document.getElementById('img')
+					codeReader.decodeFromImage(img).then((result) => {
+						console.log(result)
+						document.getElementById('result').textContent = result.text
+					}).catch((err) => {
+						console.error(err)
+						document.getElementById('result').textContent = err
+					})
+					console.log(`Started decode for image from ${img.src}`)
+				})
+
+			})
+		</script>
+
+	</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "lib": ["es6", "dom"],
+    "outDir": "./build-node/",
+    "suppressImplicitAnyIndexErrors": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "declaration": false,
+    "removeComments": true
+  },
+  "awesomeTypescriptLoaderOptions": {
+    "useBabel": true,
+    "useCache": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/test"
+  ]
+}
