@@ -10,7 +10,7 @@ See https://github.com/zxing/zxing for original Java project.
 Demo
 ====
 
-See [some demo examples](https://github.com/aleris/zxing-typescript/docs) for browser usage code examples.
+See [some demo examples](https://aleris.github.io/zxing-typescript/) in browser.
 
 Usage
 =====
@@ -39,7 +39,7 @@ Then:
 
 To build the javascript files and reference, for example `zxing.qrcodereader.min.js` from `build-browser` folder.
 
-See [some demo examples](https://github.com/aleris/zxing-typescript/docs) for browser usage javascript code examples.
+See [some demo examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples) for browser usage javascript code examples.
 
 All the examples are using es6, be sure is supported in your browser or modify as needed (eg. var instead of const etc.).
 
@@ -90,7 +90,7 @@ codeReader.decodeFromInputVideoDevice(undefined, 'video')
     })
 ```
 
-A full working example for [QR Code from Video Camera](https://github.com/aleris/zxing-typescript/docs/qr-camera/) is provided in the [examples](https://github.com/aleris/zxing-typescript/docs/).
+A full working example for [QR Code from Video Camera](https://github.com/aleris/zxing-typescript/tree/master/docs/examples/qr-camera/) is provided in the [examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples/).
 
 ### Scanning from Video File
 Similar as above you can use a video element in the html page:
@@ -123,7 +123,7 @@ codeReader.decodeFromVideoSource(videoSrc)
     })
 ```
 
-A full working example for [QR Code from Video File](https://github.com/aleris/zxing-typescript/docs/qr-video/) is provided in the [examples](https://github.com/aleris/zxing-typescript/docs/).
+A full working example for [QR Code from Video File](https://github.com/aleris/zxing-typescript/tree/master/docs/examples/qr-video/) is provided in the [examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples/).
 
 
 ### Scanning from Image
@@ -174,7 +174,7 @@ codeReader.decodeFromImage('img', imgSrc)//here img is the image id from html, i
     })
 ```
 
-A full working example for [QR Code from Image](https://github.com/aleris/zxing-typescript/docs/qr-image/) is provided in the [examples](https://github.com/aleris/zxing-typescript/docs/).
+A full working example for [QR Code from Image](https://github.com/aleris/zxing-typescript/tree/master/docs/examples/qr-image/) is provided in the [examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples/).
 
 Porting Information
 ==================
