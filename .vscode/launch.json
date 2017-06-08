@@ -6,12 +6,12 @@
             "name": "Unit tests",
             "type": "node",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build.node",
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "args": [
                 "--colors",
                 "--timeout", "999999",
-                "./build/test/**/*.js",
+                "./build-node/test/**/*.js",
                 "-g", "QRCodeBlackBox7TestCase"
             ],
             "protocol": "inspector",
@@ -19,7 +19,7 @@
             "stopOnEntry": false,
             "runtimeExecutable": null,
             "sourceMaps": true,
-            "outFiles": ["${workspaceRoot}/build/**/*.js"],
+            "outFiles": ["${workspaceRoot}/build-node/**/*.js"],
             "runtimeArgs": [
                 "--nolazy"
             ],

@@ -175,4 +175,12 @@ export default class CharacterSetECI {
     return characterSet
   }
 
+  public equals(o: CharacterSetECI) {
+    if (!(o instanceof CharacterSetECI)) {
+      return false
+    }
+    const other = <CharacterSetECI> o
+    return this.getName() === other.getName()
+  }
+
 }

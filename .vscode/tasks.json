@@ -7,7 +7,7 @@
     "suppressTaskName": true,
     "tasks": [
         {
-            "taskName": "build",
+            "taskName": "build.node",
             "args": [
                 
             ],

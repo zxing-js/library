@@ -33,14 +33,14 @@ module.exports = {
         libraryTarget: 'umd',
         umdNamedDefine: true
     },
-    // externals: {
-    //     'text-encoding': {
-    //         commonjs: 'text-encoding',
-    //         commonjs2: 'text-encoding',
-    //         amd: 'text-encoding',
-    //         root: 'text-encoding'
-    //     }
-    // },
+    externals: {
+        'text-encoding': {
+            commonjs: 'text-encoding',
+            commonjs2: 'text-encoding',
+            amd: 'text-encoding',
+            root: 'text-encoding'
+        }
+    },
     module: {
         rules: [{ 
                 enforce: 'pre', 
