@@ -2,7 +2,15 @@
   "name": "zxing-typescript",
   "version": "0.0.1",
   "description": "TypeScript port of ZXing open-source, multi-format 1D/2D barcode image processing library",
-  "main": "dist/zxing.js",
+  "keywords": [
+    "zxing-typescript",
+    "zxing",
+    "barcode-scanner",
+    "barcode-reader",
+    "barcode-generator",
+    "qr-code"
+  ],
+  "main": "build-node/core/MultiFormatReader.js",
   "scripts": {
     "build.node": "tsc",
     "build.browser.dist": "webpack -p --env dist --display-error-details",
@@ -17,6 +25,12 @@
   },
   "author": "Adrian Toșcă",
   "license": "Apache License, Version 2.0",
+  "bugs": "https://github.com/aleris/zxing-typescript/issues",
+  "repository":
+    {
+      "type" : "git", 
+      "url" : "https://github.com/aleris/zxing-typescript"
+    },
   "dependencies": {
     "@types/text-encoding": "0.0.30",
     "text-encoding": "^0.6.4"
