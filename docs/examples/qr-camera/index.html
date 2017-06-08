@@ -4,8 +4,8 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Adrian Toșcă">
-		<meta name="description" content="">
-		<title>ZXing TypeScript | Demo</title>
+		<meta name="description" content="Scan QR Code from Video Camera with ZXing javascript library">
+		<title>ZXing | Scan QR Code from Video Camera</title>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
 		<link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
@@ -15,8 +15,10 @@
 		<main class="wrapper">
 
 			<section class="container" id="demo-content">
-				<h1 class="title">Scan Code With Videocamera</h5>
+				<h1 class="title">Scan QR Code from Video Camera</h1>
 				
+				<p>This example shows how to scan a QR code with ZXing javascript library from the device video camera. If more than one video input devices are available (for example front and back camera) the example shows how to read them and use a select to change the input device.</p>
+
 				<div>
 					<a class="button" id="startButton">Start</a>
 					<a class="button" id="resetButton">Reset</a>
@@ -47,7 +49,7 @@
 
 		</main>
 
-		<script type="text/javascript" src="../../zxing.qrcodereader.js"></script>
+		<script type="text/javascript" src="../zxing.qrcodereader.min.js"></script>
         <script type="text/javascript">
 			window.addEventListener('load', function() {
 				const codeReader = new ZXing.BrowserQRCodeReader()
@@ -57,7 +59,7 @@
 						const sourceSelect = document.getElementById('sourceSelect')
 						const firstDeviceId = videoInputDevices[0].deviceId
 						if (videoInputDevices.length > 1) {
-							videoInputDevices.forEach(function(element) {
+							videoInputDevices.forEach((element) => {
 								const sourceOption = document.createElement('option')
 								sourceOption.text = element.label
 								sourceOption.value = element.deviceId

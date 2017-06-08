@@ -9,7 +9,7 @@
     "build.browser.dev": "webpack --env dev",
     "pretest": "npm run build.node",
     "test": "mocha --compilers js:babel-core/register \"build-node/test/core/**/*.js\" --timeout 30000 --colors",
-    "start": "http-server build-browser",
+    "start": "http-server docs",
     "autotransform": "node ./autotransform/transform.js"
   },
   "bin": {

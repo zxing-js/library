@@ -4,8 +4,8 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Adrian Toșcă">
-		<meta name="description" content="">
-		<title>ZXing TypeScript | Demo</title>
+		<meta name="description" content="Scan QR Code from Image with ZXing javascript library">
+		<title>ZXing | Scan QR Code from Image</title>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
 		<link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
@@ -15,8 +15,10 @@
 		<main class="wrapper">
 
 			<section class="container" id="demo-content">
-				<h1 class="title">Scan QR Code From Image</h5>
+				<h1 class="title">Scan QR Code from Image</h1>
 				
+				<p>This example shows how to scan a QR code with ZXing javascript library from an image. The example decodes from the <code>src</code> in <code>img</code> tag, however is also possible to decode directly from an url without an <code>img</code> tag.</p>
+
 				<div>
 					<a class="button" id="decodeButton">Decode</a>
 				</div>
@@ -40,7 +42,7 @@
 
 		</main>
 
-		<script type="text/javascript" src="../../zxing.qrcodereader.js"></script>
+		<script type="text/javascript" src="../zxing.qrcodereader.min.js"></script>
         <script type="text/javascript">
 			window.addEventListener('load', function() {
 				const codeReader = new ZXing.BrowserQRCodeReader('video')

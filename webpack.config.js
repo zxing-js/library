@@ -6,14 +6,15 @@ const env  = require('yargs').argv.env // use --env with webpack 2
 
 const libraryName = 'ZXing'
 
-let plugins = [
-    new CopyWebpackPlugin([{ from: 'src/browser/examples', to: 'examples' }])
-], outputFile
+let plugins = [], outputFile
+plugins.push(new CopyWebpackPlugin([
+        { from: 'build-browser/*.min.*', to: '../docs/examples', flatten: true }
+    ], {debug: true})
+)
 
 if (env === 'dist') {
     //plugins.push(new UglifyJsPlugin())
     outputFile = libraryName.toLowerCase() + '.[name].min.js'
-    
 } else {
     outputFile = libraryName.toLowerCase() + '.[name].js'
 }
