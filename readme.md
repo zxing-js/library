@@ -172,6 +172,10 @@ codeReader.decodeFromImage('img', imgSrc)//here img is the image id from html, i
 
 A full working example for [QR Code from Image](https://github.com/aleris/zxing-typescript/tree/master/docs/examples/qr-image/) is provided in the [examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples/).
 
+### Barcode generation
+
+Not available yet.
+
 Node Usage
 ----------
 
@@ -186,6 +190,15 @@ And the files will be available in `build-node` folder.
 To use in node you will need to provide an implementation of [`LuminanceSource`](https://github.com/aleris/zxing-typescript/blob/master/src/core/LuminanceSource.ts) for an image. A starting point is [`SharpImageLuminanceSource`](https://github.com/aleris/zxing-typescript/blob/master/src/test/core/SharpImageLuminanceSource.ts) from tests that is using [sharp image processing](https://github.com/lovell/sharp) node library.
 
 No examples are availabe for now, however you can have a look at the extensive [tests cases](https://github.com/aleris/zxing-typescript/tree/master/src/test/core/qrcode).
+
+Text Encoding and Decoding
+==========================
+
+The state of encoding and encoding text in javascript/browser is somehow messy at the moment. 
+
+To have full support for all encodings in [CharacterSetECI](https://github.com/aleris/zxing-typescript/blob/master/src/core/common/CharacterSetECI.ts) *except Cp437* use [text-encoding](https://github.com/inexorabletash/text-encoding) library. The library is used implicitly for node, but is an optional dependency for browser because is rather large (> 600k). You will need to include it yourself if you want/need to use it.
+
+By default, in browser, [TextDecoder](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder)/[TextEncoder](https://developer.mozilla.org/ro/docs/Web/API/TextEncoder) web api are used if available (take care as these are labeled as experimental as of this writing). Alos be aware that TextEncoder encodes only to UTF-8 as per spec. If these are not available the library falls back to a minimal implementation that only encodes and decodes to/from UTF-8.
 
 Porting Information
 ===================
