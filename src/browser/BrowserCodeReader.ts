@@ -82,15 +82,20 @@ export default class BrowserCodeReader {
         this.prepareVideoElement(videoElementId)
 
         const me = this
-        me.videoElement.setAttribute('autoplay', 'true')
-        me.videoElement.setAttribute('src', src)
         return new Promise<Result>((resolve, reject) => {
             me.videoPlayEndedEventListener = () => {
                 me.stop()
                 reject(new Exception(Exception.NotFoundException))
             }
             me.videoElement.addEventListener('ended', me.videoPlayEndedEventListener)
-            me.decodeOnceWithDelay(resolve, reject)
+
+            me.videoPlayingEventListener = () => {
+                me.decodeOnceWithDelay(resolve, reject)
+            }
+            me.videoElement.addEventListener('playing', me.videoPlayingEventListener)
+
+            me.videoElement.setAttribute('autoplay', 'true')
+            me.videoElement.setAttribute('src', src)
         })
     }
     
