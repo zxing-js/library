@@ -16,28 +16,24 @@ Usage
 =====
 
 The library has separate builds for node and browser so can be used:
-- from node woth TypeScript (just reference anything from src/core)
-- from node with plain javascript (see below)
+- from browser with TypeScript (just reference anything from src/browser)
 - from browser with plain javascript (see below)
-
-Node Usage
-----------
-
-To use in node you will need to provide an implementation the LuminanceSource for an image. A starting point is SharpImageLuminanceSource from tests that is using [sharp image processing](https://github.com/lovell/sharp) node library.
+- from node with TypeScript (just reference anything from src/core)
+- from node with plain javascript (see below)
 
 
 Browser Usage
 -------------
 
-QR Code is shown the examples below, all other supported barcodes work similary.
+Examples below are for QR barcode, all other supported barcodes work similary.
 
 `npm install zxing-typescript --save`
 
-Then:
+To use from javascript you need to build it:
 
 `npm run build.browser.dist`
 
-To build the javascript files and reference, for example `zxing.qrcodereader.min.js` from `build-browser` folder.
+And then reference, for example `zxing.qrcodereader.min.js` from `build-browser` folder.
 
 See [some demo examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples) for browser usage javascript code examples.
 
@@ -176,24 +172,43 @@ codeReader.decodeFromImage('img', imgSrc)//here img is the image id from html, i
 
 A full working example for [QR Code from Image](https://github.com/aleris/zxing-typescript/tree/master/docs/examples/qr-image/) is provided in the [examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples/).
 
-Porting Information
-==================
+Node Usage
+----------
 
-See [TypeScript Port Info](typescriptport.md).
+`npm install zxing-typescript --save`
+
+If you want to use plain js (es5):
+
+`npm run build.node`
+
+And the files will be available in `build-node` folder.
+
+To use in node you will need to provide an implementation of [`LuminanceSource`](https://github.com/aleris/zxing-typescript/blob/master/src/core/LuminanceSource.ts) for an image. A starting point is [`SharpImageLuminanceSource`](https://github.com/aleris/zxing-typescript/blob/master/src/test/core/SharpImageLuminanceSource.ts) from tests that is using [sharp image processing](https://github.com/lovell/sharp) node library.
+
+No examples are availabe for now, however you can have a look at the extensive [tests cases](https://github.com/aleris/zxing-typescript/tree/master/src/test/core/qrcode).
+
+Porting Information
+===================
+
+See [TypeScript Port Info](typescriptport.md) for information regarging poring approach and reasoning behind some of the approaches taken.
 
 
 Status and Roadmap
 ==================
 
+Done:
 - [x] Port root, common and qrcode format and make it compile
 - [x] Add unit test infrastructure, a first unit test and make it pass (common/BitArrayTestCase)
 - [x] Add all unit tests for everything in root, common and qrcode
 - [x] Add one "back box" test for qrcode
 - [x] Add all "back box" tests for qrcode
 - [x] Create browser integration module and demo UI for qrcode
+- [x] Document browser usage
+
+Todo:
 - [ ] Create tests for node.js usage for qrcode
-- [ ] Adapt documentation for JSDoc, generate documentation
-- [ ] Document library usage
+- [ ] Adapt documentation for JSDoc, generate documentation, cleanup source files
+- [ ] Document node usage
 - [ ] Port aztec format with unit and browser tests
 - [ ] Port client/result parsing with unit and browser tests and documentation
 - [ ] Port datamatrix format with unit and browser tests and documentation
@@ -201,6 +216,7 @@ Status and Roadmap
 - [ ] Port multi parsing with unit and browser tests and documentation
 - [ ] Port oned format with unit and browser tests and documentation
 - [ ] Port pdf417 format with unit and browser tests and documentation
-- [ ] Create tests for all major current browsers
+- [ ] Documentation for using directly from TypeScript
+- [ ] Create automatic tests for all major current browsers
 
 
