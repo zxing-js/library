@@ -8,7 +8,7 @@
     "build.browser.dist": "webpack -p --env dist --display-error-details",
     "build.browser.dev": "webpack --env dev",
     "pretest": "npm run build.node",
-    "test": "mocha --compilers js:babel-core/register \"node-build/test/core/**/*.js\" --timeout 30000 --colors",
+    "test": "mocha --compilers js:babel-core/register \"build-node/test/core/**/*.js\" --timeout 30000 --colors",
     "start": "http-server build-browser",
     "autotransform": "node ./autotransform/transform.js"
   },
