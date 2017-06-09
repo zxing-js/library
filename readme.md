@@ -38,6 +38,8 @@ All the examples are using es6, be sure is supported in your browser or modify a
 
 The builded library itself is targeting es5 (see `.babelrc`). If you want to target es6 change to `"presets": ["es2016"]` and add babel-preset-es2016 to dependencies (but be aware that webpack uglify does not yet support es6 as of this writing).
 
+The browser library is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web api which is marked as experimental as of this writing. You can use external polyfills like [enumerateDevices-shim](https://github.com/pbojinov/enumerateDevices-shim) and [mediaDevices-getUserMedia-polyfill](https://github.com/mozdevs/mediaDevices-getUserMedia-polyfill) to increase browser compatiblity.
+
 ### Scanning from Video Camera
 
 To display the input from the video camera you will need to add a video element in the html page:
