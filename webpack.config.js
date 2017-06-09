@@ -9,7 +9,7 @@ const libraryName = 'ZXing'
 let plugins = [], outputFile
 plugins.push(new CopyWebpackPlugin([
         { from: 'build-browser/*.min.*', to: '../docs/examples', flatten: true }
-    ], {debug: true})
+    ])
 )
 
 if (env === 'dist') {
@@ -52,7 +52,7 @@ module.exports = {
                 test: /\.ts$/,
                 use: [
                     'babel-loader', 
-                    'awesome-typescript-loader?configFileName=tsconfig-dist.json'
+                    'awesome-typescript-loader?configFileName=tsconfig-dist.json',
                 ],
                 //exclude: /node_modules/
             }]

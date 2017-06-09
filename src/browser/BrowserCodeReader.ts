@@ -6,6 +6,12 @@ import Exception from './../core/Exception'
 import HTMLCanvasElementLuminanceSource from './HTMLCanvasElementLuminanceSource'
 import VideoInputDevice from './VideoInputDevice'
 
+/**
+ * Base class for browser code reader.
+ * 
+ * @export
+ * @class BrowserCodeReader
+ */
 export default class BrowserCodeReader {
     private videoElement: HTMLVideoElement
     private imageElement: HTMLImageElement
@@ -17,8 +23,22 @@ export default class BrowserCodeReader {
     private videoPlayingEventListener: EventListener
     private imageLoadedEventListener: EventListener
 
+    /**
+     * Creates an instance of BrowserCodeReader.
+     * @param {Reader} reader The reader instance to decode the barcode
+     * @param {number} [timeBetweenScansMillis=500] the time delay between subsequent decode tries
+     * 
+     * @memberOf BrowserCodeReader
+     */
     public constructor(private reader: Reader, private timeBetweenScansMillis: number = 500) {}
 
+    /**
+     * Obtain the list of available devices with type 'videoinput'.
+     * 
+     * @returns {Promise<VideoInputDevice[]>} an array of available video input devices
+     * 
+     * @memberOf BrowserCodeReader
+     */
     public getVideoInputDevices(): Promise<VideoInputDevice[]> {
         return new Promise<VideoInputDevice[]>((resolve, reject) => {
             navigator.mediaDevices.enumerateDevices()
@@ -40,10 +60,19 @@ export default class BrowserCodeReader {
         })
     }
 
-    public decodeFromInputVideoDevice(deviceId?: string, videoElementId?: string): Promise<Result> {
+    /**
+     * Decodes the barcode from the device specified by deviceId while showing the video in the specified video element.
+     * 
+     * @param {string} [deviceId] the id of one of the devices obtained after calling getVideoInputDevices. Can be undefined, in this case it will decode from one of the available devices, preffering the main camera (environment facing) if available.
+     * @param {(string|HTMLVideoElement)} [videoElement] the video element in page where to show the video while decoding. Can be either an element id or directly an HTMLVideoElement. Can be undefined, in which case no video will be shown.
+     * @returns {Promise<Result>} The decoding result. 
+     * 
+     * @memberOf BrowserCodeReader
+     */
+    public decodeFromInputVideoDevice(deviceId?: string, videoElement?: string|HTMLVideoElement): Promise<Result> {
         this.reset()
 
-        this.prepareVideoElement(videoElementId)
+        this.prepareVideoElement(videoElement)
 
         let constraints: MediaStreamConstraints
         if (undefined === deviceId) {
@@ -76,10 +105,19 @@ export default class BrowserCodeReader {
         })
     }
 
-    public decodeFromVideoSource(src: string, videoElementId?: string): Promise<Result> {
+    /**
+     * Decodes a barcode form a video url.
+     * 
+     * @param {string} videoUrl The video url to decode from, required.
+     * @param {(string|HTMLVideoElement)} [videoElement] The video element where to play the video while decoding. Can be undefined in which case no video is shown.
+     * @returns {Promise<Result>} The decoding result. 
+     * 
+     * @memberOf BrowserCodeReader
+     */
+    public decodeFromVideoSource(videoUrl: string, videoElement?: string|HTMLVideoElement): Promise<Result> {
         this.reset()
 
-        this.prepareVideoElement(videoElementId)
+        this.prepareVideoElement(videoElement)
 
         const me = this
         return new Promise<Result>((resolve, reject) => {
@@ -95,17 +133,19 @@ export default class BrowserCodeReader {
             me.videoElement.addEventListener('playing', me.videoPlayingEventListener)
 
             me.videoElement.setAttribute('autoplay', 'true')
-            me.videoElement.setAttribute('src', src)
+            me.videoElement.setAttribute('src', videoUrl)
         })
     }
     
-    private prepareVideoElement(videoElementId?: string) {
-        if (undefined !== videoElementId) {
-            this.videoElement = <HTMLVideoElement>this.getMediaElement(videoElementId, 'video')
-        } else {
+    private prepareVideoElement(videoElement?: string|HTMLVideoElement) {
+        if (undefined === videoElement) {
             this.videoElement = document.createElement('video')
             this.videoElement.width = 200
             this.videoElement.height = 200
+        } else if (typeof videoElement === 'string') {
+            this.videoElement = <HTMLVideoElement>this.getMediaElement(videoElement, 'video')
+        } else {
+            this.videoElement = videoElement
         }
     }
 
@@ -121,26 +161,33 @@ export default class BrowserCodeReader {
         return mediaElement
     }
 
-    public decodeFromImage(imageElement?: string|HTMLImageElement, src?: string): Promise<Result> {
+    /**
+     * Decodes the barcode from an image.
+     * 
+     * @param {(string|HTMLImageElement)} [imageElement] The image element that can be either an element id or the element itself. Can be undefined in which case the decoding will be done from the imageUrl parameter.
+     * @param {string} [imageUrl] 
+     * @returns {Promise<Result>} The decoding result. 
+     * 
+     * @memberOf BrowserCodeReader
+     */
+    public decodeFromImage(imageElement?: string|HTMLImageElement, imageUrl?: string): Promise<Result> {
         this.reset()
 
-        if (undefined === imageElement) {
-            this.prepareImageElement()
-        } else if (typeof imageElement === 'string') {
-            this.prepareImageElement(imageElement)
-        } else {
-            this.imageElement = imageElement
+        if (undefined === imageElement && undefined === imageUrl) {
+            throw new Exception(Exception.ArgumentException, 'either imageElement with a src set or an url must be provided')
         }
+
+        this.prepareImageElement(imageElement)
 
         const me = this
         return new Promise<Result>((resolve, reject) => {
-            if (undefined !== src) {
+            if (undefined !== imageUrl) {
                 me.imageLoadedEventListener = () => {
                     me.decodeOnce(resolve, reject, false)
                 }
                 me.imageElement.addEventListener('load', me.imageLoadedEventListener)
                 
-                me.imageElement.src = src
+                me.imageElement.src = imageUrl
             } else if (this.isImageLoaded(this.imageElement)) {
                 me.decodeOnce(resolve, reject, false)
             } else {
@@ -169,13 +216,15 @@ export default class BrowserCodeReader {
         return true
     }
 
-    private prepareImageElement(imageElementId?: string) {
-        if (undefined !== imageElementId) {
-            this.imageElement = <HTMLImageElement>this.getMediaElement(imageElementId, 'img')
-        } else {
+    private prepareImageElement(imageElement?: string|HTMLImageElement) {
+        if (undefined === imageElement) {
             this.imageElement = document.createElement('img')
             this.imageElement.width = 200
             this.imageElement.height = 200
+        } else if (typeof imageElement === 'string') {
+            this.imageElement = <HTMLImageElement>this.getMediaElement(imageElement, 'img')
+        } else {
+            this.imageElement = imageElement
         }
     }
 
@@ -241,6 +290,11 @@ export default class BrowserCodeReader {
         }
     }
 
+    /**
+     * Resets the code reader to the initial state. Cancels any ongoing barcode scanning from video or camera.
+     * 
+     * @memberOf BrowserCodeReader
+     */
     public reset() {
         this.stop()
 

@@ -36,7 +36,7 @@ See [some demo examples](https://github.com/aleris/zxing-typescript/tree/master/
 
 All the examples are using es6, be sure is supported in your browser or modify as needed (eg. var instead of const etc.). 
 
-The builded library itself is also targeting es6 (see `.babelrc`). If you need to target es5 just change `"presets": ["es2016"]` to `"es2015"` in this file, babel-preset-es2015 is already included in dependencies.
+The builded library itself is targeting es5 (see `.babelrc`). If you want to target es6 change to `"presets": ["es2016"]` and add babel-preset-es2016 to dependencies (but be aware that webpack uglify does not yet support es6 as of this writing).
 
 ### Scanning from Video Camera
 
