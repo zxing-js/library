@@ -20,9 +20,6 @@
     "start": "http-server docs",
     "autotransform": "node ./autotransform/transform.js"
   },
-  "bin": {
-    "tsc": "./bin/tsc"
-  },
   "author": "Adrian Toșcă",
   "license": "Apache License, Version 2.0",
   "bugs": "https://github.com/aleris/zxing-typescript/issues",

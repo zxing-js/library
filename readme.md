@@ -30,6 +30,8 @@ To use from javascript you need to build the browser distribution package:
 
 And then include what you need from `build-browser` folder (for example `zxing.qrcodereader.min.js` for qr barcode reader).
 
+Or just grap the minified files that are available in [examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples).
+
 See [some demo examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples) for browser code examples with javascript.
 
 All the examples are using es6, be sure is supported in your browser or modify as needed (eg. var instead of const etc.). 
@@ -215,10 +217,11 @@ Done:
 - [x] Document browser usage
 
 Todo:
+- [ ] Implement QR barcode generation in browser to svg
 - [ ] Port pdf417 format with unit and browser tests and documentation
 - [ ] Adapt documentation for JSDoc, generate documentation, cleanup source files
-- [ ] Port aztec format with unit and browser tests
 - [ ] Create automatic tests for all major current browsers
+- [ ] Port aztec format with unit and browser tests
 - [ ] Port multi parsing with unit and browser tests and documentation
 - [ ] Port datamatrix format with unit and browser tests and documentation
 - [ ] Port maxicode format with unit and browser tests and documentation
