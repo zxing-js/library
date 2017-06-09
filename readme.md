@@ -15,12 +15,7 @@ See [some demo examples](https://aleris.github.io/zxing-typescript/) in browser.
 Usage
 =====
 
-The library has separate builds for node and browser so can be used:
-- from browser with TypeScript (just reference anything from src/browser)
-- from browser with plain javascript (see below)
-- from node with TypeScript (just reference anything from src/core)
-- from node with plain javascript (see below)
-
+The library can be used from browser with TypeScript (include anything from src/browser however you must do the packaging yourself) or with plain javascript (see below). It can also be used from node (see below). The library is using separate builds for node and browser to allow different ES targeting.
 
 Browser Usage
 -------------
@@ -29,22 +24,24 @@ Examples below are for QR barcode, all other supported barcodes work similary.
 
 `npm install zxing-typescript --save`
 
-To use from javascript you need to build it:
+To use from javascript you need to build the browser distribution package:
 
 `npm run build.browser.dist`
 
-And then reference, for example `zxing.qrcodereader.min.js` from `build-browser` folder.
+And then include what you need from `build-browser` folder (for example `zxing.qrcodereader.min.js` for qr barcode reader).
 
-See [some demo examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples) for browser usage javascript code examples.
+See [some demo examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples) for browser code examples with javascript.
 
-All the examples are using es6, be sure is supported in your browser or modify as needed (eg. var instead of const etc.).
+All the examples are using es6, be sure is supported in your browser or modify as needed (eg. var instead of const etc.). 
+
+The builded library itself is also targeting es6 (see `.babelrc`). If you need to target es5 just change `"presets": ["es2016"]` to `"es2015"` in this file, babel-preset-es2015 is already included in dependencies.
 
 ### Scanning from Video Camera
 
 To display the input from the video camera you will need to add a video element in the html page:
 
 ```html
-    <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
+<video id="video" width="300" height="200" style="border: 1px solid gray"></video>
 ```
 
 To start decoding, first obtain a list of video input devices with:
@@ -92,7 +89,7 @@ A full working example for [QR Code from Video Camera](https://github.com/aleris
 Similar as above you can use a video element in the html page:
 
 ```html
-    <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
+<video id="video" width="300" height="200" style="border: 1px solid gray"></video>
 ```
 
 And to decode the video from an url:
@@ -126,7 +123,7 @@ A full working example for [QR Code from Video File](https://github.com/aleris/z
 Similar as above you can use a img element in the html page (with src attribute set):
 
 ```html
-    <img id="img" src="qrcode-image.png" width="200" height="300" style="border: 1px solid gray"></img>
+<img id="img" src="qrcode-image.png" width="200" height="300" style="border: 1px solid gray"></img>
 ```
 
 And to decode the image:
@@ -154,10 +151,10 @@ codeReader.decodeFromImage(undefined, imgSrc)
     })
 ```
 
-Or decode the image url directly from an url, with an `img` element in page (notice in this case no `src` attribute is set for `img` element):
+Or decode the image url directly from an url, with an `img` element in page (notice no `src` attribute is set for `img` element):
 
 ```html
-    <img id="img" width="200" height="300" style="border: 1px solid gray"></img>
+<img id="img" width="200" height="300" style="border: 1px solid gray"></img>
 ```
 
 ```javascript
@@ -181,7 +178,7 @@ Node Usage
 
 `npm install zxing-typescript --save`
 
-If you want to use plain js (es5):
+If you want to use plain js (build to es5, see tsconfig.js):
 
 `npm run build.node`
 
@@ -194,17 +191,16 @@ No examples are availabe for now, however you can have a look at the extensive [
 Text Encoding and Decoding
 ==========================
 
-The state of encoding and encoding text in javascript/browser is somehow messy at the moment. 
+To decode a barcode, the library needs at some point to decode from bits to text. Also, to generate a barcode it needs to encode text to bits. Unfortunately, the state of encoding and encoding text in javascript/browser is somehow messy at the moment. 
 
-To have full support for all encodings in [CharacterSetECI](https://github.com/aleris/zxing-typescript/blob/master/src/core/common/CharacterSetECI.ts) *except Cp437* use [text-encoding](https://github.com/inexorabletash/text-encoding) library. The library is used implicitly for node, but is an optional dependency for browser because is rather large (> 600k). You will need to include it yourself if you want/need to use it.
+To have full support for all encodings in [CharacterSetECI](https://github.com/aleris/zxing-typescript/blob/master/src/core/common/CharacterSetECI.ts) *except Cp437* use [text-encoding](https://github.com/inexorabletash/text-encoding) library. The library is used implicitly for node (and tests), but is an optional dependency for browser because is rather large (> 600k). You will need to include it yourself if you want/need to use it.
 
-By default, in browser, [TextDecoder](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder)/[TextEncoder](https://developer.mozilla.org/ro/docs/Web/API/TextEncoder) web api are used if available (take care as these are labeled as experimental as of this writing). Alos be aware that TextEncoder encodes only to UTF-8 as per spec. If these are not available the library falls back to a minimal implementation that only encodes and decodes to/from UTF-8.
+By default, in browser, [TextDecoder](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder)/[TextEncoder](https://developer.mozilla.org/ro/docs/Web/API/TextEncoder) web api are used if available (take care as these are labeled as experimental as of this writing). Also, be aware that TextEncoder encodes only to UTF-8 as per spec. If these are not available the library falls back to a minimal implementation that only encodes and decodes to/from UTF-8 (see [`StringEncoding`](https://github.com/aleris/zxing-typescript/blob/master/src/core/util/StringEncoding.ts)).
 
 Porting Information
 ===================
 
 See [TypeScript Port Info](typescriptport.md) for information regarging poring approach and reasoning behind some of the approaches taken.
-
 
 Status and Roadmap
 ==================
@@ -219,17 +215,15 @@ Done:
 - [x] Document browser usage
 
 Todo:
-- [ ] Create tests for node.js usage for qrcode
+- [ ] Port pdf417 format with unit and browser tests and documentation
 - [ ] Adapt documentation for JSDoc, generate documentation, cleanup source files
-- [ ] Document node usage
 - [ ] Port aztec format with unit and browser tests
-- [ ] Port client/result parsing with unit and browser tests and documentation
+- [ ] Create automatic tests for all major current browsers
+- [ ] Port multi parsing with unit and browser tests and documentation
 - [ ] Port datamatrix format with unit and browser tests and documentation
 - [ ] Port maxicode format with unit and browser tests and documentation
-- [ ] Port multi parsing with unit and browser tests and documentation
 - [ ] Port oned format with unit and browser tests and documentation
-- [ ] Port pdf417 format with unit and browser tests and documentation
+- [ ] Port client/result parsing with unit and browser tests and documentation
 - [ ] Documentation for using directly from TypeScript
-- [ ] Create automatic tests for all major current browsers
 
 

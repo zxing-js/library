@@ -1,4 +1,4 @@
 {
-    "presets": ["es2015"],
+    "presets": ["es2016"],
     "plugins": ["babel-plugin-add-module-exports"]
 }
