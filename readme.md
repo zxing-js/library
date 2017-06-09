@@ -175,6 +175,21 @@ A full working example for [QR Code from Image](https://github.com/aleris/zxing-
 
 Not available yet.
 
+Using from TypeScript
+---------------------
+
+Install the package:
+
+`npm install zxing-typescript --save`
+
+And then include directly `.ts` files you need, for example:
+
+```javascript
+import { BrowserQRCodeReader, VideoInputDevice } from 'zxing-typescript/src/browser/BrowserQRCodeReader'
+```
+
+The usage is identical with the above.
+
 Node Usage
 ----------
 
