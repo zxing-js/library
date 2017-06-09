@@ -1,6 +1,6 @@
 {
   "name": "zxing-typescript",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "TypeScript port of ZXing open-source, multi-format 1D/2D barcode image processing library",
   "keywords": [
     "zxing-typescript",
