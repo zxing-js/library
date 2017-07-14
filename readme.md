@@ -38,7 +38,9 @@ All the examples are using es6, be sure is supported in your browser or modify a
 
 The builded library itself is targeting es5 (see `.babelrc`). If you want to target es6 change to `"presets": ["es2016"]` and add babel-preset-es2016 to dependencies (but be aware that webpack uglify does not yet support es6 as of this writing).
 
-The browser library is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web api which is marked as experimental as of this writing. You can use external polyfills like [enumerateDevices-shim](https://github.com/pbojinov/enumerateDevices-shim) and [mediaDevices-getUserMedia-polyfill](https://github.com/mozdevs/mediaDevices-getUserMedia-polyfill) to increase browser compatiblity.
+The browser library is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web api which is marked as experimental as of this writing. You can use external polyfills like [webrtc-adapter](https://github.com/webrtc/adapter) to increase browser compatiblity.
+
+Also, note that the library is using the [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (Int32Array, Uint8ClampedArray, etc.) which are not available in older browsers (for example Android 4 default browser, etc.). You can use a plyfill library like [core-js](https://github.com/zloirock/core-js) to support these browsers.
 
 ### Scanning from Video Camera
 

@@ -17,7 +17,8 @@
     "build.browser.dev": "webpack --env dev --display-error-details",
     "pretest": "npm run build.node",
     "test": "mocha --compilers js:babel-core/register \"build-node/test/core/**/*.js\" --timeout 30000 --colors",
-    "start": "http-server docs",
+    "docs": "npm run build.browser.dist && copyfiles -u 1 build-browser/*.min.js docs/examples/",
+    "start": "npm run docs && http-server docs",
     "autotransform": "node ./autotransform/transform.js"
   },
   "author": "Adrian Toșcă",
@@ -45,7 +46,7 @@
     "babel-loader": "^7.0.0",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-preset-es2015": "^6.24.1",
-    "copy-webpack-plugin": "^4.0.1",
+    "copyfiles": "^1.2.0",
     "mocha": "^3.3.0",
     "seedrandom": "^2.4.3",
     "sharp": "^0.17.3",

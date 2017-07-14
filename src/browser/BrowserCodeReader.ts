@@ -183,13 +183,13 @@ export default class BrowserCodeReader {
         return new Promise<Result>((resolve, reject) => {
             if (undefined !== imageUrl) {
                 me.imageLoadedEventListener = () => {
-                    me.decodeOnce(resolve, reject, false)
+                    me.decodeOnce(resolve, reject, false, true)
                 }
                 me.imageElement.addEventListener('load', me.imageLoadedEventListener)
                 
                 me.imageElement.src = imageUrl
             } else if (this.isImageLoaded(this.imageElement)) {
-                me.decodeOnce(resolve, reject, false)
+                me.decodeOnce(resolve, reject, false, true)
             } else {
                 throw new Exception(Exception.ArgumentException, `either src or a loaded img should be provided`)
             }
@@ -232,7 +232,7 @@ export default class BrowserCodeReader {
         this.timeoutHandler = window.setTimeout(this.decodeOnce.bind(this, resolve, reject), this.timeBetweenScansMillis)
     }
 
-    private decodeOnce(resolve: (result: Result) => any, reject: (error: any) => any, retryIfNotFound: boolean = true): void {
+    private decodeOnce(resolve: (result: Result) => any, reject: (error: any) => any, retryIfNotFound: boolean = true, retryIfChecksumOrFormatError: boolean = true): void {
         if (undefined === this.canvasElementContext) {
             this.prepareCaptureCanvas()
         }
@@ -245,8 +245,12 @@ export default class BrowserCodeReader {
             const result = this.readerDecode(binaryBitmap)
             resolve(result)
         } catch(re) {
+            console.log(retryIfChecksumOrFormatError, re)
             if (retryIfNotFound && Exception.isOfType(re, Exception.NotFoundException)) {
                 console.log('not found, trying again...')
+                this.decodeOnceWithDelay(resolve, reject)
+            } else if (retryIfChecksumOrFormatError && ( Exception.isOfType(re, Exception.ChecksumException) || Exception.isOfType(re, Exception.FormatException) ) ) {
+                console.log('checksum or format error, trying again...', re)
                 this.decodeOnceWithDelay(resolve, reject)
             } else {
                 reject(re)

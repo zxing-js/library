@@ -1,16 +1,11 @@
 const path = require('path')
 //const webpack = require('webpack')
 //const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const env  = require('yargs').argv.env // use --env with webpack 2
 
 const libraryName = 'ZXing'
 
-let plugins = [], outputFile
-plugins.push(new CopyWebpackPlugin([
-        { from: 'build-browser/*.min.*', to: '../docs/examples', flatten: true }
-    ])
-)
+let outputFile
 
 if (env === 'dist') {
     //plugins.push(new UglifyJsPlugin())
@@ -60,6 +55,5 @@ module.exports = {
     resolve: {
         modules: ['node_modules', path.resolve('./src')],
         extensions: ['.ts', '.js']
-    },
-    plugins: plugins
+    }
 }
