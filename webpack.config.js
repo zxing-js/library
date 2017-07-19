@@ -19,7 +19,8 @@ const outputDir = path.join(__dirname, 'build-browser')
 module.exports = {
     context: __dirname,
     entry: {
-        'qrcodereader': './src/browser/BrowserQRCodeReader'
+        'qrcodereader': './src/browser/BrowserQRCodeReader',
+        'qrcodewriter': './src/browser/BrowserQRCodeSvgWriter'
     },
     devtool: 'source-map',
     output: {

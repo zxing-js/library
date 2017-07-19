@@ -234,9 +234,9 @@ Done:
 - [x] Add all "back box" tests for qrcode
 - [x] Create browser integration module and demo UI for qrcode
 - [x] Document browser usage
+- [x] Implement QR barcode generation to SVG in browser
 
 Todo:
-- [ ] Implement QR barcode generation in browser to svg
 - [ ] Port pdf417 format with unit and browser tests and documentation
 - [ ] Adapt documentation for JSDoc, generate documentation, cleanup source files
 - [ ] Create automatic tests for all major current browsers
