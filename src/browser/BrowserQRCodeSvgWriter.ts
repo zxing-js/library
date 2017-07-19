@@ -7,8 +7,16 @@ import ErrorCorrectionLevel from '../core/qrcode/decoder/ErrorCorrectionLevel'
 class BrowserQRCodeSvgWriter {
     private static readonly QUIET_ZONE_SIZE = 4
     private static readonly SVG_NS = "http://www.w3.org/2000/svg"
+    
+    private containerElement: HTMLElement
 
-    public constructor(private containerElement: HTMLElement) { }
+    public constructor(containerElement: string|HTMLElement) { 
+        if (typeof containerElement === 'string') {
+            this.containerElement = document.getElementById(containerElement)
+        } else {
+            this.containerElement = containerElement
+        }
+    }
 
     public write(contents: string,
         width: number,

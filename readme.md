@@ -177,7 +177,20 @@ A full working example for [QR Code from Image](https://github.com/aleris/zxing-
 
 ### Barcode generation
 
-Not available yet.
+To generate a QR Code SVG image include 'zxing.qrcodewriter.min.js' from `build-browser`. You will need to include an element where the SVG element will be appended:
+
+```html
+<div id="result"></div>
+```
+
+And then:
+
+```javascript
+const codeWriter = new ZXing.BrowserQRCodeSvgWriter('result')
+svgElement = codeWriter.write(input, 300, 300)
+```
+
+A full working example for [QR Code write to SVG](https://github.com/aleris/zxing-typescript/tree/master/docs/examples/qr-svg-writer/) is provided in the [examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples/).
 
 Using from TypeScript
 ---------------------

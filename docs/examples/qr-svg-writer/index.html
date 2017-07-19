@@ -50,7 +50,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2014-11-29/FileSaver.js"></script>
         <script type="text/javascript">
 			window.addEventListener('load', () => {
-				const codeWriter = new ZXing.BrowserQRCodeSvgWriter(document.getElementById('result'))
+				const codeWriter = new ZXing.BrowserQRCodeSvgWriter('result')
 				console.log('ZXing code writer initialized')
 
                 let svgElement;
