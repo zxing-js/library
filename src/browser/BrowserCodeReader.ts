@@ -81,7 +81,7 @@ export default class BrowserCodeReader {
             }
         } else {
             constraints = {
-                video: { deviceId }
+                video: { deviceId: { exact: deviceId } }
             }
         }
 
