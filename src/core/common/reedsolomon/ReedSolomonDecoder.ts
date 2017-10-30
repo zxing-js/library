@@ -55,7 +55,7 @@ export default class ReedSolomonDecoder {
    * @param twoS number of error-correction codewords available
    * @throws ReedSolomonException if decoding fails for any reason
    */
-  public decode(received: Int32Array, twoS: number/*int*/): void /*throws ReedSolomonException*/ {
+  public decode(received: Int32Array, twoS: number /*int*/): void /*throws ReedSolomonException*/ {
     const field = this.field
     const poly = new GenericGFPoly(field, received)
     const syndromeCoefficients = new Int32Array(twoS)
@@ -85,7 +85,7 @@ export default class ReedSolomonDecoder {
     }
   }
 
-  private runEuclideanAlgorithm(a: GenericGFPoly, b: GenericGFPoly, R: number/*int*/): GenericGFPoly[]
+  private runEuclideanAlgorithm(a: GenericGFPoly, b: GenericGFPoly, R: number /*int*/): GenericGFPoly[]
       /*throws ReedSolomonException*/ {
     // Assume a's degree is >= b's
     if (a.getDegree() < b.getDegree()) {

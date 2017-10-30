@@ -31,7 +31,7 @@ export default class FinderPattern extends ResultPoint {
   //   this(posX, posY, estimatedModuleSize, 1)
   // }
 
-  public constructor(posX: number/*float*/, posY: number/*float*/, private estimatedModuleSize: number/*float*/, private count?: number/*int*/) {
+  public constructor(posX: number/*float*/, posY: number/*float*/, private estimatedModuleSize: number/*float*/, private count?: number /*int*/) {
     super(posX, posY)
     if (undefined === count) {
       this.count = 1
@@ -42,7 +42,7 @@ export default class FinderPattern extends ResultPoint {
     return this.estimatedModuleSize
   }
 
-  public getCount(): number/*int*/ {
+  public getCount(): number /*int*/ {
     return this.count
   }
 

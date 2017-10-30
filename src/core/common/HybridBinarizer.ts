@@ -100,10 +100,10 @@ export default class HybridBinarizer extends GlobalHistogramBinarizer {
    * on the last pixels in the row/column which are also used in the previous block).
    */
   private static calculateThresholdForBlock(luminances: Uint8ClampedArray,
-                                            subWidth: number/*int*/,
-                                            subHeight: number/*int*/,
-                                            width: number/*int*/,
-                                            height: number/*int*/,
+                                            subWidth: number /*int*/,
+                                            subHeight: number /*int*/,
+                                            width: number /*int*/,
+                                            height: number /*int*/,
                                             blackPoints: Int32Array[],
                                             matrix: BitMatrix): void {
     const maxYOffset = height - HybridBinarizer.BLOCK_SIZE
@@ -131,7 +131,7 @@ export default class HybridBinarizer extends GlobalHistogramBinarizer {
     }
   }
 
-  private static cap(value: number/*int*/, min: number/*int*/, max: number/*int*/): number/*int*/ {
+  private static cap(value: number /*int*/, min: number /*int*/, max: number /*int*/): number /*int*/ {
     return value < min ? min : value > max ? max : value
   }
 
@@ -139,10 +139,10 @@ export default class HybridBinarizer extends GlobalHistogramBinarizer {
    * Applies a single threshold to a block of pixels.
    */
   private static thresholdBlock(luminances: Uint8ClampedArray,
-                                    xoffset: number/*int*/,
-                                    yoffset: number/*int*/,
-                                    threshold: number/*int*/,
-                                    stride: number/*int*/,
+                                    xoffset: number /*int*/,
+                                    yoffset: number /*int*/,
+                                    threshold: number /*int*/,
+                                    stride: number /*int*/,
                                     matrix: BitMatrix): void {
     for (let y = 0, offset = yoffset * stride + xoffset; y < HybridBinarizer.BLOCK_SIZE; y++, offset += stride) {
       for (let x = 0; x < HybridBinarizer.BLOCK_SIZE; x++) {
@@ -160,10 +160,10 @@ export default class HybridBinarizer extends GlobalHistogramBinarizer {
    *  http://groups.google.com/group/zxing/browse_thread/thread/d06efa2c35a7ddc0
    */
   private static calculateBlackPoints(luminances: Uint8ClampedArray,
-                                        subWidth: number/*int*/,
-                                        subHeight: number/*int*/,
-                                        width: number/*int*/,
-                                        height: number/*int*/): Int32Array[] {
+                                        subWidth: number /*int*/,
+                                        subHeight: number /*int*/,
+                                        width: number /*int*/,
+                                        height: number /*int*/): Int32Array[] {
     const maxYOffset = height - HybridBinarizer.BLOCK_SIZE
     const maxXOffset = width - HybridBinarizer.BLOCK_SIZE
     const blackPoints = new Array<Int32Array>(subHeight)//subWidth

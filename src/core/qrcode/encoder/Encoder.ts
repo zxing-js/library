@@ -61,7 +61,7 @@ export default class Encoder {
 
   // The mask penalty calculation is complicated.  See Table 21 of JISX0510:2004 (p.45) for details.
   // Basically it applies four rules and summate all penalties.
-  private static calculateMaskPenalty(matrix: ByteMatrix): number/*int*/ {
+  private static calculateMaskPenalty(matrix: ByteMatrix): number /*int*/ {
     return MaskUtil.applyMaskPenaltyRule1(matrix)
         + MaskUtil.applyMaskPenaltyRule2(matrix)
         + MaskUtil.applyMaskPenaltyRule3(matrix)
@@ -188,7 +188,7 @@ export default class Encoder {
   private static calculateBitsNeeded(mode: Mode,
                                         headerBits: BitArray,
                                         dataBits: BitArray,
-                                        version: Version): number/*int*/ {
+                                        version: Version): number /*int*/ {
     return headerBits.getSize() + mode.getCharacterCountBits(version) + dataBits.getSize()
   }
 
@@ -196,7 +196,7 @@ export default class Encoder {
    * @return the code point of the table used in alphanumeric mode or
    *  -1 if there is no corresponding code in the table.
    */
-  public static getAlphanumericCode(code: number/*int*/): number/*int*/ {
+  public static getAlphanumericCode(code: number /*int*/): number /*int*/ {
     if (code < Encoder.ALPHANUMERIC_TABLE.length) {
       return Encoder.ALPHANUMERIC_TABLE[code]
     }
@@ -260,7 +260,7 @@ export default class Encoder {
   private static chooseMaskPattern(bits: BitArray,
                                        ecLevel: ErrorCorrectionLevel,
                                        version: Version,
-                                       matrix: ByteMatrix): number/*int*/ /*throws WriterException*/ {
+                                       matrix: ByteMatrix): number /*int*/ /*throws WriterException*/ {
 
     let minPenalty = Number.MAX_SAFE_INTEGER;  // Lower penalty is better.
     let bestMaskPattern = -1
@@ -276,7 +276,7 @@ export default class Encoder {
     return bestMaskPattern
   }
 
-  private static chooseVersion(numInputBits: number/*int*/, ecLevel: ErrorCorrectionLevel): Version /*throws WriterException*/ {
+  private static chooseVersion(numInputBits: number /*int*/, ecLevel: ErrorCorrectionLevel): Version /*throws WriterException*/ {
     for (let versionNum = 1; versionNum <= 40; versionNum++) {
       const version = Version.getVersionForNumber(versionNum)
       if (Encoder.willFit(numInputBits, version, ecLevel)) {
@@ -290,7 +290,7 @@ export default class Encoder {
    * @return true if the number of input bits will fit in a code with the specified version and
    * error correction level.
    */
-  private static willFit(numInputBits: number/*int*/, version: Version, ecLevel: ErrorCorrectionLevel): boolean {
+  private static willFit(numInputBits: number /*int*/, version: Version, ecLevel: ErrorCorrectionLevel): boolean {
       // In the following comments, we use numbers of Version 7-H.
       // numBytes = 196
       const numBytes = version.getTotalCodewords()
@@ -306,7 +306,7 @@ export default class Encoder {
   /**
    * Terminate bits as described in 8.4.8 and 8.4.9 of JISX0510:2004 (p.24).
    */
-  public static terminateBits(numDataBytes: number/*int*/, bits: BitArray): void /*throws WriterException*/ {
+  public static terminateBits(numDataBytes: number /*int*/, bits: BitArray): void /*throws WriterException*/ {
     const capacity = numDataBytes * 8;
     if (bits.getSize() > capacity) {
       throw new Exception(Exception.WriterException, "data bits cannot fit in the QR Code" + bits.getSize() + " > " +
@@ -338,10 +338,10 @@ export default class Encoder {
    * the result in "numDataBytesInBlock", and "numECBytesInBlock". See table 12 in 8.5.1 of
    * JISX0510:2004 (p.30)
    */
-  public static getNumDataBytesAndNumECBytesForBlockID(numTotalBytes: number/*int*/,
-                                                        numDataBytes: number/*int*/,
-                                                        numRSBlocks: number/*int*/,
-                                                        blockID: number/*int*/,
+  public static getNumDataBytesAndNumECBytesForBlockID(numTotalBytes: number /*int*/,
+                                                        numDataBytes: number /*int*/,
+                                                        numRSBlocks: number /*int*/,
+                                                        blockID: number /*int*/,
                                                         numDataBytesInBlock: Int32Array,
                                                         numECBytesInBlock: Int32Array): void /*throws WriterException*/ {
     if (blockID >= numRSBlocks) {
@@ -395,9 +395,9 @@ export default class Encoder {
    * "result". The interleave rule is complicated. See 8.6 of JISX0510:2004 (p.37) for details.
    */
   public static interleaveWithECBytes(bits: BitArray,
-                                        numTotalBytes: number/*int*/,
-                                        numDataBytes: number/*int*/,
-                                        numRSBlocks: number/*int*/): BitArray /*throws WriterException*/ {
+                                        numTotalBytes: number /*int*/,
+                                        numDataBytes: number /*int*/,
+                                        numRSBlocks: number /*int*/): BitArray /*throws WriterException*/ {
 
     // "bits" must have "getNumDataBytes" bytes of data.
     if (bits.getSizeInBytes() !== numDataBytes) {
@@ -462,7 +462,7 @@ export default class Encoder {
     return result
   }
 
-  public static generateECBytes(dataBytes: Uint8Array, numEcBytesInBlock: number/*int*/): Uint8Array {
+  public static generateECBytes(dataBytes: Uint8Array, numEcBytesInBlock: number /*int*/): Uint8Array {
     const numDataBytes = dataBytes.length
     const toEncode: Int32Array = new Int32Array(numDataBytes + numEcBytesInBlock)//int[numDataBytes + numEcBytesInBlock]
     for (let i = 0; i < numDataBytes; i++) {
@@ -488,7 +488,7 @@ export default class Encoder {
   /**
    * Append length info. On success, store the result in "bits".
    */
-  public static appendLengthInfo(numLetters: number/*int*/, version: Version, mode: Mode, bits: BitArray): void /*throws WriterException*/ {
+  public static appendLengthInfo(numLetters: number /*int*/, version: Version, mode: Mode, bits: BitArray): void /*throws WriterException*/ {
     const numBits = mode.getCharacterCountBits(version)
     if (numLetters >= (1 << numBits)) {
       throw new Exception(Exception.WriterException, numLetters + " is bigger than " + ((1 << numBits) - 1))

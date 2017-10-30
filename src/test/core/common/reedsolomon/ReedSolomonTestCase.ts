@@ -35,8 +35,8 @@ import ReedSolomonDecoder from './../../../../core/common/reedsolomon/ReedSolomo
  */
 describe("ReedSolomonTestCase", () => {
 
-  const DECODER_RANDOM_TEST_ITERATIONS: number/*int*/ = 3
-  const DECODER_TEST_ITERATIONS: number/*int*/ = 10
+  const DECODER_RANDOM_TEST_ITERATIONS: number /*int*/ = 3
+  const DECODER_TEST_ITERATIONS: number /*int*/ = 10
 
   it("testDataMatrix", () => {
     // real life test cases
@@ -406,11 +406,11 @@ describe("ReedSolomonTestCase", () => {
     testEncodeDecodeRandom(GenericGF.AZTEC_DATA_12, 3072, 1023)
   })
 
-  function corrupt(received: Int32Array, howMany: number/*int*/, random: Random, max: number/*int*/): void {
+  function corrupt(received: Int32Array, howMany: number /*int*/, random: Random, max: number /*int*/): void {
     const corrupted = new Map<number, boolean>()//(received.length)
-    for (let j: number/*int*/ = 0; j < howMany; j++) {
-      const location: number/*int*/ = random.next(received.length)
-      const value: number/*int*/ = random.next(max)
+    for (let j: number /*int*/ = 0; j < howMany; j++) {
+      const location: number /*int*/ = random.next(received.length)
+      const value: number /*int*/ = random.next(max)
       if (corrupted.get(location) === true || received[location] === value) {
         j--
       } else {
@@ -420,7 +420,7 @@ describe("ReedSolomonTestCase", () => {
     }
   }
   
-  function testEncodeDecodeRandom(field: GenericGF, dataSize: number/*int*/, ecSize: number/*int*/): void {
+  function testEncodeDecodeRandom(field: GenericGF, dataSize: number /*int*/, ecSize: number /*int*/): void {
     assert.strictEqual(dataSize > 0 && dataSize <= field.getSize() - 3, true, "Invalid data size for " + field)
     assert.strictEqual(ecSize > 0 && ecSize + dataSize <= field.getSize(), true, "Invalid ECC size for " + field)
     const encoder = new ReedSolomonEncoder(field)
@@ -428,10 +428,10 @@ describe("ReedSolomonTestCase", () => {
     const dataWords = new Int32Array(dataSize)/*Int32Array(dataSize)*/
     const ecWords = new Int32Array(ecSize)/*Int32Array(ecSize)*/
     const random: Random = getPseudoRandom();
-    const iterations: number/*int*/ = field.getSize() > 256 ? 1 : DECODER_RANDOM_TEST_ITERATIONS
-    for (let i: number/*int*/ = 0; i < iterations; i++) {
+    const iterations: number /*int*/ = field.getSize() > 256 ? 1 : DECODER_RANDOM_TEST_ITERATIONS
+    for (let i: number /*int*/ = 0; i < iterations; i++) {
       // generate random data
-      for (let k: number/*int*/ = 0; k < dataSize; k++) {
+      for (let k: number /*int*/ = 0; k < dataSize; k++) {
         dataWords[k] = random.next(field.getSize());
       }
       // generate ECC words
@@ -462,11 +462,11 @@ describe("ReedSolomonTestCase", () => {
   function testDecoder(field: GenericGF, dataWords: Int32Array, ecWords: Int32Array): void {
     const decoder = new ReedSolomonDecoder(field)
     const message = new Int32Array(dataWords.length + ecWords.length)
-    const maxErrors: number/*int*/ = Math.floor(ecWords.length / 2)
+    const maxErrors: number /*int*/ = Math.floor(ecWords.length / 2)
     const random: Random = getPseudoRandom()
-    const iterations: number/*int*/ = field.getSize() > 256 ? 1 : DECODER_TEST_ITERATIONS
-    for (let j: number/*int*/ = 0; j < iterations; j++) {
-      for (let i: number/*int*/ = 0; i < ecWords.length; i++) {
+    const iterations: number /*int*/ = field.getSize() > 256 ? 1 : DECODER_TEST_ITERATIONS
+    for (let j: number /*int*/ = 0; j < iterations; j++) {
+      for (let i: number /*int*/ = 0; i < ecWords.length; i++) {
         if (i > 10 && i < Math.floor(ecWords.length / 2) - 10) {
           // performance improvement - skip intermediate cases in long-running tests 
           i += Math.floor(ecWords.length / 10)
@@ -493,7 +493,7 @@ describe("ReedSolomonTestCase", () => {
   }
 
   function assertDataEquals(received: Int32Array, expected: Int32Array, message: string): void {
-    for (let i: number/*int*/ = 0; i < expected.length; i++) {
+    for (let i: number /*int*/ = 0; i < expected.length; i++) {
       if (expected[i] !== received[i]) {
         assert.ok(false, message + ". Mismatch at " + i + ". Expected " + arrayToString(expected) + ", got " + 
              arrayToString(Int32Array.from(received.subarray(0, expected.length))))
@@ -504,7 +504,7 @@ describe("ReedSolomonTestCase", () => {
   function arrayToString(data: Int32Array): String {
     const sb = new StringBuilder()
     sb.append("{")
-    for (let i: number/*int*/=0; i<data.length; i++) {
+    for (let i: number /*int*/=0; i<data.length; i++) {
       if (i > 0) {
         sb.append(",")
       }

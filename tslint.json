@@ -1,0 +1,14 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+      "semicolon": [true, "never"],
+      "quotemark": [true, "single"],
+      "no-bitwise": false, /* we use a lot of these */
+      "member-ordering": [false] /* to keep the same as with the java version */
+    },
+    "rulesDirectory": []
+}

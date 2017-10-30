@@ -45,7 +45,7 @@ export default class BitMatrix /*implements Cloneable*/ {
    *
    * @param dimension height and width
    */
-  // public constructor(dimension: number/*int*/) {
+  // public constructor(dimension: number /*int*/) {
   //   this(dimension, dimension)
   // }
 
@@ -55,7 +55,7 @@ export default class BitMatrix /*implements Cloneable*/ {
    * @param width bit matrix width
    * @param height bit matrix height
    */
-  // public constructor(width: number/*int*/, height: number/*int*/) {
+  // public constructor(width: number /*int*/, height: number /*int*/) {
   //   if (width < 1 || height < 1) {
   //     throw new Exception(Exception.IllegalArgumentException, "Both dimensions must be greater than 0")
   //   }
@@ -65,8 +65,8 @@ export default class BitMatrix /*implements Cloneable*/ {
   //   bits = new int[rowSize * height];
   // }
 
-  public constructor(private width: number/*int*/, private height?: number/*int*/, 
-                      private rowSize?: number/*int*/, private bits?: Int32Array) {
+  public constructor(private width: number /*int*/, private height?: number /*int*/, 
+                      private rowSize?: number /*int*/, private bits?: Int32Array) {
     if (undefined === height || null === height) {
        height = width
     }
@@ -168,7 +168,7 @@ export default class BitMatrix /*implements Cloneable*/ {
    * @param y The vertical component (i.e. which row)
    * @return value of given bit in matrix
    */
-  public get(x: number/*int*/, y: number/*int*/): boolean {
+  public get(x: number /*int*/, y: number /*int*/): boolean {
     const offset = y * this.rowSize + Math.floor(x / 32)
     return ((this.bits[offset] >>> (x & 0x1f)) & 1) != 0
   }
@@ -179,12 +179,12 @@ export default class BitMatrix /*implements Cloneable*/ {
    * @param x The horizontal component (i.e. which column)
    * @param y The vertical component (i.e. which row)
    */
-  public set(x: number/*int*/, y: number/*int*/): void {
+  public set(x: number /*int*/, y: number /*int*/): void {
     const offset = y * this.rowSize + Math.floor(x / 32)
     this.bits[offset] |= (1 << (x & 0x1f)) & 0xFFFFFFFF
   }
 
-  public unset(x: number/*int*/, y: number/*int*/): void {
+  public unset(x: number /*int*/, y: number /*int*/): void {
     const offset = y * this.rowSize + Math.floor(x / 32)
     this.bits[offset] &= ~((1 << (x & 0x1f)) & 0xFFFFFFFF)
   }
@@ -195,7 +195,7 @@ export default class BitMatrix /*implements Cloneable*/ {
    * @param x The horizontal component (i.e. which column)
    * @param y The vertical component (i.e. which row)
    */
-  public flip(x: number/*int*/, y: number/*int*/): void {
+  public flip(x: number /*int*/, y: number /*int*/): void {
     const offset = y * this.rowSize + Math.floor(x / 32)
     this.bits[offset] ^= ((1 << (x & 0x1f)) & 0xFFFFFFFF)
   }
@@ -242,7 +242,7 @@ export default class BitMatrix /*implements Cloneable*/ {
    * @param width The width of the region
    * @param height The height of the region
    */
-  public setRegion(left: number/*int*/, top: number/*int*/, width: number/*int*/, height: number/*int*/): void {
+  public setRegion(left: number /*int*/, top: number /*int*/, width: number /*int*/, height: number /*int*/): void {
     if (top < 0 || left < 0) {
       throw new Exception(Exception.IllegalArgumentException, "Left and top must be nonnegative")
     }
@@ -272,7 +272,7 @@ export default class BitMatrix /*implements Cloneable*/ {
    * @return The resulting BitArray - this reference should always be used even when passing
    *         your own row
    */
-  public getRow(y: number/*int*/, row?: BitArray): BitArray {
+  public getRow(y: number /*int*/, row?: BitArray): BitArray {
     if (row === null || row === undefined || row.getSize() < this.width) {
       row = new BitArray(this.width)
     } else {
@@ -291,7 +291,7 @@ export default class BitMatrix /*implements Cloneable*/ {
    * @param y row to set
    * @param row {@link BitArray} to copy from
    */
-  public setRow(y: number/*int*/, row: BitArray): void {
+  public setRow(y: number /*int*/, row: BitArray): void {
     System.arraycopy(row.getBitArray(), 0, this.bits, y * this.rowSize, this.rowSize);
   }
 
@@ -424,21 +424,21 @@ export default class BitMatrix /*implements Cloneable*/ {
   /**
    * @return The width of the matrix
    */
-  public getWidth(): number/*int*/ {
+  public getWidth(): number /*int*/ {
     return this.width
   }
 
   /**
    * @return The height of the matrix
    */
-  public getHeight(): number/*int*/ {
+  public getHeight(): number /*int*/ {
     return this.height
   }
 
   /**
    * @return The row size of the matrix
    */
-  public getRowSize(): number/*int*/ {
+  public getRowSize(): number /*int*/ {
     return this.rowSize
   }
 
@@ -453,7 +453,7 @@ export default class BitMatrix /*implements Cloneable*/ {
   }
 
   /*@Override*/
-  public hashCode(): number/*int*/ {
+  public hashCode(): number /*int*/ {
     let hash = this.width
     hash = 31 * hash + this.width
     hash = 31 * hash + this.height

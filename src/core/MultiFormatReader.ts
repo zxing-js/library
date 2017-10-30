@@ -110,7 +110,7 @@ export default class MultiFormatReader implements Reader {
           formats.contains(BarcodeFormat.RSS_14) ||
           formats.contains(BarcodeFormat.RSS_EXPANDED)
       // Put 1D readers upfront in "normal" mode
-      
+
       // TYPESCRIPTPORT: TODO: uncomment below as they are ported
 
       // if (addOneDReader && !tryHarder) {
@@ -171,7 +171,10 @@ export default class MultiFormatReader implements Reader {
         try {
           return reader.decode(image, this.hints)
         } catch (re/*ReaderException*/) {
-          // continue
+          // console.log(`Exception ${re.type} ${re.message}`)
+          if (re.type === 'ReaderException') {
+            continue
+          }
         }
       }
     }

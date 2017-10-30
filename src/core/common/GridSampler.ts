@@ -65,8 +65,8 @@ abstract class GridSampler {
    *   by the given points is invalid or results in sampling outside the image boundaries
    */
   public abstract sampleGrid(image: BitMatrix,
-                                      dimensionX: number/*int*/,
-                                      dimensionY: number/*int*/,
+                                      dimensionX: number /*int*/,
+                                      dimensionY: number /*int*/,
                                       p1ToX: number/*float*/, p1ToY: number/*float*/,
                                       p2ToX: number/*float*/, p2ToY: number/*float*/,
                                       p3ToX: number/*float*/, p3ToY: number/*float*/,
@@ -77,8 +77,8 @@ abstract class GridSampler {
                                       p4FromX: number/*float*/, p4FromY: number/*float*/): BitMatrix /*throws NotFoundException*/
   
   public abstract sampleGridWithTransform(image: BitMatrix,
-                                      dimensionX: number/*int*/,
-                                      dimensionY: number/*int*/,
+                                      dimensionX: number /*int*/,
+                                      dimensionY: number /*int*/,
                                       transform: PerspectiveTransform): BitMatrix /*throws NotFoundException*/
 
   /**
@@ -98,8 +98,8 @@ abstract class GridSampler {
    */
   protected static checkAndNudgePoints(image: BitMatrix,
                                             points: Float32Array): void /*throws NotFoundException*/ {
-    const width: number/*int*/ = image.getWidth();
-    const height: number/*int*/ = image.getHeight();
+    const width: number /*int*/ = image.getWidth();
+    const height: number /*int*/ = image.getHeight();
     // Check and nudge points from start until we see some that are OK:
     let nudged: boolean = true
     for (let offset = 0; offset < points.length && nudged; offset += 2) {

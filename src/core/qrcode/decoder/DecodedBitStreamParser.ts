@@ -150,7 +150,7 @@ export default class DecodedBitStreamParser {
    */
   private static decodeHanziSegment(bits: BitSource,
                                       result: StringBuilder,
-                                      count: number/*int*/): void /*throws FormatException*/ {
+                                      count: number /*int*/): void /*throws FormatException*/ {
     // Don't crash trying to read more bits than we have available.
     if (count * 13 > bits.available()) {
       throw new Exception(Exception.FormatException)
@@ -187,7 +187,7 @@ export default class DecodedBitStreamParser {
 
   private static decodeKanjiSegment(bits: BitSource,
                                         result: StringBuilder,
-                                        count: number/*int*/): void /*throws FormatException*/ {
+                                        count: number /*int*/): void /*throws FormatException*/ {
     // Don't crash trying to read more bits than we have available.
     if (count * 13 > bits.available()) {
       throw new Exception(Exception.FormatException)
@@ -224,7 +224,7 @@ export default class DecodedBitStreamParser {
 
   private static decodeByteSegment(bits: BitSource,
                                         result: StringBuilder,
-                                        count: number/*int*/,
+                                        count: number /*int*/,
                                         currentCharacterSetECI: CharacterSetECI,
                                         byteSegments: Uint8Array[],
                                         hints: Map<DecodeHintType, any>): void /*throws FormatException*/ {
@@ -256,7 +256,7 @@ export default class DecodedBitStreamParser {
     byteSegments.push(readBytes)
   }
 
-  private static toAlphaNumericChar(value: number/*int*/): string /*throws FormatException*/ {
+  private static toAlphaNumericChar(value: number /*int*/): string /*throws FormatException*/ {
     if (value >= DecodedBitStreamParser.ALPHANUMERIC_CHARS.length) {
       throw new Exception(Exception.FormatException)
     }
@@ -265,7 +265,7 @@ export default class DecodedBitStreamParser {
 
   private static decodeAlphanumericSegment(bits: BitSource,
                                                 result: StringBuilder,
-                                                count: number/*int*/,
+                                                count: number /*int*/,
                                                 fc1InEffect: boolean): void /*throws FormatException*/ {
     // Read two characters at a time
     const start = result.length()
@@ -304,7 +304,7 @@ export default class DecodedBitStreamParser {
 
   private static decodeNumericSegment(bits: BitSource,
                                            result: StringBuilder,
-                                           count: number/*int*/): void /*throws FormatException*/ {
+                                           count: number /*int*/): void /*throws FormatException*/ {
     // Read three digits at a time
     while (count >= 3) {
       // Each 10 bits encodes three digits
@@ -344,7 +344,7 @@ export default class DecodedBitStreamParser {
     }
   }
 
-  private static parseECIValue(bits: BitSource): number/*int*/ /*throws FormatException*/ {
+  private static parseECIValue(bits: BitSource): number /*int*/ /*throws FormatException*/ {
     const firstByte = bits.readBits(8)
     if ((firstByte & 0x80) === 0) {
       // just one byte

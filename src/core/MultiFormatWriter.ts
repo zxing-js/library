@@ -47,15 +47,15 @@ export default class MultiFormatWriter implements Writer {
   /*@Override*/
   // public encode(contents: string,
   //                         format: BarcodeFormat,
-  //                         width: number/*int*/,
-  //                         height: number/*int*/): BitMatrix /*throws WriterException */ {
+  //                         width: number /*int*/,
+  //                         height: number /*int*/): BitMatrix /*throws WriterException */ {
   //   return encode(contents, format, width, height, null)
   // }
 
   /*@Override*/
   public encode(contents: string,
                           format: BarcodeFormat,
-                          width: number/*int*/, height: number/*int*/,
+                          width: number /*int*/, height: number /*int*/,
                           hints: Map<EncodeHintType, any>): BitMatrix /*throws WriterException */ {
 
     let writer: Writer

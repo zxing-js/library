@@ -27,8 +27,8 @@ import FormatInformation from './../../../../core/qrcode/decoder/FormatInformati
  */
 describe("FormatInformationTestCase", () => {
 
-  const MASKED_TEST_FORMAT_INFO: number/*int*/ = 0x2BED
-  const UNMASKED_TEST_FORMAT_INFO: number/*int*/ = MASKED_TEST_FORMAT_INFO ^ 0x5412
+  const MASKED_TEST_FORMAT_INFO: number /*int*/ = 0x2BED
+  const UNMASKED_TEST_FORMAT_INFO: number /*int*/ = MASKED_TEST_FORMAT_INFO ^ 0x5412
 
   it("testBitsDiffering", () => {
     assert.strictEqual(FormatInformation.numBitsDiffering(1, 1), 0)

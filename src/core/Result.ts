@@ -50,7 +50,7 @@ export default class Result {
 
   public constructor(private text: string,
                 private rawBytes: Uint8Array,
-                private numBits: number/*int*/,
+                private numBits: number /*int*/,
                 private resultPoints: Array<ResultPoint>,
                 private format: BarcodeFormat,
                 private timestamp: number/*long*/) {
@@ -89,7 +89,7 @@ export default class Result {
    * @return how many bits of {@link #getRawBytes()} are valid; typically 8 times its length
    * @since 3.3.0
    */
-  public getNumBits(): number/*int*/ {
+  public getNumBits(): number /*int*/ {
     return this.numBits
   }
 

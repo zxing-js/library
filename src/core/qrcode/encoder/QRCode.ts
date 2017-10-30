@@ -33,7 +33,7 @@ export default class QRCode {
   private mode: Mode
   private ecLevel: ErrorCorrectionLevel
   private version: Version
-  private maskPattern: number/*int*/
+  private maskPattern: number /*int*/
   private matrix: ByteMatrix
 
   public constructor() {
@@ -52,7 +52,7 @@ export default class QRCode {
     return this.version
   }
 
-  public getMaskPattern(): number/*int*/ {
+  public getMaskPattern(): number /*int*/ {
     return this.maskPattern
   }
 
@@ -94,7 +94,7 @@ export default class QRCode {
     this.version = version
   }
 
-  public setMaskPattern(value: number/*int*/): void {
+  public setMaskPattern(value: number /*int*/): void {
     this.maskPattern = value
   }
 
@@ -103,7 +103,7 @@ export default class QRCode {
   }
 
   // Check if "mask_pattern" is valid.
-  public static isValidMaskPattern(maskPattern: number/*int*/): boolean {
+  public static isValidMaskPattern(maskPattern: number /*int*/): boolean {
     return maskPattern >= 0 && maskPattern < QRCode.NUM_MASK_PATTERNS
   }
 

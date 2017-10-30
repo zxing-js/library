@@ -31,7 +31,7 @@ export default class ByteMatrix {
 
   private bytes: Array<Uint8Array>
 
-  public constructor(private width: number/*int*/, private height: number/*int*/) {
+  public constructor(private width: number /*int*/, private height: number /*int*/) {
     const bytes = new Array<Uint8Array>(height)//[height][width]
     for(let i = 0; i != height; i++) {
       bytes[i] = new Uint8Array(width)
@@ -39,15 +39,15 @@ export default class ByteMatrix {
     this.bytes = bytes
   }
 
-  public getHeight(): number/*int*/ {
+  public getHeight(): number /*int*/ {
     return this.height
   }
 
-  public getWidth(): number/*int*/ {
+  public getWidth(): number /*int*/ {
     return this.width
   }
 
-  public get(x: number/*int*/, y: number/*int*/): number/*byte*/ {
+  public get(x: number /*int*/, y: number /*int*/): number/*byte*/ {
     return this.bytes[y][x]
   }
 
@@ -59,15 +59,15 @@ export default class ByteMatrix {
   }
 
   // TYPESCRIPTPORT: preffer to let two methods instead of override to avoid type comparison inside
-  public setNumber(x: number/*int*/, y: number/*int*/, value: number/*byte|int*/): void {
+  public setNumber(x: number /*int*/, y: number /*int*/, value: number/*byte|int*/): void {
     this.bytes[y][x] = value
   }
 
-  // public set(x: number/*int*/, y: number/*int*/, value: number/*int*/): void {
+  // public set(x: number /*int*/, y: number /*int*/, value: number /*int*/): void {
   //   bytes[y][x] = (byte) value
   // }
 
-  public setBoolean(x: number/*int*/, y: number/*int*/, value: boolean): void {
+  public setBoolean(x: number /*int*/, y: number /*int*/, value: boolean): void {
     this.bytes[y][x] = /*(byte) */(value ? 1 : 0)
   }
 

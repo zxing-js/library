@@ -139,7 +139,7 @@ export default class BitMatrixParser {
     throw new Exception(Exception.FormatException)
   }
 
-  private copyBit(i: number/*int*/, j: number/*int*/, versionBits: number/*int*/): number/*int*/ {
+  private copyBit(i: number /*int*/, j: number /*int*/, versionBits: number /*int*/): number /*int*/ {
     const bit: boolean = this.isMirror ? this.bitMatrix.get(j, i) : this.bitMatrix.get(i, j)
     return bit ? (versionBits << 1) | 0x1 : versionBits << 1
   }

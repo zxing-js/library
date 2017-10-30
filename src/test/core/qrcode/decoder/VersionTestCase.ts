@@ -34,12 +34,12 @@ describe("VersionTestCase", () => {
     } catch (iae/*IllegalArgumentException */) {
       // good
     }
-    for (let i: number/*int*/ = 1; i <= 40; i++) {
+    for (let i: number /*int*/ = 1; i <= 40; i++) {
       checkVersion(Version.getVersionForNumber(i), i, 4*i + 17)
     }
   })
 
-  function checkVersion(version: Version, number: number/*int*/, dimension: number/*int*/): void {
+  function checkVersion(version: Version, number: number /*int*/, dimension: number /*int*/): void {
     assert.strictEqual(null !== version, true)
     assert.strictEqual(version.getVersionNumber(), number)
     assert.strictEqual(null !== version.getAlignmentPatternCenters(), true)
@@ -55,7 +55,7 @@ describe("VersionTestCase", () => {
   }
 
   it("testGetProvisionalVersionForDimension", () => {
-    for (let i: number/*int*/ = 1; i <= 40; i++) {
+    for (let i: number /*int*/ = 1; i <= 40; i++) {
       assert.strictEqual(Version.getProvisionalVersionForDimension(4*i + 17).getVersionNumber(), i)
     }
   })
@@ -70,7 +70,7 @@ describe("VersionTestCase", () => {
     doTestVersion(32, 0x209D5);
   })
   
-  function doTestVersion(expectedVersion: number/*int*/, mask: number/*int*/): void {
+  function doTestVersion(expectedVersion: number /*int*/, mask: number /*int*/): void {
     const version: Version = Version.decodeVersionInformation(mask)
     assert.strictEqual(null !== version, true)
     assert.strictEqual(version.getVersionNumber(), expectedVersion)

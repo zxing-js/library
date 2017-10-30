@@ -22,17 +22,17 @@ import Exception from './Exception'
  * Simply encapsulates a width and height.
  */
 export default class Dimension {
-  public constructor(private width: number/*int*/, private height: number/*int*/) {
+  public constructor(private width: number /*int*/, private height: number /*int*/) {
     if (width < 0 || height < 0) {
       throw new Exception(Exception.IllegalArgumentException)
     }
   }
 
-  public getWidth(): number/*int*/ {
+  public getWidth(): number /*int*/ {
     return this.width
   }
 
-  public getHeight(): number/*int*/ {
+  public getHeight(): number /*int*/ {
     return this.height
   }
 
@@ -46,7 +46,7 @@ export default class Dimension {
   }
 
   /*@Override*/
-  public hashCode(): number/*int*/ {
+  public hashCode(): number /*int*/ {
       return this.width * 32713 + this.height;
   }
 

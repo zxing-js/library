@@ -150,7 +150,7 @@ export default class Detector {
                                                       topRight: ResultPoint,
                                                       bottomLeft: ResultPoint,
                                                       alignmentPattern: ResultPoint,
-                                                      dimension: number/*int*/): PerspectiveTransform {
+                                                      dimension: number /*int*/): PerspectiveTransform {
     const dimMinusThree: number/*float*/ = dimension - 3.5
     let bottomRightX: number/*float*/
     let bottomRightY: number/*float*/
@@ -190,7 +190,7 @@ export default class Detector {
 
   private static sampleGrid(image: BitMatrix,
                                       transform: PerspectiveTransform,
-                                      dimension: number/*int*/): BitMatrix /*throws NotFoundException*/ {
+                                      dimension: number /*int*/): BitMatrix /*throws NotFoundException*/ {
 
     const sampler = GridSamplerInstance.getInstance()
     return sampler.sampleGridWithTransform(image, dimension, dimension, transform)
@@ -203,7 +203,7 @@ export default class Detector {
   private static computeDimension(topLeft: ResultPoint,
                                       topRight: ResultPoint,
                                       bottomLeft: ResultPoint,
-                                      moduleSize: number/*float*/): number/*int*/ /*throws NotFoundException*/ {
+                                      moduleSize: number/*float*/): number /*int*/ /*throws NotFoundException*/ {
     const tltrCentersDimension = MathUtils.round(ResultPoint.distance(topLeft, topRight) / moduleSize)
     const tlblCentersDimension = MathUtils.round(ResultPoint.distance(topLeft, bottomLeft) / moduleSize)
     let dimension = Math.floor((tltrCentersDimension + tlblCentersDimension) / 2) + 7
@@ -268,7 +268,7 @@ export default class Detector {
    * a finder pattern by looking for a black-white-black run from the center in the direction
    * of another point (another finder pattern center), and in the opposite direction too.
    */
-  private sizeOfBlackWhiteBlackRunBothWays(fromX: number/*int*/, fromY: number/*int*/, toX: number/*int*/, toY: number/*int*/): number/*float*/ {
+  private sizeOfBlackWhiteBlackRunBothWays(fromX: number /*int*/, fromY: number /*int*/, toX: number /*int*/, toY: number /*int*/): number/*float*/ {
 
     let result: number/*float*/ = this.sizeOfBlackWhiteBlackRun(fromX, fromY, toX, toY)
 
@@ -308,7 +308,7 @@ export default class Detector {
    * <p>This is used when figuring out how wide a finder pattern is, when the finder pattern
    * may be skewed or rotated.</p>
    */
-  private sizeOfBlackWhiteBlackRun(fromX: number/*int*/, fromY: number/*int*/, toX: number/*int*/, toY: number/*int*/): number/*float*/ {
+  private sizeOfBlackWhiteBlackRun(fromX: number /*int*/, fromY: number /*int*/, toX: number /*int*/, toY: number /*int*/): number/*float*/ {
     // Mild variant of Bresenham's algorithm
     // see http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
     const steep: boolean = Math.abs(toY - fromY) > Math.abs(toX - fromX)
@@ -376,8 +376,8 @@ export default class Detector {
    * @throws NotFoundException if an unexpected error occurs during detection
    */
   protected findAlignmentInRegion(overallEstModuleSize: number/*float*/,
-                                                         estAlignmentX: number/*int*/,
-                                                         estAlignmentY: number/*int*/,
+                                                         estAlignmentX: number /*int*/,
+                                                         estAlignmentY: number /*int*/,
                                                          allowanceFactor: number/*float*/): AlignmentPattern
       /*throws NotFoundException*/ {
     // Look for an alignment pattern (3 modules in size) around where it

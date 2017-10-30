@@ -195,8 +195,8 @@ export default class QRCodeReader implements Reader {
   }
 
   private static moduleSize(leftTopBlack: Int32Array, image: BitMatrix): number/*float*/ /*throws NotFoundException */ {
-    const height: number/*int*/ = image.getHeight()
-    const width: number/*int*/ = image.getWidth()
+    const height: number /*int*/ = image.getHeight()
+    const width: number /*int*/ = image.getWidth()
     let x = leftTopBlack[0]
     let y = leftTopBlack[1]
     let inBlack: boolean = true

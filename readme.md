@@ -7,6 +7,11 @@ ZXing ("zebra crossing") TypeScript is an open-source, multi-format 1D/2D barcod
 
 See https://github.com/zxing/zxing for original Java project.
 
+Work In Progress
+================
+
+This project is work in progress, see [Status and Roadmap](#status-and-roadmap) for what is currently done and what's planned next. 
+
 Demo
 ====
 
@@ -15,7 +20,7 @@ See [some demo examples](https://aleris.github.io/zxing-typescript/) in browser.
 Usage
 =====
 
-The library can be used from browser with TypeScript (include anything from src/browser however you must do the packaging yourself) or with plain javascript (see below). It can also be used from node (see below). The library is using separate builds for node and browser to allow different ES targeting.
+The library can be used from browser with TypeScript (include anything from src/browser however you must do the packaging yourself) or with plain javascript (see below). It can also be used from node (see also below). The library is using separate builds for node and browser to allow different ES targeting.
 
 Browser Usage
 -------------
@@ -30,7 +35,7 @@ To use from javascript you need to build the browser distribution package:
 
 And then include what you need from `build-browser` folder (for example `zxing.qrcodereader.min.js` for qr barcode reader).
 
-Or just grap the minified files that are available in [examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples).
+Or just grab the minified files that are available in [examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples).
 
 See [some demo examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples) for browser code examples with javascript.
 
@@ -40,7 +45,7 @@ The builded library itself is targeting es5 (see `.babelrc`). If you want to tar
 
 The browser library is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web api which is marked as experimental as of this writing. You can use external polyfills like [webrtc-adapter](https://github.com/webrtc/adapter) to increase browser compatiblity.
 
-Also, note that the library is using the [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (Int32Array, Uint8ClampedArray, etc.) which are not available in older browsers (for example Android 4 default browser, etc.). You can use a plyfill library like [core-js](https://github.com/zloirock/core-js) to support these browsers.
+Also, note that the library is using the [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (Int32Array, Uint8ClampedArray, etc.) which are not available in older browsers (for example Android 4 default browser, etc.). You can use a polyfill library like [core-js](https://github.com/zloirock/core-js) to support these browsers.
 
 ### Scanning from Video Camera
 
@@ -234,7 +239,7 @@ By default, in browser, [TextDecoder](https://developer.mozilla.org/en-US/docs/W
 Porting Information
 ===================
 
-See [TypeScript Port Info](typescriptport.md) for information regarging poring approach and reasoning behind some of the approaches taken.
+See [TypeScript Port Info](typescriptport.md) for information regarding porting approach and reasoning behind some of the approaches taken.
 
 Status and Roadmap
 ==================

@@ -27,7 +27,7 @@
  */
 export default class DecoderResult {
 
-  private numBits: number/*int*/
+  private numBits: number /*int*/
   private errorsCorrected: number/*Integer*/
   private erasures: number/*Integer*/
   private other: any
@@ -40,12 +40,12 @@ export default class DecoderResult {
   // }
 
   public constructor(private rawBytes: Uint8Array,
-                       private text: string,
-                       private byteSegments: Uint8Array[],
-                       private ecLevel: string,
-                       private structuredAppendSequenceNumber: number/*int*/,
-                       private structuredAppendParity: number/*int*/) {
-    this.numBits = (rawBytes === undefined || rawBytes === null) ? 0 : 8 * rawBytes.length;
+                     private text: string,
+                     private byteSegments: Uint8Array[],
+                     private ecLevel: string,
+                     private structuredAppendSequenceNumber: number /*int*/ = -1,
+                     private structuredAppendParity: number /*int*/ = -1) {
+    this.numBits = (rawBytes === undefined || rawBytes === null) ? 0 : 8 * rawBytes.length
   }
 
   /**
@@ -59,7 +59,7 @@ export default class DecoderResult {
    * @return how many bits of {@link #getRawBytes()} are valid; typically 8 times its length
    * @since 3.3.0
    */
-  public getNumBits(): number/*int*/ {
+  public getNumBits(): number /*int*/ {
     return this.numBits
   }
 
@@ -67,7 +67,7 @@ export default class DecoderResult {
    * @param numBits overrides the number of bits that are valid in {@link #getRawBytes()}
    * @since 3.3.0
    */
-  public setNumBits(numBits: number/*int*/): void {
+  public setNumBits(numBits: number /*int*/): void {
     this.numBits = numBits
   }
 
@@ -124,17 +124,17 @@ export default class DecoderResult {
   public setOther(other: any): void {
     this.other = other
   }
-  
+
   public hasStructuredAppend(): boolean {
     return this.structuredAppendParity >= 0 && this.structuredAppendSequenceNumber >= 0
   }
-  
-  public getStructuredAppendParity(): number/*int*/ {
+
+  public getStructuredAppendParity(): number /*int*/ {
     return this.structuredAppendParity
   }
-  
-  public getStructuredAppendSequenceNumber(): number/*int*/ {
+
+  public getStructuredAppendSequenceNumber(): number /*int*/ {
     return this.structuredAppendSequenceNumber
   }
-  
+
 }

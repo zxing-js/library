@@ -31,10 +31,10 @@ export default class QRCodeBlackBox7TestCase extends AbstractBlackBoxTestCase {
 
   public constructor() {
     super("src/test/core/resources/blackbox/qrcode-7", new MultiFormatReader(), BarcodeFormat.QR_CODE)
-    this.addTest(2, 2, 0.0)
-    this.addTest(2, 2, 90.0)
-    this.addTest(2, 2, 180.0)
-    this.addTest(2, 2, 270.0)
+    this.addTest(4, 4, 0.0)
+    this.addTest(4, 4, 90.0)
+    this.addTest(4, 4, 180.0)
+    this.addTest(4, 4, 270.0)
   }
 
 }

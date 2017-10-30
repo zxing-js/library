@@ -44,8 +44,8 @@ export default class SharpImageLuminanceSource extends LuminanceSource {
     //   this.height = image.getHeight()
     // }
 
-    // const sourceWidth: number/*int*/ = image.getWidth()
-    // const sourceHeight: number/*int*/ = image.getHeight()
+    // const sourceWidth: number /*int*/ = image.getWidth()
+    // const sourceHeight: number /*int*/ = image.getHeight()
     // if (left + width > sourceWidth || top + height > sourceHeight) {
     //   throw new Exception(Exception.IllegalArgumentException, "Crop rectangle does not fit within image data.")
     // }
@@ -57,11 +57,11 @@ export default class SharpImageLuminanceSource extends LuminanceSource {
     // image.grayscale()
   }
 
-  public getRow(y: number/*int*/, row: Uint8ClampedArray): Uint8ClampedArray {
+  public getRow(y: number /*int*/, row: Uint8ClampedArray): Uint8ClampedArray {
     if (y < 0 || y >= this.image.getHeight()) {
       throw new Exception(Exception.IllegalArgumentException, "Requested row is outside the image: " + y)
     }
-    const width: number/*int*/ = this.image.getWidth()
+    const width: number /*int*/ = this.image.getWidth()
     if (row === null || row.length < width) {
       row = new Uint8ClampedArray(width)/*Int8Array(width)*/
     }
@@ -78,7 +78,7 @@ export default class SharpImageLuminanceSource extends LuminanceSource {
     return true
   }
 
-  public crop(left: number/*int*/, top: number/*int*/, width: number/*int*/, height: number/*int*/): LuminanceSource {
+  public crop(left: number /*int*/, top: number /*int*/, width: number /*int*/, height: number /*int*/): LuminanceSource {
     this.crop(left, top, width, height)
     return this
   }

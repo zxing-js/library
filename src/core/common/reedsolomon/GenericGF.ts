@@ -58,7 +58,7 @@ export default class GenericGF {
    *  (g(x) = (x+a^b)(x+a^(b+1))...(x+a^(b+2t-1))).
    *  In most cases it should be 1, but for QR code it is 0.
    */
-  public constructor(private primitive: number/*int*/, private size: number/*int*/, private generatorBase: number/*int*/) {
+  public constructor(private primitive: number /*int*/, private size: number /*int*/, private generatorBase: number /*int*/) {
 
     const expTable = new Int32Array(size)
     let x = 1
@@ -94,7 +94,7 @@ export default class GenericGF {
   /**
    * @return the monomial representing coefficient * x^degree
    */
-  public buildMonomial(degree: number/*int*/, coefficient: number/*int*/): GenericGFPoly {
+  public buildMonomial(degree: number /*int*/, coefficient: number /*int*/): GenericGFPoly {
     if (degree < 0) {
       throw new Exception(Exception.IllegalArgumentException)
     }
@@ -111,21 +111,21 @@ export default class GenericGF {
    *
    * @return sum/difference of a and b
    */
-  public static addOrSubtract(a: number/*int*/, b: number/*int*/): number/*int*/ {
+  public static addOrSubtract(a: number /*int*/, b: number /*int*/): number /*int*/ {
     return a ^ b
   }
 
   /**
    * @return 2 to the power of a in GF(size)
    */
-  public exp(a: number/*int*/): number/*int*/ {
+  public exp(a: number /*int*/): number /*int*/ {
     return this.expTable[a]
   }
 
   /**
    * @return base 2 log of a in GF(size)
    */
-  public log(a: number/*int*/): number/*int*/ {
+  public log(a: number /*int*/): number /*int*/ {
     if (a === 0) {
       throw new Exception(Exception.IllegalArgumentException)
     }
@@ -135,7 +135,7 @@ export default class GenericGF {
   /**
    * @return multiplicative inverse of a
    */
-  public inverse(a: number/*int*/): number/*int*/ {
+  public inverse(a: number /*int*/): number /*int*/ {
     if (a === 0) {
       throw new Exception(Exception.ArithmeticException)
     }
@@ -145,18 +145,18 @@ export default class GenericGF {
   /**
    * @return product of a and b in GF(size)
    */
-  public multiply(a: number/*int*/, b: number/*int*/): number/*int*/ {
+  public multiply(a: number /*int*/, b: number /*int*/): number /*int*/ {
     if (a === 0 || b === 0) {
       return 0
     }
     return this.expTable[(this.logTable[a] + this.logTable[b]) % (this.size - 1)]
   }
 
-  public getSize(): number/*int*/ {
+  public getSize(): number /*int*/ {
     return this.size
   }
   
-  public getGeneratorBase(): number/*int*/ {
+  public getGeneratorBase(): number /*int*/ {
     return this.generatorBase
   }
   

@@ -167,7 +167,7 @@ export default class Decoder {
    * @param numDataCodewords number of codewords that are data bytes
    * @throws ChecksumException if error correction fails
    */
-  private correctErrors(codewordBytes: Uint8Array, numDataCodewords: number/*int*/): void /*throws ChecksumException*/ {
+  private correctErrors(codewordBytes: Uint8Array, numDataCodewords: number /*int*/): void /*throws ChecksumException*/ {
     const numCodewords = codewordBytes.length
     // First read into an array of ints
     const codewordsInts = new Int32Array(codewordBytes)

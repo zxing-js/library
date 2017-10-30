@@ -15,6 +15,8 @@
     "build.node": "tsc",
     "build.browser.dist": "webpack -p --env dist",
     "build.browser.dev": "webpack --env dev --display-error-details",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "pretest-2": "npm run lint && npm run build.node",
     "pretest": "npm run build.node",
     "test": "mocha --compilers js:babel-core/register \"build-node/test/core/**/*.js\" --timeout 30000 --colors",
     "docs": "npm run build.browser.dist && copyfiles -u 1 build-browser/*.min.js docs/examples/",
@@ -22,15 +24,18 @@
     "autotransform": "node ./autotransform/transform.js"
   },
   "author": "Adrian Toșcă",
-  "license": "Apache License, Version 2.0",
+  "license": "Apache-2.0",
   "bugs": "https://github.com/aleris/zxing-typescript/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/aleris/zxing-typescript"
   },
   "dependencies": {
+    "@types/big.js": "0.0.31",
     "@types/text-encoding": "0.0.30",
-    "text-encoding": "^0.6.4"
+    "big.js": "^3.1.3",
+    "text-encoding": "^0.6.4",
+    "typescript": "^2.4.2"
   },
   "devDependencies": {
     "@types/async": "^2.0.40",
@@ -52,6 +57,7 @@
     "sharp": "^0.17.3",
     "source-map-loader": "^0.2.1",
     "ts-loader": "^2.1.0",
+    "tslint": "^5.5.0",
     "typescript": "^2.3.2",
     "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack": "^2.6.1"

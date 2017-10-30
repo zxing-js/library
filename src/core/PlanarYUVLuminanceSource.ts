@@ -33,15 +33,15 @@ import InvertedLuminanceSource from './InvertedLuminanceSource'
  */
 export default class PlanarYUVLuminanceSource extends LuminanceSource {
 
-  private static THUMBNAIL_SCALE_FACTOR: number/*int*/ = 2
+  private static THUMBNAIL_SCALE_FACTOR: number /*int*/ = 2
 
   public constructor(private yuvData: Uint8ClampedArray,
-                                  private dataWidth: number/*int*/,
-                                  private dataHeight: number/*int*/,
-                                  private left: number/*int*/,
-                                  private top: number/*int*/,
-                                  width: number/*int*/,
-                                  height: number/*int*/,
+                                  private dataWidth: number /*int*/,
+                                  private dataHeight: number /*int*/,
+                                  private left: number /*int*/,
+                                  private top: number /*int*/,
+                                  width: number /*int*/,
+                                  height: number /*int*/,
                                   reverseHorizontal: boolean) {
     super(width, height)
 
@@ -55,11 +55,11 @@ export default class PlanarYUVLuminanceSource extends LuminanceSource {
   }
 
   /*@Override*/
-  public getRow(y: number/*int*/, row?: Uint8ClampedArray): Uint8ClampedArray {
+  public getRow(y: number /*int*/, row?: Uint8ClampedArray): Uint8ClampedArray {
     if (y < 0 || y >= this.getHeight()) {
       throw new Exception(Exception.IllegalArgumentException, "Requested row is outside the image: " + y)
     }
-    const width: number/*int*/ = this.getWidth();
+    const width: number /*int*/ = this.getWidth();
     if (row === null || row === undefined || row.length < width) {
       row = new Uint8ClampedArray(width)
     }
@@ -70,8 +70,8 @@ export default class PlanarYUVLuminanceSource extends LuminanceSource {
 
   /*@Override*/
   public getMatrix(): Uint8ClampedArray {
-    const width: number/*int*/ = this.getWidth();
-    const height: number/*int*/ = this.getHeight();
+    const width: number /*int*/ = this.getWidth();
+    const height: number /*int*/ = this.getHeight();
 
     // If the caller asks for the entire underlying image, save the copy and give them the
     // original data. The docs specifically warn that result.length must be ignored.
@@ -104,7 +104,7 @@ export default class PlanarYUVLuminanceSource extends LuminanceSource {
   }
 
   /*@Override*/
-  public crop(left: number/*int*/, top: number/*int*/, width: number/*int*/, height: number/*int*/): LuminanceSource {
+  public crop(left: number /*int*/, top: number /*int*/, width: number /*int*/, height: number /*int*/): LuminanceSource {
     return new PlanarYUVLuminanceSource(this.yuvData,
                                         this.dataWidth,
                                         this.dataHeight,
@@ -116,8 +116,8 @@ export default class PlanarYUVLuminanceSource extends LuminanceSource {
   }
 
   public renderThumbnail(): Int32Array {
-    const width: number/*int*/ = this.getWidth() / PlanarYUVLuminanceSource.THUMBNAIL_SCALE_FACTOR;
-    const height: number/*int*/ = this.getHeight() / PlanarYUVLuminanceSource.THUMBNAIL_SCALE_FACTOR;
+    const width: number /*int*/ = this.getWidth() / PlanarYUVLuminanceSource.THUMBNAIL_SCALE_FACTOR;
+    const height: number /*int*/ = this.getHeight() / PlanarYUVLuminanceSource.THUMBNAIL_SCALE_FACTOR;
     const pixels = new Int32Array(width * height);
     const yuv = this.yuvData
     let inputOffset = this.top * this.dataWidth + this.left;
@@ -136,18 +136,18 @@ export default class PlanarYUVLuminanceSource extends LuminanceSource {
   /**
    * @return width of image from {@link #renderThumbnail()}
    */
-  public getThumbnailWidth(): number/*int*/ {
+  public getThumbnailWidth(): number /*int*/ {
     return this.getWidth() / PlanarYUVLuminanceSource.THUMBNAIL_SCALE_FACTOR
   }
   
   /**
    * @return height of image from {@link #renderThumbnail()}
    */  
-  public getThumbnailHeight(): number/*int*/ {
+  public getThumbnailHeight(): number /*int*/ {
     return this.getHeight() / PlanarYUVLuminanceSource.THUMBNAIL_SCALE_FACTOR
   }
 
-  private reverseHorizontal(width: number/*int*/, height: number/*int*/): void {
+  private reverseHorizontal(width: number /*int*/, height: number /*int*/): void {
     const yuvData = this.yuvData
     for (let y = 0, rowStart = this.top * this.dataWidth + this.left; y < height; y++, rowStart += this.dataWidth) {
       const middle = rowStart + width / 2

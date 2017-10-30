@@ -168,9 +168,9 @@ describe("MaskUtilTestCase", () => {
     assert.strictEqual(MaskUtil.applyMaskPenaltyRule4(matrix), 30)
   })
 
-  function TestGetDataMaskBitInternal(maskPattern: number/*int*/, expected: Array<Int32Array>): boolean {
-    for (let x: number/*int*/ = 0; x < 6; ++x) {
-      for (let y: number/*int*/ = 0; y < 6; ++y) {
+  function TestGetDataMaskBitInternal(maskPattern: number /*int*/, expected: Array<Int32Array>): boolean {
+    for (let x: number /*int*/ = 0; x < 6; ++x) {
+      for (let y: number /*int*/ = 0; y < 6; ++y) {
         if ((expected[y][x] === 1) !== MaskUtil.getDataMaskBit(maskPattern, x, y)) {
           return false
         }

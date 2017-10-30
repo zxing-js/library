@@ -51,7 +51,7 @@ export default class GlobalHistogramBinarizer extends Binarizer {
 
   // Applies simple sharpening to the row data to improve performance of the 1D Readers.
   /*@Override*/
-  public getBlackRow(y: number/*int*/, row: BitArray): BitArray /*throws NotFoundException*/ {
+  public getBlackRow(y: number /*int*/, row: BitArray): BitArray /*throws NotFoundException*/ {
     const source = this.getLuminanceSource()
     const width = source.getWidth();
     if (row === undefined || row === null || row.getSize() < width) {
@@ -136,7 +136,7 @@ export default class GlobalHistogramBinarizer extends Binarizer {
     return new GlobalHistogramBinarizer(source)
   }
 
-  private initArrays(luminanceSize: number/*int*/): void {
+  private initArrays(luminanceSize: number /*int*/): void {
     if (this.luminances.length < luminanceSize) {
       this.luminances = new Uint8ClampedArray(luminanceSize)
     }
@@ -146,7 +146,7 @@ export default class GlobalHistogramBinarizer extends Binarizer {
     }
   }
 
-  private static estimateBlackPoint(buckets: Int32Array): number/*int*/ /*throws NotFoundException*/ {
+  private static estimateBlackPoint(buckets: Int32Array): number /*int*/ /*throws NotFoundException*/ {
     // Find the tallest peak in the histogram.
     const numBuckets = buckets.length
     let maxBucketCount = 0

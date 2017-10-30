@@ -1,7 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
-        
+
         {
             "name": "Unit tests",
             "type": "node",
@@ -12,7 +12,7 @@
                 "--colors",
                 "--timeout", "999999",
                 "./build-node/test/**/*.js",
-                "-g", "QRCodeBlackBox7TestCase"
+                "-g", "testHybridBinarizer"
             ],
             "protocol": "inspector",
             "cwd": "${workspaceRoot}",
@@ -28,5 +28,5 @@
             }
         }
     ]
-    
+
 }

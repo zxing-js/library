@@ -31,7 +31,7 @@ import System from './util/System'
  */
 export default class RGBLuminanceSource extends LuminanceSource {
   
-  // public constructor(width: number/*int*/, height: number/*int*/, const pixels: Int32Array) {
+  // public constructor(width: number /*int*/, height: number /*int*/, const pixels: Int32Array) {
   //   super(width, height)
 
   //   dataWidth = width
@@ -58,12 +58,12 @@ export default class RGBLuminanceSource extends LuminanceSource {
   private luminances: Uint8ClampedArray
 
   public constructor(luminances: Uint8ClampedArray|Int32Array,
-                             width: number/*int*/,
-                             height: number/*int*/,
-                             private dataWidth?: number/*int*/,
-                             private dataHeight?: number/*int*/,
-                             private left?: number/*int*/,
-                             private top?: number/*int*/) {
+                             width: number /*int*/,
+                             height: number /*int*/,
+                             private dataWidth?: number /*int*/,
+                             private dataHeight?: number /*int*/,
+                             private left?: number /*int*/,
+                             private top?: number /*int*/) {
     super(width, height)
 
     if (luminances.BYTES_PER_ELEMENT === 4) {//Int32Array
@@ -100,7 +100,7 @@ export default class RGBLuminanceSource extends LuminanceSource {
   }
 
   /*@Override*/
-  public getRow(y: number/*int*/, row?: Uint8ClampedArray): Uint8ClampedArray {
+  public getRow(y: number /*int*/, row?: Uint8ClampedArray): Uint8ClampedArray {
     if (y < 0 || y >= this.getHeight()) {
       throw new Exception(Exception.IllegalArgumentException, "Requested row is outside the image: " + y)
     }
@@ -149,7 +149,7 @@ export default class RGBLuminanceSource extends LuminanceSource {
   }
 
   /*@Override*/
-  public crop(left: number/*int*/, top: number/*int*/, width: number/*int*/, height: number/*int*/): LuminanceSource {
+  public crop(left: number /*int*/, top: number /*int*/, width: number /*int*/, height: number /*int*/): LuminanceSource {
     return new RGBLuminanceSource(this.luminances,
                                   width,
                                   height,

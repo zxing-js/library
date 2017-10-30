@@ -91,14 +91,14 @@ export default class GenericGFPoly {
   /**
    * @return coefficient of x^degree term in this polynomial
    */
-  public getCoefficient(degree: number/*int*/): number {
+  public getCoefficient(degree: number /*int*/): number {
     return this.coefficients[this.coefficients.length - 1 - degree]
   }
 
   /**
    * @return evaluation of this polynomial at a given point
    */
-  public evaluateAt(a: number/*int*/): number {
+  public evaluateAt(a: number /*int*/): number {
     if (a === 0) {
       // Just return the x^0 coefficient
       return this.getCoefficient(0)
@@ -176,7 +176,7 @@ export default class GenericGFPoly {
     return new GenericGFPoly(field, product)
   }
 
-  public multiplyScalar(scalar: number/*int*/): GenericGFPoly {
+  public multiplyScalar(scalar: number /*int*/): GenericGFPoly {
     if (scalar === 0) {
       return this.field.getZero()
     }
@@ -193,7 +193,7 @@ export default class GenericGFPoly {
     return new GenericGFPoly(field, product)
   }
 
-  public multiplyByMonomial(degree: number/*int*/, coefficient: number/*int*/): GenericGFPoly {
+  public multiplyByMonomial(degree: number /*int*/, coefficient: number /*int*/): GenericGFPoly {
     if (degree < 0) {
       throw new Exception(Exception.IllegalArgumentException)
     }

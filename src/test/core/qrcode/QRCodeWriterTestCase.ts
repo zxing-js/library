@@ -48,7 +48,7 @@ describe("QRCodeWriterTestCase", () => {
 
   it("testQRCodeWriter", () => {
     // The QR should be multiplied up to fit, with extra padding if necessary
-    const bigEnough: number/*int*/ = 256
+    const bigEnough: number /*int*/ = 256
     const writer: Writer = new QRCodeWriter()
     let matrix: BitMatrix = writer.encode("http://www.google.com/", BarcodeFormat.QR_CODE, bigEnough,
         bigEnough, null)
@@ -57,7 +57,7 @@ describe("QRCodeWriterTestCase", () => {
     assert.strictEqual(matrix.getHeight(), bigEnough)
 
     // The QR will not fit in this size, so the matrix should come back bigger
-    const tooSmall: number/*int*/ = 20
+    const tooSmall: number /*int*/ = 20
     matrix = writer.encode("http://www.google.com/", BarcodeFormat.QR_CODE, tooSmall,
         tooSmall, null)
     assert.strictEqual(matrix !== null, true)
@@ -65,8 +65,8 @@ describe("QRCodeWriterTestCase", () => {
     assert.strictEqual(tooSmall < matrix.getHeight(), true)
 
     // We should also be able to handle non-square requests by padding them
-    const strangeWidth: number/*int*/ = 500
-    const strangeHeight: number/*int*/ = 100
+    const strangeWidth: number /*int*/ = 500
+    const strangeHeight: number /*int*/ = 100
     matrix = writer.encode("http://www.google.com/", BarcodeFormat.QR_CODE, strangeWidth,
         strangeHeight, null)
     assert.strictEqual(matrix !== null, true)
@@ -76,7 +76,7 @@ describe("QRCodeWriterTestCase", () => {
 
   function compareToGoldenFile(contents: string,
                                 ecLevel: ErrorCorrectionLevel,
-                                resolution: number/*int*/,
+                                resolution: number /*int*/,
                                 fileName: string) {
 
     const filePath = path.resolve(BASE_IMAGE_PATH, fileName)

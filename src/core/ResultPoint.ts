@@ -47,7 +47,7 @@ export default class ResultPoint {
   }
 
   /*@Override*/
-  public hashCode(): number/*int*/ {
+  public hashCode(): number /*int*/ {
     return 31 * Float.floatToIntBits(this.x) + Float.floatToIntBits(this.y);
   }
 

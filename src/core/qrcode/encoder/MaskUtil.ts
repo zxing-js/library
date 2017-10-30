@@ -40,7 +40,7 @@ export default class MaskUtil {
    * Apply mask penalty rule 1 and return the penalty. Find repetitive cells with the same color and
    * give penalty to them. Example: 00000 or 11111.
    */
-  public static applyMaskPenaltyRule1(matrix: ByteMatrix): number/*int*/ {
+  public static applyMaskPenaltyRule1(matrix: ByteMatrix): number /*int*/ {
     return MaskUtil.applyMaskPenaltyRule1Internal(matrix, true) + MaskUtil.applyMaskPenaltyRule1Internal(matrix, false)
   }
 
@@ -49,11 +49,11 @@ export default class MaskUtil {
    * penalty to them. This is actually equivalent to the spec's rule, which is to find MxN blocks and give a
    * penalty proportional to (M-1)x(N-1), because this is the number of 2x2 blocks inside such a block.
    */
-  public static applyMaskPenaltyRule2(matrix: ByteMatrix): number/*int*/ {
+  public static applyMaskPenaltyRule2(matrix: ByteMatrix): number /*int*/ {
     let penalty = 0
     const array: Array<Uint8Array> = matrix.getArray()
-    const width: number/*int*/ = matrix.getWidth();
-    const height: number/*int*/ = matrix.getHeight();
+    const width: number /*int*/ = matrix.getWidth();
+    const height: number /*int*/ = matrix.getHeight();
     for (let y = 0; y < height - 1; y++) {
       const arrayY = array[y]
       for (let x = 0; x < width - 1; x++) {
@@ -71,11 +71,11 @@ export default class MaskUtil {
    * starting with black, or 4:1:1:3:1:1 starting with white, and give penalty to them.  If we
    * find patterns like 000010111010000, we give penalty once.
    */
-  public static applyMaskPenaltyRule3(matrix: ByteMatrix): number/*int*/ {
+  public static applyMaskPenaltyRule3(matrix: ByteMatrix): number /*int*/ {
     let numPenalties = 0
     const array: Array<Uint8Array> = matrix.getArray()
-    const width: number/*int*/ = matrix.getWidth();
-    const height: number/*int*/ = matrix.getHeight();
+    const width: number /*int*/ = matrix.getWidth();
+    const height: number /*int*/ = matrix.getHeight();
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
         const arrayY: Uint8Array = array[y];  // We can at least optimize this access
@@ -106,7 +106,7 @@ export default class MaskUtil {
     return numPenalties * MaskUtil.N3
   }
 
-  private static isWhiteHorizontal(rowArray: Uint8Array, from: number/*int*/, to: number/*int*/): boolean {
+  private static isWhiteHorizontal(rowArray: Uint8Array, from: number /*int*/, to: number /*int*/): boolean {
     from = Math.max(from, 0)
     to = Math.min(to, rowArray.length)
     for (let i = from; i < to; i++) {
@@ -117,7 +117,7 @@ export default class MaskUtil {
     return true
   }
 
-  private static isWhiteVertical(array: Uint8Array[], col: number/*int*/, from: number/*int*/, to: number/*int*/): boolean {
+  private static isWhiteVertical(array: Uint8Array[], col: number /*int*/, from: number /*int*/, to: number /*int*/): boolean {
     from = Math.max(from, 0)
     to = Math.min(to, array.length)
     for (let i = from; i < to; i++) {
@@ -132,11 +132,11 @@ export default class MaskUtil {
    * Apply mask penalty rule 4 and return the penalty. Calculate the ratio of dark cells and give
    * penalty if the ratio is far from 50%. It gives 10 penalty for 5% distance.
    */
-  public static applyMaskPenaltyRule4(matrix: ByteMatrix): number/*int*/ {
+  public static applyMaskPenaltyRule4(matrix: ByteMatrix): number /*int*/ {
     let numDarkCells = 0
     const array: Array<Uint8Array> = matrix.getArray()
-    const width: number/*int*/ = matrix.getWidth();
-    const height: number/*int*/ = matrix.getHeight();
+    const width: number /*int*/ = matrix.getWidth();
+    const height: number /*int*/ = matrix.getHeight();
     for (let y = 0; y < height; y++) {
       const arrayY: Uint8Array = array[y]
       for (let x = 0; x < width; x++) {
@@ -154,9 +154,9 @@ export default class MaskUtil {
    * Return the mask bit for "getMaskPattern" at "x" and "y". See 8.8 of JISX0510:2004 for mask
    * pattern conditions.
    */
-  public static getDataMaskBit(maskPattern: number/*int*/, x: number/*int*/, y: number/*int*/): boolean {
-    let intermediate: number/*int*/
-    let temp: number/*int*/
+  public static getDataMaskBit(maskPattern: number /*int*/, x: number /*int*/, y: number /*int*/): boolean {
+    let intermediate: number /*int*/
+    let temp: number /*int*/
     switch (maskPattern) {
       case 0:
         intermediate = (y + x) & 0x1
@@ -195,7 +195,7 @@ export default class MaskUtil {
    * Helper function for applyMaskPenaltyRule1. We need this for doing this calculation in both
    * vertical and horizontal orders respectively.
    */
-  private static applyMaskPenaltyRule1Internal(matrix: ByteMatrix, isHorizontal: boolean): number/*int*/ {
+  private static applyMaskPenaltyRule1Internal(matrix: ByteMatrix, isHorizontal: boolean): number /*int*/ {
     let penalty = 0
     const iLimit = isHorizontal ? matrix.getHeight() : matrix.getWidth()
     const jLimit = isHorizontal ? matrix.getWidth() : matrix.getHeight()

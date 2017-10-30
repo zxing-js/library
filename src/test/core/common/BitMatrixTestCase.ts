@@ -35,15 +35,15 @@ describe("BitMatrixTestCase", () => {
   it("testGetSet", () => {
     const matrix: BitMatrix = new BitMatrix(33)
     assert.strictEqual(33, matrix.getHeight())
-    for (let y: number/*int*/ = 0; y < 33; y++) {
-      for (let x: number/*int*/ = 0; x < 33; x++) {
+    for (let y: number /*int*/ = 0; y < 33; y++) {
+      for (let x: number /*int*/ = 0; x < 33; x++) {
         if (y * x % 3 === 0) {
           matrix.set(x, y)
         }
       }
     }
-    for (let y: number/*int*/ = 0; y < 33; y++) {
-      for (let x: number/*int*/ = 0; x < 33; x++) {
+    for (let y: number /*int*/ = 0; y < 33; y++) {
+      for (let x: number /*int*/ = 0; x < 33; x++) {
         const expected = y * x % 3 === 0
         const value = matrix.get(x, y)
         assert.strictEqual(value, expected)
@@ -54,8 +54,8 @@ describe("BitMatrixTestCase", () => {
   it("testSetRegion", () => {
     const matrix: BitMatrix = new BitMatrix(5)
     matrix.setRegion(1, 1, 3, 3)
-    for (let y: number/*int*/ = 0; y < 5; y++) {
-      for (let x: number/*int*/ = 0; x < 5; x++) {
+    for (let y: number /*int*/ = 0; y < 5; y++) {
+      for (let x: number /*int*/ = 0; x < 5; x++) {
         assert.strictEqual(y >= 1 && y <= 3 && x >= 1 && x <= 3, matrix.get(x, y))
       }
     }
@@ -120,8 +120,8 @@ describe("BitMatrixTestCase", () => {
     matrix.setRegion(105, 22, 80, 12)
 
     // Only bits in the region should be on
-    for (let y: number/*int*/ = 0; y < 240; y++) {
-      for (let x: number/*int*/ = 0; x < 320; x++) {
+    for (let y: number /*int*/ = 0; y < 240; y++) {
+      for (let x: number /*int*/ = 0; x < 320; x++) {
         assert.strictEqual(y >= 22 && y < 34 && x >= 105 && x < 185, matrix.get(x, y))
       }
     }
@@ -129,7 +129,7 @@ describe("BitMatrixTestCase", () => {
 
   it("testGetRow", () => {
     const matrix: BitMatrix = new BitMatrix(102, 5)
-    for (let x: number/*int*/ = 0; x < 102; x++) {
+    for (let x: number /*int*/ = 0; x < 102; x++) {
       if ((x & 0x03) === 0) {
         matrix.set(x, 2)
       }
@@ -149,7 +149,7 @@ describe("BitMatrixTestCase", () => {
     array3 = matrix.getRow(2, array3)
     assert.strictEqual(array3.getSize(), 200)
 
-    for (let x: number/*int*/ = 0; x < 102; x++) {
+    for (let x: number /*int*/ = 0; x < 102; x++) {
       const on: boolean = (x & 0x03) === 0
       assert.strictEqual(on, array.get(x))
       assert.strictEqual(on, array2.get(x))
@@ -313,7 +313,7 @@ describe("BitMatrixTestCase", () => {
   function matrixToString(result: BitMatrix): string {
     assert.strictEqual(1, result.getHeight())
     const builder: StringBuilder = new StringBuilder()//result.getWidth())
-    for (let i: number/*int*/ = 0; i < result.getWidth(); i++) {
+    for (let i: number /*int*/ = 0; i < result.getWidth(); i++) {
       builder.append(result.get(i, 0) ? '1' : '0')
     }
     return builder.toString()
@@ -325,29 +325,29 @@ describe("BitMatrixTestCase", () => {
     assert.strictEqual(matrix.equals(expectedMatrix), true)
   }
 
-  function testRotate180(width: number/*int*/, height: number/*int*/): void {
+  function testRotate180(width: number /*int*/, height: number /*int*/): void {
     const input: BitMatrix = getInput(width, height)
     input.rotate180()
     const expected: BitMatrix = getExpected(width, height)
 
-    for (let y: number/*int*/ = 0; y < height; y++) {
-      for (let x: number/*int*/ = 0; x < width; x++) {
+    for (let y: number /*int*/ = 0; y < height; y++) {
+      for (let x: number /*int*/ = 0; x < width; x++) {
         assert.strictEqual(input.get(x, y), expected.get(x, y), "(" + x + ',' + y + ')')
       }
     }
   }
 
-  function getExpected(width: number/*int*/, height: number/*int*/): BitMatrix {
+  function getExpected(width: number /*int*/, height: number /*int*/): BitMatrix {
     const result: BitMatrix = new BitMatrix(width, height)
-    for (let i: number/*int*/ = 0; i < BIT_MATRIX_POINTS.length; i += 2) {
+    for (let i: number /*int*/ = 0; i < BIT_MATRIX_POINTS.length; i += 2) {
       result.set(width - 1 - BIT_MATRIX_POINTS[i], height - 1 - BIT_MATRIX_POINTS[i + 1])
     }
     return result
   }
 
-  function getInput(width: number/*int*/, height: number/*int*/): BitMatrix {
+  function getInput(width: number /*int*/, height: number /*int*/): BitMatrix {
     const result: BitMatrix = new BitMatrix(width, height)
-    for (let i: number/*int*/ = 0; i < BIT_MATRIX_POINTS.length; i += 2) {
+    for (let i: number /*int*/ = 0; i < BIT_MATRIX_POINTS.length; i += 2) {
       result.set(BIT_MATRIX_POINTS[i], BIT_MATRIX_POINTS[i + 1])
     }
     return result

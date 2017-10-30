@@ -28,8 +28,8 @@ export default class DefaultGridSampler extends GridSampler {
 
   /*@Override*/
   public sampleGrid(image: BitMatrix,
-                              dimensionX: number/*int*/,
-                              dimensionY: number/*int*/,
+                              dimensionX: number /*int*/,
+                              dimensionY: number /*int*/,
                               p1ToX: number/*float*/, p1ToY: number/*float*/,
                               p2ToX: number/*float*/, p2ToY: number/*float*/,
                               p3ToX: number/*float*/, p3ToY: number/*float*/,
@@ -48,8 +48,8 @@ export default class DefaultGridSampler extends GridSampler {
 
   /*@Override*/
   public sampleGridWithTransform(image: BitMatrix,
-                              dimensionX: number/*int*/,
-                              dimensionY: number/*int*/,
+                              dimensionX: number /*int*/,
+                              dimensionY: number /*int*/,
                               transform: PerspectiveTransform): BitMatrix /*throws NotFoundException*/ {
     if (dimensionX <= 0 || dimensionY <= 0) {
       throw new Exception(Exception.NotFoundException)

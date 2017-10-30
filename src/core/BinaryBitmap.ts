@@ -41,14 +41,14 @@ export default class BinaryBitmap {
   /**
    * @return The width of the bitmap.
    */
-  public getWidth(): number/*int*/ {
+  public getWidth(): number /*int*/ {
     return this.binarizer.getWidth()
   }
 
   /**
    * @return The height of the bitmap.
    */
-  public getHeight(): number/*int*/ {
+  public getHeight(): number /*int*/ {
     return this.binarizer.getHeight()
   }
 
@@ -63,7 +63,7 @@ export default class BinaryBitmap {
    * @return The array of bits for this row (true means black).
    * @throws NotFoundException if row can't be binarized
    */
-  public getBlackRow(y: number/*int*/, row: BitArray): BitArray  /*throws NotFoundException */ {
+  public getBlackRow(y: number /*int*/, row: BitArray): BitArray  /*throws NotFoundException */ {
     return this.binarizer.getBlackRow(y, row)
   }
 
@@ -105,7 +105,7 @@ export default class BinaryBitmap {
    * @param height The height of the rectangle to crop.
    * @return A cropped version of this object.
    */
-  public crop(left: number/*int*/, top: number/*int*/, width: number/*int*/, height: number/*int*/): BinaryBitmap {
+  public crop(left: number /*int*/, top: number /*int*/, width: number /*int*/, height: number /*int*/): BinaryBitmap {
     const newSource: LuminanceSource = this.binarizer.getLuminanceSource().crop(left, top, width, height)
     return new BinaryBitmap(this.binarizer.createBinarizer(newSource))
   }

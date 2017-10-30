@@ -33,8 +33,8 @@ describe("PlanarYUVLuminanceSourceTestCase", () => {
       127, 127, 127, 127, 127, 127,
   ])
 
-  const COLS: number/*int*/ = 6
-  const ROWS: number/*int*/ = 4
+  const COLS: number /*int*/ = 6
+  const ROWS: number /*int*/ = 4
   const Y = new Uint8ClampedArray(COLS * ROWS)
   
   System.arraycopy(YUV, 0, Y, 0, Y.length)
@@ -42,7 +42,7 @@ describe("PlanarYUVLuminanceSourceTestCase", () => {
   it("testNoCrop", () => {
     const source = new PlanarYUVLuminanceSource(YUV, COLS, ROWS, 0, 0, COLS, ROWS, false)
     assertTypedArrayEquals(Y, 0, source.getMatrix(), 0, Y.length);
-    for (let r: number/*int*/ = 0; r < ROWS; r++) {
+    for (let r: number /*int*/ = 0; r < ROWS; r++) {
       assertTypedArrayEquals(Y, r * COLS, source.getRow(r, null), 0, COLS);
     }
   })
@@ -52,10 +52,10 @@ describe("PlanarYUVLuminanceSourceTestCase", () => {
         new PlanarYUVLuminanceSource(YUV, COLS, ROWS, 1, 1, COLS - 2, ROWS - 2, false)
     assert.strictEqual(source.isCropSupported(), true)
     const cropMatrix: Uint8ClampedArray = source.getMatrix()
-    for (let r: number/*int*/ = 0; r < ROWS - 2; r++) {
+    for (let r: number /*int*/ = 0; r < ROWS - 2; r++) {
       assertTypedArrayEquals(Y, (r + 1) * COLS + 1, cropMatrix, r * (COLS - 2), COLS - 2)
     }
-    for (let r: number/*int*/ = 0; r < ROWS - 2; r++) {
+    for (let r: number /*int*/ = 0; r < ROWS - 2; r++) {
       assertTypedArrayEquals(Y, (r + 1) * COLS + 1, source.getRow(r, null), 0, COLS - 2)
     }
   })
@@ -68,10 +68,10 @@ describe("PlanarYUVLuminanceSourceTestCase", () => {
         source.renderThumbnail())
   })
 
-  function assertTypedArrayEquals(expected: Uint8ClampedArray, expectedFrom: number/*int*/,
-                                   actual: Uint8ClampedArray, actualFrom: number/*int*/,
-                                   length: number/*int*/) {
-    for (let i: number/*int*/ = 0; i < length; i++) {
+  function assertTypedArrayEquals(expected: Uint8ClampedArray, expectedFrom: number /*int*/,
+                                   actual: Uint8ClampedArray, actualFrom: number /*int*/,
+                                   length: number /*int*/) {
+    for (let i: number /*int*/ = 0; i < length; i++) {
       assert.strictEqual(actual[actualFrom + i], expected[expectedFrom + i])
     }
   }

@@ -45,7 +45,7 @@ export default class ErrorCorrectionLevel {
   /** H = ~30% correction */
   public static H = new ErrorCorrectionLevel(ErrorCorrectionLevelValues.H, "H", 0x02)
 
-  private constructor(private value: ErrorCorrectionLevelValues, private stringValue: string, private bits: number/*int*/) {
+  private constructor(private value: ErrorCorrectionLevelValues, private stringValue: string, private bits: number /*int*/) {
       ErrorCorrectionLevel.FOR_BITS.set(bits, this)
       ErrorCorrectionLevel.FOR_VALUE.set(value, this)
   }
@@ -54,7 +54,7 @@ export default class ErrorCorrectionLevel {
     return this.value
   }
 
-  public getBits(): number/*int*/ {
+  public getBits(): number /*int*/ {
     return this.bits
   }
 
@@ -83,7 +83,7 @@ export default class ErrorCorrectionLevel {
    * @param bits int containing the two bits encoding a QR Code's error correction level
    * @return ErrorCorrectionLevel representing the encoded error correction level
    */
-  public static forBits(bits: number/*int*/): ErrorCorrectionLevel {
+  public static forBits(bits: number /*int*/): ErrorCorrectionLevel {
     if (bits < 0 || bits >= ErrorCorrectionLevel.FOR_BITS.size) {
       throw new Exception(Exception.IllegalArgumentException)
     }

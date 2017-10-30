@@ -72,14 +72,14 @@ export default class FormatInformation {
   private errorCorrectionLevel: ErrorCorrectionLevel
   private dataMask: number/*byte*/
 
-  private constructor(formatInfo: number/*int*/) {
+  private constructor(formatInfo: number /*int*/) {
     // Bits 3,4
     this.errorCorrectionLevel = ErrorCorrectionLevel.forBits((formatInfo >> 3) & 0x03)
     // Bottom 3 bits
     this.dataMask = /*(byte) */(formatInfo & 0x07)
   }
 
-  public static numBitsDiffering(a: number/*int*/, b: number/*int*/): number/*int*/ {
+  public static numBitsDiffering(a: number /*int*/, b: number /*int*/): number /*int*/ {
     return Integer.bitCount(a ^ b)
   }
 
@@ -90,7 +90,7 @@ export default class FormatInformation {
    * @return information about the format it specifies, or {@code null}
    *  if doesn't seem to match any known pattern
    */
-  public static decodeFormatInformation(maskedFormatInfo1: number/*int*/, maskedFormatInfo2: number/*int*/): FormatInformation {
+  public static decodeFormatInformation(maskedFormatInfo1: number /*int*/, maskedFormatInfo2: number /*int*/): FormatInformation {
     const formatInfo = FormatInformation.doDecodeFormatInformation(maskedFormatInfo1, maskedFormatInfo2)
     if (formatInfo !== null) {
       return formatInfo
@@ -102,7 +102,7 @@ export default class FormatInformation {
       maskedFormatInfo2 ^ FormatInformation.FORMAT_INFO_MASK_QR)
   }
 
-  private static doDecodeFormatInformation(maskedFormatInfo1: number/*int*/, maskedFormatInfo2: number/*int*/): FormatInformation {
+  private static doDecodeFormatInformation(maskedFormatInfo1: number /*int*/, maskedFormatInfo2: number /*int*/): FormatInformation {
     // Find the int in FORMAT_INFO_DECODE_LOOKUP with fewest bits differing
     let bestDifference = Number.MAX_SAFE_INTEGER
     let bestFormatInfo = 0
@@ -143,7 +143,7 @@ export default class FormatInformation {
   }
 
   /*@Override*/
-  public hashCode(): number/*int*/ {
+  public hashCode(): number /*int*/ {
     return (this.errorCorrectionLevel.getBits() << 3) | this.dataMask
   }
 

@@ -54,10 +54,10 @@ export default class AlignmentPatternFinder {
    * @param moduleSize estimated module size so far
    */
   public constructor(private image: BitMatrix,
-                         private startX: number/*int*/,
-                         private startY: number/*int*/,
-                         private width: number/*int*/,
-                         private height: number/*int*/,
+                         private startX: number /*int*/,
+                         private startY: number /*int*/,
+                         private width: number /*int*/,
+                         private height: number /*int*/,
                          private moduleSize: number/*float*/,
                          private resultPointCallback: ResultPointCallback) {
     this.possibleCenters = []//new Array<any>(5)
@@ -147,7 +147,7 @@ export default class AlignmentPatternFinder {
    * Given a count of black/white/black pixels just seen and an end position,
    * figures the location of the center of this black/white/black run.
    */
-  private static centerFromEnd(stateCount: Int32Array, end: number/*int*/): number/*float*/ {
+  private static centerFromEnd(stateCount: Int32Array, end: number /*int*/): number/*float*/ {
     return (end - stateCount[2]) - stateCount[1] / 2.0
   }
 
@@ -178,8 +178,8 @@ export default class AlignmentPatternFinder {
    * observed in any reading state, based on the results of the horizontal scan
    * @return vertical center of alignment pattern, or {@link Float#NaN} if not found
    */
-  private crossCheckVertical(startI: number/*int*/, centerJ: number/*int*/, maxCount: number/*int*/,
-      originalStateCountTotal: number/*int*/): number/*float*/ {
+  private crossCheckVertical(startI: number /*int*/, centerJ: number /*int*/, maxCount: number /*int*/,
+      originalStateCountTotal: number /*int*/): number/*float*/ {
     const image = this.image
 
     const maxI = image.getHeight()
@@ -242,7 +242,7 @@ export default class AlignmentPatternFinder {
    * @param j end of possible alignment pattern in row
    * @return {@link AlignmentPattern} if we have found the same pattern twice, or null if not
    */
-  private handlePossibleCenter(stateCount: Int32Array, i: number/*int*/, j: number/*int*/): AlignmentPattern {
+  private handlePossibleCenter(stateCount: Int32Array, i: number /*int*/, j: number /*int*/): AlignmentPattern {
     const stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2]
     const centerJ: number/*float*/ = AlignmentPatternFinder.centerFromEnd(stateCount, j)
     const centerI: number/*float*/ = this.crossCheckVertical(i, /*(int) */centerJ, 2 * stateCount[1], stateCountTotal);

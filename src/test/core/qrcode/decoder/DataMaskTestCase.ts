@@ -22,7 +22,7 @@ import BitMatrix from './../../../../core/common/BitMatrix'
 import DataMask from './../../../../core/qrcode/decoder/DataMask'
 
 interface MaskCondition {
-  isMasked(i: number/*int*/, j: number/*int*/): boolean
+  isMasked(i: number /*int*/, j: number /*int*/): boolean
 }
 
 /**
@@ -32,7 +32,7 @@ describe("DataMaskTestCase", () => {
 
   it("testMask0", () => {
     testMaskAcrossDimensions(0, {
-      isMasked(i: number/*int*/, j: number/*int*/): boolean {
+      isMasked(i: number /*int*/, j: number /*int*/): boolean {
         return (i + j) % 2 === 0
       }
     })
@@ -40,7 +40,7 @@ describe("DataMaskTestCase", () => {
 
   it("testMask1", () => {
     testMaskAcrossDimensions(1, {
-      isMasked(i: number/*int*/, j: number/*int*/): boolean {
+      isMasked(i: number /*int*/, j: number /*int*/): boolean {
         return i % 2 === 0
       }
     })
@@ -48,7 +48,7 @@ describe("DataMaskTestCase", () => {
 
   it("testMask2", () => {
     testMaskAcrossDimensions(2, {
-      isMasked(i: number/*int*/, j: number/*int*/): boolean {
+      isMasked(i: number /*int*/, j: number /*int*/): boolean {
         return j % 3 === 0
       }
     })
@@ -56,7 +56,7 @@ describe("DataMaskTestCase", () => {
 
   it("testMask3", () => {
     testMaskAcrossDimensions(3, {
-      isMasked(i: number/*int*/, j: number/*int*/): boolean {
+      isMasked(i: number /*int*/, j: number /*int*/): boolean {
         return (i + j) % 3 === 0
       }
     })
@@ -64,7 +64,7 @@ describe("DataMaskTestCase", () => {
 
   it("testMask4", () => {
     testMaskAcrossDimensions(4, {
-      isMasked(i: number/*int*/, j: number/*int*/): boolean {
+      isMasked(i: number /*int*/, j: number /*int*/): boolean {
         return (Math.floor(i / 2) + Math.floor(j / 3)) % 2 === 0
       }
     })
@@ -72,7 +72,7 @@ describe("DataMaskTestCase", () => {
 
   it("testMask5", () => {
     testMaskAcrossDimensions(5, {
-      isMasked(i: number/*int*/, j: number/*int*/): boolean {
+      isMasked(i: number /*int*/, j: number /*int*/): boolean {
         return (i * j) % 2 + (i * j) % 3 === 0
       }
     })
@@ -80,7 +80,7 @@ describe("DataMaskTestCase", () => {
 
   it("testMask6", () => {
     testMaskAcrossDimensions(6, {
-      isMasked(i: number/*int*/, j: number/*int*/): boolean {
+      isMasked(i: number /*int*/, j: number /*int*/): boolean {
         return ((i * j) % 2 + (i * j) % 3) % 2 === 0
       }
     })
@@ -88,25 +88,25 @@ describe("DataMaskTestCase", () => {
 
   it("testMask7", () => {
     testMaskAcrossDimensions(7, {
-      isMasked(i: number/*int*/, j: number/*int*/): boolean {
+      isMasked(i: number /*int*/, j: number /*int*/): boolean {
         return ((i + j) % 2 + (i * j) % 3) % 2 === 0
       }
     })
   })
 
-  function testMaskAcrossDimensions(reference: number/*int*/, condition: MaskCondition): void {
+  function testMaskAcrossDimensions(reference: number /*int*/, condition: MaskCondition): void {
     const mask = DataMask.values.get(reference)
-    for (let version: number/*int*/ = 1; version <= 40; version++) {
-      const dimension: number/*int*/ = 17 + 4 * version
+    for (let version: number /*int*/ = 1; version <= 40; version++) {
+      const dimension: number /*int*/ = 17 + 4 * version
       testMask(mask, dimension, condition)
     }
   }
 
-  function testMask(mask: DataMask, dimension: number/*int*/, condition: MaskCondition): void {
+  function testMask(mask: DataMask, dimension: number /*int*/, condition: MaskCondition): void {
     const bits = new BitMatrix(dimension)
     mask.unmaskBitMatrix(bits, dimension)
-    for (let i: number/*int*/ = 0; i < dimension; i++) {
-      for (let j: number/*int*/ = 0; j < dimension; j++) {
+    for (let i: number /*int*/ = 0; i < dimension; i++) {
+      for (let j: number /*int*/ = 0; j < dimension; j++) {
         assert.strictEqual(
             bits.get(j, i),
             condition.isMasked(i, j),

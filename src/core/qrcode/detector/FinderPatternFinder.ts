@@ -187,7 +187,7 @@ export default class FinderPatternFinder {
    * Given a count of black/white/black/white/black pixels just seen and an end position,
    * figures the location of the center of this run.
    */
-  private static centerFromEnd(stateCount: Int32Array, end: number/*int*/): number/*float*/ {
+  private static centerFromEnd(stateCount: Int32Array, end: number /*int*/): number/*float*/ {
     return (end - stateCount[4] - stateCount[3]) - stateCount[2] / 2.0
   }
 
@@ -240,7 +240,7 @@ export default class FinderPatternFinder {
    * @param originalStateCountTotal The original state count total.
    * @return true if proportions are withing expected limits
    */
-  private crossCheckDiagonal(startI: number/*int*/, centerJ: number/*int*/, maxCount: number/*int*/, originalStateCountTotal: number/*int*/): boolean {
+  private crossCheckDiagonal(startI: number /*int*/, centerJ: number /*int*/, maxCount: number /*int*/, originalStateCountTotal: number /*int*/): boolean {
     const stateCount: Int32Array = this.getCrossCheckStateCount()
 
     // Start counting up, left from center finding black center mass
@@ -330,8 +330,8 @@ export default class FinderPatternFinder {
    * observed in any reading state, based on the results of the horizontal scan
    * @return vertical center of finder pattern, or {@link Float#NaN} if not found
    */
-  private crossCheckVertical(startI: number/*int*/, centerJ: number/*int*/, maxCount: number/*int*/,
-      originalStateCountTotal: number/*int*/): number/*float*/ {
+  private crossCheckVertical(startI: number /*int*/, centerJ: number /*int*/, maxCount: number /*int*/,
+      originalStateCountTotal: number /*int*/): number/*float*/ {
     const image: BitMatrix = this.image
 
     const maxI = image.getHeight()
@@ -402,8 +402,8 @@ export default class FinderPatternFinder {
    * except it reads horizontally instead of vertically. This is used to cross-cross
    * check a vertical cross check and locate the real center of the alignment pattern.</p>
    */
-  private crossCheckHorizontal(startJ: number/*int*/, centerI: number/*int*/, maxCount: number/*int*/,
-      originalStateCountTotal: number/*int*/): number/*float*/ {
+  private crossCheckHorizontal(startJ: number /*int*/, centerI: number /*int*/, maxCount: number /*int*/,
+      originalStateCountTotal: number /*int*/): number/*float*/ {
     const image: BitMatrix = this.image
 
     const maxJ = image.getWidth()
@@ -484,7 +484,7 @@ export default class FinderPatternFinder {
    * @param pureBarcode true if in "pure barcode" mode
    * @return true if a finder pattern candidate was found this time
    */
-  protected handlePossibleCenter(stateCount: Int32Array, i: number/*int*/, j: number/*int*/, pureBarcode: boolean): boolean {
+  protected handlePossibleCenter(stateCount: Int32Array, i: number /*int*/, j: number /*int*/, pureBarcode: boolean): boolean {
     const stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2] + stateCount[3] +
         stateCount[4]
     let centerJ: number/*float*/ = FinderPatternFinder.centerFromEnd(stateCount, j)
@@ -525,7 +525,7 @@ export default class FinderPatternFinder {
    *         allow us to infer that the third pattern must lie below a certain point farther
    *         down in the image.
    */
-  private findRowSkip(): number/*int*/ {
+  private findRowSkip(): number /*int*/ {
     const max = this.possibleCenters.length
     if (max <= 1) {
       return 0

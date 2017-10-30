@@ -36,12 +36,12 @@ export default class WhiteRectangleDetector {
   private static INIT_SIZE = 10;
   private static CORR = 1;
 
-  private height: number/*int*/
-  private width: number/*int*/
-  private leftInit: number/*int*/
-  private rightInit: number/*int*/
-  private downInit: number/*int*/
-  private upInit: number/*int*/
+  private height: number /*int*/
+  private width: number /*int*/
+  private leftInit: number /*int*/
+  private rightInit: number /*int*/
+  private downInit: number /*int*/
+  private upInit: number /*int*/
 
   // public constructor(private image: BitMatrix) /*throws NotFoundException*/ {
   //   this(image, INIT_SIZE, image.getWidth() / 2, image.getHeight() / 2)
@@ -54,7 +54,7 @@ export default class WhiteRectangleDetector {
    * @param y y position of search center
    * @throws NotFoundException if image is too small to accommodate {@code initSize}
    */
-  public constructor(private image: BitMatrix, initSize?: number/*int*/, x?: number/*int*/, y?: number/*int*/) /*throws NotFoundException*/ {
+  public constructor(private image: BitMatrix, initSize?: number /*int*/, x?: number /*int*/, y?: number /*int*/) /*throws NotFoundException*/ {
     this.height = image.getHeight()
     this.width = image.getWidth()
     if (undefined === initSize || null === initSize) {
@@ -323,7 +323,7 @@ export default class WhiteRectangleDetector {
    * @param horizontal set to true if scan must be horizontal, false if vertical
    * @return true if a black point has been found, else false.
    */
-  private containsBlackPoint(a: number/*int*/, b: number/*int*/, fixed: number/*int*/, horizontal: boolean): boolean {
+  private containsBlackPoint(a: number /*int*/, b: number /*int*/, fixed: number /*int*/, horizontal: boolean): boolean {
 
     const image = this.image
 

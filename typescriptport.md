@@ -34,7 +34,7 @@ Porting Rules
 =============
 
 * Keep all types as close to the original as possible.
-* Keep detailed type information in comments where applicable (example int will become `number/*int*/`) as the code is extensively using bitwise operations that can overflow.
+* Keep detailed type information in comments where applicable (example int will become `number /*int*/`) as the code is extensively using bitwise operations that can overflow.
 * Use TypedArray whenever possible (example `int[]` will become `Int32Array`) - see below for more info.
 * Use constructor property whenever possible.
 * Take care of array initialisation with capacity, especially when using length and push later on. Basically only use when setting with index accesor only .
@@ -74,6 +74,11 @@ Things to look for
 * Take care of array initialization, in java new Array(N) initializes capacity NOT size/length.
 * Use Math.floor for any divison of ints otherwise the number type is a floating point and keeps the numbers after the dot.
 
+Encoding
+========
+In Java new String(<ByteArray>, encoding), a lot of encodings are supported
+See StringEncoding.ts for implementation in javascript for handling limited browser support.
+Will became: StringEncoding.decode(<ByteArray>, encoding)
 
 TODO
 ====

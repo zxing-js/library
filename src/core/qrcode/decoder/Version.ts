@@ -378,9 +378,9 @@ export default class Version {
     ]
 
   private ecBlocks: ECBlocks[]
-  private totalCodewords: number/*int*/
+  private totalCodewords: number /*int*/
 
-  private constructor(private versionNumber: number/*int*/,
+  private constructor(private versionNumber: number /*int*/,
                   private alignmentPatternCenters: Int32Array,
                   ...ecBlocks: ECBlocks[]) {
     this.ecBlocks = ecBlocks
@@ -393,7 +393,7 @@ export default class Version {
     this.totalCodewords = total
   }
 
-  public getVersionNumber(): number/*int*/ {
+  public getVersionNumber(): number /*int*/ {
     return this.versionNumber
   }
 
@@ -401,11 +401,11 @@ export default class Version {
     return this.alignmentPatternCenters
   }
 
-  public getTotalCodewords(): number/*int*/ {
+  public getTotalCodewords(): number /*int*/ {
     return this.totalCodewords
   }
 
-  public getDimensionForVersion(): number/*int*/ {
+  public getDimensionForVersion(): number /*int*/ {
     return 17 + 4 * this.versionNumber;
   }
 
@@ -422,7 +422,7 @@ export default class Version {
    * @return Version for a QR Code of that dimension
    * @throws FormatException if dimension is not 1 mod 4
    */
-  public static getProvisionalVersionForDimension(dimension: number/*int*/): Version /*throws FormatException */ {
+  public static getProvisionalVersionForDimension(dimension: number /*int*/): Version /*throws FormatException */ {
     if (dimension % 4 != 1) {
       throw new Exception(Exception.FormatException)
     }
@@ -433,14 +433,14 @@ export default class Version {
     }
   }
 
-  public static getVersionForNumber(versionNumber: number/*int*/): Version {
+  public static getVersionForNumber(versionNumber: number /*int*/): Version {
     if (versionNumber < 1 || versionNumber > 40) {
       throw new Exception(Exception.IllegalArgumentException)
     }
     return Version.VERSIONS[versionNumber - 1]
   }
 
-  public static decodeVersionInformation(versionBits: number/*int*/): Version {
+  public static decodeVersionInformation(versionBits: number /*int*/): Version {
     let bestDifference = Number.MAX_SAFE_INTEGER
     let bestVersion = 0
     for (let i = 0; i < Version.VERSION_DECODE_INFO.length; i++) {

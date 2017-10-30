@@ -11,7 +11,7 @@ export default class HTMLCanvasElementLuminanceSource extends LuminanceSource  {
 
     public constructor(private canvas: HTMLCanvasElement) {
         super(canvas.width, canvas.height)
-        
+
         this.buffer = HTMLCanvasElementLuminanceSource.makeBufferFromCanvasImageData(canvas)
     }
 
@@ -24,7 +24,7 @@ export default class HTMLCanvasElementLuminanceSource extends LuminanceSource  {
         const grayscaleBuffer = new Uint8ClampedArray(width * height)
         for(let i = 0, j = 0, length = imageBuffer.length; i < length; i += 4, j++) {
             let gray
-            const alpha = imageBuffer[i + 4]
+            const alpha = imageBuffer[i + 3]
             // The color of fully-transparent pixels is irrelevant. They are often, technically, fully-transparent
             // black (0 alpha, and then 0 RGB). They are often used, of course as the "white" area in a
             // barcode image. Force any such pixel to be white:
@@ -34,7 +34,7 @@ export default class HTMLCanvasElementLuminanceSource extends LuminanceSource  {
                 const pixelR = imageBuffer[i]
                 const pixelG = imageBuffer[i+1]
                 const pixelB = imageBuffer[i+2]
-                // .299R + 0.587G + 0.114B (YUV/YIQ for PAL and NTSC), 
+                // .299R + 0.587G + 0.114B (YUV/YIQ for PAL and NTSC),
                 // (306*R) >> 10 is approximately equal to R*0.299, and so on.
                 // 0x200 >> 10 is 0.5, it implements rounding.
                 gray = (306 * pixelR +
@@ -47,11 +47,11 @@ export default class HTMLCanvasElementLuminanceSource extends LuminanceSource  {
         return grayscaleBuffer
     }
 
-    public getRow(y: number/*int*/, row: Uint8ClampedArray): Uint8ClampedArray {
+    public getRow(y: number /*int*/, row: Uint8ClampedArray): Uint8ClampedArray {
         if (y < 0 || y >= this.getHeight()) {
             throw new Exception(Exception.IllegalArgumentException, "Requested row is outside the image: " + y)
         }
-        const width: number/*int*/ = this.getWidth()
+        const width: number /*int*/ = this.getWidth()
         const start = y * width
         if (row === null ) {
             row = this.buffer.slice(start, start + width)
@@ -75,7 +75,7 @@ export default class HTMLCanvasElementLuminanceSource extends LuminanceSource  {
         return true
     }
 
-    public crop(left: number/*int*/, top: number/*int*/, width: number/*int*/, height: number/*int*/): LuminanceSource {
+    public crop(left: number /*int*/, top: number /*int*/, width: number /*int*/, height: number /*int*/): LuminanceSource {
         this.crop(left, top, width, height)
         return this
     }

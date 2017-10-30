@@ -38,7 +38,7 @@ export default class BitArray /*implements Cloneable*/ {
   //   this.bits = new Int32Array(1)
   // }
 
-  // public constructor(size?: number/*int*/) {
+  // public constructor(size?: number /*int*/) {
   //   if (undefined === size) {
   //     this.size = 0
   //   } else {
@@ -48,7 +48,7 @@ export default class BitArray /*implements Cloneable*/ {
   // }
 
   // For testing only
-  public constructor(size?: number/*int*/, bits?: Int32Array) {
+  public constructor(size?: number /*int*/, bits?: Int32Array) {
     if (undefined === size) {
       this.size = 0
       this.bits = new Int32Array(1)
@@ -62,15 +62,15 @@ export default class BitArray /*implements Cloneable*/ {
     }
   }
 
-  public getSize(): number/*int*/ {
+  public getSize(): number /*int*/ {
     return this.size
   }
 
-  public getSizeInBytes(): number/*int*/ {
+  public getSizeInBytes(): number /*int*/ {
     return Math.floor((this.size + 7) / 8)
   }
 
-  private ensureCapacity(size: number/*int*/): void {
+  private ensureCapacity(size: number /*int*/): void {
     if (size > this.bits.length * 32) {
       const newBits = BitArray.makeArray(size)
       System.arraycopy(this.bits, 0, newBits, 0, this.bits.length)
@@ -82,7 +82,7 @@ export default class BitArray /*implements Cloneable*/ {
    * @param i bit to get
    * @return true iff bit i is set
    */
-  public get(i: number/*int*/): boolean {
+  public get(i: number /*int*/): boolean {
     return (this.bits[Math.floor(i / 32)] & (1 << (i & 0x1F))) !== 0
   }
 
@@ -91,7 +91,7 @@ export default class BitArray /*implements Cloneable*/ {
    *
    * @param i bit to set
    */
-  public set(i: number/*int*/): void {
+  public set(i: number /*int*/): void {
     this.bits[Math.floor(i / 32)] |= 1 << (i & 0x1F)
   }
 
@@ -100,7 +100,7 @@ export default class BitArray /*implements Cloneable*/ {
    *
    * @param i bit to set
    */
-  public flip(i: number/*int*/): void {
+  public flip(i: number /*int*/): void {
     this.bits[Math.floor(i / 32)] ^= 1 << (i & 0x1F)
   }
 
@@ -110,7 +110,7 @@ export default class BitArray /*implements Cloneable*/ {
    *  at or beyond this given index
    * @see #getNextUnset(int)
    */
-  public getNextSet(from: number/*int*/): number/*int*/ {
+  public getNextSet(from: number /*int*/): number /*int*/ {
     const size = this.size
     if (from >= size) {
       return size
@@ -136,7 +136,7 @@ export default class BitArray /*implements Cloneable*/ {
    * @return index of next unset bit, or {@code size} if none are unset until the end
    * @see #getNextSet(int)
    */
-  public getNextUnset(from: number/*int*/): number/*int*/ {
+  public getNextUnset(from: number /*int*/): number /*int*/ {
     const size = this.size
     if (from >= size) {
       return size
@@ -164,7 +164,7 @@ export default class BitArray /*implements Cloneable*/ {
    * @param newBits the new value of the next 32 bits. Note again that the least-significant bit
    * corresponds to bit i, the next-least-significant to i+1, and so on.
    */
-  public setBulk(i: number/*int*/, newBits: number/*int*/): void {
+  public setBulk(i: number /*int*/, newBits: number /*int*/): void {
     this.bits[Math.floor(i / 32)] = newBits
   }
 
@@ -174,7 +174,7 @@ export default class BitArray /*implements Cloneable*/ {
    * @param start start of range, inclusive.
    * @param end end of range, exclusive
    */
-  public setRange(start: number/*int*/, end: number/*int*/): void {
+  public setRange(start: number /*int*/, end: number /*int*/): void {
     if (end < start || start < 0 || end > this.size) {
       throw new Exception(Exception.IllegalArgumentException)
     }
@@ -214,7 +214,7 @@ export default class BitArray /*implements Cloneable*/ {
    * @return true iff all bits are set or not set in range, according to value argument
    * @throws IllegalArgumentException if end is less than start or the range is not contained in the array
    */
-  public isRange(start: number/*int*/, end: number/*int*/, value: boolean): boolean {
+  public isRange(start: number /*int*/, end: number /*int*/, value: boolean): boolean {
     if (end < start || start < 0 || end > this.size) {
       throw new Exception(Exception.IllegalArgumentException)
     }
@@ -256,7 +256,7 @@ export default class BitArray /*implements Cloneable*/ {
    * @param value {@code int} containing bits to append
    * @param numBits bits from value to append
    */
-  public appendBits(value: number/*int*/, numBits: number/*int*/): void {
+  public appendBits(value: number /*int*/, numBits: number /*int*/): void {
     if (numBits < 0 || numBits > 32) {
       throw new Exception(Exception.IllegalArgumentException, "Num bits must be between 0 and 32")
     }
@@ -296,7 +296,7 @@ export default class BitArray /*implements Cloneable*/ {
    * @param offset position in array to start writing
    * @param numBytes how many bytes to write
    */
-  public toBytes(bitOffset: number/*int*/, array: Uint8Array, offset: number/*int*/, numBytes: number/*int*/): void {
+  public toBytes(bitOffset: number /*int*/, array: Uint8Array, offset: number /*int*/, numBytes: number /*int*/): void {
     for (let i = 0; i < numBytes; i++) {
       let theByte = 0
       for (let j = 0; j < 8; j++) {
@@ -350,7 +350,7 @@ export default class BitArray /*implements Cloneable*/ {
     this.bits = newBits
   }
 
-  private static makeArray(size: number/*int*/): Int32Array {
+  private static makeArray(size: number /*int*/): Int32Array {
     return new Int32Array(Math.floor((size + 31) / 32))
   }
 
@@ -364,7 +364,7 @@ export default class BitArray /*implements Cloneable*/ {
   }
 
   /*@Override*/
-  public hashCode(): number/*int*/ {
+  public hashCode(): number /*int*/ {
     return 31 * this.size + Arrays.hashCode(this.bits);
   }
 

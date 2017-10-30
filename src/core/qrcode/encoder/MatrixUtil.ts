@@ -137,7 +137,7 @@ export default class MatrixUtil {
   public static buildMatrix(dataBits: BitArray,
                           ecLevel: ErrorCorrectionLevel,
                           version: Version,
-                          maskPattern: number/*int*/,
+                          maskPattern: number /*int*/,
                           matrix: ByteMatrix): void /*throws WriterException*/ {
     MatrixUtil.clearMatrix(matrix)
     MatrixUtil.embedBasicPatterns(version, matrix)
@@ -168,7 +168,7 @@ export default class MatrixUtil {
   }
 
   // Embed type information. On success, modify the matrix.
-  public static embedTypeInfo(ecLevel: ErrorCorrectionLevel, maskPattern: number/*int*/, matrix: ByteMatrix): void
+  public static embedTypeInfo(ecLevel: ErrorCorrectionLevel, maskPattern: number /*int*/, matrix: ByteMatrix): void
       /*throws WriterException*/ {
     const typeInfoBits: BitArray = new BitArray()
     MatrixUtil.makeTypeInfoBits(ecLevel, maskPattern, typeInfoBits)
@@ -224,7 +224,7 @@ export default class MatrixUtil {
   // Embed "dataBits" using "getMaskPattern". On success, modify the matrix and return true.
   // For debugging purposes, it skips masking process if "getMaskPattern" is -1(TYPESCRIPTPORT: 255).
   // See 8.7 of JISX0510:2004 (p.38) for how to embed data bits.
-  public static embedDataBits(dataBits: BitArray, maskPattern: number/*int*/, matrix: ByteMatrix): void
+  public static embedDataBits(dataBits: BitArray, maskPattern: number /*int*/, matrix: ByteMatrix): void
       /*throws WriterException*/ {
     let bitIndex = 0
     let direction = -1
@@ -276,7 +276,7 @@ export default class MatrixUtil {
   // - findMSBSet(0) => 0
   // - findMSBSet(1) => 1
   // - findMSBSet(255) => 8
-  public static findMSBSet(value: number/*int*/): number/*int*/ {
+  public static findMSBSet(value: number /*int*/): number /*int*/ {
     return 32 - Integer.numberOfLeadingZeros(value)
   }
 
@@ -305,7 +305,7 @@ export default class MatrixUtil {
   //
   // Since all coefficients in the polynomials are 1 or 0, we can do the calculation by bit
   // operations. We don't care if coefficients are positive or negative.
-  public static calculateBCHCode(value: number/*int*/, poly: number/*int*/): number/*int*/ {
+  public static calculateBCHCode(value: number /*int*/, poly: number /*int*/): number /*int*/ {
     if (poly === 0) {
       throw new Exception(Exception.IllegalArgumentException, "0 polynomial")
     }
@@ -324,7 +324,7 @@ export default class MatrixUtil {
   // Make bit vector of type information. On success, store the result in "bits" and return true.
   // Encode error correction level and mask pattern. See 8.9 of
   // JISX0510:2004 (p.45) for details.
-  public static makeTypeInfoBits(ecLevel: ErrorCorrectionLevel, maskPattern: number/*int*/, bits: BitArray): void
+  public static makeTypeInfoBits(ecLevel: ErrorCorrectionLevel, maskPattern: number /*int*/, bits: BitArray): void
       /*throws WriterException*/ {
     if (!QRCode.isValidMaskPattern(maskPattern)) {
       throw new Exception(Exception.WriterException, "Invalid mask pattern")
@@ -357,7 +357,7 @@ export default class MatrixUtil {
   }
 
   // Check if "value" is empty.
-  private static isEmpty(value: number/*int*/): boolean {
+  private static isEmpty(value: number /*int*/): boolean {
     return value === 255//-1
   }
 
@@ -385,8 +385,8 @@ export default class MatrixUtil {
     matrix.setNumber(8, matrix.getHeight() - 8, 1)
   }
 
-  private static embedHorizontalSeparationPattern(xStart: number/*int*/,
-                                                       yStart: number/*int*/,
+  private static embedHorizontalSeparationPattern(xStart: number /*int*/,
+                                                       yStart: number /*int*/,
                                                        matrix: ByteMatrix): void /*throws WriterException*/ {
     for (let x = 0; x < 8; ++x) {
       if (!MatrixUtil.isEmpty(matrix.get(xStart + x, yStart))) {
@@ -396,8 +396,8 @@ export default class MatrixUtil {
     }
   }
 
-  private static embedVerticalSeparationPattern(xStart: number/*int*/,
-                                                     yStart: number/*int*/,
+  private static embedVerticalSeparationPattern(xStart: number /*int*/,
+                                                     yStart: number /*int*/,
                                                      matrix: ByteMatrix): void /*throws WriterException*/ {
     for (let y = 0; y < 7; ++y) {
       if (!MatrixUtil.isEmpty(matrix.get(xStart, yStart + y))) {
@@ -407,7 +407,7 @@ export default class MatrixUtil {
     }
   }
 
-  private static embedPositionAdjustmentPattern(xStart: number/*int*/, yStart: number/*int*/, matrix: ByteMatrix): void {
+  private static embedPositionAdjustmentPattern(xStart: number /*int*/, yStart: number /*int*/, matrix: ByteMatrix): void {
     for (let y = 0; y < 5; ++y) {
       const patternY: Int32Array = MatrixUtil.POSITION_ADJUSTMENT_PATTERN[y]
       for (let x = 0; x < 5; ++x) {
@@ -416,7 +416,7 @@ export default class MatrixUtil {
     }
   }
 
-  private static embedPositionDetectionPattern(xStart: number/*int*/, yStart: number/*int*/, matrix: ByteMatrix): void {
+  private static embedPositionDetectionPattern(xStart: number /*int*/, yStart: number /*int*/, matrix: ByteMatrix): void {
     for (let y = 0; y < 7; ++y) {
       const patternY: Int32Array = MatrixUtil.POSITION_DETECTION_PATTERN[y]
       for (let x = 0; x < 7; ++x) {

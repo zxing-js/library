@@ -88,8 +88,8 @@ abstract class AbstractBlackBoxTestCase {
     return this.testBase
   }
 
-  protected addTest(mustPassCount: number/*int*/,
-                    tryHarderCount: number/*int*/,
+  protected addTest(mustPassCount: number /*int*/,
+                    tryHarderCount: number /*int*/,
                     rotation: number/*float*/): void {
     this.addTestWithMax(mustPassCount, tryHarderCount, 0, 0, rotation)
   }
@@ -103,10 +103,10 @@ abstract class AbstractBlackBoxTestCase {
    *                             reading the wrong contents using the try harder flag
    * @param rotation The rotation in degrees clockwise to use for this test.
    */
-  protected addTestWithMax(mustPassCount: number/*int*/,
-                    tryHarderCount: number/*int*/,
-                    maxMisreads: number/*int*/ = 0,
-                    maxTryHarderMisreads: number/*int*/ = 0,
+  protected addTestWithMax(mustPassCount: number /*int*/,
+                    tryHarderCount: number /*int*/,
+                    maxMisreads: number /*int*/ = 0,
+                    maxTryHarderMisreads: number /*int*/ = 0,
                     rotation: number/*float*/): void {
     this.testResults.push(new TestResult(mustPassCount, tryHarderCount, maxMisreads, maxTryHarderMisreads, rotation))
   }
@@ -155,7 +155,7 @@ abstract class AbstractBlackBoxTestCase {
     assert.strictEqual(this.testResults.length > 0, true)
 
     const imageFiles: Array<string> = this.getImageFiles()
-    const testCount: number/*int*/ = this.testResults.length
+    const testCount: number /*int*/ = this.testResults.length
 
     const passedCounts = new Int32Array(testCount)/*Int32Array(testCount)*/
     const misreadCounts = new Int32Array(testCount)/*Int32Array(testCount)*/
@@ -164,9 +164,9 @@ abstract class AbstractBlackBoxTestCase {
 
     const me = this
     async.eachSeries(imageFiles, (testImage, callback) => {
-      console.log(`Starting ${testImage}`)
       const rotations: number[] = [0, 90, 180, 270]//TODO: take rotations from testResults input
       SharpImage.loadWithRotations(testImage, rotations, (err, images: Map<number, SharpImage>) => {
+        console.log(`Starting ${testImage}`)
         if (err) {
           callback(err)
         } else {
@@ -187,7 +187,7 @@ abstract class AbstractBlackBoxTestCase {
             expectedMetadata = AbstractBlackBoxTestCase.readTextFileAsMetadata(expectedMetadataFile)
           }
 
-          for (let x: number/*int*/ = 0; x < testCount; x++) {
+          for (let x: number /*int*/ = 0; x < testCount; x++) {
             const rotation: number/*float*/ = this.testResults[x].getRotation()
             const rotatedImage: SharpImage = images.get(rotation)
             const source: LuminanceSource = new SharpImageLuminanceSource(rotatedImage)
@@ -198,8 +198,8 @@ abstract class AbstractBlackBoxTestCase {
               } else {
                 misreadCounts[x]++
               }
-            } catch (ignored/*ReaderException*/) {
-              console.log(`could not read at rotation ${rotation}`)
+            } catch (e/*ReaderException*/) {
+              console.log(`could not read at rotation ${rotation} failed with ${e.type}`)
             }
             try {
               if (me.decode(bitmap, rotation, expectedText, expectedMetadata, true)) {
@@ -207,8 +207,8 @@ abstract class AbstractBlackBoxTestCase {
               } else {
                 tryHarderMisreadCounts[x]++
               }
-            } catch (ignored/*ReaderException*/) {
-              console.log(`could not read at rotation ${rotation} w/TH`)
+            } catch (e/*ReaderException*/) {
+              console.log(`could not read at rotation ${rotation} w/TH failed with ${e.type}`)
             }
           }
 
@@ -220,16 +220,16 @@ abstract class AbstractBlackBoxTestCase {
         assert.ok(false, err.toString())
       } else {
         // Print the results of all tests first
-        let totalFound: number/*int*/ = 0
-        let totalMustPass: number/*int*/ = 0
-        let totalMisread: number/*int*/ = 0
-        let totalMaxMisread: number/*int*/ = 0
+        let totalFound: number /*int*/ = 0
+        let totalMustPass: number /*int*/ = 0
+        let totalMisread: number /*int*/ = 0
+        let totalMaxMisread: number /*int*/ = 0
 
-        for (let x: number/*int*/ = 0, length = me.testResults.length; x < length; x++) {
+        for (let x: number /*int*/ = 0, length = me.testResults.length; x < length; x++) {
           const testResult: TestResult = me.testResults[x]
           console.log(`Rotation ${testResult.getRotation()} degrees:`)
           console.log(` ${passedCounts[x]} of ${imageFiles.length} images passed (${testResult.getMustPassCount()} required)`)
-          let failed: number/*int*/ = imageFiles.length - passedCounts[x]
+          let failed: number /*int*/ = imageFiles.length - passedCounts[x]
           console.log(` ${misreadCounts[x]} failed due to misreads, ${failed - misreadCounts[x]} not detected`)
           console.log(` ${tryHarderCounts[x]} of ${imageFiles.length} images passed with try harder (${testResult.getTryHarderCount()} required)`)
           failed = imageFiles.length - tryHarderCounts[x]
@@ -240,7 +240,7 @@ abstract class AbstractBlackBoxTestCase {
           totalMaxMisread += testResult.getMaxMisreads() + testResult.getMaxTryHarderMisreads()
         }
 
-        const totalTests: number/*int*/ = imageFiles.length * testCount * 2
+        const totalTests: number /*int*/ = imageFiles.length * testCount * 2
         console.log(`Decoded ${totalFound} images out of ${totalTests} (${totalFound * 100 / totalTests}%, ${totalMustPass} required)`)
         if (totalFound > totalMustPass) {
           console.warn(`+++ Test too lax by ${totalFound - totalMustPass} images`)
@@ -256,7 +256,7 @@ abstract class AbstractBlackBoxTestCase {
 
         // Then run through again and assert if any failed
         if (assertOnFailure) {
-          for (let x: number/*int*/ = 0; x < testCount; x++) {
+          for (let x: number /*int*/ = 0; x < testCount; x++) {
             const testResult: TestResult = me.testResults[x]
             let label: string = "Rotation " + testResult.getRotation() + " degrees: Too many images failed"
             assert.strictEqual(passedCounts[x] >= testResult.getMustPassCount(), true, label)
@@ -380,7 +380,7 @@ abstract class AbstractBlackBoxTestCase {
   }
 
   protected static readTextFileAsMetadata(file: string): Map<string, string> /*throws IOException*/ {
-    // TODO: 
+    // TODO:
     return null
   }
 

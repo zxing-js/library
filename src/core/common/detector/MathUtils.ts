@@ -33,7 +33,7 @@ export default class MathUtils {
    * @param d real value to round
    * @return nearest {@code int}
    */
-  public static round(d: number/*float*/): number/*int*/ {
+  public static round(d: number/*float*/): number /*int*/ {
     if (NaN === d) return 0
     if (d <= Number.MIN_SAFE_INTEGER) return Number.MIN_SAFE_INTEGER
     if (d >= Number.MAX_SAFE_INTEGER) return Number.MAX_SAFE_INTEGER
@@ -61,7 +61,7 @@ export default class MathUtils {
    * @param bY point B y coordinate
    * @return Euclidean distance between points A and B
    */
-  // public static distance(aX: number/*int*/, aY: number/*int*/, bX: number/*int*/, bY: number/*int*/): float {
+  // public static distance(aX: number /*int*/, aY: number /*int*/, bX: number /*int*/, bY: number /*int*/): float {
   //   const xDiff = aX - bX
   //   const yDiff = aY - bY
   //   return (float) Math.sqrt(xDiff * xDiff + yDiff * yDiff);
@@ -71,7 +71,7 @@ export default class MathUtils {
    * @param array values to sum
    * @return sum of values in array
    */
-  public static sum(array: Int32Array): number/*int*/ {
+  public static sum(array: Int32Array): number /*int*/ {
     let count = 0
     for (let i = 0, length = array.length; i != length; i++) {
       const a = array[i]

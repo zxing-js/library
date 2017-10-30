@@ -73,11 +73,11 @@ abstract class Binarizer {
    */
   public abstract createBinarizer(source: LuminanceSource): Binarizer
 
-  public getWidth(): number/*int*/ {
+  public getWidth(): number /*int*/ {
     return this.source.getWidth()
   }
 
-  public getHeight(): number/*int*/ {
+  public getHeight(): number /*int*/ {
     return this.source.getHeight()
   }
 }

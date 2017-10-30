@@ -31,7 +31,7 @@ import Exception from './../../Exception'
  */
 export default class DataBlock {
 
-  private constructor(private numDataCodewords: number/*int*/, private codewords: Uint8Array) {}
+  private constructor(private numDataCodewords: number /*int*/, private codewords: Uint8Array) {}
 
   /**
    * <p>When QR Codes use multiple data blocks, they are actually interleaved.
@@ -112,7 +112,7 @@ export default class DataBlock {
     return result
   }
 
-  public getNumDataCodewords(): number/*int*/ {
+  public getNumDataCodewords(): number /*int*/ {
     return this.numDataCodewords
   }
 

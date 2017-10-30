@@ -41,7 +41,7 @@ export default class ReedSolomonEncoder {
     this.cachedGenerators.push(new GenericGFPoly(field, Int32Array.from([1])));
   }
 
-  private buildGenerator(degree: number/*int*/): GenericGFPoly {
+  private buildGenerator(degree: number /*int*/): GenericGFPoly {
     const cachedGenerators = this.cachedGenerators
     if (degree >= cachedGenerators.length) {
       let lastGenerator = cachedGenerators[cachedGenerators.length - 1]
@@ -56,7 +56,7 @@ export default class ReedSolomonEncoder {
     return cachedGenerators[degree]
   }
 
-  public encode(toEncode: Int32Array, ecBytes: number/*int*/): void {
+  public encode(toEncode: Int32Array, ecBytes: number /*int*/): void {
     if (ecBytes === 0) {
       throw new Exception(Exception.IllegalArgumentException, "No error correction bytes")
     }
