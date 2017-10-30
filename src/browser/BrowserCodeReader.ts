@@ -81,7 +81,7 @@ export default class BrowserCodeReader {
             }
         } else {
             constraints = {
-                video: { deviceId }
+                video: { deviceId: { exact: deviceId } }
             }
         }
 
@@ -147,6 +147,11 @@ export default class BrowserCodeReader {
         } else {
             this.videoElement = videoElement
         }
+        // Needed for iOS 11
+        this.videoElement.setAttribute("autoplay", "true");
+        this.videoElement.setAttribute("muted", "true");
+        this.videoElement.setAttribute("playsinline", "true");
+        this.videoElement.setAttribute("autofocus", "true");
     }
 
     private getMediaElement(mediaElementId: string, type: string) {
