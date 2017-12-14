@@ -13,7 +13,7 @@ const packageName = normalizePackageName(packageJSON.name)
 
 const LIB_NAME = pascalCase(packageName)
 const PATHS = {
-    entryPoint: './public_api.ts',
+    entryPoint: './src/index.ts',
     umd: resolve(__dirname, 'umd')
 }
 // https://webpack.js.org/configuration/configuration-types/#exporting-a-function-to-use-env
