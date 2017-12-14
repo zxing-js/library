@@ -33,7 +33,7 @@ To use from javascript you need to build the browser distribution package:
 
 `npm run build.browser.dist`
 
-And then include what you need from `build-browser` folder (for example `zxing.qrcodereader.min.js` for qr barcode reader).
+And then include what you need from `build/vanillajs` folder (for example `zxing.qrcodereader.min.js` for qr barcode reader).
 
 Or just grab the minified files that are available in [examples](https://github.com/aleris/zxing-typescript/tree/master/docs/examples).
 
@@ -182,7 +182,7 @@ A full working example for [QR Code from Image](https://github.com/aleris/zxing-
 
 ### Barcode generation
 
-To generate a QR Code SVG image include 'zxing.qrcodewriter.min.js' from `build-browser`. You will need to include an element where the SVG element will be appended:
+To generate a QR Code SVG image include 'zxing.qrcodewriter.min.js' from `build/vanillajs`. You will need to include an element where the SVG element will be appended:
 
 ```html
 <div id="result"></div>
@@ -221,7 +221,7 @@ If you want to use plain js (build to es5, see tsconfig.js):
 
 `npm run build.node`
 
-And the files will be available in `build-node` folder.
+And the files will be available in `build/commonjs` folder.
 
 To use in node you will need to provide an implementation of [`LuminanceSource`](https://github.com/aleris/zxing-typescript/blob/master/src/core/LuminanceSource.ts) for an image. A starting point is [`SharpImageLuminanceSource`](https://github.com/aleris/zxing-typescript/blob/master/src/test/core/SharpImageLuminanceSource.ts) from tests that is using [sharp image processing](https://github.com/lovell/sharp) node library.
 

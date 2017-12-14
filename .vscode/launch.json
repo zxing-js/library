@@ -11,7 +11,7 @@
             "args": [
                 "--colors",
                 "--timeout", "999999",
-                "./build-node/test/**/*.js",
+                "./build/commonjs/test/**/*.js",
                 "-g", "testHybridBinarizer"
             ],
             "protocol": "inspector",
@@ -19,7 +19,7 @@
             "stopOnEntry": false,
             "runtimeExecutable": null,
             "sourceMaps": true,
-            "outFiles": ["${workspaceRoot}/build-node/**/*.js"],
+            "outFiles": ["${workspaceRoot}/build/commonjs/**/*.js"],
             "runtimeArgs": [
                 "--nolazy"
             ],

@@ -1,20 +1,20 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "lib": ["es5", "es6", "dom"],
-    "outDir": "./build-node/",
-    "suppressImplicitAnyIndexErrors": true,
-    "alwaysStrict": true,
-    "noImplicitAny": true,
-    "declaration": true
-  },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "lib": ["es5", "es6", "dom"],
+        "outDir": "./build/commonjs/",
+        "suppressImplicitAnyIndexErrors": true,
+        "alwaysStrict": true,
+        "noImplicitAny": true,
+        "declaration": true
+    },
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }

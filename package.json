@@ -1,65 +1,74 @@
 {
-  "name": "zxing-typescript",
-  "version": "0.1.3",
-  "description": "TypeScript port of ZXing open-source, multi-format 1D/2D barcode image processing library",
-  "keywords": [
-    "zxing-typescript",
-    "zxing",
-    "barcode-scanner",
-    "barcode-reader",
-    "barcode-generator",
-    "qr-code"
-  ],
-  "main": "build-node/core/MultiFormatReader.js",
-  "scripts": {
-    "build.node": "tsc",
-    "build.browser.dist": "webpack -p --env dist",
-    "build.browser.dev": "webpack --env dev --display-error-details",
-    "lint": "tslint -c tslint.json 'src/**/*.ts'",
-    "pretest-2": "npm run lint && npm run build.node",
-    "pretest": "npm run build.node",
-    "test": "mocha --compilers js:babel-core/register \"build-node/test/core/**/*.js\" --timeout 30000 --colors",
-    "docs": "npm run build.browser.dist && copyfiles -u 1 build-browser/*.min.js docs/examples/",
-    "start": "npm run docs && http-server docs",
-    "autotransform": "node ./autotransform/transform.js"
-  },
-  "author": "Adrian Toșcă",
-  "license": "Apache-2.0",
-  "bugs": "https://github.com/aleris/zxing-typescript/issues",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/aleris/zxing-typescript"
-  },
-  "dependencies": {
-    "@types/big.js": "0.0.31",
-    "@types/text-encoding": "0.0.30",
-    "big.js": "^3.1.3",
-    "text-encoding": "^0.6.4",
-    "typescript": "^2.4.2"
-  },
-  "devDependencies": {
-    "@types/async": "^2.0.40",
-    "@types/chai": "^4.0.0",
-    "@types/jimp": "^0.2.1",
-    "@types/mocha": "^2.2.41",
-    "@types/node": "^7.0.18",
-    "@types/seedrandom": "^2.4.27",
-    "@types/sharp": "^0.17.1",
-    "async": "^2.4.0",
-    "awesome-typescript-loader": "^3.1.3",
-    "babel-core": "^6.24.1",
-    "babel-loader": "^7.0.0",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-es2015": "^6.24.1",
-    "copyfiles": "^1.2.0",
-    "mocha": "^3.3.0",
-    "seedrandom": "^2.4.3",
-    "sharp": "^0.17.3",
-    "source-map-loader": "^0.2.1",
-    "ts-loader": "^2.1.0",
-    "tslint": "^5.5.0",
-    "typescript": "^2.3.2",
-    "uglifyjs-webpack-plugin": "^0.4.3",
-    "webpack": "^2.6.1"
-  }
+    "name": "@havan/zxing",
+    "version": "0.2.0",
+    "description": "TypeScript port of ZXing open-source, multi-format 1D/2D barcode image processing library.",
+    "keywords": [
+        "barcode-scanner",
+        "barcode-reader",
+        "barcode-generator",
+        "barcode",
+        "qr-code",
+        "typescript",
+        "zxing-typescript",
+        "zxing"
+    ],
+    "authors": [
+        {
+            "name": "Adrian Toșcă"
+        },
+        {
+            "name": "Luiz Barni",
+            "email": "machado@odacam.com"
+        }
+    ],
+    "license": "MIT",
+    "bugs": "https://github.com/havan-group/zxing-ts/issues/new",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/havan-group/zxing-ts"
+    },
+    "main": "umd/zxing-typescript.js",
+    "module": "lib/index.js",
+    "es2015": "lib-esm/index.js",
+    "typings": "typings/index.d.ts",
+    "scripts": {
+        "build": "tsc && tsc --target es2017 --outDir lib-esm && webpack && webpack --env.prod",
+        "build:dev": "yarn run build:commonjs:dev && yarn run build:vanillajs:dev",
+        "build:prod": "yarn run build:commonjs:prod && yarn run build:vanillajs:prod",
+        "build:commonjs:dev": "tsc",
+        "build:commonjs:prod": "tsc -p ./tsconfig.prod.json",
+        "build:vanillajs:dev": "webpack --env dev --display-error-details",
+        "build:vanillajs:prod": "webpack -p --env prod",
+        "build:clean": "rm -rf build",
+        "lint": "tslint -c tslint.json 'src/**/*.ts'",
+        "pretest": "yarn run lint && yarn run build:commonjs",
+        "test": "karma start",
+        "docs": "yarn run build:vanillajs:prod && copyfiles -u 1 build/vanillajs/*.min.js docs/examples/",
+        "start": "yarn run docs && http-server docs"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "@types/mocha": "^2.2.41",
+        "@types/text-encoding": "0.0.30",
+        "text-encoding": "^0.6.4",
+        "awesome-typescript-loader": "^3.1.3",
+        "chai": "^4.1.0",
+        "karma": "^1.7.0",
+        "karma-chai": "^0.1.0",
+        "karma-mocha": "^1.3.0",
+        "karma-phantomjs-launcher": "^1.0.4",
+        "karma-typescript-preprocessor2": "^1.2.1",
+        "karma-webpack": "^2.0.4",
+        "mocha": "^3.4.2",
+        "mocha-webpack": "^0.7.0",
+        "phantomjs-prebuilt": "^2.1.14",
+        "shx": "0.2.2",
+        "ts-loader": "^2.3.2",
+        "tslint": "^5.5.0",
+        "typescript": "^2.4.2",
+        "uglify-js": "git://github.com/mishoo/UglifyJS2#harmony-v2.8.22",
+        "uglifyjs-webpack-plugin": "^0.4.6",
+        "webpack": "^3.4.1",
+        "webpack-config-utils": "2.3.0"
+    }
 }
