@@ -18,7 +18,7 @@
         },
         {
             "name": "Luiz Barni",
-            "email": "machado@odacam.com"
+            "email": "machado@odahcam.com"
         }
     ],
     "license": "MIT",
@@ -33,14 +33,14 @@
     "typings": "typings/index.d.ts",
     "scripts": {
         "clean": "shx rm -rf umd lib lib-esm",
-        "prebuild": "npm run clean",
-        "build": " tsc && tsc --target es2017 --outDir lib-esm && webpack && webpack --env.prod",
-        "test": "mocha-webpack --webpack-config webpack.config.test.js \"src/test.js\"",
+        "prebuild": "yarn run clean",
+        "build": "tsc && tsc --target es2017 --outDir lib-esm && webpack && webpack --env.prod",
+        "test": "mocha-webpack --webpack-config webpack.config.test.js src/test.js",
         "lint": "tslint src/**/*.ts"
     },
     "dependencies": {
         "async": "2.4.0",
-        "sharp": "^0.18.2",
+        "sharp": "^0.18.4",
         "text-encoding": "^0.6.4"
     },
     "devDependencies": {
