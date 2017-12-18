@@ -4,19 +4,19 @@
  * parameters is used consecutively in the QR code version's format.</p>
  */
 export default class ECB {
-    private count: number /*int*/
-    private dataCodewords: number /*int*/
+    private count: number; /*int*/
+    private dataCodewords: number; /*int*/
 
     public constructor(count: number /*int*/, dataCodewords: number /*int*/) {
-        this.count = count
-        this.dataCodewords = dataCodewords
+        this.count = count;
+        this.dataCodewords = dataCodewords;
     }
 
     public getCount(): number /*int*/ {
-        return this.count
+        return this.count;
     }
 
     public getDataCodewords(): number /*int*/ {
-        return this.dataCodewords
+        return this.dataCodewords;
     }
 }

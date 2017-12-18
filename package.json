@@ -27,14 +27,14 @@
         "type": "git",
         "url": "https://github.com/havan-group/zxing-ts"
     },
-    "main": "umd/zxing-typescript.js",
-    "module": "lib/index.js",
-    "es2015": "lib-esm/index.js",
-    "typings": "typings/index.d.ts",
+    "main": "./bundles/zxing.min.js",
+    "module": "./esm/index.js",
+    "es2015": "./esm2015/index.js",
+    "typings": "./typings/index.d.ts",
     "scripts": {
-        "clean": "shx rm -rf umd lib lib-esm",
+        "clean": "shx rm -rf bundles esm2015 esm",
         "prebuild": "yarn run clean",
-        "build": "tsc && tsc --target es2017 --outDir lib-esm && webpack && webpack --env.prod",
+        "build": "tsc && tsc --target es2017 --outDir esm && webpack && webpack --env.prod",
         "test": "mocha-webpack --webpack-config webpack.config.test.js src/test.js",
         "lint": "tslint src/**/*.ts"
     },

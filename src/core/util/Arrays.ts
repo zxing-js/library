@@ -1,51 +1,51 @@
-import System from './System'
+import System from './System';
 
 export default class Arrays {
     public static equals(first: any, second: any): boolean {
         if (!first) {
-            return false
+            return false;
         }
         if (!second) {
-            return false
+            return false;
         }
         if (!first.length) {
-            return false
+            return false;
         }
         if (!second.length) {
-            return false
+            return false;
         }
         if (first.length !== second.length) {
-            return false
+            return false;
         }
         for (let i = 0, length = first.length; i < length; i++) {
             if (first[i] !== second[i]) {
-                return false
+                return false;
             }
         }
-        return true
+        return true;
     }
 
     public static hashCode(a: any) {
         if (a === null) {
-            return 0
+            return 0;
         }
-        let result = 1
+        let result = 1;
         for (const element of a) {
-            result = 31 * result + element
+            result = 31 * result + element;
         }
-        return result
+        return result;
     }
 
     public static fillUint8Array(a: Uint8Array, value: number) {
         for (let i = 0; i !== a.length; i++) {
-            a[i] = value
+            a[i] = value;
         }
     }
 
     public static copyOf(original: Int32Array, newLength: number) {
-      const copy = new Int32Array(newLength)
-      System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength))
-      return copy
+        const copy = new Int32Array(newLength);
+        System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));
+        return copy;
     }
 
     /*
@@ -65,25 +65,25 @@ export default class Arrays {
     */
     public static binarySearch(ar: Int32Array, el: number, comparator?: (a: number, b: number) => number): number {
         if (undefined === comparator) {
-          comparator = Arrays.numberComparator
+            comparator = Arrays.numberComparator;
         }
-        let m = 0
-        let n = ar.length - 1
+        let m = 0;
+        let n = ar.length - 1;
         while (m <= n) {
-            const k = (n + m) >> 1
-            const cmp = comparator(el, ar[k])
+            const k = (n + m) >> 1;
+            const cmp = comparator(el, ar[k]);
             if (cmp > 0) {
-                m = k + 1
+                m = k + 1;
             } else if (cmp < 0) {
-                n = k - 1
+                n = k - 1;
             } else {
-                return k
+                return k;
             }
         }
-        return -m - 1
+        return -m - 1;
     }
 
     public static numberComparator(a: number, b: number) {
-        return a - b
+        return a - b;
     }
 }

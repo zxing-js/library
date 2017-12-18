@@ -39,13 +39,16 @@ describe('Version.spec', () => {
         }
     });
 
-    function checkVersion(version: Version, number: number /*int*/, dimension: number /*int*/): void {
+    function checkVersion(version: Version, versionNumber: number /*int*/, dimension: number /*int*/): void {
+
         assert.strictEqual(null !== version, true);
-        assert.strictEqual(version.getVersionNumber(), number);
+        assert.strictEqual(version.getVersionNumber(), versionNumber);
         assert.strictEqual(null !== version.getAlignmentPatternCenters(), true);
-        if (number > 1) {
+
+        if (versionNumber > 1) {
             assert.strictEqual(version.getAlignmentPatternCenters().length > 0, true);
         }
+
         assert.strictEqual(version.getDimensionForVersion(), dimension);
         assert.strictEqual(null !== version.getECBlocksForLevel(ErrorCorrectionLevel.H), true);
         assert.strictEqual(null !== version.getECBlocksForLevel(ErrorCorrectionLevel.L), true);

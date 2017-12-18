@@ -16,9 +16,9 @@
 
 /*namespace com.google.zxing {*/
 
-import ResultPoint from './ResultPoint'
+import ResultPoint from './ResultPoint';
 
-export default ResultPointCallback
+export default ResultPointCallback;
 
 /**
  * Callback which is invoked when a possible result point (significant
@@ -28,6 +28,6 @@ export default ResultPointCallback
  */
 interface ResultPointCallback {
 
-  foundPossibleResultPoint(point: ResultPoint): void
+    foundPossibleResultPoint(point: ResultPoint): void;
 
 }

@@ -4,8 +4,12 @@
         "module": "es2015",
         "moduleResolution": "node",
         "sourceMap": true,
-        "lib": ["es5", "es6", "dom"],
-        "outDir": "./lib/",
+        "lib": [
+            "es5",
+            "es6",
+            "dom"
+        ],
+        "outDir": "./esm2015/",
         "suppressImplicitAnyIndexErrors": true,
         "alwaysStrict": true,
         "noImplicitAny": true,

@@ -1,20 +1,30 @@
-const {
-    resolve
-} = require('path')
-const webpack = require('webpack')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+// helpers
+const camelCaseToDash = str => str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+const dashToCamelCase = str => str.replace(/-([a-z])/g, g => g[1].toUpperCase());
+const toUpperCase = str => `${str.charAt(0).toUpperCase()}${str.substr(1)}`;
+const pascalCase = str => toUpperCase(dashToCamelCase(str));
+const normalizePackageName = rawPkgName => rawPkgName.substring(rawPkgName.indexOf('/') + 1);
+
+// webpack requires
+const webpack = require('webpack');
 const {
     getIfUtils,
     removeEmpty
-} = require('webpack-config-utils')
+} = require('webpack-config-utils');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-const packageJSON = require('./package.json')
-const packageName = normalizePackageName(packageJSON.name)
+const {
+    resolve
+} = require('path');
 
+const packageJSON = require('./package.json');
+const packageName = normalizePackageName(packageJSON.name);
+
+// webpack
 const LIB_NAME = pascalCase(packageName)
 const PATHS = {
     entryPoint: './src/index.ts',
-    umd: resolve(__dirname, 'umd')
+    umd: resolve(__dirname, 'bundles')
 }
 // https://webpack.js.org/configuration/configuration-types/#exporting-a-function-to-use-env
 // this is equal to 'webpack --env=dev'
@@ -57,10 +67,12 @@ const RULES = {
 }
 
 const config = (env = DEFAULT_ENV) => {
+
     const {
         ifProd,
         ifNotProd
-    } = getIfUtils(env)
+    } = getIfUtils(env);
+
     const PLUGINS = removeEmpty([
         // enable scope hoisting
         new webpack.optimize.ModuleConcatenationPlugin(),
@@ -86,7 +98,7 @@ const config = (env = DEFAULT_ENV) => {
                 NODE_ENV: ifProd('"production"', '"development"')
             },
         }),
-    ])
+    ]);
 
     const UMDConfig = {
         // These are the entry point of our library. We tell webpack to use
@@ -127,30 +139,6 @@ const config = (env = DEFAULT_ENV) => {
     }
 
     return [UMDConfig]
-}
+};
 
-module.exports = config
-
-// helpers
-
-function camelCaseToDash(myStr) {
-    return myStr.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
-}
-
-function dashToCamelCase(myStr) {
-    return myStr.replace(/-([a-z])/g, g => g[1].toUpperCase())
-}
-
-function toUpperCase(myStr) {
-    return `${myStr.charAt(0).toUpperCase()}${myStr.substr(1)}`
-}
-
-function pascalCase(myStr) {
-    return toUpperCase(dashToCamelCase(myStr))
-}
-
-function normalizePackageName(rawPackageName) {
-    const scopeEnd = rawPackageName.indexOf('/') + 1
-
-    return rawPackageName.substring(scopeEnd)
-}
+module.exports = config;

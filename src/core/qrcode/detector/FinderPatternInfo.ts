@@ -16,7 +16,7 @@
 
 /*namespace com.google.zxing.qrcode.detector {*/
 
-import FinderPattern from './FinderPattern'
+import FinderPattern from './FinderPattern';
 
 /**
  * <p>Encapsulates information about finder patterns in an image, including the location of
@@ -26,26 +26,26 @@ import FinderPattern from './FinderPattern'
  */
 export default class FinderPatternInfo {
 
-  private bottomLeft: FinderPattern
-  private topLeft: FinderPattern
-  private topRight: FinderPattern
+    private bottomLeft: FinderPattern;
+    private topLeft: FinderPattern;
+    private topRight: FinderPattern;
 
-  public constructor(patternCenters: FinderPattern[]) {
-    this.bottomLeft = patternCenters[0]
-    this.topLeft = patternCenters[1]
-    this.topRight = patternCenters[2]
-  }
+    public constructor(patternCenters: FinderPattern[]) {
+        this.bottomLeft = patternCenters[0];
+        this.topLeft = patternCenters[1];
+        this.topRight = patternCenters[2];
+    }
 
-  public getBottomLeft(): FinderPattern {
-    return this.bottomLeft
-  }
+    public getBottomLeft(): FinderPattern {
+        return this.bottomLeft;
+    }
 
-  public getTopLeft(): FinderPattern {
-    return this.topLeft
-  }
+    public getTopLeft(): FinderPattern {
+        return this.topLeft;
+    }
 
-  public getTopRight(): FinderPattern {
-    return this.topRight
-  }
+    public getTopRight(): FinderPattern {
+        return this.topRight;
+    }
 
 }

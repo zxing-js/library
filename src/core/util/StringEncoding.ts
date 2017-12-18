@@ -1,92 +1,92 @@
 // declare require to support dynamic text-encoding module loading in node
-declare function require(moduleName: string): any
+declare function require(moduleName: string): any;
 
 // declare window to use in browser
-declare var window: any
+declare var window: any;
 
-import { TextDecoder as TextDecoderFromTE, TextEncoder as TextEncoderFromTE } from 'text-encoding'
-import CharacterSetECI from './../common/CharacterSetECI'
-import Exception from './../Exception'
+import { TextDecoder as TextDecoderFromTE, TextEncoder as TextEncoderFromTE } from 'text-encoding';
+import CharacterSetECI from './../common/CharacterSetECI';
+import Exception from './../Exception';
 
 export default class StringEncoding {
-    public static decode(bytes: Uint8Array, encoding: string|CharacterSetECI): string {
-      let encodingString: string
-      if (typeof encoding === 'string') {
-        encodingString = encoding
-      } else {
-        encodingString = encoding.getName()
-      }
-      if (StringEncoding.isBrowser()) {
-          // tslint:disable-next-line:no-string-literal
-          const TextDecoderBrowser = window['TextDecoder']
-          // use TextEncoder if is available (should be in newer browsers)
-          if (undefined !== TextDecoderBrowser) {
-              // console.log(TextDecoderBrowser)
-              return new TextDecoderBrowser(encoding).decode(bytes)
-          } else {
-              // fall back to minimal decoding
-              return StringEncoding.decodeFallBack(bytes, encodingString)
-          }
-      } else {
-          const TextDecoderFromTEClass: typeof TextDecoderFromTE = require('text-encoding').TextDecoder
-          return new TextDecoderFromTEClass(encodingString).decode(bytes)
-      }
+    public static decode(bytes: Uint8Array, encoding: string | CharacterSetECI): string {
+        let encodingString: string;
+        if (typeof encoding === 'string') {
+            encodingString = encoding;
+        } else {
+            encodingString = encoding.getName();
+        }
+        if (StringEncoding.isBrowser()) {
+            // tslint:disable-next-line:no-string-literal
+            const TextDecoderBrowser = window['TextDecoder'];
+            // use TextEncoder if is available (should be in newer browsers)
+            if (undefined !== TextDecoderBrowser) {
+                // console.log(TextDecoderBrowser)
+                return new TextDecoderBrowser(encoding).decode(bytes);
+            } else {
+                // fall back to minimal decoding
+                return StringEncoding.decodeFallBack(bytes, encodingString);
+            }
+        } else {
+            const TextDecoderFromTEClass: typeof TextDecoderFromTE = require('text-encoding').TextDecoder;
+            return new TextDecoderFromTEClass(encodingString).decode(bytes);
+        }
     }
 
-    public static encode(s: string, encoding: string|CharacterSetECI): Uint8Array {
-      let encodingString: string
-      if (typeof encoding === 'string') {
-        encodingString = encoding
-      } else {
-        encodingString = encoding.getName()
-      }
-      if (StringEncoding.isBrowser()) {
-          // tslint:disable-next-line:no-string-literal
-          const TextEncoderBrowser = window['TextEncoder']
-          // use TextEncoder if is available (should be in newer browsers)
-          const ec = CharacterSetECI.getCharacterSetECIByName(encodingString)
-          if (undefined !== TextEncoderBrowser) {
-              // TODO: TextEncoder only supports utf-8 encoding as per specs
-              return new TextEncoderBrowser(encoding).encode(s)
-          } else {
-              // fall back to minimal decoding
-              return StringEncoding.encodeFallBack(s, encodingString)
-          }
-      } else {
-          // Note: NONSTANDARD_allowLegacyEncoding is required for other encodings than UTF8
-          // TextEncoder only encodes to UTF8 by default as specified by encoding.spec.whatwg.org
-          const TextEncoderFromTEClass: typeof TextEncoderFromTE = require('text-encoding').TextEncoder
-          return new TextEncoderFromTEClass(encodingString, { NONSTANDARD_allowLegacyEncoding: true }).encode(s)
-      }
+    public static encode(s: string, encoding: string | CharacterSetECI): Uint8Array {
+        let encodingString: string;
+        if (typeof encoding === 'string') {
+            encodingString = encoding;
+        } else {
+            encodingString = encoding.getName();
+        }
+        if (StringEncoding.isBrowser()) {
+            // tslint:disable-next-line:no-string-literal
+            const TextEncoderBrowser = window['TextEncoder'];
+            // use TextEncoder if is available (should be in newer browsers)
+            const ec = CharacterSetECI.getCharacterSetECIByName(encodingString);
+            if (undefined !== TextEncoderBrowser) {
+                // TODO: TextEncoder only supports utf-8 encoding as per specs
+                return new TextEncoderBrowser(encoding).encode(s);
+            } else {
+                // fall back to minimal decoding
+                return StringEncoding.encodeFallBack(s, encodingString);
+            }
+        } else {
+            // Note: NONSTANDARD_allowLegacyEncoding is required for other encodings than UTF8
+            // TextEncoder only encodes to UTF8 by default as specified by encoding.spec.whatwg.org
+            const TextEncoderFromTEClass: typeof TextEncoderFromTE = require('text-encoding').TextEncoder;
+            return new TextEncoderFromTEClass(encodingString, { NONSTANDARD_allowLegacyEncoding: true }).encode(s);
+        }
     }
 
     private static isBrowser(): boolean {
-        return typeof window !== 'undefined' && ({}).toString.call(window) === '[object Window]'
+        return typeof window !== 'undefined' && ({}).toString.call(window) === '[object Window]';
     }
 
     private static decodeFallBack(bytes: Uint8Array, encoding: string): string {
-        const ec = CharacterSetECI.getCharacterSetECIByName(encoding)
+        const ec = CharacterSetECI.getCharacterSetECIByName(encoding);
         if (ec.equals(CharacterSetECI.UTF8) ||
-          ec.equals(CharacterSetECI.ISO8859_1) ||
-          ec.equals(CharacterSetECI.ASCII)) {
-            let s = ''
+            ec.equals(CharacterSetECI.ISO8859_1) ||
+            ec.equals(CharacterSetECI.ASCII)) {
+            let s = '';
             for (let i = 0, length = bytes.length; i < length; i++) {
-                let h = bytes[i].toString(16)
+                let h = bytes[i].toString(16);
                 if (h.length < 2) {
-                    h = '0' + h
+                    h = '0' + h;
                 }
-                s += '%' + h
+                s += '%' + h;
             }
-            return decodeURIComponent(s)
+            return decodeURIComponent(s);
         } else if (ec.equals(CharacterSetECI.UnicodeBigUnmarked)) {
-            return String.fromCharCode.apply(null, new Uint16Array(bytes.buffer))
+            return String.fromCharCode.apply(null, new Uint16Array(bytes.buffer));
         } else {
-            throw new Exception(Exception.UnsupportedOperationException, `encoding ${encoding} not supported`)
+            throw new Exception(Exception.UnsupportedOperationException, `encoding ${encoding} not supported`);
         }
     }
 
     private static encodeFallBack(s: string, encoding: string): Uint8Array {
         // TODO: encode
-        return null
+        return null;
     }
 }

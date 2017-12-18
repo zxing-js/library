@@ -16,39 +16,39 @@
 
 /*namespace com.google.zxing.qrcode.decoder {*/
 
-import ResultPoint from './../../ResultPoint'
+import ResultPoint from './../../ResultPoint';
 
 /**
  * Meta-data container for QR Code decoding. Instances of this class may be used to convey information back to the
  * decoding caller. Callers are expected to process this.
- * 
+ *
  * @see com.google.zxing.common.DecoderResult#getOther()
  */
 export default class QRCodeDecoderMetaData {
 
 
-  public constructor(private mirrored: boolean) {}
+    public constructor(private mirrored: boolean) { }
 
-  /** 
-   * @return true if the QR Code was mirrored. 
-   */
-  public isMirrored(): boolean {
-    return this.mirrored
-  }
-
-  /**
-   * Apply the result points' order correction due to mirroring.
-   * 
-   * @param points Array of points to apply mirror correction to.
-   */
-  public applyMirroredCorrection(points: Array<ResultPoint>): void {
-    if (!this.mirrored || points === null || points.length < 3) {
-      return
+    /**
+     * @return true if the QR Code was mirrored.
+     */
+    public isMirrored(): boolean {
+        return this.mirrored;
     }
-    const bottomLeft = points[0]
-    points[0] = points[2]
-    points[2] = bottomLeft
-    // No need to 'fix' top-left and alignment pattern.
-  }
+
+    /**
+     * Apply the result points' order correction due to mirroring.
+     *
+     * @param points Array of points to apply mirror correction to.
+     */
+    public applyMirroredCorrection(points: Array<ResultPoint>): void {
+        if (!this.mirrored || points === null || points.length < 3) {
+            return;
+        }
+        const bottomLeft = points[0];
+        points[0] = points[2];
+        points[2] = bottomLeft;
+        // No need to 'fix' top-left and alignment pattern.
+    }
 
 }

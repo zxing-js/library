@@ -19,7 +19,7 @@
  */
 
 /*namespace com.google.zxing {*/
-    
+
 /**
  * Enumerates barcode formats known to this package. Please keep alphabetized.
  *
@@ -79,4 +79,4 @@ const enum BarcodeFormat {
 
 }
 
-export default BarcodeFormat
+export default BarcodeFormat;

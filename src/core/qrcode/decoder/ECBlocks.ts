@@ -1,4 +1,4 @@
-import ECB from './ECB'
+import ECB from './ECB';
 
 /**
  * <p>Encapsulates a set of error-correction blocks in one symbol version. Most versions will
@@ -7,23 +7,23 @@ import ECB from './ECB'
  * will be the same across all blocks within one version.</p>
  */
 export default class ECBlocks {
-    private ecBlocks: ECB[]
+    private ecBlocks: ECB[];
 
     public constructor(private ecCodewordsPerBlock: number /*int*/, ...ecBlocks: ECB[]) {
-        this.ecBlocks = ecBlocks
+        this.ecBlocks = ecBlocks;
     }
 
     public getECCodewordsPerBlock(): number /*int*/ {
-        return this.ecCodewordsPerBlock
+        return this.ecCodewordsPerBlock;
     }
 
     public getNumBlocks(): number /*int*/ {
-        let total = 0
-        const ecBlocks = this.ecBlocks
+        let total = 0;
+        const ecBlocks = this.ecBlocks;
         for (const ecBlock of ecBlocks) {
-            total += ecBlock.getCount()
+            total += ecBlock.getCount();
         }
-        return total
+        return total;
     }
 
     public getTotalECCodewords(): number /*int*/ {
@@ -31,6 +31,6 @@ export default class ECBlocks {
     }
 
     public getECBlocks(): ECB[] {
-        return this.ecBlocks
+        return this.ecBlocks;
     }
 }

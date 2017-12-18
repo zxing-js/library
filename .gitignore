@@ -10,9 +10,9 @@ node_modules/
 node_modules
 
 coverage
-lib
-lib-esm
-umd
+esm2015
+esm
+bundles
 typings
 docs
 
