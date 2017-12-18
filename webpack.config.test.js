@@ -1,4 +1,4 @@
-nodeExternals = require('webpack-node-externals');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
     entry: './src/index.ts',
