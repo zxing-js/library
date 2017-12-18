@@ -23,12 +23,12 @@ import SharpImageLuminanceSource from './../SharpImageLuminanceSource'
 import BarcodeFormat from './../../../core/BarcodeFormat'
 import BinaryBitmap from './../../../core/BinaryBitmap';
 import DecodeHintType from './../../../core/DecodeHintType';
-import './../../../core/InvertedLuminanceSource'
-import LuminanceSource from './../../../core/LuminanceSource'
-import Reader from './../../../core/Reader'
-import Result from './../../../core/Result'
+import './../../../core/InvertedLuminanceSource';
+import LuminanceSource from './../../../core/LuminanceSource';
+import Reader from './../../../core/Reader';
+import Result from './../../../core/Result';
 import ResultMetadataType from './../../../core/ResultMetadataType';
-import TestResult from './../common/TestResult'
+import TestResult from './../common/TestResult';
 import HybridBinarizer from './../../../core/common/HybridBinarizer';
 import StringEncoding from './../../../core/util/StringEncoding';
 import { TextDecoder } from 'text-encoding';
@@ -62,7 +62,7 @@ const path = require('path');
  * @author Sean Owen
  * @author dswitkin@google.com (Daniel Switkin)
  */
-abstract class AbstractBlackBoxTestCase {
+abstract class AbstractBlackBoxSpec {
 
   private testBase: string;
   private testResults: Array<TestResult>;
@@ -80,7 +80,7 @@ abstract class AbstractBlackBoxTestCase {
   protected constructor(testBasePathSuffix: string,
                         private barcodeReader: Reader,
                         private expectedFormat: BarcodeFormat) {
-    this.testBase = AbstractBlackBoxTestCase.buildTestBase(testBasePathSuffix);
+    this.testBase = AbstractBlackBoxSpec.buildTestBase(testBasePathSuffix);
     this.testResults = new Array<TestResult>();
   }
 
@@ -122,7 +122,7 @@ abstract class AbstractBlackBoxTestCase {
         if (stat && stat.isDirectory()) {
           results = results.concat(me.walkDirectory(file));
         } else {
-          if (['.jpg','.jpeg', '.gif', '.png'].indexOf(path.extname(file)) !== -1) {
+          if (['.jpg', '.jpeg', '.gif', '.png'].indexOf(path.extname(file)) !== -1) {
             results.push(file);
           }
         }
@@ -174,17 +174,17 @@ abstract class AbstractBlackBoxTestCase {
           let expectedTextFile: string = path.resolve(this.testBase, fileBaseName + '.txt');
           let expectedText: string;
           if (fs.existsSync(expectedTextFile)) {
-            expectedText = AbstractBlackBoxTestCase.readTextFileAsString(expectedTextFile);
+            expectedText = AbstractBlackBoxSpec.readTextFileAsString(expectedTextFile);
           } else {
             expectedTextFile = path.resolve(fileBaseName + '.bin');
             assert.strictEqual(fs.existsSync(expectedTextFile), true, 'result bin/text file should exists');
-            expectedText = AbstractBlackBoxTestCase.readBinFileAsString(expectedTextFile);
+            expectedText = AbstractBlackBoxSpec.readBinFileAsString(expectedTextFile);
           }
 
           const expectedMetadataFile: string = path.resolve(fileBaseName + '.metadata.txt');
           let expectedMetadata = null;
           if (fs.existsSync(expectedMetadataFile)) {
-            expectedMetadata = AbstractBlackBoxTestCase.readTextFileAsMetadata(expectedMetadataFile);
+            expectedMetadata = AbstractBlackBoxSpec.readTextFileAsMetadata(expectedMetadataFile);
           }
 
           for (let x: number /*int*/ = 0; x < testCount; x++) {
@@ -311,8 +311,8 @@ abstract class AbstractBlackBoxTestCase {
     const expectedTextR = expectedText.replace(/\r\n/g, '\n');
     const resultTextR = resultText.replace(/\r\n/g, '\n');
     if (expectedTextR !== resultTextR) {
-      const expectedTextHexCodes = AbstractBlackBoxTestCase.toDebugHexStringCodes(expectedTextR);
-      const resultTextHexCodes = AbstractBlackBoxTestCase.toDebugHexStringCodes(resultTextR);
+      const expectedTextHexCodes = AbstractBlackBoxSpec.toDebugHexStringCodes(expectedTextR);
+      const resultTextHexCodes = AbstractBlackBoxSpec.toDebugHexStringCodes(resultTextR);
       console.warn(`Content mismatch: expected '${expectedTextR}' (${expectedTextHexCodes}) but got '${resultTextR}'${suffix} (${resultTextHexCodes})`);
       return false;
     }
@@ -322,7 +322,7 @@ abstract class AbstractBlackBoxTestCase {
       for (let key in expectedMetadata.keys()) {
         // const key: ResultMetadataType = ResultMetadataType.valueOf(metadatum.)
         const expectedValue: Object = expectedMetadata.get(key);
-        const keyType: ResultMetadataType = AbstractBlackBoxTestCase.valueOfResultMetadataTypeFromString(key);
+        const keyType: ResultMetadataType = AbstractBlackBoxSpec.valueOfResultMetadataTypeFromString(key);
         const actualValue: Object = resultMetadata === null ? undefined : resultMetadata.get(keyType);
         if (expectedValue !== actualValue) {
           console.warn(`Metadata mismatch for key '${key}': expected '${expectedValue}' but got '${actualValue}'`);
@@ -386,4 +386,4 @@ abstract class AbstractBlackBoxTestCase {
 
 }
 
-export default AbstractBlackBoxTestCase;
+export default AbstractBlackBoxSpec;

@@ -246,7 +246,7 @@ Status and Roadmap
 
 Done:
 - [x] Port root, common and qrcode format and make it compile
-- [x] Add unit test infrastructure, a first unit test and make it pass (common/BitArrayTestCase)
+- [x] Add unit test infrastructure, a first unit test and make it pass (common/BitArray.spec)
 - [x] Add all unit tests for everything in root, common and qrcode
 - [x] Add one "back box" test for qrcode
 - [x] Add all "back box" tests for qrcode

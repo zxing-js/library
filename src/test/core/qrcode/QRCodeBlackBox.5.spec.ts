@@ -16,12 +16,12 @@
 
 /*package com.google.zxing.qrcode;*/
 
-import 'mocha'
-import * as assert from 'assert'
+import 'mocha';
+import * as assert from 'assert';
 
-import BarcodeFormat from './../../../core/BarcodeFormat'
-import MultiFormatReader from './../../../core/MultiFormatReader'
-import AbstractBlackBoxTestCase from './../common/AbstractBlackBoxTestCase'
+import BarcodeFormat from './../../../core/BarcodeFormat';
+import MultiFormatReader from './../../../core/MultiFormatReader';
+import AbstractBlackBoxSpec from './../common/AbstractBlackBox.spec';
 
 /**
  * Some very difficult exposure conditions including self-shadowing, which happens a lot when
@@ -30,23 +30,23 @@ import AbstractBlackBoxTestCase from './../common/AbstractBlackBoxTestCase'
  *
  * @author dswitkin@google.com (Daniel Switkin)
  */
-export default class QRCodeBlackBox5TestCase extends AbstractBlackBoxTestCase {
+export default class QRCodeBlackBox5Spec extends AbstractBlackBoxSpec {
 
-  public constructor() {
-    super("src/test/core/resources/blackbox/qrcode-5", new MultiFormatReader(), BarcodeFormat.QR_CODE)
-    this.addTest(19, 19, 0.0)
-    this.addTest(19, 19, 90.0)
-    this.addTest(19, 19, 180.0)
-    this.addTest(18, 18, 270.0)
-  }
+    public constructor() {
+        super('src/test/core/resources/blackbox/qrcode-5', new MultiFormatReader(), BarcodeFormat.QR_CODE);
+        this.addTest(19, 19, 0.0);
+        this.addTest(19, 19, 90.0);
+        this.addTest(19, 19, 180.0);
+        this.addTest(18, 18, 270.0);
+    }
 
 }
 
-describe("QRCodeBlackBox5TestCase", () => {
-  it("testBlackBox", (done) => {
-    const test = new QRCodeBlackBox5TestCase()
-    test.testBlackBox(() => {
-      done()
-    })
-  })
-})
+describe('QRCodeBlackBox.5.spec', () => {
+    it('testBlackBox', (done) => {
+        const test = new QRCodeBlackBox5Spec();
+        test.testBlackBox(() => {
+            done();
+        });
+    });
+});

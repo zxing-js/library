@@ -28,7 +28,7 @@ import StringBuilder from './../../../core/util/StringBuilder';
  * @author Sean Owen
  * @author dswitkin@google.com (Daniel Switkin)
  */
-describe('BitMatrixTestCase', () => {
+describe('BitMatrix.spec', () => {
 
     const BIT_MATRIX_POINTS = [1, 2, 2, 0, 3, 1];
 

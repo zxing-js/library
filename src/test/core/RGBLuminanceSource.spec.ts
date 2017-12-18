@@ -22,7 +22,7 @@ import AssertUtils from './util/AssertUtils';
 import LuminanceSource from '../../core/LuminanceSource';
 import RGBLuminanceSource from '../../core/RGBLuminanceSource';
 
-describe('RGBLuminanceSourceTestCase', () => {
+describe('RGBLuminanceSource.spec', () => {
 
     const SOURCE = new RGBLuminanceSource(Int32Array.from([
         0x000000, 0x7F7F7F, 0xFFFFFF,

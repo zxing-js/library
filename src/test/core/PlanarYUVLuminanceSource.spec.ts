@@ -22,7 +22,7 @@ import AssertUtils from './util/AssertUtils';
 import PlanarYUVLuminanceSource from './../../core/PlanarYUVLuminanceSource';
 import System from './../../core/util/System';
 
-describe('PlanarYUVLuminanceSourceTestCase', () => {
+describe('PlanarYUVLuminanceSource.spec', () => {
 
     const YUV: Uint8ClampedArray = Uint8ClampedArray.from([
         0, 1, 1, 2, 3, 5,

@@ -16,17 +16,17 @@
 
 /*package com.google.zxing.common;*/
 
-import 'mocha'
-import * as assert from 'assert'
-import Random from './../util/Random'
-import BitArray from './../../../core/common/BitArray'
-import Integer from './../../../core/util/Integer'
-import AssertUtils from './../util/AssertUtils'
+import 'mocha';
+import * as assert from 'assert';
+import Random from './../util/Random';
+import BitArray from './../../../core/common/BitArray';
+import Integer from './../../../core/util/Integer';
+import AssertUtils from './../util/AssertUtils';
 
 /**
  * @author Sean Owen
  */
-describe('BitArrayTestCase', () => {
+describe('BitArray.spec', () => {
 
     it('testGetSet', () => {
         const array = new BitArray(33);

@@ -16,15 +16,15 @@
 
 /*package com.google.zxing.qrcode.encoder;*/
 
-import 'mocha'
-import * as assert from 'assert'
-import BitArray from './../../../../core/common/BitArray'
+import 'mocha';
+import * as assert from 'assert';
+import BitArray from './../../../../core/common/BitArray';
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator
  * @author dswitkin@google.com (Daniel Switkin) - ported from C++
  */
-describe('BitVectorTestCase', () => {
+describe('BitVector.spec', () => {
 
     // TYPESCRIPTPORT: cannot use long (64 bits) as we only have 53 bits in number so I will just use a string for testing purposes
     // function getUnsignedInt(v: BitArray, index: number /*int*/): number/*long*/ {
@@ -37,66 +37,66 @@ describe('BitVectorTestCase', () => {
     //   return result
     // }
     function getUnsignedIntAsString(v: BitArray, index: number /*int*/): string/*long*/ {
-        let result = ""
+        let result = '';
         for (let i: number /*int*/ = 0, offset = index * 8; i < 32; i++) {
-            result = result + (v.get(offset + i) ? '1' : '0')
+            result = result + (v.get(offset + i) ? '1' : '0');
         }
-        return ('00000000000000000000000000000000' + result).substring(result.length)
+        return ('00000000000000000000000000000000' + result).substring(result.length);
     }
 
     it('testAppendBit', () => {
-        const v = new BitArray()
-        assert.strictEqual(v.getSizeInBytes(), 0)
+        const v = new BitArray();
+        assert.strictEqual(v.getSizeInBytes(), 0);
         // 1
-        v.appendBit(true)
-        assert.strictEqual(v.getSize(), 1)
-        assert.strictEqual(getUnsignedIntAsString(v, 0), 0x80000000.toString(2))
+        v.appendBit(true);
+        assert.strictEqual(v.getSize(), 1);
+        assert.strictEqual(getUnsignedIntAsString(v, 0), 0x80000000.toString(2));
         // 10
-        v.appendBit(false)
-        assert.strictEqual(v.getSize(), 2)
-        assert.strictEqual(getUnsignedIntAsString(v, 0), 0x80000000.toString(2))
+        v.appendBit(false);
+        assert.strictEqual(v.getSize(), 2);
+        assert.strictEqual(getUnsignedIntAsString(v, 0), 0x80000000.toString(2));
         // 101
-        v.appendBit(true)
-        assert.strictEqual(v.getSize(), 3)
-        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xa0000000.toString(2))
+        v.appendBit(true);
+        assert.strictEqual(v.getSize(), 3);
+        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xa0000000.toString(2));
         // 1010
-        v.appendBit(false)
-        assert.strictEqual(v.getSize(), 4)
-        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xa0000000.toString(2))
+        v.appendBit(false);
+        assert.strictEqual(v.getSize(), 4);
+        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xa0000000.toString(2));
         // 10101
-        v.appendBit(true)
-        assert.strictEqual(v.getSize(), 5)
-        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xa8000000.toString(2))
+        v.appendBit(true);
+        assert.strictEqual(v.getSize(), 5);
+        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xa8000000.toString(2));
         // 101010
-        v.appendBit(false)
-        assert.strictEqual(v.getSize(), 6)
-        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xa8000000.toString(2))
+        v.appendBit(false);
+        assert.strictEqual(v.getSize(), 6);
+        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xa8000000.toString(2));
         // 1010101
-        v.appendBit(true)
-        assert.strictEqual(v.getSize(), 7)
-        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xaa000000.toString(2))
+        v.appendBit(true);
+        assert.strictEqual(v.getSize(), 7);
+        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xaa000000.toString(2));
         // 10101010
-        v.appendBit(false)
-        assert.strictEqual(v.getSize(), 8)
-        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xaa000000.toString(2))
+        v.appendBit(false);
+        assert.strictEqual(v.getSize(), 8);
+        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xaa000000.toString(2));
         // 10101010 1
-        v.appendBit(true)
-        assert.strictEqual(v.getSize(), 9)
-        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xaa800000.toString(2))
+        v.appendBit(true);
+        assert.strictEqual(v.getSize(), 9);
+        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xaa800000.toString(2));
         // 10101010 10
-        v.appendBit(false)
-        assert.strictEqual(v.getSize(), 10)
-        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xaa800000.toString(2))
-    })
+        v.appendBit(false);
+        assert.strictEqual(v.getSize(), 10);
+        assert.strictEqual(getUnsignedIntAsString(v, 0), 0xaa800000.toString(2));
+    });
 
     it('testAppendBits', () => {
-        let v = new BitArray()
-        v.appendBits(0x1, 1)
-        assert.strictEqual(v.getSize(), 1)
-        assert.strictEqual(getUnsignedIntAsString(v, 0), 0x80000000.toString(2))
-        v = new BitArray()
-        v.appendBits(0xff, 8)
-        assert.strictEqual(v.getSize(), 8)
+        let v = new BitArray();
+        v.appendBits(0x1, 1);
+        assert.strictEqual(v.getSize(), 1);
+        assert.strictEqual(getUnsignedIntAsString(v, 0), 0x80000000.toString(2));
+        v = new BitArray();
+        v.appendBits(0xff, 8);
+        assert.strictEqual(v.getSize(), 8);
         assert.strictEqual(getUnsignedIntAsString(v, 0), 0xff000000.toString(2));
         v = new BitArray();
         v.appendBits(0xff7, 12);
