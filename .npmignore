@@ -4,6 +4,9 @@
 tsconfig.*.json
 tslint.json
 **/webpack.config.js
+**/webpack.config.*.js
+*.lock
 
 node_modules
 src
+docs

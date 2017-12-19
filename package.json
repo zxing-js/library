@@ -1,5 +1,5 @@
 {
-    "name": "@havan/zxing",
+    "name": "@odahcam/zxing-ts",
     "version": "0.2.0",
     "description": "TypeScript port of ZXing open-source, multi-format 1D/2D barcode image processing library.",
     "keywords": [
@@ -27,14 +27,14 @@
         "type": "git",
         "url": "https://github.com/havan-group/zxing-ts"
     },
-    "main": "./bundles/zxing.min.js",
-    "module": "./esm/index.js",
-    "es2015": "./esm2015/index.js",
-    "typings": "./typings/index.d.ts",
+    "main": "./bundles/index.js",
+    "module": "./esm5/index.js",
+    "es2015": "./esm2015/zxing.min.js",
+    "typings": "./esm5/index.d.ts",
     "scripts": {
-        "clean": "shx rm -rf bundles esm2015 esm",
+        "clean": "shx rm -rf bundles esm5",
         "prebuild": "yarn run clean",
-        "build": "tsc && tsc --target es2017 --outDir esm && webpack && webpack --env.prod",
+        "build": "tsc && tsc --target es2017 --outDir esm5 && webpack && webpack --env.prod",
         "test": "mocha-webpack --webpack-config webpack.config.test.js src/test.js",
         "lint": "tslint src/**/*.ts"
     },

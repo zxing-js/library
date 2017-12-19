@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
+        "module": "commonjs",
         "target": "es5",
-        "module": "es2015",
         "moduleResolution": "node",
         "sourceMap": true,
         "lib": [
@@ -9,16 +9,17 @@
             "es6",
             "dom"
         ],
-        "outDir": "./esm2015/",
-        "suppressImplicitAnyIndexErrors": true,
+        "outDir": "./esm5/",
         "alwaysStrict": true,
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "declaration": true
     },
     "include": [
         "src"
     ],
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "src/test",
+        "**/*.spec.ts"
     ]
 }

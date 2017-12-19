@@ -20,25 +20,6 @@ const {
 const packageJSON = require('./package.json');
 const packageName = normalizePackageName(packageJSON.name);
 
-// webpack
-const LIB_NAME = pascalCase(packageName)
-const PATHS = {
-    entryPoint: './src/index.ts',
-    umd: resolve(__dirname, 'bundles')
-}
-// https://webpack.js.org/configuration/configuration-types/#exporting-a-function-to-use-env
-// this is equal to 'webpack --env=dev'
-const DEFAULT_ENV = 'dev'
-
-const EXTERNALS = {
-    'text-encoding': {
-        commonjs: 'text-encoding',
-        commonjs2: 'text-encoding',
-        amd: 'text-encoding',
-        root: 'text-encoding'
-    }
-}
-
 const RULES = {
     ts: {
         test: /\.tsx?$/,
@@ -52,7 +33,7 @@ const RULES = {
                 // This cannot be set because -> Option 'declarationDir' cannot be specified without specifying option 'declaration'.
                 // declaration: false,
             },
-        }, ],
+        }],
     },
     tsNext: {
         test: /\.tsx?$/,
@@ -62,11 +43,13 @@ const RULES = {
             options: {
                 target: 'es2017',
             },
-        }, ],
+        }],
     },
-}
+};
 
-const config = (env = DEFAULT_ENV) => {
+// https://webpack.js.org/configuration/configuration-types/#exporting-a-function-to-use-env
+// this is equal to 'webpack --env=dev'
+const config = (env = 'dev') => {
 
     const {
         ifProd,
@@ -106,17 +89,17 @@ const config = (env = DEFAULT_ENV) => {
         // the name to filter the second entry point for applying code
         // minification via UglifyJS
         entry: {
-            [ifProd(`${packageName}.min`, packageName)]: [PATHS.entryPoint],
+            [ifProd(`${packageName}.min`, packageName)]: ['./src/index.ts'],
         },
         // The output defines how and where we want the bundles. The special
         // value `[name]` in `filename` tell Webpack to use the name we defined above.
         // We target a UMD and name it MyLib. When including the bundle in the browser
         // it will be accessible at `window.MyLib`
         output: {
-            path: PATHS.umd,
+            path: resolve(__dirname, 'bundles'),
             filename: '[name].js',
             libraryTarget: 'umd',
-            library: LIB_NAME,
+            library: pascalCase(packageName),
             // libraryExport:  LIB_NAME,
             // will name the AMD module of the UMD build. Otherwise an anonymous define is used.
             umdNamedDefine: true,
@@ -128,7 +111,14 @@ const config = (env = DEFAULT_ENV) => {
         },
         // add here all 3rd party libraries that you will use as peerDependncies
         // https://webpack.js.org/guides/author-libraries/#add-externals
-        externals: EXTERNALS,
+        externals: {
+            'text-encoding': {
+                commonjs: 'text-encoding',
+                commonjs2: 'text-encoding',
+                amd: 'text-encoding',
+                root: 'text-encoding'
+            }
+        },
         // Activate source maps for the bundles in order to preserve the original
         // source when the user debugs the application
         devtool: 'source-map',

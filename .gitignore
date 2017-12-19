@@ -10,8 +10,7 @@ node_modules/
 node_modules
 
 coverage
-esm2015
-esm
+esm5
 bundles
 typings
 docs
