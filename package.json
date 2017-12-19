@@ -1,6 +1,6 @@
 {
     "name": "@barn/zxing",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "TypeScript port of ZXing open-source, multi-format 1D/2D barcode image processing library.",
     "keywords": [
         "barcode-scanner",
