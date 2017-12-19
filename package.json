@@ -17,15 +17,19 @@
             "name": "Adrian Toșcă"
         },
         {
+            "name": "David Werth",
+            "email": "werth.david@gmail.com"
+        },
+        {
             "name": "Luiz Barni",
             "email": "machado@odahcam.com"
         }
     ],
     "license": "MIT",
-    "bugs": "https://github.com/havan-group/zxing-ts/issues/new",
+    "bugs": "https://github.com/odahcam/zxing-ts/issues/new",
     "repository": {
         "type": "git",
-        "url": "https://github.com/havan-group/zxing-ts"
+        "url": "https://github.com/odahcam/zxing-ts"
     },
     "main": "./bundles/index.js",
     "module": "./esm5/index.js",
