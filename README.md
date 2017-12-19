@@ -2,6 +2,14 @@ ZXing TypeScript
 ================
 
 [![Build Status](https://travis-ci.org/odahcam/zxing-ts.svg?branch=master)](https://travis-ci.org/odahcam/zxing-ts)
+[![GitHub version](https://img.shields.io/github/tag/odahcam/zxing-ts.svg?style=flat-square&label=github)](https://github.com/odahcam/zxing-ts)
+[![NPM version](https://img.shields.io/npm/v/zxing-ts.svg?style=flat-square&label=npm)](https://www.npmjs.com/package/zxing-ts)
+[![License](https://img.shields.io/npm/l/qoopido.demand.svg?style=flat-square)](https://github.com/odahcam/zxing-ts)
+[![Code Climate](https://img.shields.io/codeclimate/github/odahcam/zxing-ts.svg?style=flat-square)](https://codeclimate.com/github/odahcam/zxing-ts)
+![NPM downloads](https://img.shields.io/npm/dt/zxing-ts.svg?style=flat-square&label=npm%20downloads)
+
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/odahcam/zxing-ts.svg)](http://isitmaintained.com/project/odahcam/zxing-ts "Average time to resolve an issue")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/odahcam/zxing-ts.svg)](http://isitmaintained.com/project/odahcam/zxing-ts "Percentage of issues still open")
 
 ZXing ("zebra crossing") TypeScript is an open-source, multi-format 1D/2D barcode image processing library ported to TypeScript from Java.
 
