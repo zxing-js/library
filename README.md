@@ -12,6 +12,7 @@ ZXing TypeScript
 
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/odahcam/zxing-ts.svg)](http://isitmaintained.com/project/odahcam/zxing-ts "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/odahcam/zxing-ts.svg)](http://isitmaintained.com/project/odahcam/zxing-ts "Percentage of issues still open")
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f7a8692eca4147e983abfc0d8291cf84)](https://www.codacy.com/app/odahcam/zxing-ts?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=odahcam/zxing-ts&amp;utm_campaign=Badge_Grade)
 
 ZXing ("zebra crossing") TypeScript is an open-source, multi-format 1D/2D barcode image processing library ported to TypeScript from Java.
 
