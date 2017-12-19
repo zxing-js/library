@@ -1,6 +1,6 @@
 // helpers
 const camelCaseToDash = (str) => str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-const dashToCamelCase = (str) => str.replace(/-([a-z])/g, g => g[1].toUpperCase());
+const dashToCamelCase = (str) => str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 const toUpperCase = (str) => `${str.charAt(0).toUpperCase()}${str.substr(1)}`;
 const pascalCase = (str) => toUpperCase(dashToCamelCase(str));
 const normalizePackageName = (rawPkgName) => rawPkgName.substring(rawPkgName.indexOf('/') + 1);
