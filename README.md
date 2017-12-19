@@ -35,7 +35,7 @@ Browser Usage
 
 Examples below are for QR barcode, all other supported barcodes work similary.
 
-`npm i @odahcam/zxing --save`
+`npm i @barn/zxing --save`
 
 To use from JS you need to include what you need from `build/umd` folder (for example `zxing.min.js`).
 
@@ -208,12 +208,12 @@ Using from TypeScript
 
 Install the package:
 
-`npm i @odahcam/zxing --save`
+`npm i @barn/zxing --save`
 
 And then include directly the classes files you need, for example:
 
 ```javascript
-import { BrowserQRCodeReader, VideoInputDevice } from '@odahcam/zxing';
+import { BrowserQRCodeReader, VideoInputDevice } from '@barn/zxing';
 ```
 
 The usage is identical with the above.
@@ -221,7 +221,7 @@ The usage is identical with the above.
 Node Usage
 ----------
 
-`npm i @odahcam/zxing --save`
+`npm i @barn/zxing --save`
 
 To use in node you will need to provide an implementation of [`LuminanceSource`](https://github.com/odahcam/zxing-ts/blob/master/src/core/LuminanceSource.ts) for an image. A starting point is [`SharpImageLuminanceSource`](https://github.com/odahcam/zxing-ts/blob/master/src/test/core/SharpImageLuminanceSource.ts) from tests that is using [sharp image processing](https://github.com/lovell/sharp) node library.
 
