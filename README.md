@@ -1,14 +1,12 @@
 [<img align="right" src="https://raw.github.com/wiki/zxing/zxing/zxing-logo.png"/>](https://github.com/zxing/zxing)
 
-ZXing TypeScript
+ZXing TypeScript [![License](https://img.shields.io/npm/l/qoopido.demand.svg?style=flat-square)](https://github.com/odahcam/zxing-ts) [![GitHub release](https://img.shields.io/github/release/odahcam/zxing-ts.svg?style=flat-square)](https://github.com/odahcam/zxing-ts)
 ================
 
-[![Build Status](https://travis-ci.org/odahcam/zxing-ts.svg?branch=master)](https://travis-ci.org/odahcam/zxing-ts)
-[![NPM version](https://img.shields.io/npm/v/@barn/zxing.svg?style=flat-square&label=npm)](https://www.npmjs.com/package/@barn/zxing)
-![NPM downloads](https://img.shields.io/npm/dt/@barn/zxing.svg?style=flat-square&label=npm%20downloads)
-[![GitHub release](https://img.shields.io/github/release/odahcam/zxing-ts.svg)](https://github.com/odahcam/zxing-ts)
-[![License](https://img.shields.io/npm/l/qoopido.demand.svg?style=flat-square)](https://github.com/odahcam/zxing-ts)
-![Dependencies](https://david-dm.org/odahcam/zxing-ts.svg)
+[![Build Status](https://travis-ci.org/odahcam/zxing-ts.svg?branch=master)](https://travis-ci.org/odahcam/zxing-ts) 
+[![NPM version](https://img.shields.io/npm/v/@barn/zxing.svg?&label=npm)](https://www.npmjs.com/package/@barn/zxing) 
+![NPM downloads](https://img.shields.io/npm/dt/@barn/zxing.svg?&label=npm%20downloads) 
+![Dependencies](https://david-dm.org/odahcam/zxing-ts.svg) 
 
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/odahcam/zxing-ts.svg)](http://isitmaintained.com/project/odahcam/zxing-ts "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/odahcam/zxing-ts.svg)](http://isitmaintained.com/project/odahcam/zxing-ts "Percentage of issues still open")
