@@ -1,5 +1,5 @@
 {
-    "name": "@odahcam/zxing-ts",
+    "name": "@odahcam/zxing",
     "version": "0.2.0",
     "description": "TypeScript port of ZXing open-source, multi-format 1D/2D barcode image processing library.",
     "keywords": [
@@ -31,6 +31,7 @@
         "type": "git",
         "url": "https://github.com/odahcam/zxing-ts"
     },
+    "private": false,
     "main": "./bundles/index.js",
     "module": "./esm5/index.js",
     "es2015": "./esm2015/zxing.min.js",
