@@ -3,6 +3,7 @@
 ZXing TypeScript
 ================
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e3fc9b2b05474882974dd39b6dfe3a79)](https://www.codacy.com/app/odahcam/zxing-ts?utm_source=github.com&utm_medium=referral&utm_content=odahcam/zxing-ts&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/odahcam/zxing-ts.svg?branch=master)](https://travis-ci.org/odahcam/zxing-ts)
 [![GitHub version](https://img.shields.io/github/tag/odahcam/zxing-ts.svg?style=flat-square&label=github)](https://github.com/odahcam/zxing-ts)
 [![NPM version](https://img.shields.io/npm/v/zxing-ts.svg?style=flat-square&label=npm)](https://www.npmjs.com/package/zxing-ts)
