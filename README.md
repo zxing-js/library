@@ -1,4 +1,4 @@
-<img align="right" src="https://raw.github.com/wiki/zxing/zxing/zxing-logo.png"/>
+[<img align="right" src="https://raw.github.com/wiki/zxing/zxing/zxing-logo.png"/>](https://github.com/zxing/zxing)
 
 ZXing TypeScript
 ================
@@ -17,14 +17,6 @@ ZXing TypeScript
 ZXing ("zebra crossing") TypeScript is an open-source, multi-format 1D/2D barcode image processing library ported to TypeScript from Java.
 
 See https://github.com/zxing/zxing for original Java project.
-
-Difference from base-repo
-=========================
-
- - Fixed all `tslint` errors.
- - Created build with ES5 and Universal Module definition.
- - Compatibility with anguar and other frameworks.
- - Applyied some best practices and organization.
 
 Work In Progress
 ================
