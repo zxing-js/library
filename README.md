@@ -17,7 +17,7 @@ ZXing _in TypeScript_ [![License](https://img.shields.io/npm/l/qoopido.demand.sv
 
 ZXing _(Zebra Crossing)_ is an multi-format 1D/2D barcode image processing library.
 
-Ported from [ZXing](https://github.com/zxing/zxing) project: https://github.com/zxing/zxing
+Ported from [ZXing](https://github.com/zxing/zxing) project (written in Java): https://github.com/zxing/zxing
 
 Work In Progress
 ================
