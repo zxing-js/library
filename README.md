@@ -3,6 +3,10 @@
 ZXing _in TypeScript_ [![License](https://img.shields.io/npm/l/qoopido.demand.svg?style=flat-square)](https://github.com/odahcam/zxing-ts) [![GitHub release](https://img.shields.io/github/release/odahcam/zxing-ts.svg?style=flat-square)](https://github.com/odahcam/zxing-ts)
 ================
 
+ZXing _(Zebra Crossing)_ is an multi-format 1D/2D barcode image processing library.
+
+Ported from [ZXing](https://github.com/zxing/zxing) project (written in Java): https://github.com/zxing/zxing
+
 [![Build Status](https://travis-ci.org/odahcam/zxing-ts.svg?branch=master)](https://travis-ci.org/odahcam/zxing-ts) 
 [![NPM version](https://img.shields.io/npm/v/@barn/zxing.svg?&label=npm)](https://www.npmjs.com/package/@barn/zxing) 
 ![NPM downloads](https://img.shields.io/npm/dt/@barn/zxing.svg?&label=npm%20downloads) 
@@ -14,10 +18,6 @@ ZXing _in TypeScript_ [![License](https://img.shields.io/npm/l/qoopido.demand.sv
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f7a8692eca4147e983abfc0d8291cf84)](https://www.codacy.com/app/odahcam/zxing-ts?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=odahcam/zxing-ts&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/181de5153c3535321974/maintainability)](https://codeclimate.com/github/odahcam/zxing-ts/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/181de5153c3535321974/test_coverage)](https://codeclimate.com/github/odahcam/zxing-ts/test_coverage)
-
-ZXing _(Zebra Crossing)_ is an multi-format 1D/2D barcode image processing library.
-
-Ported from [ZXing](https://github.com/zxing/zxing) project (written in Java): https://github.com/zxing/zxing
 
 Work In Progress
 ================
