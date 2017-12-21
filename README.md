@@ -1,12 +1,17 @@
 [<img align="right" src="https://raw.github.com/wiki/zxing/zxing/zxing-logo.png"/>](https://github.com/zxing/zxing)
 
-ZXing TypeScript [![License](https://img.shields.io/npm/l/qoopido.demand.svg?style=flat-square)](https://github.com/odahcam/zxing-ts) [![GitHub release](https://img.shields.io/github/release/odahcam/zxing-ts.svg?style=flat-square)](https://github.com/odahcam/zxing-ts)
+ZXing _in TypeScript_ [![License](https://img.shields.io/npm/l/qoopido.demand.svg?style=flat-square)](https://github.com/odahcam/zxing-ts) [![GitHub release](https://img.shields.io/github/release/odahcam/zxing-ts.svg?style=flat-square)](https://github.com/odahcam/zxing-ts)
 ================
+
+ZXing _(Zebra Crossing)_ is an multi-format 1D/2D barcode image processing library.
+
+Ported from [ZXing](https://github.com/zxing/zxing) project (written in Java): https://github.com/zxing/zxing
 
 [![Build Status](https://travis-ci.org/odahcam/zxing-ts.svg?branch=master)](https://travis-ci.org/odahcam/zxing-ts) 
 [![NPM version](https://img.shields.io/npm/v/@barn/zxing.svg?&label=npm)](https://www.npmjs.com/package/@barn/zxing) 
 ![NPM downloads](https://img.shields.io/npm/dt/@barn/zxing.svg?&label=npm%20downloads) 
 ![Dependencies](https://david-dm.org/odahcam/zxing-ts.svg) 
+[![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/)
 
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/odahcam/zxing-ts.svg)](http://isitmaintained.com/project/odahcam/zxing-ts "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/odahcam/zxing-ts.svg)](http://isitmaintained.com/project/odahcam/zxing-ts "Percentage of issues still open")
@@ -14,14 +19,10 @@ ZXing TypeScript [![License](https://img.shields.io/npm/l/qoopido.demand.svg?sty
 [![Maintainability](https://api.codeclimate.com/v1/badges/181de5153c3535321974/maintainability)](https://codeclimate.com/github/odahcam/zxing-ts/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/181de5153c3535321974/test_coverage)](https://codeclimate.com/github/odahcam/zxing-ts/test_coverage)
 
-ZXing ("zebra crossing") TypeScript is an open-source, multi-format 1D/2D barcode image processing library ported to TypeScript from Java.
-
-See https://github.com/zxing/zxing for original Java project.
-
 Work In Progress
 ================
 
-This project is work in progress, see [Status and Roadmap](#status-and-roadmap) for what is currently done and what's planned next. 
+There's still some things we gotta do here, see [Status and Roadmap](#status-and-roadmap) for what is currently done and what's planned next. 
 
 Demo
 ====
@@ -258,6 +259,7 @@ Done:
 - [x] Implement QR barcode generation to SVG in browser
 
 Todo:
+- [ ] Move all these tasks to a "Project".
 - [ ] Port pdf417 format with unit and browser tests and documentation
 - [ ] Adapt documentation for JSDoc, generate documentation, cleanup source files
 - [ ] Create automatic tests for all major current browsers
