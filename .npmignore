@@ -8,5 +8,4 @@ tslint.json
 *.lock
 
 node_modules
-src
 docs
