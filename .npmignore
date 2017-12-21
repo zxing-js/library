@@ -7,6 +7,7 @@ tslint.json
 **/webpack.config.*.js
 *.lock
 *.tar.gz
+*.tgz
 
 node_modules
 docs
