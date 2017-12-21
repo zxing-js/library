@@ -3,7 +3,6 @@
         "module": "commonjs",
         "target": "es5",
         "moduleResolution": "node",
-        "sourceMap": true,
         "lib": [
             "es5",
             "es6",
@@ -12,14 +11,7 @@
         "outDir": "./esm5/",
         "alwaysStrict": true,
         "noImplicitAny": false,
+        "sourceMap": true,
         "declaration": true
-    },
-    "include": [
-        "src"
-    ],
-    "exclude": [
-        "node_modules",
-        "src/test",
-        "**/*.spec.ts"
-    ]
+    }
 }
