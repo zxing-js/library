@@ -65,7 +65,7 @@
         "shx": "0.2.2",
         "ts-loader": "^2.3.2",
         "tslint": "^5.5.0",
-        "typescript": "^2.4.2",
+        "typescript": "^2.6.2",
         "uglify-js": "git://github.com/mishoo/UglifyJS2#harmony-v2.8.22",
         "uglifyjs-webpack-plugin": "^0.4.6",
         "webpack": "^3.4.1",
