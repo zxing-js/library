@@ -33,74 +33,118 @@ import ReedSolomonDecoder from './../../../../core/common/reedsolomon/ReedSolomo
 /**
  * @author Rustam Abdullaev
  */
-describe('ReedSolomon.spec', () => {
+describe('ReedSolomon', () => {
 
     const DECODER_RANDOM_TEST_ITERATIONS: number /*int*/ = 3;
     const DECODER_TEST_ITERATIONS: number /*int*/ = 10;
 
-    it('testDataMatrix', () => {
-        // real life test cases
-        testEncodeDecode(GenericGF.DATA_MATRIX_FIELD_256,
+    it('testDataMatrix 1 - real life test case', () => {
+        testEncodeDecode(
+            GenericGF.DATA_MATRIX_FIELD_256,
             Int32Array.from([142, 164, 186]),
-            Int32Array.from([114, 25, 5, 88, 102]));
-        testEncodeDecode(GenericGF.DATA_MATRIX_FIELD_256,
+            Int32Array.from([114, 25, 5, 88, 102])
+        );
+    });
+
+    it('testDataMatrix 2 - real life test case', () => {
+        testEncodeDecode(
+            GenericGF.DATA_MATRIX_FIELD_256,
             Int32Array.from([
                 0x69, 0x75, 0x75, 0x71, 0x3B, 0x30, 0x30, 0x64,
                 0x70, 0x65, 0x66, 0x2F, 0x68, 0x70, 0x70, 0x68,
                 0x6D, 0x66, 0x2F, 0x64, 0x70, 0x6E, 0x30, 0x71,
                 0x30, 0x7B, 0x79, 0x6A, 0x6F, 0x68, 0x30, 0x81,
-                0xF0, 0x88, 0x1F, 0xB5]),
+                0xF0, 0x88, 0x1F, 0xB5
+            ]),
             Int32Array.from([
                 0x1C, 0x64, 0xEE, 0xEB, 0xD0, 0x1D, 0x00, 0x03,
                 0xF0, 0x1C, 0xF1, 0xD0, 0x6D, 0x00, 0x98, 0xDA,
-                0x80, 0x88, 0xBE, 0xFF, 0xB7, 0xFA, 0xA9, 0x95]));
-        // synthetic test cases
+                0x80, 0x88, 0xBE, 0xFF, 0xB7, 0xFA, 0xA9, 0x95
+            ])
+        );
+    });
+
+    it('testDataMatrix 3 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.DATA_MATRIX_FIELD_256, 10, 240);
         testEncodeDecodeRandom(GenericGF.DATA_MATRIX_FIELD_256, 128, 127);
         testEncodeDecodeRandom(GenericGF.DATA_MATRIX_FIELD_256, 220, 35);
     });
 
-    it('testQRCode', () => {
+    it('testQRCode 1 - from example given in ISO 18004, Annex I', () => {
+
         // Test case from example given in ISO 18004, Annex I
-        testEncodeDecode(GenericGF.QR_CODE_FIELD_256,
+        testEncodeDecode(
+            GenericGF.QR_CODE_FIELD_256,
             Int32Array.from([
                 0x10, 0x20, 0x0C, 0x56, 0x61, 0x80, 0xEC, 0x11,
-                0xEC, 0x11, 0xEC, 0x11, 0xEC, 0x11, 0xEC, 0x11]),
+                0xEC, 0x11, 0xEC, 0x11, 0xEC, 0x11, 0xEC, 0x11
+            ]),
             Int32Array.from([
                 0xA5, 0x24, 0xD4, 0xC1, 0xED, 0x36, 0xC7, 0x87,
-                0x2C, 0x55]));
-        testEncodeDecode(GenericGF.QR_CODE_FIELD_256,
+                0x2C, 0x55
+            ])
+        );
+
+    });
+
+    it('testQRCode 2 - real life test case', () => {
+        testEncodeDecode(
+            GenericGF.QR_CODE_FIELD_256,
             Int32Array.from([
                 0x72, 0x67, 0x2F, 0x77, 0x69, 0x6B, 0x69, 0x2F,
                 0x4D, 0x61, 0x69, 0x6E, 0x5F, 0x50, 0x61, 0x67,
                 0x65, 0x3B, 0x3B, 0x00, 0xEC, 0x11, 0xEC, 0x11,
-                0xEC, 0x11, 0xEC, 0x11, 0xEC, 0x11, 0xEC, 0x11]),
+                0xEC, 0x11, 0xEC, 0x11, 0xEC, 0x11, 0xEC, 0x11
+            ]),
             Int32Array.from([
                 0xD8, 0xB8, 0xEF, 0x14, 0xEC, 0xD0, 0xCC, 0x85,
                 0x73, 0x40, 0x0B, 0xB5, 0x5A, 0xB8, 0x8B, 0x2E,
-                0x08, 0x62]));
-        // real life test cases
-        // synthetic test cases
+                0x08, 0x62
+            ])
+        );
+    });
+
+    it('testQRCode 3 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.QR_CODE_FIELD_256, 10, 240);
         testEncodeDecodeRandom(GenericGF.QR_CODE_FIELD_256, 128, 127);
         testEncodeDecodeRandom(GenericGF.QR_CODE_FIELD_256, 220, 35);
     });
 
-    it('testAztec', () => {
-        // real life test cases
-        testEncodeDecode(GenericGF.AZTEC_PARAM,
+    it('testAztec 1 - real life test case', () => {
+        testEncodeDecode(
+            GenericGF.AZTEC_PARAM,
             Int32Array.from([0x5, 0x6]),
-            Int32Array.from([0x3, 0x2, 0xB, 0xB, 0x7]));
-        testEncodeDecode(GenericGF.AZTEC_PARAM,
+            Int32Array.from([0x3, 0x2, 0xB, 0xB, 0x7])
+        );
+    });
+
+    it('testAztec 2 - real life test case', () => {
+        testEncodeDecode(
+            GenericGF.AZTEC_PARAM,
             Int32Array.from([0x0, 0x0, 0x0, 0x9]),
-            Int32Array.from([0xA, 0xD, 0x8, 0x6, 0x5, 0x6]));
-        testEncodeDecode(GenericGF.AZTEC_PARAM,
+            Int32Array.from([0xA, 0xD, 0x8, 0x6, 0x5, 0x6])
+        );
+    });
+
+    it('testAztec 3 - real life test case', () => {
+        testEncodeDecode(
+            GenericGF.AZTEC_PARAM,
             Int32Array.from([0x2, 0x8, 0x8, 0x7]),
-            Int32Array.from([0xE, 0xC, 0xA, 0x9, 0x6, 0x8]));
-        testEncodeDecode(GenericGF.AZTEC_DATA_6,
+            Int32Array.from([0xE, 0xC, 0xA, 0x9, 0x6, 0x8])
+        );
+    });
+
+    it('testAztec 4 - real life test case', () => {
+        testEncodeDecode(
+            GenericGF.AZTEC_DATA_6,
             Int32Array.from([0x9, 0x32, 0x1, 0x29, 0x2F, 0x2, 0x27, 0x25, 0x1, 0x1B]),
-            Int32Array.from([0x2C, 0x2, 0xD, 0xD, 0xA, 0x16, 0x28, 0x9, 0x22, 0xA, 0x14]));
-        testEncodeDecode(GenericGF.AZTEC_DATA_8,
+            Int32Array.from([0x2C, 0x2, 0xD, 0xD, 0xA, 0x16, 0x28, 0x9, 0x22, 0xA, 0x14])
+        );
+    });
+
+    it('testAztec 5 - real life test case', () => {
+        testEncodeDecode(
+            GenericGF.AZTEC_DATA_8,
             Int32Array.from([
                 0xE0, 0x86, 0x42, 0x98, 0xE8, 0x4A, 0x96, 0xC6,
                 0xB9, 0xF0, 0x8C, 0xA7, 0x4A, 0xDA, 0xF8, 0xCE,
@@ -118,8 +162,13 @@ describe('ReedSolomon.spec', () => {
                 0x86, 0xBB, 0x4B, 0x15, 0x4E, 0x4A, 0xDE, 0xD4,
                 0xED, 0xA1, 0xF8, 0x47, 0x2A, 0x50, 0xA6, 0xBC,
                 0x53, 0x7D, 0x29, 0xFE, 0x06, 0x49, 0xF3, 0x73,
-                0x9F, 0xC1, 0x75]));
-        testEncodeDecode(GenericGF.AZTEC_DATA_10,
+                0x9F, 0xC1, 0x75])
+        );
+    });
+
+    it('testAztec 6 - real life test case', () => {
+        testEncodeDecode(
+            GenericGF.AZTEC_DATA_10,
             Int32Array.from([
                 0x15C, 0x1E1, 0x2D5, 0x02E, 0x048, 0x1E2, 0x037, 0x0CD,
                 0x02E, 0x056, 0x26A, 0x281, 0x1C2, 0x1A6, 0x296, 0x045,
@@ -162,7 +211,8 @@ describe('ReedSolomon.spec', () => {
                 0x0C5, 0x026, 0x295, 0x003, 0x396, 0x2A1, 0x176, 0x295,
                 0x201, 0x0AA, 0x04E, 0x004, 0x1B0, 0x070, 0x275, 0x154,
                 0x026, 0x2C1, 0x2B3, 0x154, 0x2AA, 0x256, 0x0C1, 0x044,
-                0x004, 0x23F]),
+                0x004, 0x23F
+            ]),
             Int32Array.from([
                 0x379, 0x099, 0x348, 0x010, 0x090, 0x196, 0x09C, 0x1FF,
                 0x1B0, 0x32D, 0x244, 0x0DE, 0x201, 0x386, 0x163, 0x11F,
@@ -181,8 +231,14 @@ describe('ReedSolomon.spec', () => {
                 0x332, 0x318, 0x2E3, 0x24E, 0x3E2, 0x1E1, 0x0BE, 0x239,
                 0x306, 0x3A5, 0x352, 0x351, 0x275, 0x0ED, 0x045, 0x229,
                 0x0BF, 0x05D, 0x253, 0x1BE, 0x02E, 0x35A, 0x0E4, 0x2E9,
-                0x17A, 0x166, 0x03C, 0x007]));
-        testEncodeDecode(GenericGF.AZTEC_DATA_12,
+                0x17A, 0x166, 0x03C, 0x007
+            ])
+        );
+    });
+
+    it('testAztec 7 - real life test case', () => {
+        testEncodeDecode(
+            GenericGF.AZTEC_DATA_12,
             Int32Array.from([
                 0x571, 0xE1B, 0x542, 0xE12, 0x1E2, 0x0DC, 0xCD0, 0xB85,
                 0x69A, 0xA81, 0x709, 0xA6A, 0x584, 0x510, 0x4AA, 0x256,
@@ -337,7 +393,8 @@ describe('ReedSolomon.spec', () => {
                 0xAC2, 0x602, 0x3D5, 0x450, 0x551, 0xA59, 0xC1B, 0xAAE,
                 0x69C, 0xC41, 0x34C, 0x550, 0x10C, 0x835, 0x429, 0x33C,
                 0xB33, 0x4D5, 0x509, 0xCCD, 0x550, 0x35B, 0x4E2, 0xAA0,
-                0x5E6, 0x205, 0xB09, 0x99C, 0x09F]),
+                0x5E6, 0x205, 0xB09, 0x99C, 0x09F
+            ]),
             Int32Array.from([
                 0xD54, 0x221, 0x154, 0x7CD, 0xBF3, 0x112, 0x89B, 0xC5E,
                 0x9CD, 0x07E, 0xFB6, 0x78F, 0x7FA, 0x16F, 0x377, 0x4B4,
@@ -393,8 +450,12 @@ describe('ReedSolomon.spec', () => {
                 0x949, 0xA4C, 0xE36, 0x126, 0xC85, 0xE05, 0xFEE, 0x962,
                 0x36D, 0x08D, 0xC76, 0x1E1, 0x1EC, 0x8D7, 0x231, 0xB68,
                 0x03C, 0x1DE, 0x7DF, 0x2B1, 0x09D, 0xC81, 0xDA4, 0x8F7,
-                0x6B9, 0x947, 0x9B0]));
-        // synthetic test cases
+                0x6B9, 0x947, 0x9B0
+            ])
+        );
+    });
+
+    it('testAztec 8 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.AZTEC_PARAM, 2, 5); // compact mode message
         testEncodeDecodeRandom(GenericGF.AZTEC_PARAM, 4, 6); // full mode message
         testEncodeDecodeRandom(GenericGF.AZTEC_DATA_6, 10, 7);
@@ -407,10 +468,14 @@ describe('ReedSolomon.spec', () => {
     });
 
     function corrupt(received: Int32Array, howMany: number /*int*/, random: Random, max: number /*int*/): void {
+
         const corrupted = new Map<number, boolean>(); // (received.length)
+
         for (let j: number /*int*/ = 0; j < howMany; j++) {
+
             const location: number /*int*/ = random.next(received.length);
             const value: number /*int*/ = random.next(max);
+
             if (corrupted.get(location) === true || received[location] === value) {
                 j--;
             } else {
@@ -421,14 +486,17 @@ describe('ReedSolomon.spec', () => {
     }
 
     function testEncodeDecodeRandom(field: GenericGF, dataSize: number /*int*/, ecSize: number /*int*/): void {
+
         assert.strictEqual(dataSize > 0 && dataSize <= field.getSize() - 3, true, 'Invalid data size for ' + field);
         assert.strictEqual(ecSize > 0 && ecSize + dataSize <= field.getSize(), true, 'Invalid ECC size for ' + field);
+
         const encoder = new ReedSolomonEncoder(field);
         const message = new Int32Array(dataSize + ecSize);
         const dataWords = new Int32Array(dataSize); /*Int32Array(dataSize)*/
         const ecWords = new Int32Array(ecSize); /*Int32Array(ecSize)*/
         const random: Random = getPseudoRandom();
         const iterations: number /*int*/ = field.getSize() > 256 ? 1 : DECODER_RANDOM_TEST_ITERATIONS;
+
         for (let i: number /*int*/ = 0; i < iterations; i++) {
             // generate random data
             for (let k: number /*int*/ = 0; k < dataSize; k++) {
@@ -449,31 +517,41 @@ describe('ReedSolomon.spec', () => {
     }
 
     function testEncoder(field: GenericGF, dataWords: Int32Array, ecWords: Int32Array): void {
+
         const encoder = new ReedSolomonEncoder(field);
         const messageExpected = new Int32Array(dataWords.length + ecWords.length);
         const message = new Int32Array(dataWords.length + ecWords.length);
+
         System.arraycopy(dataWords, 0, messageExpected, 0, dataWords.length);
         System.arraycopy(ecWords, 0, messageExpected, dataWords.length, ecWords.length);
         System.arraycopy(dataWords, 0, message, 0, dataWords.length);
+
         encoder.encode(message, ecWords.length);
+
         assertDataEquals(message, messageExpected, 'Encode in ' + field + ' (' + dataWords.length + ',' + ecWords.length + ') failed');
     }
 
     function testDecoder(field: GenericGF, dataWords: Int32Array, ecWords: Int32Array): void {
+
         const decoder = new ReedSolomonDecoder(field);
         const message = new Int32Array(dataWords.length + ecWords.length);
         const maxErrors: number /*int*/ = Math.floor(ecWords.length / 2);
         const random: Random = getPseudoRandom();
         const iterations: number /*int*/ = field.getSize() > 256 ? 1 : DECODER_TEST_ITERATIONS;
+
         for (let j: number /*int*/ = 0; j < iterations; j++) {
             for (let i: number /*int*/ = 0; i < ecWords.length; i++) {
+
                 if (i > 10 && i < Math.floor(ecWords.length / 2) - 10) {
                     // performance improvement - skip intermediate cases in long-running tests
                     i += Math.floor(ecWords.length / 10);
                 }
+
                 System.arraycopy(dataWords, 0, message, 0, dataWords.length);
                 System.arraycopy(ecWords, 0, message, dataWords.length, ecWords.length);
+
                 corrupt(message, i, random, field.getSize());
+
                 try {
                     decoder.decode(message, ecWords.length);
                 } catch (e/*ReedSolomonException e*/) {
@@ -483,6 +561,7 @@ describe('ReedSolomon.spec', () => {
                     // else stop
                     break;
                 }
+
                 if (i < maxErrors) {
                     assertDataEquals(message,
                         dataWords,
@@ -495,21 +574,28 @@ describe('ReedSolomon.spec', () => {
     function assertDataEquals(received: Int32Array, expected: Int32Array, message: string): void {
         for (let i: number /*int*/ = 0; i < expected.length; i++) {
             if (expected[i] !== received[i]) {
-                assert.ok(false, message + '. Mismatch at ' + i + '. Expected ' + arrayToString(expected) + ', got ' +
-                    arrayToString(Int32Array.from(received.subarray(0, expected.length))));
+                assert.ok(
+                    false,
+                    message + '. Mismatch at ' + i + '. Expected ' + arrayToString(expected) + ', got ' +
+                    arrayToString(Int32Array.from(received.subarray(0, expected.length)))
+                );
             }
         }
     }
 
     function arrayToString(data: Int32Array): String {
+
         const sb = new StringBuilder();
+
         sb.append('{');
+
         for (let i: number /*int*/ = 0; i < data.length; i++) {
             if (i > 0) {
                 sb.append(',');
             }
             sb.append(data[i].toString(16));
         }
+
         return sb.append('}').toString();
     }
 
