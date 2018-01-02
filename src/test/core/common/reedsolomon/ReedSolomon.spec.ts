@@ -64,9 +64,15 @@ describe('ReedSolomon', () => {
         );
     });
 
-    it('testDataMatrix 3 - synthetic test cases', () => {
+    it('testDataMatrix 3.1 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.DATA_MATRIX_FIELD_256, 10, 240);
+    });
+
+    it('testDataMatrix 3.2 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.DATA_MATRIX_FIELD_256, 128, 127);
+    });
+
+    it('testDataMatrix 3.3 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.DATA_MATRIX_FIELD_256, 220, 35);
     });
 
@@ -104,9 +110,15 @@ describe('ReedSolomon', () => {
         );
     });
 
-    it('testQRCode 3 - synthetic test cases', () => {
+    it('testQRCode 3.1 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.QR_CODE_FIELD_256, 10, 240);
+    });
+
+    it('testQRCode 3.2 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.QR_CODE_FIELD_256, 128, 127);
+    });
+
+    it('testQRCode 3.3 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.QR_CODE_FIELD_256, 220, 35);
     });
 
@@ -455,15 +467,39 @@ describe('ReedSolomon', () => {
         );
     });
 
-    it('testAztec 8 - synthetic test cases', () => {
-        testEncodeDecodeRandom(GenericGF.AZTEC_PARAM, 2, 5); // compact mode message
-        testEncodeDecodeRandom(GenericGF.AZTEC_PARAM, 4, 6); // full mode message
+    it('testAztec 8.1 - synthetic test cases (compact mode message)', () => {
+        testEncodeDecodeRandom(GenericGF.AZTEC_PARAM, 2, 5);
+    });
+
+    it('testAztec 8.2 - synthetic test cases (full mode message)', () => {
+        testEncodeDecodeRandom(GenericGF.AZTEC_PARAM, 4, 6);
+    });
+
+    it('testAztec 8.3 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.AZTEC_DATA_6, 10, 7);
+    });
+
+    it('testAztec 8.4 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.AZTEC_DATA_6, 20, 12);
+    });
+
+    it('testAztec 8.5 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.AZTEC_DATA_8, 20, 11);
+    });
+
+    it('testAztec 8.6 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.AZTEC_DATA_8, 128, 127);
+    });
+
+    it('testAztec 8.7 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.AZTEC_DATA_10, 128, 128);
+    });
+
+    it('testAztec 8.8 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.AZTEC_DATA_10, 768, 255);
+    });
+
+    it('testAztec 8.9 - synthetic test cases', () => {
         testEncodeDecodeRandom(GenericGF.AZTEC_DATA_12, 3072, 1023);
     });
 
