@@ -12,33 +12,31 @@ function rootPath() {
     );
 }
 
-module.exports = (config) => {
+module.exports = function (config) {
     config.set({
 
         basePath: '',
 
-        frameworks: ['mocha', 'jasmine', 'chai', 'sinon'],
+        frameworks: ['mocha', 'karma-typescript', 'chai', 'sinon'],
 
         files: [
-            rootPath('src', 'test.ts'),
+            // 'node_modules/expect.js/index.js',
+            'src/**/*.ts'
         ],
 
         preprocessors: {
-            [rootPath('src', '**/*.spec.ts')]: ['webpack'],
-            [rootPath('src', 'test.ts')]: ['coverage']
+            '**/*.ts': ['karma-typescript']
         },
 
         plugins: [
-            require('karma-chrome-launcher'),
             require('karma-coverage'),
-            require('karma-jasmine'),
-            require('karma-jasmine-html-reporter'),
             require('karma-mocha'),
             require('karma-chai'),
+            require('karma-sinon'),
             require('karma-phantomjs-launcher'),
             require('karma-remap-coverage'),
-            require('karma-sinon'),
-            require('karma-webpack'),
+            require('karma-typescript'),
+            require('karma-typescript-preprocessor'),
         ],
 
         client: {
@@ -48,7 +46,7 @@ module.exports = (config) => {
         /**
          * add both "karma-coverage" and "karma-remap-coverage" reporters
          */
-        reporters: ['progress', 'kjhtml', 'coverage', 'remap-coverage'],
+        reporters: ['progress', 'coverage', 'remap-coverage', 'dots', 'karma-typescript'],
 
         /**
          * save interim raw coverage report in memory
@@ -89,7 +87,7 @@ module.exports = (config) => {
         /**
          * What browsers should be used
          */
-        browsers: ['Chrome', 'PhantomJS'],
+        browsers: ['PhantomJS'],
 
         /**
          * Keep testing or not.
