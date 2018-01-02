@@ -21,7 +21,7 @@ import * as assert from 'assert';
 
 import BarcodeFormat from './../../../core/BarcodeFormat';
 import MultiFormatReader from './../../../core/MultiFormatReader';
-import AbstractBlackBoxSpec from './../common/AbstractBlackBox.spec';
+import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
 
 /**
  * @author dswitkin@google.com (Daniel Switkin)
@@ -38,7 +38,7 @@ export default class QRCodeBlackBox3Spec extends AbstractBlackBoxSpec {
 
 }
 
-describe('QRCodeBlackBox.3.spec', () => {
+describe('QRCodeBlackBox.3', () => {
     it('testBlackBox', (done) => {
         const test = new QRCodeBlackBox3Spec();
         test.testBlackBox(() => {

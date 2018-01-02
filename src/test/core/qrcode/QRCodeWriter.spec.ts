@@ -42,7 +42,7 @@ const path = require('path');
  * @author satorux@google.com (Satoru Takabayashi) - creator
  * @author dswitkin@google.com (Daniel Switkin) - ported and expanded from C++
  */
-describe('QRCodeWriter.spec', () => {
+describe('QRCodeWriter', () => {
 
     const BASE_IMAGE_PATH = 'src/test/core/resources/golden/qrcode/';
 

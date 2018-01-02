@@ -20,7 +20,7 @@ import 'mocha';
 import * as assert from 'assert';
 import MathUtils from './../../../../core/common/detector/MathUtils';
 
-describe('MathUtils.spec', () => {
+describe('MathUtils', () => {
 
     const EPSILON: number /*float*/ = 1.0E-8;
 

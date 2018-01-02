@@ -6,7 +6,7 @@ import SharpImage from '../util/SharpImage';
 
 const path = require('path');
 
-describe('HybridBinarizer.spec', () => {
+describe('HybridBinarizer', () => {
     it('testHybridBinarizer', (done) => {
         SharpImage.loadWithRotations(path.resolve('src/test/core/resources/blackbox/common/simple.png'),
             [0],

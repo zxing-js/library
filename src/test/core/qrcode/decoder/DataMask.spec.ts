@@ -28,7 +28,7 @@ interface MaskCondition {
 /**
  * @author Sean Owen
  */
-describe('DataMask.spec', () => {
+describe('DataMask', () => {
 
     it('testMask0', () => {
         testMaskAcrossDimensions(0, {

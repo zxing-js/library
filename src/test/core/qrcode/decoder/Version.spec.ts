@@ -25,7 +25,7 @@ import Version from './../../../../core/qrcode/decoder/Version';
 /**
  * @author Sean Owen
  */
-describe('Version.spec', () => {
+describe('Version', () => {
 
     it('testVersionForNumber', () => {
         try {

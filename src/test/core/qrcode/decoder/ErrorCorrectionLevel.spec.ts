@@ -24,7 +24,7 @@ import ErrorCorrectionLevel from './../../../../core/qrcode/decoder/ErrorCorrect
 /**
  * @author Sean Owen
  */
-describe('ErrorCorrectionLevel.spec', () => {
+describe('ErrorCorrectionLevel', () => {
 
     it('testForBits', () => {
         assert.strictEqual(ErrorCorrectionLevel.M.equals(ErrorCorrectionLevel.forBits(0)), true);

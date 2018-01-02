@@ -28,7 +28,7 @@ import ByteMatrix from './../../../../core/qrcode/encoder/ByteMatrix';
  * @author satorux@google.com (Satoru Takabayashi) - creator
  * @author mysen@google.com (Chris Mysen) - ported from C++
  */
-describe('QRCode.spec', () => {
+describe('QRCode', () => {
 
     it('test', () => {
         const qrCode = new QRCode();

@@ -26,7 +26,7 @@ import AssertUtils from './../util/AssertUtils';
 /**
  * @author Sean Owen
  */
-describe('BitArray.spec', () => {
+describe('BitArray', () => {
 
     it('testGetSet', () => {
         const array = new BitArray(33);

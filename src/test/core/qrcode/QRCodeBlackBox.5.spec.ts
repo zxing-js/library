@@ -21,7 +21,7 @@ import * as assert from 'assert';
 
 import BarcodeFormat from './../../../core/BarcodeFormat';
 import MultiFormatReader from './../../../core/MultiFormatReader';
-import AbstractBlackBoxSpec from './../common/AbstractBlackBox.spec';
+import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
 
 /**
  * Some very difficult exposure conditions including self-shadowing, which happens a lot when
@@ -42,7 +42,7 @@ export default class QRCodeBlackBox5Spec extends AbstractBlackBoxSpec {
 
 }
 
-describe('QRCodeBlackBox.5.spec', () => {
+describe('QRCodeBlackBox.5', () => {
     it('testBlackBox', (done) => {
         const test = new QRCodeBlackBox5Spec();
         test.testBlackBox(() => {

@@ -25,7 +25,7 @@ import MaskUtil from './../../../../core/qrcode/encoder/MaskUtil';
  * @author satorux@google.com (Satoru Takabayashi) - creator
  * @author mysen@google.com (Chris Mysen) - ported from C++
  */
-describe('MaskUtil.spec', () => {
+describe('MaskUtil', () => {
 
     it('testApplyMaskPenaltyRule1', () => {
         let matrix = new ByteMatrix(4, 1);

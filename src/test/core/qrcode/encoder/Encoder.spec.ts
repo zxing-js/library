@@ -37,7 +37,7 @@ import { TextDecoder, TextEncoder } from 'text-encoding';
  * @author satorux@google.com (Satoru Takabayashi) - creator
  * @author mysen@google.com (Chris Mysen) - ported from C++
  */
-describe('Encoder.spec', () => {
+describe('Encoder', () => {
 
     it('testGetAlphanumericCode', () => {
         // The first ten code points are numbers.

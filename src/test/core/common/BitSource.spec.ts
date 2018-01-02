@@ -23,7 +23,7 @@ import BitSource from './../../../core/common/BitSource';
 /**
  * @author Sean Owen
  */
-describe('BitSource.spec', () => {
+describe('BitSource', () => {
 
     it('testSource', () => {
         const bytes = Uint8Array.from([

@@ -24,7 +24,7 @@ import BitArray from './../../../../core/common/BitArray';
  * @author satorux@google.com (Satoru Takabayashi) - creator
  * @author dswitkin@google.com (Daniel Switkin) - ported from C++
  */
-describe('BitVector.spec', () => {
+describe('BitVector', () => {
 
     // TYPESCRIPTPORT: cannot use long (64 bits) as we only have 53 bits in number so I will just use a string for testing purposes
     // function getUnsignedInt(v: BitArray, index: number /*int*/): number/*long*/ {

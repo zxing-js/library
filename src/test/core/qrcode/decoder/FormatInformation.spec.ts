@@ -25,7 +25,7 @@ import FormatInformation from './../../../../core/qrcode/decoder/FormatInformati
 /**
  * @author Sean Owen
  */
-describe('FormatInformation.spec', () => {
+describe('FormatInformation', () => {
 
     const MASKED_TEST_FORMAT_INFO: number /*int*/ = 0x2BED;
     const UNMASKED_TEST_FORMAT_INFO: number /*int*/ = MASKED_TEST_FORMAT_INFO ^ 0x5412;

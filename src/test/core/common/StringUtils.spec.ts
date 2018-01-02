@@ -24,7 +24,7 @@ import CharacterSetECI from './../../../core/common/CharacterSetECI';
 
 /*import java.nio.charset.Charset;*/
 
-describe('StringUtils.spec', () => {
+describe('StringUtils', () => {
 
     it('testShortShiftJIS_1', () => {
         // ÈáëÈ≠ö

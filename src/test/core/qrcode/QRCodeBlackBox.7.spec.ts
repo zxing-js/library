@@ -21,7 +21,7 @@ import * as assert from 'assert';
 
 import BarcodeFormat from './../../../core/BarcodeFormat';
 import MultiFormatReader from './../../../core/MultiFormatReader';
-import AbstractBlackBoxSpec from './../common/AbstractBlackBox.spec';
+import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
 
 /**
  * These tests are supplied by Tim Gernat and test finder pattern detection at small size and under
@@ -39,7 +39,7 @@ export default class QRCodeBlackBox7Spec extends AbstractBlackBoxSpec {
 
 }
 
-describe('QRCodeBlackBox.7.spec', () => {
+describe('QRCodeBlackBox.7', () => {
     it('testBlackBox', (done) => {
         const test = new QRCodeBlackBox7Spec();
         test.testBlackBox(() => {

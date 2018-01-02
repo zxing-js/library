@@ -23,7 +23,7 @@ import PerspectiveTransform from './../../../core/common/PerspectiveTransform';
 /**
  * @author Sean Owen
  */
-describe('PerspectiveTransform.spec', () => {
+describe('PerspectiveTransform', () => {
 
     const EPSILON: number /*float*/ = 1.0E-4;
 

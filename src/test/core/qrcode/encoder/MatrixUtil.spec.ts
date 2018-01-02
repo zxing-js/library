@@ -28,7 +28,7 @@ import Version from './../../../../core/qrcode/decoder/Version';
  * @author satorux@google.com (Satoru Takabayashi) - creator
  * @author mysen@google.com (Chris Mysen) - ported from C++
  */
-describe('MatrixUtil.spec', () => {
+describe('MatrixUtil', () => {
 
     it('testToString', () => {
         const array = new ByteMatrix(3, 3);

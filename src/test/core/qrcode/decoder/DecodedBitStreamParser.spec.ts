@@ -28,7 +28,7 @@ import Random from './../../util/Random';
  *
  * @author Sean Owen
  */
-describe('DecodedBitStreamParser.spec', () => {
+describe('DecodedBitStreamParser', () => {
 
     it('testSimpleByteMode', () => {/*throws Exception*/
         const builder = new BitSourceBuilder();

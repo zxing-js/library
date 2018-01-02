@@ -21,7 +21,7 @@ import * as assert from 'assert';
 
 import BarcodeFormat from './../../../core/BarcodeFormat';
 import MultiFormatReader from './../../../core/MultiFormatReader';
-import AbstractBlackBoxSpec from './../common/AbstractBlackBox.spec';
+import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
 
 /**
  * Tests of various QR Codes from t-shirts, which are notoriously not flat.
@@ -40,7 +40,7 @@ export default class QRCodeBlackBox4Spec extends AbstractBlackBoxSpec {
 
 }
 
-describe('QRCodeBlackBox.4.spec', () => {
+describe('QRCodeBlackBox.4', () => {
     it('testBlackBox', (done) => {
         const test = new QRCodeBlackBox4Spec();
         test.testBlackBox(() => {

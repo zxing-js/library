@@ -25,7 +25,7 @@ import Mode from './../../../../core/qrcode/decoder/Mode';
 /**
  * @author Sean Owen
  */
-describe('Mode.spec', () => {
+describe('Mode', () => {
 
     it('testForBits', () => {
         assert.strictEqual(Mode.TERMINATOR.equals(Mode.forBits(0x00)), true);
