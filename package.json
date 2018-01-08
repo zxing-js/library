@@ -1,6 +1,6 @@
 {
     "name": "@barn/zxing",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
     "keywords": [
         "scanner",
@@ -32,9 +32,9 @@
         "url": "https://github.com/odahcam/zxing-ts"
     },
     "private": false,
-    "main": "./bundles/index.js",
+    "main": "./bundles/zxing.js",
     "module": "./esm5/index.js",
-    "es2015": "./esm2015/zxing.min.js",
+    "es2015": "./bundles/zxing.min.js",
     "typings": "./esm5/index.d.ts",
     "scripts": {
         "clean": "shx rm -rf bundles esm5",
