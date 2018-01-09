@@ -3,20 +3,20 @@
 ZXing <small>_in TypeScript_</small> 
 ================
 
-*Ported from [ZXing](https://github.com/zxing/zxing) project (written in Java): https://github.com/zxing/zxing*
+**ZXing _(Zebra Crossing)_ is an multi-format 1D/2D barcode image processing library.**
 
-ZXing _(Zebra Crossing)_ is an multi-format 1D/2D barcode image processing library.
+*Ported from [ZXing](https://github.com/zxing/zxing) project (written in Java): https://github.com/zxing/zxing*
 
 [![NPM version](https://img.shields.io/npm/v/@barn/zxing.svg?&label=npm)][0] 
 [![NPM downloads](https://img.shields.io/npm/dt/@barn/zxing.svg?&label=npm%20downloads)][0] 
 ![Dependencies](https://david-dm.org/odahcam/zxing-ts.svg) 
-[![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/)
+[![Build Status](https://travis-ci.org/odahcam/zxing-ts.svg?branch=master)](https://travis-ci.org/odahcam/zxing-ts) 
 
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/odahcam/zxing-ts.svg)](http://isitmaintained.com/project/odahcam/zxing-ts "Average time to resolve an issue")
-[![Build Status](https://travis-ci.org/odahcam/zxing-ts.svg?branch=master)](https://travis-ci.org/odahcam/zxing-ts) 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f7a8692eca4147e983abfc0d8291cf84)](https://www.codacy.com/app/odahcam/zxing-ts?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=odahcam/zxing-ts&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/181de5153c3535321974/maintainability)](https://codeclimate.com/github/odahcam/zxing-ts/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/181de5153c3535321974/test_coverage)](https://codeclimate.com/github/odahcam/zxing-ts/test_coverage)
+[![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/)
 
 Work In Progress
 ================
