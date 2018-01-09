@@ -3,7 +3,7 @@
 ZXing <small>_in TypeScript_</small> 
 ================
 
-**ZXing _(Zebra Crossing)_ is an multi-format 1D/2D barcode image processing library.**
+**Multi-format 1D/2D barcode image processing library.**
 
 *Ported from [ZXing](https://github.com/zxing/zxing) project (written in Java): https://github.com/zxing/zxing*
 
