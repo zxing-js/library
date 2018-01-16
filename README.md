@@ -1,40 +1,35 @@
+[![Build Status](https://travis-ci.org/odahcam/zxing-ts.svg?branch=master)](https://travis-ci.org/odahcam/zxing-ts) 
+[![NPM downloads](https://img.shields.io/npm/dt/@barn/zxing.svg?&label=npm%20downloads)][0] 
+[![NPM version](https://img.shields.io/npm/v/@barn/zxing.svg?&label=npm)][0] 
+![Dependencies](https://david-dm.org/odahcam/zxing-ts.svg) 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f7a8692eca4147e983abfc0d8291cf84)](https://www.codacy.com/app/odahcam/zxing-ts?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=odahcam/zxing-ts&amp;utm_campaign=Badge_Grade)
+
 [<img align="right" src="https://raw.github.com/wiki/zxing/zxing/zxing-logo.png"/>](https://github.com/zxing/zxing)
 
-ZXing <small>_in TypeScript_</small> 
-================
+# ZXing <small>_in TypeScript_</small> 
 
-**Multi-format 1D/2D barcode image processing library.**
+> Multi-format 1D/2D barcode image processing library.
 
-*Ported from [ZXing](https://github.com/zxing/zxing) project (written in Java): https://github.com/zxing/zxing*
-
-[![NPM version](https://img.shields.io/npm/v/@barn/zxing.svg?&label=npm)][0] 
-[![NPM downloads](https://img.shields.io/npm/dt/@barn/zxing.svg?&label=npm%20downloads)][0] 
-![Dependencies](https://david-dm.org/odahcam/zxing-ts.svg) 
-[![Build Status](https://travis-ci.org/odahcam/zxing-ts.svg?branch=master)](https://travis-ci.org/odahcam/zxing-ts) 
+*Ported from [ZXing](https://github.com/zxing/zxing) project (written in Java).*
 
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/odahcam/zxing-ts.svg)](http://isitmaintained.com/project/odahcam/zxing-ts "Average time to resolve an issue")
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f7a8692eca4147e983abfc0d8291cf84)](https://www.codacy.com/app/odahcam/zxing-ts?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=odahcam/zxing-ts&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/181de5153c3535321974/maintainability)](https://codeclimate.com/github/odahcam/zxing-ts/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/181de5153c3535321974/test_coverage)](https://codeclimate.com/github/odahcam/zxing-ts/test_coverage)
 [![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/)
 
-Work In Progress
-================
+## _WIP_
 
 There's still some things we gotta do here, see [Status and Roadmap](#status-and-roadmap) for what is currently done and what's planned next. 
 
-Demo
-====
+# Demo
 
 See [some demo examples](https://aleris.github.io/zxing-typescript/) in browser.
 
-Usage
-=====
+# Usage
 
 The library can be used from browser with TypeScript (include anything from src/browser however you must do the packaging yourself) or with plain javascript (see below). It can also be used from node (see also below). The library is using separate builds for node and browser to allow different ES targeting.
 
-Browser Usage
--------------
+## Browser Usage
 
 Examples below are for QR barcode, all other supported barcodes work similary.
 
@@ -206,8 +201,7 @@ var svgElement = codeWriter.write(input, 300, 300);
 
 A full working example for [QR Code write to SVG](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/qr-svg-writer/) is provided in the [examples](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/).
 
-Using from TypeScript
----------------------
+## Using from TypeScript
 
 Install the package:
 
@@ -221,8 +215,7 @@ import { BrowserQRCodeReader, VideoInputDevice } from '@barn/zxing';
 
 The usage is identical with the above.
 
-Node Usage
-----------
+## Node Usage
 
 `npm i @barn/zxing --save`
 
@@ -230,8 +223,7 @@ To use in node you will need to provide an implementation of [`LuminanceSource`]
 
 No examples are availabe for now, however you can have a look at the extensive [tests cases](https://github.com/odahcam/zxing-ts/tree/master/src/test/core/qrcode).
 
-Text Encoding and Decoding
-==========================
+# Text Encoding and Decoding
 
 To decode a barcode, the library needs at some point to decode from bits to text. Also, to generate a barcode it needs to encode text to bits. Unfortunately, the state of encoding and decoding text in javascript/browser is somehow messy at the moment. 
 
@@ -239,15 +231,13 @@ To have full support for all encodings in [CharacterSetECI](https://github.com/o
 
 By default, in browser, [TextDecoder](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder)/[TextEncoder](https://developer.mozilla.org/ro/docs/Web/API/TextEncoder) web api are used if available (take care as these are labeled as experimental as of this writing). Also, be aware that TextEncoder encodes only to UTF-8 as per spec. If these are not available the library falls back to a minimal implementation that only encodes and decodes to/from UTF-8 (see [`StringEncoding`](https://github.com/odahcam/zxing-ts/blob/master/src/core/util/StringEncoding.ts)).
 
-Porting Information
-===================
+# Porting Information
 
 See [TypeScript Port Info](typescriptport.md) for information regarding porting approach and reasoning behind some of the approaches taken.
 
-Status and Roadmap
-==================
+# Status and Roadmap
 
-Done:
+**Done:**
 - [x] Port root, common and qrcode format and make it compile
 - [x] Add unit test infrastructure, a first unit test and make it pass (common/BitArray.spec)
 - [x] Add all unit tests for everything in root, common and qrcode
@@ -257,7 +247,7 @@ Done:
 - [x] Document browser usage
 - [x] Implement QR barcode generation to SVG in browser
 
-Todo:
+**Todo:**
 - [ ] Move all these tasks to a "Project".
 - [ ] Port pdf417 format with unit and browser tests and documentation
 - [ ] Adapt documentation for JSDoc, generate documentation, cleanup source files
