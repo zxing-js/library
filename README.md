@@ -2,7 +2,12 @@
 [![NPM downloads](https://img.shields.io/npm/dt/@barn/zxing.svg?&label=npm%20downloads)][0] 
 [![NPM version](https://img.shields.io/npm/v/@barn/zxing.svg?&label=npm)][0] 
 ![Dependencies](https://david-dm.org/odahcam/zxing-ts.svg) 
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/odahcam/zxing-ts.svg)](http://isitmaintained.com/project/odahcam/zxing-ts "Average time to resolve an issue")
+
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f7a8692eca4147e983abfc0d8291cf84)](https://www.codacy.com/app/odahcam/zxing-ts?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=odahcam/zxing-ts&amp;utm_campaign=Badge_Grade)
+[![Maintainability](https://api.codeclimate.com/v1/badges/181de5153c3535321974/maintainability)](https://codeclimate.com/github/odahcam/zxing-ts/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/181de5153c3535321974/test_coverage)](https://codeclimate.com/github/odahcam/zxing-ts/test_coverage)
+[![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/)
 
 [<img align="right" src="https://raw.github.com/wiki/zxing/zxing/zxing-logo.png"/>](https://github.com/zxing/zxing)
 
@@ -11,11 +16,6 @@
 > Multi-format 1D/2D barcode image processing library.
 
 *Ported from [ZXing](https://github.com/zxing/zxing) project (written in Java).*
-
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/odahcam/zxing-ts.svg)](http://isitmaintained.com/project/odahcam/zxing-ts "Average time to resolve an issue")
-[![Maintainability](https://api.codeclimate.com/v1/badges/181de5153c3535321974/maintainability)](https://codeclimate.com/github/odahcam/zxing-ts/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/181de5153c3535321974/test_coverage)](https://codeclimate.com/github/odahcam/zxing-ts/test_coverage)
-[![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/)
 
 ## _WIP_
 
