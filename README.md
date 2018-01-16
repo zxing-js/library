@@ -14,8 +14,9 @@
 # ZXing <small>_in TypeScript_</small> 
 
 > Multi-format 1D/2D barcode image processing library.
+>
+> *Ported from [ZXing](https://github.com/zxing/zxing) project (written in Java).*
 
-*Ported from [ZXing](https://github.com/zxing/zxing) project (written in Java).*
 
 ## _WIP_
 
