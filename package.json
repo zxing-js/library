@@ -32,9 +32,9 @@
         "url": "https://github.com/odahcam/zxing-ts"
     },
     "private": false,
-    "main": "./bundles/zxing.js",
+    "main": "./bundles/core.js",
+    "es2015": "./bundles/core.min.js",
     "module": "./esm5/index.js",
-    "es2015": "./bundles/zxing.min.js",
     "typings": "./esm5/index.d.ts",
     "scripts": {
         "clean": "shx rm -rf bundles esm5",
