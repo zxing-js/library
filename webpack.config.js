@@ -109,13 +109,12 @@ const config = (env = 'dev') => {
             ifProd(
                 new UglifyJsPlugin({
                     sourceMap: true,
-                    compress: {
-                        screw_ie8: true,
-                        warnings: false,
-                    },
-                    output: {
-                        comments: false
-                    },
+                    uglifyOptions: {
+                        compress: true,
+                        output: {
+                            comments: false
+                        }
+                    }
                 })
             ),
 
