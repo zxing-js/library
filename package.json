@@ -32,8 +32,8 @@
         "url": "https://github.com/zxing-web/library"
     },
     "private": false,
-    "main": "./bundles/core.js",
-    "es2015": "./bundles/core.min.js",
+    "main": "./bundles/library.js",
+    "es2015": "./bundles/library.min.js",
     "module": "./esm5/index.js",
     "typings": "./esm5/index.d.ts",
     "scripts": {
