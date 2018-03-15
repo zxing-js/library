@@ -19,5 +19,3 @@ docs
 *.tgz
 package
 .tmp
-package-lock.json
-yarn.lock
