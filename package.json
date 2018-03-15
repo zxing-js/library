@@ -44,7 +44,7 @@
         "lint": "tslint src/**/*.ts"
     },
     "dependencies": {
-        "sharp": "^0.19.0",
+        "sharp": "^0.20.0",
         "text-encoding": "^0.6.4"
     },
     "devDependencies": {
@@ -53,7 +53,7 @@
         "@types/mocha": "^2.2.48",
         "@types/node": "^8.9.1",
         "@types/seedrandom": "^2.4.27",
-        "@types/sharp": "^0.17.6",
+        "@types/sharp": "^0.17.7",
         "@types/text-encoding": "^0.0.32",
         "async": "^2.6.0",
         "awesome-typescript-loader": "^3.1.3",
