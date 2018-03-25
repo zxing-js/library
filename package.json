@@ -26,10 +26,10 @@
         }
     ],
     "license": "MIT",
-    "bugs": "https://github.com/zxing-web/library/issues/new",
+    "bugs": "https://github.com/zxing-js/library/issues/new",
     "repository": {
         "type": "git",
-        "url": "https://github.com/zxing-web/library"
+        "url": "https://github.com/zxing-js/library"
     },
     "private": false,
     "main": "./bundles/library.js",
