@@ -17,14 +17,14 @@
 /*namespace com.google.zxing.oned {*/
 
 import BarcodeFormat from '../BarcodeFormat';
-import BinaryBitmap from './../BinaryBitmap';
-import BitArray from './../common/BitArray';
-import DecodeHintType from './../DecodeHintType';
-import Exception from './../Exception';
-import Reader from './../Reader';
-import Result from './../Result';
-import ResultMetadataType from './../ResultMetadataType';
-import ResultPoint from './../ResultPoint';
+import BinaryBitmap from '../BinaryBitmap';
+import BitArray from '../common/BitArray';
+import DecodeHintType from '../DecodeHintType';
+import Exception from '../Exception';
+import Reader from '../Reader';
+import Result from '../Result';
+import ResultMetadataType from '../ResultMetadataType';
+import ResultPoint from '../ResultPoint';
 import OneDReader from './OneDReader';
 
 /**
@@ -229,8 +229,8 @@ export default class Code128Reader extends OneDReader {
     }
   }
 
-  public decodeRow(rowNumber: number, row: BitArray, x: number, hints?: Map<DecodeHintType, any>): Result {
-    const convertFNC1 = hints !== undefined && (hints.get(DecodeHintType.ASSUME_GS1) === true);
+  public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
+    const convertFNC1 = hints && (hints.get(DecodeHintType.ASSUME_GS1) === true);
 
     const startPatternInfo = Code128Reader.findStartPattern(row);
     const startCode = startPatternInfo[2];

@@ -21,6 +21,7 @@ import BinaryBitmap from './BinaryBitmap';
 import BarcodeFormat from './BarcodeFormat';
 import QRCodeReader from './qrcode/QRCodeReader';
 import Exception from './Exception';
+import MultiFormatOneDReader from './oned/MultiFormatOneDReader';
 
 /*namespace com.google.zxing {*/
 
@@ -113,9 +114,9 @@ export default class MultiFormatReader implements Reader {
 
             // TYPESCRIPTPORT: TODO: uncomment below as they are ported
 
-            // if (addOneDReader && !tryHarder) {
-            //   readers.push(new MultiFormatOneDReader(hints))
-            // }
+            if (addOneDReader && !tryHarder) {
+               readers.push(new MultiFormatOneDReader(hints));
+            }
             if (formats.contains(BarcodeFormat.QR_CODE)) {
                 readers.push(new QRCodeReader());
             }
@@ -131,15 +132,15 @@ export default class MultiFormatReader implements Reader {
             // if (formats.contains(BarcodeFormat.MAXICODE)) {
             //    readers.push(new MaxiCodeReader())
             // }
-            // // At end in "try harder" mode
-            // if (addOneDReader && tryHarder) {
-            //   readers.push(new MultiFormatOneDReader(hints))
-            // }
+            // At end in "try harder" mode
+            if (addOneDReader && tryHarder) {
+              readers.push(new MultiFormatOneDReader(hints));
+            }
         }
         if (readers.length === 0) {
-            // if (!tryHarder) {
-            //   readers.push(new MultiFormatOneDReader(hints))
-            // }
+            if (!tryHarder) {
+              readers.push(new MultiFormatOneDReader(hints));
+            }
 
             readers.push(new QRCodeReader());
             // readers.push(new DataMatrixReader())
@@ -147,9 +148,9 @@ export default class MultiFormatReader implements Reader {
             // readers.push(new PDF417Reader())
             // readers.push(new MaxiCodeReader())
 
-            // if (tryHarder) {
-            //   readers.push(new MultiFormatOneDReader(hints))
-            // }
+            if (tryHarder) {
+               readers.push(new MultiFormatOneDReader(hints));
+            }
         }
         this.readers = readers; // .toArray(new Reader[readers.size()])
     }

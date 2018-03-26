@@ -16,14 +16,14 @@
 
 /*namespace com.google.zxing.oned {*/
 
-import BinaryBitmap from './../BinaryBitmap';
-import BitArray from './../common/BitArray';
-import DecodeHintType from './../DecodeHintType';
-import Exception from './../Exception';
-import Reader from './../Reader';
-import Result from './../Result';
-import ResultMetadataType from './../ResultMetadataType';
-import ResultPoint from './../ResultPoint';
+import BinaryBitmap from '../BinaryBitmap';
+import BitArray from '../common/BitArray';
+import DecodeHintType from '../DecodeHintType';
+import Exception from '../Exception';
+import Reader from '../Reader';
+import Result from '../Result';
+import ResultMetadataType from '../ResultMetadataType';
+import ResultPoint from '../ResultPoint';
 
 /**
  * Encapsulates functionality and implementation that is common to all families
@@ -47,7 +47,7 @@ export default abstract class OneDReader implements Reader {
     try {
       return this.doDecode(image, hints);
     } catch (nfe) {
-      const tryHarder = hints !== undefined && (hints.get(DecodeHintType.TRY_HARDER) === true);
+      const tryHarder = hints && (hints.get(DecodeHintType.TRY_HARDER) === true);
 
       if (tryHarder && image.isRotateSupported()) {
         const rotatedImage = image.rotateCounterClockwise();
@@ -99,7 +99,7 @@ export default abstract class OneDReader implements Reader {
     const height = image.getHeight();
     let row = new BitArray(width);
 
-    const tryHarder = hints !== undefined && (hints.get(DecodeHintType.TRY_HARDER) === true);
+    const tryHarder = hints && (hints.get(DecodeHintType.TRY_HARDER) === true);
     const rowStep = Math.max(1, height >> (tryHarder ? 8 : 5));
     let maxLines;
     if (tryHarder) {
@@ -134,7 +134,7 @@ export default abstract class OneDReader implements Reader {
           // since we want to avoid drawing the wrong points after flipping the row, and,
           // don't want to clutter with noise from every single row scan -- just the scans
           // that start on the center line.
-          if (hints !== undefined && (hints.get(DecodeHintType.NEED_RESULT_POINT_CALLBACK) === true)) {
+          if (hints && (hints.get(DecodeHintType.NEED_RESULT_POINT_CALLBACK) === true)) {
             const newHints = new Map();
             hints.forEach((hint, key) => newHints.set(key, hint));
             newHints.delete(DecodeHintType.NEED_RESULT_POINT_CALLBACK);
@@ -144,7 +144,7 @@ export default abstract class OneDReader implements Reader {
 
         try {
           // Look for a barcode
-          const result = this.decodeRow(rowNumber, row, x, hints);
+          const result = this.decodeRow(rowNumber, row, hints);
           // We found our barcode
           if (attempt === 1) {
             // But it was upside down, so note that
@@ -282,5 +282,5 @@ export default abstract class OneDReader implements Reader {
    * @throws ChecksumException if a potential barcode is found but does not pass its checksum
    * @throws FormatException if a potential barcode is found but format is invalid
    */
-  public abstract decodeRow(rowNumber: number, row: BitArray, x: number, hints?: Map<DecodeHintType, any>): Result;
+  public abstract decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result;
 }
