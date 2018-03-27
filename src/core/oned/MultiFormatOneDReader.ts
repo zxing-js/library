@@ -32,37 +32,37 @@ export default class MultiFormatOneDReader extends OneDReader {
 
   private readers: OneDReader[] = [];
 
-  public constructor(private hints: Map<DecodeHintType, any>) {
+  public constructor(hints: Map<DecodeHintType, any>) {
     super();
     const possibleFormats = !hints ? null : hints.get(DecodeHintType.POSSIBLE_FORMATS);
     const useCode39CheckDigit = hints && hints.get(DecodeHintType.ASSUME_CODE_39_CHECK_DIGIT) !== undefined;
 
     if (possibleFormats) {
-      // if (possibleFormats.contains(BarcodeFormat.EAN_13) ||
-      //     possibleFormats.contains(BarcodeFormat.UPC_A)  ||
-      //     possibleFormats.contains(BarcodeFormat.EAN_8)  ||
-      //     possibleFormats.contains(BarcodeFormat.UPC_E)) {
+      // if (possibleFormats.get(BarcodeFormat.EAN_13) ||
+      //     possibleFormats.get(BarcodeFormat.UPC_A)  ||
+      //     possibleFormats.get(BarcodeFormat.EAN_8)  ||
+      //     possibleFormats.get(BarcodeFormat.UPC_E)) {
       //   readers.push(new MultiFormatUPCEANReader(hints));
       // }
-      // if (possibleFormats.contains(BarcodeFormat.CODE_39)) {
+      // if (possibleFormats.get(BarcodeFormat.CODE_39)) {
       //    this.readers.push(new Code39Reader(useCode39CheckDigit));
       // }
-      // if (possibleFormats.contains(BarcodeFormat.CODE_93)) {
+      // if (possibleFormats.get(BarcodeFormat.CODE_93)) {
       //    this.readers.push(new Code93Reader());
       // }
-      if (possibleFormats.contains(BarcodeFormat.CODE_128)) {
+      if (possibleFormats.get(BarcodeFormat.CODE_128)) {
         this.readers.push(new Code128Reader());
       }
-      // if (possibleFormats.contains(BarcodeFormat.ITF)) {
+      // if (possibleFormats.get(BarcodeFormat.ITF)) {
       //    this.readers.push(new ITFReader());
       // }
-      // if (possibleFormats.contains(BarcodeFormat.CODABAR)) {
+      // if (possibleFormats.get(BarcodeFormat.CODABAR)) {
       //    this.readers.push(new CodaBarReader());
       // }
-      // if (possibleFormats.contains(BarcodeFormat.RSS_14)) {
+      // if (possibleFormats.get(BarcodeFormat.RSS_14)) {
       //    this.readers.push(new RSS14Reader());
       // }
-      // if (possibleFormats.contains(BarcodeFormat.RSS_EXPANDED)) {
+      // if (possibleFormats.get(BarcodeFormat.RSS_EXPANDED)) {
       //   this.readers.push(new RSSExpandedReader());
       // }
     }
