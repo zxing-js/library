@@ -1,6 +1,6 @@
 {
     "name": "@zxing/library",
-    "version": "0.3.2",
+    "version": "0.4.0",
     "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
     "keywords": [
         "scanner",
@@ -8,6 +8,7 @@
         "generator",
         "barcode",
         "qr-code",
+        "code-128",
         "typescript",
         "zxing-typescript",
         "zxing"
@@ -23,6 +24,10 @@
         {
             "name": "Luiz Barni",
             "email": "machado@odahcam.com"
+        },
+        {
+            "name": "Ricardo Sousa",
+            "email": "sousa.ricardo10@gmail.com"
         }
     ],
     "license": "MIT",
@@ -40,7 +45,7 @@
         "clean": "shx rm -rf bundles esm5",
         "build:before": "yarn run clean",
         "build": "yarn build:before && tsc && tsc --target es2017 --outDir esm5 && webpack && webpack --env.prod",
-        "test": "mocha-webpack --webpack-config webpack.config.test.js src/test.js",
+        "test": "mocha-webpack --webpack-config webpack.config.test.js src/test.js --timeout 60000",
         "lint": "tslint src/**/*.ts"
     },
     "dependencies": {
