@@ -1,32 +1,44 @@
-[![Build Status](https://travis-ci.org/odahcam/zxing-ts.svg?branch=master)](https://travis-ci.org/odahcam/zxing-ts) 
-[![NPM downloads](https://img.shields.io/npm/dt/@barn/zxing.svg?&label=npm%20downloads)][0] 
-[![NPM version](https://img.shields.io/npm/v/@barn/zxing.svg?&label=npm)][0] 
-![Dependencies](https://david-dm.org/odahcam/zxing-ts.svg) 
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/odahcam/zxing-ts.svg)](http://isitmaintained.com/project/odahcam/zxing-ts "Average time to resolve an issue")
-
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f7a8692eca4147e983abfc0d8291cf84)](https://www.codacy.com/app/odahcam/zxing-ts?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=odahcam/zxing-ts&amp;utm_campaign=Badge_Grade)
-[![Maintainability](https://api.codeclimate.com/v1/badges/181de5153c3535321974/maintainability)](https://codeclimate.com/github/odahcam/zxing-ts/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/181de5153c3535321974/test_coverage)](https://codeclimate.com/github/odahcam/zxing-ts/test_coverage)
-[![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/)
-
 [<img align="right" src="https://raw.github.com/wiki/zxing/zxing/zxing-logo.png"/>](https://github.com/zxing/zxing)
 
 # ZXing <small>_in TypeScript_</small> 
 
-> Multi-format 1D/2D barcode image processing library.
->
-> *Ported from [ZXing](https://github.com/zxing/zxing) project (written in Java).*
+Multi-format 1D/2D barcode image processing library.
 
+*Ported from [ZXing](https://github.com/zxing/zxing) project (written in Java).*
 
-## _WIP_
+> ZXing ("zebra crossing") is an open-source, multi-format 1D/2D barcode image processing library implemented in Java, with ports to other languages.
 
-There's still some things we gotta do here, see [Status and Roadmap](#status-and-roadmap) for what is currently done and what's planned next. 
+## Supported Formats
 
-# Demo
+**_WIP_**: There's still some things we gotta do here, see [Status and Roadmap](#status-and-roadmap) for what is currently done and what's planned next. 
+
+| 1D product | 1D industrial            | 2D
+| ---------- | ------------------------ | --------------
+| ~UPC-A~    | ~Code 39~                | QR Code
+| ~UPC-E~    | ~Code 93~                | ~Data Matrix~
+| ~EAN-8~    | Code 128 (_in-progress_) | ~Aztec (beta)~
+| ~EAN-13~   | ~Codabar~                | PDF 417 (_in-progress_)
+|            | ~ITF~                    | ~MaxiCode~
+|            | ~RSS-14~                 |
+|            | ~RSS-Expanded~           |
+
+## Status
+
+[![Build Status](https://travis-ci.org/zxing-js/library.svg?branch=master)](https://travis-ci.org/zxing-js/library)
+
+[![NPM version](https://img.shields.io/npm/v/@zxing/library.svg?&label=npm)][0]
+[![NPM downloads](https://img.shields.io/npm/dt/@zxing/library.svg?&label=npm%20downloads)][0]
+![Dependencies](https://david-dm.org/zxing-js/library.svg)
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/39d86bc5d5f04bc8953cc68d729807b0)](https://www.codacy.com/app/zxing-js/library?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zxing-js/library&amp;utm_campaign=Badge_Grade)
+[![Maintainability](https://api.codeclimate.com/v1/badges/181de5153c3535321974/maintainability)](https://codeclimate.com/github/zxing-js/library/maintainability)
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/zxing-js/library.svg)](http://isitmaintained.com/project/zxing-js/library "Average time to resolve an issue")
+
+## Demo
 
 See [some demo examples](https://aleris.github.io/zxing-typescript/) in browser.
 
-# Usage
+## Usage
 
 The library can be used from browser with TypeScript (include anything from src/browser however you must do the packaging yourself) or with plain javascript (see below). It can also be used from node (see also below). The library is using separate builds for node and browser to allow different ES targeting.
 
@@ -34,7 +46,7 @@ The library can be used from browser with TypeScript (include anything from src/
 
 Examples below are for QR barcode, all other supported barcodes work similary.
 
-`npm i @barn/zxing --save`
+`npm i @zxing/library --save`
 
 To use from JS you need to include what you need from `build/umd` folder (for example `zxing.min.js`).
 
@@ -206,19 +218,19 @@ A full working example for [QR Code write to SVG](https://github.com/odahcam/zxi
 
 Install the package:
 
-`npm i @barn/zxing --save`
+`npm i @zxing/library --save`
 
 And then include directly the classes files you need, for example:
 
 ```javascript
-import { BrowserQRCodeReader, VideoInputDevice } from '@barn/zxing';
+import { BrowserQRCodeReader, VideoInputDevice } from '@zxing/library';
 ```
 
 The usage is identical with the above.
 
 ## Node Usage
 
-`npm i @barn/zxing --save`
+`npm i @zxing/library --save`
 
 To use in node you will need to provide an implementation of [`LuminanceSource`](https://github.com/odahcam/zxing-ts/blob/master/src/core/LuminanceSource.ts) for an image. A starting point is [`SharpImageLuminanceSource`](https://github.com/odahcam/zxing-ts/blob/master/src/test/core/SharpImageLuminanceSource.ts) from tests that is using [sharp image processing](https://github.com/lovell/sharp) node library.
 
@@ -261,6 +273,9 @@ See [TypeScript Port Info](typescriptport.md) for information regarding porting 
 - [ ] Port client/result parsing with unit and browser tests and documentation
 - [ ] Documentation for using directly from TypeScript
 
+---
 
-[0]: https://www.npmjs.com/package/@barn/zxing
+[![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/)
 
+
+[0]: https://www.npmjs.com/package/@zxing/library
