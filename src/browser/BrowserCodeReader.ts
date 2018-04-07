@@ -5,6 +5,7 @@ import Result from './../core/Result';
 import Exception from './../core/Exception';
 import HTMLCanvasElementLuminanceSource from './HTMLCanvasElementLuminanceSource';
 import VideoInputDevice from './VideoInputDevice';
+import DecodeHintType from '../core/DecodeHintType';
 
 /**
  * Base class for browser code reader.
@@ -30,7 +31,7 @@ export default class BrowserCodeReader {
      *
      * @memberOf BrowserCodeReader
      */
-    public constructor(private reader: Reader, private timeBetweenScansMillis: number = 500) { }
+    public constructor(private reader: Reader, private timeBetweenScansMillis: number = 500, private hints?: Map<DecodeHintType, any>) { }
 
     /**
      * Obtain the list of available devices with type 'videoinput'.
@@ -264,7 +265,7 @@ export default class BrowserCodeReader {
     }
 
     protected readerDecode(binaryBitmap: BinaryBitmap): Result {
-        return this.reader.decode(binaryBitmap);
+        return this.reader.decode(binaryBitmap, this.hints);
     }
 
     private prepareCaptureCanvas() {
