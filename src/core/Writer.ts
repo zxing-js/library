@@ -53,11 +53,13 @@ interface Writer {
      * @return {@link BitMatrix} representing encoded barcode image
      * @throws WriterException if contents cannot be encoded legally in a format
      */
-    encode(contents: string,
+    encode(
+        contents: string,
         format: BarcodeFormat,
         width: number /*int*/,
         height: number /*int*/,
-        hints: Map<EncodeHintType, any>): BitMatrix;
+        hints: Map<EncodeHintType, any>
+    ): BitMatrix;
     /*throws WriterException*/
 
 }
