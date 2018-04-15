@@ -3,7 +3,8 @@
  *
  * @see https://karma-runner.github.io/0.13/config/configuration-file.html
  */
-const path = require('path');
+import * as path from 'path';
+
 const ROOT = path.resolve(__dirname, '.');
 
 function rootPath() {
@@ -12,7 +13,7 @@ function rootPath() {
     );
 }
 
-module.exports = function (config) {
+export default function (config) {
     config.set({
 
         basePath: '',
