@@ -17,7 +17,6 @@
 /*package com.google.zxing.qrcode;*/
 
 import 'mocha';
-import * as assert from 'assert';
 
 import BarcodeFormat from './../../../core/BarcodeFormat';
 import MultiFormatReader from './../../../core/MultiFormatReader';

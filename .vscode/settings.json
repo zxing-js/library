@@ -2,5 +2,6 @@
 {
     "tslint.enable": true,
     "autoimport.doubleQuotes": false,
-    "autoimport.spaceBetweenBraces": true
+    "autoimport.spaceBetweenBraces": true,
+    "jshint.enable" : false
 }

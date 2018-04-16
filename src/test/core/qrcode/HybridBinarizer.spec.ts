@@ -20,8 +20,10 @@ describe('HybridBinarizer', () => {
                     const source = new SharpImageLuminanceSource(image);
                     const test = new HybridBinarizer(source);
                     const matrix = test.getBlackMatrix();
+
                     assert.equal(0, matrix.get(13, 12));
                     assert.equal(1, matrix.get(13, 13));
+
                     done();
                 }
             });

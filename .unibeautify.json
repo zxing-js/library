@@ -1,0 +1,12 @@
+{
+    "JavaScript": {
+        "indent_size": 4,
+        "indent_char": " ",
+        "quotes": "single"
+    },
+    "TypeScript": {
+        "indent_size": 4,
+        "indent_char": " ",
+        "quotes": "single"
+    }
+}
