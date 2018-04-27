@@ -1,7 +1,8 @@
+
 /*
- * Copyright 2009 ZXing authors
+ * Copyright 2008 ZXing authors
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -14,36 +15,32 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode;*/
+// package com.google.zxing.oned;
 
 import 'mocha';
+import * as assert from 'assert';
 
 import BarcodeFormat from './../../../core/BarcodeFormat';
 import MultiFormatReader from './../../../core/MultiFormatReader';
 import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
+// import Code128Reader from '../../../core/oned/Code128Reader';
 
 /**
- * These tests are supplied by Tim Gernat and test finder pattern detection at small size and under
- * rotation, which was a weak spot.
+ * @author Sean Owen
  */
-export default class QRCodeBlackBox6Spec extends AbstractBlackBoxSpec {
+class Code128BlackBox1Spec extends AbstractBlackBoxSpec {
 
     public constructor() {
-        super('src/test/core/resources/blackbox/qrcode-6', new MultiFormatReader(), BarcodeFormat.QR_CODE);
-        this.addTest(15, 15, 0.0);
-        this.addTest(14, 14, 90.0);
-        this.addTest(12, 13, 180.0);
-        this.addTest(14, 14, 270.0);
+        super('src/test/core/resources/blackbox/code128-1', new MultiFormatReader(), BarcodeFormat.CODE_128);
+       // super('src/test/core/resources/blackbox/code128-1', new Code128Reader(), BarcodeFormat.CODE_128);
+        this.addTest(6, 6, 0.0);
+        this.addTest(6, 6, 180.0);
     }
-
 }
 
-describe('QRCodeBlackBox.6', () => {
+describe('Code128BlackBox.1', () => {
     it('testBlackBox', (done) => {
-        const test = new QRCodeBlackBox6Spec();
-
-        return test.testBlackBox(() => {
-            done();
-        });
+        const test = new Code128BlackBox1Spec();
+        return test.testBlackBox(() => done());
     });
 });

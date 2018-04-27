@@ -88,9 +88,11 @@ abstract class AbstractBlackBoxSpec {
         return this.testBase;
     }
 
-    protected addTest(mustPassCount: number /*int*/,
-        tryHarderCount: number /*int*/,
-        rotation: number/*float*/): void {
+    protected addTest(
+        mustPassCount: number /* int */,
+        tryHarderCount: number /* int */,
+        rotation: number /* float */
+    ): void {
         this.addTestWithMax(mustPassCount, tryHarderCount, 0, 0, rotation);
     }
     /**
@@ -103,11 +105,13 @@ abstract class AbstractBlackBoxSpec {
      *                             reading the wrong contents using the try harder flag
      * @param rotation The rotation in degrees clockwise to use for this test.
      */
-    protected addTestWithMax(mustPassCount: number /*int*/,
-        tryHarderCount: number /*int*/,
-        maxMisreads: number /*int*/ = 0,
-        maxTryHarderMisreads: number /*int*/ = 0,
-        rotation: number/*float*/): void {
+    protected addTestWithMax(
+        mustPassCount: number /* int */,
+        tryHarderCount: number /* int */,
+        maxMisreads: number /* int */ = 0,
+        maxTryHarderMisreads: number /* int */ = 0,
+        rotation: number/* float */
+    ): void {
         this.testResults.push(new TestResult(mustPassCount, tryHarderCount, maxMisreads, maxTryHarderMisreads, rotation));
     }
 
@@ -151,7 +155,10 @@ abstract class AbstractBlackBoxSpec {
         this.testBlackBoxCountingResults(true, done);
     }
 
-    private testBlackBoxCountingResults(assertOnFailure: boolean, done: () => any): void /*throws IOException */ {
+    /**
+     * @throws IOException
+     */
+    private testBlackBoxCountingResults(assertOnFailure: boolean, done: () => any): void {
         assert.strictEqual(this.testResults.length > 0, true);
 
         const imageFiles: Array<string> = this.getImageFiles();
@@ -272,11 +279,16 @@ abstract class AbstractBlackBoxSpec {
         });
     }
 
-    private decode(source: BinaryBitmap,
+    /**
+     * @throws ReaderException
+     */
+    private decode(
+        source: BinaryBitmap,
         rotation: number/*float*/,
         expectedText: string,
         expectedMetadata: Map<string, string>,
-        tryHarder: boolean): boolean /*throws ReaderException */ {
+        tryHarder: boolean
+    ): boolean {
 
         const suffix: string = ` (${tryHarder ? 'try harder, ' : ''}rotation: ${rotation})`;
 
@@ -360,7 +372,10 @@ abstract class AbstractBlackBoxSpec {
         }
     }
 
-    protected static readTextFileAsString(file: string): string /*throws IOException*/ {
+    /**
+     * @throws IOException
+     */
+    protected static readTextFileAsString(file: string): string {
         const stringContents: string = fs.readFileSync(file, { encoding: 'utf8' });
         if (stringContents.endsWith('\n')) {
             console.warn('contents: string of file ' + file + ' end with a newline. ' +
@@ -369,7 +384,10 @@ abstract class AbstractBlackBoxSpec {
         return stringContents;
     }
 
-    protected static readBinFileAsString(file: string): string /*throws IOException*/ {
+    /**
+     * @throws IOException
+     */
+    protected static readBinFileAsString(file: string): string {
         const bufferContents: Buffer = fs.readFileSync(file);
         const stringContents = StringEncoding.decode(new Uint8Array(bufferContents), 'iso-8859-1');
         if (stringContents.endsWith('\n')) {
@@ -379,7 +397,10 @@ abstract class AbstractBlackBoxSpec {
         return stringContents;
     }
 
-    protected static readTextFileAsMetadata(file: string): Map<string, string> /*throws IOException*/ {
+    /**
+     * @throws IOException
+     */
+    protected static readTextFileAsMetadata(file: string): Map<string, string> {
         // TODO:
         return null;
     }

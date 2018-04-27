@@ -4,6 +4,7 @@ export * from './browser/BrowserQRCodeReader';
 export * from './browser/BrowserQRCodeSvgWriter';
 export { default as HTMLCanvasElementLuminanceSource } from './browser/HTMLCanvasElementLuminanceSource';
 export { default as VideoInputDevice } from './browser/VideoInputDevice';
+export * from './browser/BrowserBarcodeReader';
 
 // core
 export { default as BarcodeFormat } from './core/BarcodeFormat';
@@ -52,3 +53,7 @@ export { default as ReedSolomonEncoder } from './core/common/reedsolomon/ReedSol
 // core/qrcode
 export { default as QRCodeReader } from './core/qrcode/QRCodeReader';
 export { default as QRCodeWriter } from './core/qrcode/QRCodeWriter';
+
+// core/oned
+export { default as OneDReader } from './core/oned/OneDReader';
+export { default as Code128Reader } from './core/oned/Code128Reader';
