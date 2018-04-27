@@ -16,7 +16,7 @@ Multi-format 1D/2D barcode image processing library.
 | ---------- | ------------------------ | --------------
 | ~UPC-A~    | ~Code 39~                | QR Code
 | ~UPC-E~    | ~Code 93~                | ~Data Matrix~
-| ~EAN-8~    | Code 128 (_in-progress_) | ~Aztec (beta)~
+| ~EAN-8~    | Code 128 (_no docs_)     | ~Aztec (beta)~
 | ~EAN-13~   | ~Codabar~                | PDF 417 (_in-progress_)
 |            | ~ITF~                    | ~MaxiCode~
 |            | ~RSS-14~                 |
