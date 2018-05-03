@@ -17,21 +17,17 @@
 /*namespace com.google.zxing.oned {*/
 
 import BarcodeFormat from '../BarcodeFormat';
-import BinaryBitmap from '../BinaryBitmap';
 import BitArray from '../common/BitArray';
 import DecodeHintType from '../DecodeHintType';
 import Exception from '../Exception';
-import Reader from '../Reader';
 import Result from '../Result';
-import ResultMetadataType from '../ResultMetadataType';
 import ResultPoint from '../ResultPoint';
 import OneDReader from './OneDReader';
 import StringBuilder from "../util/StringBuilder";
 import System from "../util/System";
-import {start} from "repl";
 
 /**
- * <p>Decodes Code 128 barcodes.</p>
+ * <p>Decodes ITF barcodes.</p>
  *
  * @author Tjieco
  */
@@ -98,13 +94,10 @@ export default class ITFReader extends OneDReader {
     public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
 
         // Find out where the Middle section (payload) starts & ends
-        console.log("Decoding start...");
         let startRange: number[] = this.decodeStart(row);
-        console.log("Decoding end...");
         let endRange: number[] = this.decodeEnd(row);
 
         let result: StringBuilder = new StringBuilder();
-        console.log("Decoding middle...");
         ITFReader.decodeMiddle(row, startRange[1], endRange[0], result);
         let resultString: string = result.toString();
 
@@ -135,22 +128,20 @@ export default class ITFReader extends OneDReader {
             lengthOK = true;
         }
         if (!lengthOK) {
-            console.log('Length is NOT ok');
             throw new Exception(Exception.FormatException)
         }
 
         const points: ResultPoint[] = [new ResultPoint(startRange[1], rowNumber), new ResultPoint(endRange[0], rowNumber)];
 
 
-        let resultReturn: Result = new Result(resultString,
+        let resultReturn: Result = new Result(
+            resultString,
             null, // no natural byte representation for these barcodes
             0,
             points,
             BarcodeFormat.ITF,
-            new Date().getTime());
-
-        console.log("Result: ");
-        console.log(resultReturn);
+            new Date().getTime()
+        );
 
         return resultReturn
     }
@@ -213,19 +204,13 @@ export default class ITFReader extends OneDReader {
 
 
         let endStart = ITFReader.skipWhiteSpace(row);
-        console.log('finding guard pattern');
         let startPattern: number[] = ITFReader.findGuardPattern(row, endStart, ITFReader.START_PATTERN);
 
         // Determine the width of a narrow line in pixels. We can do this by
         // getting the width of the start pattern and dividing by 4 because its
         // made up of 4 narrow lines.
-        console.log("found guard pattern");
-        console.log("For zone: (0) " + startPattern[0]);
-        console.log("(1) " + startPattern[1]);
-
         this.narrowLineWidth = (startPattern[1] - startPattern[0]) / 4;
 
-        console.log('Validating Quiet Zone');
         this.validateQuietZone(row, startPattern[0]);
 
         return startPattern;
@@ -260,11 +245,9 @@ export default class ITFReader extends OneDReader {
             quietCount--;
         }
         if (quietCount != 0) {
-            console.log("quiet");
             // Unable to find the necessary number of quiet zone pixels.
             throw new Exception(Exception.NotFoundException)
         }
-        console.log("NOT QUIET");
     }
     /*
     /!**
@@ -346,23 +329,15 @@ export default class ITFReader extends OneDReader {
         let patternStart: number = rowOffset;
 
         counters.fill(0);
-        console.log(counters);
-        console.log(patternLength);
-        console.log("Row Offset: " + rowOffset);
 
         for (let x = rowOffset; x < width; x++) {
             if (row.get(x) != isWhite) {
                 counters[counterPosition]++;
             } else {
                 if (counterPosition == patternLength - 1) {
-                    console.log(counters);
                     if (OneDReader.patternMatchVariance(counters, pattern, ITFReader.MAX_INDIVIDUAL_VARIANCE) < ITFReader.MAX_AVG_VARIANCE) {
-                        console.log("moving on");
-                        let returnArray: number[] = [patternStart, x];
-                        console.log(returnArray);
-                        return returnArray;
+                        return [patternStart, x];
                     }
-                    console.log(counters[0] + " " + counters[1]);
                     patternStart += counters[0] + counters[1];
                     System.arraycopy(counters, 2, counters, 0, counterPosition - 1);
                     counters[counterPosition - 1] = 0;

@@ -51,9 +51,9 @@ export default class MultiFormatOneDReader extends OneDReader {
             // if (possibleFormats.get(BarcodeFormat.CODE_93)) {
             //    this.readers.push(new Code93Reader());
             // }
-            // if (possibleFormats.get(BarcodeFormat.CODE_128)) {
-            //    this.readers.push(new Code128Reader());
-            // }
+            if (possibleFormats.get(BarcodeFormat.CODE_128)) {
+                this.readers.push(new Code128Reader());
+            }
             if (possibleFormats.get(BarcodeFormat.ITF)) {
                this.readers.push(new ITFReader());
             }
@@ -72,7 +72,7 @@ export default class MultiFormatOneDReader extends OneDReader {
             // this.readers.push(new Code39Reader());
             // this.readers.push(new CodaBarReader());
             // this.readers.push(new Code93Reader());
-            // this.readers.push(new Code128Reader());
+            this.readers.push(new Code128Reader());
             this.readers.push(new ITFReader());
             // this.readers.push(new RSS14Reader());
             // this.readers.push(new RSSExpandedReader());
