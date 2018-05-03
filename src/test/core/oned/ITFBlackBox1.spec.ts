@@ -32,7 +32,6 @@ class ITFBlackBox1Spec extends AbstractBlackBoxSpec {
 
     public constructor() {
         super('src/test/core/resources/blackbox/i2of5', new MultiFormatReader(), BarcodeFormat.ITF);
-        // super('src/test/core/resources/blackbox/code128-1', new Code128Reader(), BarcodeFormat.CODE_128);
         this.addTest(1, 1, 0.0);
         this.addTest(1, 1, 180.0);
     }
