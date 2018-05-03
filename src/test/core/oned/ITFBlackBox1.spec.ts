@@ -27,19 +27,21 @@ import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
 /**
  * @author Sean Owen
  */
-class Code128BlackBox1Spec extends AbstractBlackBoxSpec {
+
+class ITFBlackBox1Spec extends AbstractBlackBoxSpec {
 
     public constructor() {
-        super('src/test/core/resources/blackbox/code128-1', new MultiFormatReader(), BarcodeFormat.CODE_128);
-       // super('src/test/core/resources/blackbox/code128-1', new Code128Reader(), BarcodeFormat.CODE_128);
-        this.addTest(6, 6, 0.0);
-        this.addTest(6, 6, 180.0);
+        super('src/test/core/resources/blackbox/i2of5', new MultiFormatReader(), BarcodeFormat.ITF);
+        // super('src/test/core/resources/blackbox/code128-1', new Code128Reader(), BarcodeFormat.CODE_128);
+        this.addTest(1, 1, 0.0);
+        this.addTest(1, 1, 180.0);
     }
 }
 
-describe('Code128BlackBox.1', () => {
+describe('ITFBlackBox.1', () => {
     it('testBlackBox', (done) => {
-        const test = new Code128BlackBox1Spec();
+        const test = new ITFBlackBox1Spec();
         return test.testBlackBox(() => done());
     });
 });
+
