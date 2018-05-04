@@ -1,7 +1,7 @@
 {
-    "name": "@zxing/library",
+    "name": "@tjieco/library",
     "version": "0.4.0",
-    "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
+    "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library, with Code128 and ITF support.",
     "keywords": [
         "scanner",
         "reader",
@@ -9,11 +9,16 @@
         "barcode",
         "qr-code",
         "code-128",
+        "ITF",
+        "i2of5",
         "typescript",
         "zxing-typescript",
         "zxing"
     ],
     "authors": [
+        {
+            "name": "Tjieco"
+        },
         {
             "name": "Adrian Toșcă"
         },
