@@ -18,7 +18,7 @@ Multi-format 1D/2D barcode image processing library.
 | ~UPC-E~    | ~Code 93~                | ~Data Matrix~
 | ~EAN-8~    | Code 128 (_no docs_)     | ~Aztec (beta)~
 | ~EAN-13~   | ~Codabar~                | PDF 417 (_in-progress_)
-|            | ~ITF~                    | ~MaxiCode~
+|            | ITF (_in-progress_)      | ~MaxiCode~
 |            | ~RSS-14~                 |
 |            | ~RSS-Expanded~           |
 
@@ -36,7 +36,7 @@ Multi-format 1D/2D barcode image processing library.
 
 ## Demo
 
-See [some demo examples](https://aleris.github.io/zxing-typescript/) in browser.
+See [some demo examples](https://tjieco.github.io/library/docs/) in browser.
 
 ## Usage
 

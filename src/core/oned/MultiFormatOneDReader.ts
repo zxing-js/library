@@ -23,6 +23,7 @@ import Code128Reader from './Code128Reader';
 import Result from '../Result';
 import BitArray from './../common/BitArray';
 import Exception from '../Exception';
+import ITFReader from "./ITFReader";
 
 /**
  * @author dswitkin@google.com (Daniel Switkin)
@@ -53,9 +54,9 @@ export default class MultiFormatOneDReader extends OneDReader {
             if (possibleFormats.get(BarcodeFormat.CODE_128)) {
                 this.readers.push(new Code128Reader());
             }
-            // if (possibleFormats.get(BarcodeFormat.ITF)) {
-            //    this.readers.push(new ITFReader());
-            // }
+            if (possibleFormats.get(BarcodeFormat.ITF)) {
+               this.readers.push(new ITFReader());
+            }
             // if (possibleFormats.get(BarcodeFormat.CODABAR)) {
             //    this.readers.push(new CodaBarReader());
             // }
@@ -72,7 +73,7 @@ export default class MultiFormatOneDReader extends OneDReader {
             // this.readers.push(new CodaBarReader());
             // this.readers.push(new Code93Reader());
             this.readers.push(new Code128Reader());
-            // this.readers.push(new ITFReader());
+            this.readers.push(new ITFReader());
             // this.readers.push(new RSS14Reader());
             // this.readers.push(new RSSExpandedReader());
         }
