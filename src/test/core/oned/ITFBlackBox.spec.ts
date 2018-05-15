@@ -22,24 +22,23 @@ import 'mocha';
 import BarcodeFormat from './../../../core/BarcodeFormat';
 import MultiFormatReader from './../../../core/MultiFormatReader';
 import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
-// import Code128Reader from '../../../core/oned/Code128Reader';
 
 /**
  * @author Sean Owen
  */
 
-class ITFBlackBox1Spec extends AbstractBlackBoxSpec {
+class ITFBlackBoxSpec extends AbstractBlackBoxSpec {
 
     public constructor() {
-        super('src/test/core/resources/blackbox/i2of5', new MultiFormatReader(), BarcodeFormat.ITF);
+        super('src/test/core/resources/blackbox/itf', new MultiFormatReader(), BarcodeFormat.ITF);
         this.addTest(1, 1, 0.0);
         this.addTest(1, 1, 180.0);
     }
 }
 
-describe('ITFBlackBox.1', () => {
+describe('ITFBlackBox', () => {
     it('testBlackBox', (done) => {
-        const test = new ITFBlackBox1Spec();
+        const test = new ITFBlackBoxSpec();
         return test.testBlackBox(() => done());
     });
 });
