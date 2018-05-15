@@ -22,7 +22,6 @@ import 'mocha';
 import BarcodeFormat from './../../../core/BarcodeFormat';
 import MultiFormatReader from './../../../core/MultiFormatReader';
 import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
-// import Code128Reader from '../../../core/oned/Code128Reader';
 
 /**
  * @author Sean Owen
@@ -31,7 +30,6 @@ class Code128BlackBox1Spec extends AbstractBlackBoxSpec {
 
     public constructor() {
         super('src/test/core/resources/blackbox/code128-1', new MultiFormatReader(), BarcodeFormat.CODE_128);
-       // super('src/test/core/resources/blackbox/code128-1', new Code128Reader(), BarcodeFormat.CODE_128);
         this.addTest(6, 6, 0.0);
         this.addTest(6, 6, 180.0);
     }
