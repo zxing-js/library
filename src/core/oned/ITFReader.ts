@@ -23,8 +23,8 @@ import Exception from '../Exception';
 import Result from '../Result';
 import ResultPoint from '../ResultPoint';
 import OneDReader from './OneDReader';
-import StringBuilder from "../util/StringBuilder";
-import System from "../util/System";
+import StringBuilder from '../util/StringBuilder';
+import System from '../util/System';
 
 /**
  * <p>Decodes ITF barcodes.</p>
@@ -66,7 +66,7 @@ export default class ITFReader extends OneDReader {
 
 
     /* /!** Valid ITF lengths. Anything longer than the largest value is also allowed. *!/*/
-    private static DEFAULT_ALLOWED_LENGTHS:number[] = [6, 8, 10, 12, 14];
+    private static DEFAULT_ALLOWED_LENGTHS: number[] = [6, 8, 10, 12, 14];
 
     // Stores the actual narrow line width of the image being decoded.
     private narrowLineWidth = -1;
@@ -115,8 +115,9 @@ export default class ITFReader extends OneDReader {
         let length: number = resultString.length;
         let lengthOK: boolean = false;
         let maxAllowedLength: number = 0;
-        for(let value of allowedLengths) {
-            if (length == value) {
+
+        for (let value of allowedLengths) {
+            if (length === value) {
                 lengthOK = true;
                 break;
             }
@@ -124,15 +125,16 @@ export default class ITFReader extends OneDReader {
                 maxAllowedLength = value;
             }
         }
+
         if (!lengthOK && length > maxAllowedLength) {
             lengthOK = true;
         }
+
         if (!lengthOK) {
-            throw new Exception(Exception.FormatException)
+            throw new Exception(Exception.FormatException);
         }
 
         const points: ResultPoint[] = [new ResultPoint(startRange[1], rowNumber), new ResultPoint(endRange[0], rowNumber)];
-
 
         let resultReturn: Result = new Result(
             resultString,
@@ -143,7 +145,7 @@ export default class ITFReader extends OneDReader {
             new Date().getTime()
         );
 
-        return resultReturn
+        return resultReturn;
     }
     /*
     /!**
@@ -152,10 +154,12 @@ export default class ITFReader extends OneDReader {
      * @param resultString {@link StringBuilder} to append decoded chars to
      * @throws NotFoundException if decoding could not complete successfully
      *!/*/
-    private static decodeMiddle(row: BitArray,
-                                payloadStart: number,
-                                payloadEnd: number,
-                                resultString: StringBuilder) {
+    private static decodeMiddle(
+        row: BitArray,
+        payloadStart: number,
+        payloadEnd: number,
+        resultString: StringBuilder
+    ) {
 
         // Digits are interleaved in pairs - 5 black lines for one digit, and the
         // 5
@@ -163,9 +167,9 @@ export default class ITFReader extends OneDReader {
         // Therefore, need to scan 10 lines and then
         // split these into two arrays
 
-        let counterDigitPair: number[] = new Array(10); //10
-        let counterBlack: number[]= new Array(5); //5
-        let counterWhite: number[]= new Array(5); //5
+        let counterDigitPair: number[] = new Array(10); // 10
+        let counterBlack: number[] = new Array(5); // 5
+        let counterWhite: number[] = new Array(5); // 5
 
         counterDigitPair.fill(0);
         counterBlack.fill(0);
@@ -202,7 +206,6 @@ export default class ITFReader extends OneDReader {
      *!/*/
     private decodeStart(row: BitArray): number[] {
 
-
         let endStart = ITFReader.skipWhiteSpace(row);
         let startPattern: number[] = ITFReader.findGuardPattern(row, endStart, ITFReader.START_PATTERN);
 
@@ -231,7 +234,7 @@ export default class ITFReader extends OneDReader {
      * @param startPattern index into row of the start or end pattern.
      * @throws NotFoundException if the quiet zone cannot be found
      *!/*/
-    private validateQuietZone(row:BitArray, startPattern: number): void {
+    private validateQuietZone(row: BitArray, startPattern: number): void {
 
         let quietCount: number = this.narrowLineWidth * 10;  // expect to find this many pixels of quiet zone
 
@@ -244,9 +247,9 @@ export default class ITFReader extends OneDReader {
             }
             quietCount--;
         }
-        if (quietCount != 0) {
+        if (quietCount !== 0) {
             // Unable to find the necessary number of quiet zone pixels.
-            throw new Exception(Exception.NotFoundException)
+            throw new Exception(Exception.NotFoundException);
         }
     }
     /*
@@ -258,10 +261,12 @@ export default class ITFReader extends OneDReader {
      * @throws NotFoundException Throws exception if no black lines are found in the row
      *!/*/
     private static skipWhiteSpace(row: BitArray): number {
-        let width: number = row.getSize();
-        let endStart: number = row.getNextSet(0);
-        if (endStart == width) {
-            throw new Exception(Exception.NotFoundException)
+
+        const width = row.getSize();
+        const endStart = row.getNextSet(0);
+
+        if (endStart === width) {
+            throw new Exception(Exception.NotFoundException);
         }
 
         return endStart;
@@ -279,9 +284,11 @@ export default class ITFReader extends OneDReader {
         // For convenience, reverse the row and then
         // search from 'the start' for the end block
         row.reverse();
+
         try {
             let endStart: number = ITFReader.skipWhiteSpace(row);
             let endPattern: number[];
+
             try {
                 endPattern = ITFReader.findGuardPattern(row, endStart, ITFReader.END_PATTERN_REVERSED[0]);
             } catch (NotFoundException) {
@@ -301,11 +308,13 @@ export default class ITFReader extends OneDReader {
             endPattern[1] = row.getSize() - temp;
 
             return endPattern;
+
         } finally {
             // Put the row back the right way.
             row.reverse();
         }
     }
+
     /*
     /!**
      * @param row       row of black/white values to search
@@ -316,9 +325,11 @@ export default class ITFReader extends OneDReader {
      *         ints
      * @throws NotFoundException if pattern is not found
      *!/*/
-    private static findGuardPattern(row: BitArray,
-                                    rowOffset: number,
-                                    pattern: number[]): number[] {
+    private static findGuardPattern(
+        row: BitArray,
+        rowOffset: number,
+        pattern: number[]
+    ): number[] {
 
         let patternLength: number = pattern.length;
         let counters: number[] = new Array(patternLength);
@@ -331,10 +342,10 @@ export default class ITFReader extends OneDReader {
         counters.fill(0);
 
         for (let x = rowOffset; x < width; x++) {
-            if (row.get(x) != isWhite) {
+            if (row.get(x) !== isWhite) {
                 counters[counterPosition]++;
             } else {
-                if (counterPosition == patternLength - 1) {
+                if (counterPosition === patternLength - 1) {
                     if (OneDReader.patternMatchVariance(counters, pattern, ITFReader.MAX_INDIVIDUAL_VARIANCE) < ITFReader.MAX_AVG_VARIANCE) {
                         return [patternStart, x];
                     }
@@ -350,7 +361,7 @@ export default class ITFReader extends OneDReader {
                 isWhite = !isWhite;
             }
         }
-        throw new Exception (Exception.NotFoundException)
+        throw new Exception (Exception.NotFoundException);
     }
 
     /*/!**
@@ -362,24 +373,29 @@ export default class ITFReader extends OneDReader {
      * @throws NotFoundException if digit cannot be decoded
      *!/*/
     private static decodeDigit(counters: number[]): number {
+
         let bestVariance: number = ITFReader.MAX_AVG_VARIANCE; // worst variance we'll accept
         let bestMatch: number = -1;
         let max: number = ITFReader.PATTERNS.length;
+
         for (let i = 0; i < max; i++) {
+
             let pattern = ITFReader.PATTERNS[i];
             let variance: number = OneDReader.patternMatchVariance(counters, pattern, ITFReader.MAX_INDIVIDUAL_VARIANCE);
+
             if (variance < bestVariance) {
                 bestVariance = variance;
                 bestMatch = i;
-            } else if (variance == bestVariance) {
+            } else if (variance === bestVariance) {
                 // if we find a second 'best match' with the same variance, we can not reliably report to have a suitable match
                 bestMatch = -1;
             }
         }
+
         if (bestMatch >= 0) {
             return bestMatch % 10;
         } else {
-            throw new Exception(Exception.NotFoundException)
+            throw new Exception(Exception.NotFoundException);
         }
     }
 

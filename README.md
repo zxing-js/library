@@ -1,6 +1,8 @@
 [<img align="right" src="https://raw.github.com/wiki/zxing/zxing/zxing-logo.png"/>](https://github.com/zxing/zxing)
 
-# ZXing <small>_in TypeScript_</small> 
+# ZXing
+
+## Written in TypeScript, Deployed in JavaScript
 
 Multi-format 1D/2D barcode image processing library.
 
