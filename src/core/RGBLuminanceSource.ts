@@ -115,6 +115,7 @@ export default class RGBLuminanceSource extends LuminanceSource {
 
     /*@Override*/
     public getMatrix(): Uint8ClampedArray {
+
         const width = this.getWidth();
         const height = this.getHeight();
 
