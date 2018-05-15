@@ -51,8 +51,7 @@
     "typings": "./esm5/index.d.ts",
     "scripts": {
         "clean": "shx rm -rf bundles esm5",
-        "build:before": "yarn run clean",
-        "build": "yarn build:before && tsc && tsc --target es2017 --outDir esm5 && webpack && webpack --env.prod",
+        "build": "yarn clean && tsc && tsc --target es2017 --outDir esm5 && webpack && webpack --env.prod",
         "test": "mocha-webpack --webpack-config webpack.config.test.js src/test.js --timeout 20000",
         "lint": "tslint src/**/*.ts"
     },
