@@ -23,10 +23,10 @@ import Code128Reader from './Code128Reader';
 import Result from '../Result';
 import BitArray from './../common/BitArray';
 import Exception from '../Exception';
-import ITFReader from "./ITFReader";
+import ITFReader from './ITFReader';
 
 /**
- * @author dswitkin@google.com (Daniel Switkin)
+ * @author Daniel Switkin <dswitkin@google.com>
  * @author Sean Owen
  */
 export default class MultiFormatOneDReader extends OneDReader {
@@ -80,7 +80,12 @@ export default class MultiFormatOneDReader extends OneDReader {
     }
 
     // @Override
-    public decodeRow(rowNumber: number, row: BitArray, hints: Map<DecodeHintType, any>): Result {
+    public decodeRow(
+        rowNumber: number,
+        row: BitArray,
+        hints: Map<DecodeHintType, any>
+    ): Result {
+
         for (let i = 0; i < this.readers.length; i++) {
             try {
                 return this.readers[i].decodeRow(rowNumber, row, hints);
