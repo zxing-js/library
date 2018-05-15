@@ -24,7 +24,7 @@ There's still some things we gotta do here, see [Status and Roadmap](#status-and
 
 # Demo
 
-See [some demo examples](https://aleris.github.io/zxing-typescript/) in browser.
+See [some demo examples](https://zxing-js.github.io/library/) in browser.
 
 # Usage
 
