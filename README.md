@@ -36,7 +36,7 @@ Multi-format 1D/2D barcode image processing library.
 
 ## Demo
 
-See [some demo examples](https://tjieco.github.io/library/docs/) in browser.
+See [some demo examples](https://zxing-js.github.io/library/) in browser.
 
 ## Usage
 

@@ -1,10 +1,13 @@
 {
-    "name": "@tjieco/library",
-    "version": "0.4.1",
+    "name": "@zxing-js/library",
+    "version": "0.5.0",
     "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library, with Code128 and ITF support.",
     "keywords": [
-        "scanner",
         "reader",
+        "writer",
+        "decode",
+        "encode",
+        "scanner",
         "generator",
         "barcode",
         "qr-code",
@@ -36,10 +39,10 @@
         }
     ],
     "license": "MIT",
-    "bugs": "https://github.com/Tjieco/library/issues/new",
+    "bugs": "https://github.com/zxing-js/library/issues/new",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Tjieco/library"
+        "url": "https://github.com/zxing-js/library"
     },
     "private": false,
     "main": "./bundles/library.js",
