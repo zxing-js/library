@@ -17,9 +17,6 @@
     ],
     "authors": [
         {
-            "name": "Tjieco"
-        },
-        {
             "name": "Adrian Toșcă"
         },
         {
@@ -33,6 +30,9 @@
         {
             "name": "Ricardo Sousa",
             "email": "sousa.ricardo10@gmail.com"
+        },
+        {
+            "name": "Tjieco"
         }
     ],
     "license": "MIT",
