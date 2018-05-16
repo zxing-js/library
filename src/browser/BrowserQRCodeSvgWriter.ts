@@ -52,7 +52,7 @@ class BrowserQRCodeSvgWriter {
 
         let errorCorrectionLevel = ErrorCorrectionLevel.L;
         let quietZone = BrowserQRCodeSvgWriter.QUIET_ZONE_SIZE;
-            
+
         if (hints !== null) {
             
             if (undefined !== hints.get(EncodeHintType.ERROR_CORRECTION)) {
