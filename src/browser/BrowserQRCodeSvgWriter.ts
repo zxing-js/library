@@ -5,7 +5,7 @@ import QRCode from '../core/qrcode/encoder/QRCode';
 import ErrorCorrectionLevel from '../core/qrcode/decoder/ErrorCorrectionLevel';
 
 class BrowserQRCodeSvgWriter {
-    
+
     private static readonly QUIET_ZONE_SIZE = 4;
     /**
      * SVG markup NameSpace
@@ -45,7 +45,7 @@ class BrowserQRCodeSvgWriter {
 
         if (width < 0 || height < 0) {
             throw new Exception(
-                'IllegalArgumentException', 
+                'IllegalArgumentException',
                 'Requested dimensions are too small: ' + width + 'x' + height
             );
         }
@@ -69,7 +69,7 @@ class BrowserQRCodeSvgWriter {
         return this.renderResult(code, width, height, quietZone);
     }
 
-    /** 
+    /**
      * Note that the input matrix uses 0 == white, 1 == black.
      * The output matrix uses 0 == black, 255 == white (i.e. an 8 bit greyscale bitmap).
      */
