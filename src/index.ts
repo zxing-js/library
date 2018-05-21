@@ -1,6 +1,7 @@
 // browser
 export { default as BrowserCodeReader } from './browser/BrowserCodeReader';
 export * from './browser/BrowserQRCodeReader';
+export * from './browser/BrowserDatamatrixCodeReader';
 export * from './browser/BrowserQRCodeSvgWriter';
 export { default as HTMLCanvasElementLuminanceSource } from './browser/HTMLCanvasElementLuminanceSource';
 export { default as VideoInputDevice } from './browser/VideoInputDevice';
