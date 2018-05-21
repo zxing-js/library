@@ -67,11 +67,11 @@ const config = (env = 'dev') => {
         },
 
         /**
-         * Add resolve for `tsx` and `ts` files, otherwise Webpack would
+         * Add resolve for `ts` files, otherwise Webpack would
          * only look for common JavaScript file extension (.js)
          */
         resolve: {
-            extensions: ['.ts', '.tsx', '.js'],
+            extensions: ['.ts'],
         },
 
         /**
@@ -99,12 +99,13 @@ const config = (env = 'dev') => {
         plugins: removeEmpty([
 
             /**
-             *  enable scope hoisting
+             * Enable scope hoisting.
              */
             new webpack.optimize.ModuleConcatenationPlugin(),
 
             /**
-             * Apply minification only on the second bundle by using a RegEx on the name, which must end with `.min.js`
+             * Apply minification only on the second bundle by
+             * using a RegEx on the name, which must end with `.min.js`
              */
             ifProd(
                 new UglifyJsPlugin({
@@ -142,7 +143,7 @@ const config = (env = 'dev') => {
          */
         module: {
             rules: [{
-                test: /\.tsx?$/,
+                test: /\.ts?$/,
                 include: /src/,
                 loader: 'awesome-typescript-loader',
             }],

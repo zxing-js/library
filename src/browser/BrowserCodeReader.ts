@@ -141,8 +141,8 @@ export default class BrowserCodeReader {
     private prepareVideoElement(videoElement?: string | HTMLVideoElement) {
         if (undefined === videoElement) {
             this.videoElement = document.createElement('video');
-            this.videoElement.width = 200;
-            this.videoElement.height = 200;
+            this.videoElement.width = 640;
+            this.videoElement.height = 480;
         } else if (typeof videoElement === 'string') {
             this.videoElement = <HTMLVideoElement>this.getMediaElement(videoElement, 'video');
         } else {

@@ -4,8 +4,10 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Adrian Toșcă">
-		<meta name="description" content="Scan QR Code from Image with ZXing javascript library">
-		<title>ZXing | Scan QR Code from Image</title>
+        <meta name="description" content="Scan QR Code from Image with ZXing javascript library.">
+
+        <title>ZXing | Scan barcode from Image</title>
+
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
 		<link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
@@ -15,23 +17,23 @@
 		<main class="wrapper">
 
 			<section class="container" id="demo-content">
-				<h1 class="title">Scan QR Code from Image</h1>
-				
-				<p>This example shows how to scan a QR code with ZXing javascript library from an image. The example decodes from the <code>src</code> in <code>img</code> tag, however is also possible to decode directly from an url without an <code>img</code> tag.</p>
+				<h1 class="title">Scan barcode from Image</h1>
+
+				<p>This example shows how to scan a barcode with ZXing javascript library from an image. The example decodes from the <code>src</code> in <code>img</code> tag, however is also possible to decode directly from an url without an <code>img</code> tag.</p>
 
 				<div>
 					<a class="button" id="decodeButton">Decode</a>
 				</div>
 
 				<div>
-					<img id="img" src="qrcode-image-3.png" style="border: 1px solid gray"></img>
+					<img id="img" src="../img/2of5-interleaved_806002000537753383.png" style="border: 1px solid gray"></img>
 				</div>
 
 				<label>Result:</label>
 				<blockquote>
 					<p id="result"></p>
 				</blockquote>
-				
+
 				<p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/qr-image/">source code</a>  for this example.</p>
 
 			</section>
@@ -44,10 +46,10 @@
 
 		</main>
 
-		<script type="text/javascript" src="../zxing.qrcodereader.min.js"></script>
+		<script type="text/javascript" src="../../../bundles/library.min.js"></script>
         <script type="text/javascript">
 			window.addEventListener('load', function() {
-				const codeReader = new ZXing.BrowserQRCodeReader('video')
+				const codeReader = new Library.BrowserBarcodeReader('video')
 				console.log('ZXing code reader initialized')
 
 				document.getElementById('decodeButton').addEventListener('click', () => {
