@@ -23,9 +23,10 @@ import Code128Reader from './Code128Reader';
 import Result from '../Result';
 import BitArray from './../common/BitArray';
 import Exception from '../Exception';
+import ITFReader from './ITFReader';
 
 /**
- * @author dswitkin@google.com (Daniel Switkin)
+ * @author Daniel Switkin <dswitkin@google.com>
  * @author Sean Owen
  */
 export default class MultiFormatOneDReader extends OneDReader {
@@ -53,9 +54,9 @@ export default class MultiFormatOneDReader extends OneDReader {
             if (possibleFormats.get(BarcodeFormat.CODE_128)) {
                 this.readers.push(new Code128Reader());
             }
-            // if (possibleFormats.get(BarcodeFormat.ITF)) {
-            //    this.readers.push(new ITFReader());
-            // }
+            if (possibleFormats.get(BarcodeFormat.ITF)) {
+               this.readers.push(new ITFReader());
+            }
             // if (possibleFormats.get(BarcodeFormat.CODABAR)) {
             //    this.readers.push(new CodaBarReader());
             // }
@@ -72,14 +73,19 @@ export default class MultiFormatOneDReader extends OneDReader {
             // this.readers.push(new CodaBarReader());
             // this.readers.push(new Code93Reader());
             this.readers.push(new Code128Reader());
-            // this.readers.push(new ITFReader());
+            this.readers.push(new ITFReader());
             // this.readers.push(new RSS14Reader());
             // this.readers.push(new RSSExpandedReader());
         }
     }
 
     // @Override
-    public decodeRow(rowNumber: number, row: BitArray, hints: Map<DecodeHintType, any>): Result {
+    public decodeRow(
+        rowNumber: number,
+        row: BitArray,
+        hints: Map<DecodeHintType, any>
+    ): Result {
+
         for (let i = 0; i < this.readers.length; i++) {
             try {
                 return this.readers[i].decodeRow(rowNumber, row, hints);

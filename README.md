@@ -1,24 +1,24 @@
-[<img align="right" src="https://raw.github.com/wiki/zxing/zxing/zxing-logo.png"/>](https://github.com/zxing/zxing)
+[<img align="right" src="https://raw.github.com/wiki/zxing/zxing/zxing-logo.png"/>][1]
 
-# ZXing <small>_in TypeScript_</small> 
+# ZXing
+
+## Written in TypeScript, Deployed in JavaScript
 
 Multi-format 1D/2D barcode image processing library.
 
-*Ported from [ZXing](https://github.com/zxing/zxing) project (written in Java).*
-
-> ZXing ("zebra crossing") is an open-source, multi-format 1D/2D barcode image processing library implemented in Java, with ports to other languages.
+> [ZXing][1] ("zebra crossing") is an open-source, multi-format 1D/2D barcode image processing library implemented in Java, with ports to other languages.
 
 ## Supported Formats
 
-**_WIP_**: There's still some things we gotta do here, see [Status and Roadmap](#status-and-roadmap) for what is currently done and what's planned next. 
+**_WIP_**: see [Status and Roadmap](#roadmap) for what is currently done and what's planned next. 👀
 
 | 1D product | 1D industrial            | 2D
 | ---------- | ------------------------ | --------------
 | ~UPC-A~    | ~Code 39~                | QR Code
 | ~UPC-E~    | ~Code 93~                | ~Data Matrix~
-| ~EAN-8~    | Code 128 (_in-progress_) | ~Aztec (beta)~
+| ~EAN-8~    | Code 128 (_no docs_)     | ~Aztec (beta)~
 | ~EAN-13~   | ~Codabar~                | PDF 417 (_in-progress_)
-|            | ~ITF~                    | ~MaxiCode~
+|            | ITF (_in-progress_)      | ~MaxiCode~
 |            | ~RSS-14~                 |
 |            | ~RSS-Expanded~           |
 
@@ -31,18 +31,20 @@ Multi-format 1D/2D barcode image processing library.
 ![Dependencies](https://david-dm.org/zxing-js/library.svg)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/39d86bc5d5f04bc8953cc68d729807b0)](https://www.codacy.com/app/zxing-js/library?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zxing-js/library&amp;utm_campaign=Badge_Grade)
-[![Maintainability](https://api.codeclimate.com/v1/badges/181de5153c3535321974/maintainability)](https://codeclimate.com/github/zxing-js/library/maintainability)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/zxing-js/library.svg)](http://isitmaintained.com/project/zxing-js/library "Average time to resolve an issue")
+[![Maintainability](https://api.codeclimate.com/v1/badges/2b9c6ae92412ee8e15a9/maintainability)](https://codeclimate.com/github/zxing-js/library/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/2b9c6ae92412ee8e15a9/test_coverage)](https://codeclimate.com/github/zxing-js/library/test_coverage)
 
 ## Demo
 
-See [some demo examples](https://aleris.github.io/zxing-typescript/) in browser.
+See [some demo examples](https://zxing-js.github.io/library/) in browser.
 
 ## Usage
 
 The library can be used from browser with TypeScript (include anything from src/browser however you must do the packaging yourself) or with plain javascript (see below). It can also be used from node (see also below). The library is using separate builds for node and browser to allow different ES targeting.
 
-## Browser Usage
+### Environments
+
+#### Browser
 
 Examples below are for QR barcode, all other supported barcodes work similary.
 
@@ -57,6 +59,28 @@ All the examples are using ES6, be sure is supported in your browser or modify a
 The browser library is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web api which is marked as experimental as of this writing. You can use external polyfills like [webrtc-adapter](https://github.com/webrtc/adapter) to increase browser compatiblity.
 
 Also, note that the library is using the [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (Int32Array, Uint8ClampedArray, etc.) which are not available in older browsers (for example Android 4 default browser, etc.). You can use a polyfill library like [core-js](https://github.com/zloirock/core-js) to support these browsers.
+
+#### TypeScript
+
+Install the package:
+
+`npm i @zxing/library --save`
+
+And then include directly the classes files you need, for example:
+
+```javascript
+import { BrowserQRCodeReader, VideoInputDevice } from '@zxing/library';
+```
+
+The usage is identical with the above.
+
+#### Node
+
+`npm i @zxing/library --save`
+
+To use in node you will need to provide an implementation of [`LuminanceSource`](https://github.com/odahcam/zxing-ts/blob/master/src/core/LuminanceSource.ts) for an image. A starting point is [`SharpImageLuminanceSource`](https://github.com/odahcam/zxing-ts/blob/master/src/test/core/SharpImageLuminanceSource.ts) from tests that is using [sharp image processing](https://github.com/lovell/sharp) node library.
+
+No examples are availabe for now, however you can have a look at the extensive [tests cases](https://github.com/odahcam/zxing-ts/tree/master/src/test/core/qrcode).
 
 ### Scanning from Video Camera
 
@@ -214,29 +238,7 @@ var svgElement = codeWriter.write(input, 300, 300);
 
 A full working example for [QR Code write to SVG](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/qr-svg-writer/) is provided in the [examples](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/).
 
-## Using from TypeScript
-
-Install the package:
-
-`npm i @zxing/library --save`
-
-And then include directly the classes files you need, for example:
-
-```javascript
-import { BrowserQRCodeReader, VideoInputDevice } from '@zxing/library';
-```
-
-The usage is identical with the above.
-
-## Node Usage
-
-`npm i @zxing/library --save`
-
-To use in node you will need to provide an implementation of [`LuminanceSource`](https://github.com/odahcam/zxing-ts/blob/master/src/core/LuminanceSource.ts) for an image. A starting point is [`SharpImageLuminanceSource`](https://github.com/odahcam/zxing-ts/blob/master/src/test/core/SharpImageLuminanceSource.ts) from tests that is using [sharp image processing](https://github.com/lovell/sharp) node library.
-
-No examples are availabe for now, however you can have a look at the extensive [tests cases](https://github.com/odahcam/zxing-ts/tree/master/src/test/core/qrcode).
-
-# Text Encoding and Decoding
+### Text Encoding and Decoding
 
 To decode a barcode, the library needs at some point to decode from bits to text. Also, to generate a barcode it needs to encode text to bits. Unfortunately, the state of encoding and decoding text in javascript/browser is somehow messy at the moment. 
 
@@ -244,34 +246,14 @@ To have full support for all encodings in [CharacterSetECI](https://github.com/o
 
 By default, in browser, [TextDecoder](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder)/[TextEncoder](https://developer.mozilla.org/ro/docs/Web/API/TextEncoder) web api are used if available (take care as these are labeled as experimental as of this writing). Also, be aware that TextEncoder encodes only to UTF-8 as per spec. If these are not available the library falls back to a minimal implementation that only encodes and decodes to/from UTF-8 (see [`StringEncoding`](https://github.com/odahcam/zxing-ts/blob/master/src/core/util/StringEncoding.ts)).
 
-# Porting Information
+## Roadmap
+
+- [Projects](/zxing-js/library/projects).
+- [Milestones](/zxing-js/library/milestones).
+
+### Porting Information
 
 See [TypeScript Port Info](typescriptport.md) for information regarding porting approach and reasoning behind some of the approaches taken.
-
-# Status and Roadmap
-
-**Done:**
-- [x] Port root, common and qrcode format and make it compile
-- [x] Add unit test infrastructure, a first unit test and make it pass (common/BitArray.spec)
-- [x] Add all unit tests for everything in root, common and qrcode
-- [x] Add one "back box" test for qrcode
-- [x] Add all "back box" tests for qrcode
-- [x] Create browser integration module and demo UI for qrcode
-- [x] Document browser usage
-- [x] Implement QR barcode generation to SVG in browser
-
-**Todo:**
-- [ ] Move all these tasks to a "Project".
-- [ ] Port pdf417 format with unit and browser tests and documentation
-- [ ] Adapt documentation for JSDoc, generate documentation, cleanup source files
-- [ ] Create automatic tests for all major current browsers
-- [ ] Port aztec format with unit and browser tests
-- [ ] Port multi parsing with unit and browser tests and documentation
-- [ ] Port datamatrix format with unit and browser tests and documentation
-- [ ] Port maxicode format with unit and browser tests and documentation
-- [ ] Port oned format with unit and browser tests and documentation
-- [ ] Port client/result parsing with unit and browser tests and documentation
-- [ ] Documentation for using directly from TypeScript
 
 ---
 
@@ -279,3 +261,4 @@ See [TypeScript Port Info](typescriptport.md) for information regarding porting 
 
 
 [0]: https://www.npmjs.com/package/@zxing/library
+[1]: https://github.com/zxing/zxing
