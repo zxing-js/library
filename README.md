@@ -2,9 +2,11 @@
 
 # ZXing
 
-## Written in TypeScript, Deployed in JavaScript
+### Runs on your favorite JavaScript ecosystem
 
-Multi-format 1D/2D barcode image processing library.
+> If it doesn't, we gonna make it.
+
+## What is ZXing?
 
 > [ZXing][1] ("zebra crossing") is an open-source, multi-format 1D/2D barcode image processing library implemented in Java, with ports to other languages.
 
@@ -27,7 +29,7 @@ Multi-format 1D/2D barcode image processing library.
 [![Build Status](https://travis-ci.org/zxing-js/library.svg?branch=master)](https://travis-ci.org/zxing-js/library)
 
 [![NPM version](https://img.shields.io/npm/v/@zxing/library.svg?&label=npm)][0]
-[![NPM downloads](https://img.shields.io/npm/dt/@zxing/library.svg?&label=npm%20downloads)][0]
+[![npm](https://img.shields.io/npm/dm/localeval.svg)][0]
 ![Dependencies](https://david-dm.org/zxing-js/library.svg)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/39d86bc5d5f04bc8953cc68d729807b0)](https://www.codacy.com/app/zxing-js/library?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zxing-js/library&amp;utm_campaign=Badge_Grade)
