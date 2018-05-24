@@ -22,6 +22,7 @@ import BarcodeFormat from './BarcodeFormat';
 import QRCodeReader from './qrcode/QRCodeReader';
 import Exception from './Exception';
 import MultiFormatOneDReader from './oned/MultiFormatOneDReader';
+import DataMatrixReader from './datamatrix/DataMatrixReader';
 
 /*namespace com.google.zxing {*/
 
@@ -120,9 +121,9 @@ export default class MultiFormatReader implements Reader {
             if (formats.contains(BarcodeFormat.QR_CODE)) {
                 readers.push(new QRCodeReader());
             }
-            // if (formats.contains(BarcodeFormat.DATA_MATRIX)) {
-            //   readers.push(new DataMatrixReader())
-            // }
+            if (formats.contains(BarcodeFormat.DATA_MATRIX)) {
+              readers.push(new DataMatrixReader())
+            }
             // if (formats.contains(BarcodeFormat.AZTEC)) {
             //   readers.push(new AztecReader())
             // }
@@ -143,7 +144,7 @@ export default class MultiFormatReader implements Reader {
             }
 
             readers.push(new QRCodeReader());
-            // readers.push(new DataMatrixReader())
+            readers.push(new DataMatrixReader());
             // readers.push(new AztecReader())
             // readers.push(new PDF417Reader())
             // readers.push(new MaxiCodeReader())

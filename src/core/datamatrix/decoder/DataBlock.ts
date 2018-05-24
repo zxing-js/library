@@ -57,7 +57,7 @@ export default class DataBlock {
     }
 
     // Now establish DataBlocks of the appropriate size and number of data codewords
-    const result = new DataBlock[totalBlocks];
+    const result: DataBlock[] = new Array(totalBlocks);
     let numResultBlocks = 0;
     for (let ecBlock of ecBlockArray) {
       for (let i = 0; i < ecBlock.getCount(); i++) {

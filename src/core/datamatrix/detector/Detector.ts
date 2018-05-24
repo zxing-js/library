@@ -202,7 +202,6 @@ export default class Detector {
                         dimensionCorrected,
                         dimensionCorrected);
     }
-
     return new DetectorResult(bits, [topLeft, bottomLeft, bottomRight, correctedTopRight]);
   }
 
@@ -369,7 +368,7 @@ export default class Detector {
     const xstep = fromX < toX ? 1 : -1;
     let transitions = 0;
     let inBlack = this.image.get(steep ? fromY : fromX, steep ? fromX : fromY);
-    for (let x = fromX, y = fromY; x != toX; x += xstep) {
+    for (let x = fromX, y = fromY; Math.abs(x - toX) >= 1; x += xstep) {
       const isBlack = this.image.get(steep ? y : x, steep ? x : y);
       if (isBlack != inBlack) {
         transitions++;

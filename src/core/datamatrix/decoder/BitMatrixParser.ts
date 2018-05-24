@@ -47,7 +47,7 @@ export default class BitMatrixParser {
   }
 
   /**
-   * <p>Creates the version object based on the dimension of the original bit matrix from 
+   * <p>Creates the version object based on the dimension of the original bit matrix from
    * the datamatrix code.</p>
    *
    * <p>See ISO 16022:2006 Table 7 - ECC 200 symbol attributes</p>
@@ -412,8 +412,8 @@ export default class BitMatrixParser {
     const numDataRegionsRow = symbolSizeRows / dataRegionSizeRows;
     const numDataRegionsColumn = symbolSizeColumns / dataRegionSizeColumns;
 
-    const sizeDataRegionRow = numDataRegionsRow * dataRegionSizeRows;
-    const sizeDataRegionColumn = numDataRegionsColumn * dataRegionSizeColumns;
+    const sizeDataRegionRow = Math.floor(numDataRegionsRow) * dataRegionSizeRows;
+    const sizeDataRegionColumn = Math.floor(numDataRegionsColumn) * dataRegionSizeColumns;
 
     const bitMatrixWithoutAlignment = new BitMatrix(sizeDataRegionColumn, sizeDataRegionRow);
     for (let dataRegionRow = 0; dataRegionRow < numDataRegionsRow; ++dataRegionRow) {

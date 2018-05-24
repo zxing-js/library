@@ -75,8 +75,8 @@ export default class DecodedBitStreamParser {
 
   static decode(bytes:  Uint8Array): DecoderResult {
     const bits = new BitSource(bytes);
-    const result = new StringBuilder(String.fromCharCode(100)); /* ??? */
-    const resultTrailer = new StringBuilder(String.fromCharCode(0)); /* ??? */
+    const result = new StringBuilder(); /* ??? */
+    const resultTrailer = new StringBuilder(); /* ??? */
     const byteSegments = new Array<Uint8Array>(); /* ??? */
     let mode = Mode.ASCII_ENCODE;
     do {
@@ -134,9 +134,9 @@ export default class DecodedBitStreamParser {
       } else if (oneByte <= 229) {  // 2-digit data 00-99 (Numeric Value + 130)
         const value = oneByte - 130;
         if (value < 10) { // pad with '0' for single digit values
-          result.append(String.fromCharCode(0)); /* ??? */
+          result.append('0'); /* ??? */
         }
-        result.append(value);
+        result.append('' + value);
       } else {
         switch (oneByte) {
           case 230: // Latch to C40 encodation
@@ -209,7 +209,6 @@ export default class DecodedBitStreamParser {
       }
 
       this.parseTwoBytes(firstByte, bits.readBits(8), cValues);
-
       for (let i = 0; i < 3; i++) {
         const cValue = cValues[i];
         switch (shift) {
@@ -423,10 +422,10 @@ export default class DecodedBitStreamParser {
 
   private static parseTwoBytes(firstByte: number, secondByte: number, result: number[]): void {
     let fullBitValue = (firstByte << 8) + secondByte - 1;
-    let temp = fullBitValue / 1600;
+    let temp = Math.floor(fullBitValue / 1600);
     result[0] = temp;
     fullBitValue -= temp * 1600;
-    temp = fullBitValue / 40;
+    temp = Math.floor(fullBitValue / 40);
     result[1] = temp;
     result[2] = fullBitValue - temp * 40;
   }
