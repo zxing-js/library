@@ -47,6 +47,7 @@ export default class Decoder {
    * @throws ChecksumException if error correction fails
    */
   public decode(bits: BitMatrix): DecoderResult {
+    console.log(bits.toString());
     // Construct a parser and read version, error-correction level
     const parser = new BitMatrixParser(bits);
     const version = parser.getVersion();
@@ -62,7 +63,7 @@ export default class Decoder {
       totalBytes += db.getNumDataCodewords();
     }
     const resultBytes = new Uint8Array(totalBytes);
-
+    
     const dataBlocksCount = dataBlocks.length;
     // Error-correct and copy data blocks together into a stream of bytes
     for (let j = 0; j < dataBlocksCount; j++) {

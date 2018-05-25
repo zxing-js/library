@@ -50,7 +50,7 @@ export default class Detector {
    * @throws NotFoundException if no Data Matrix Code can be found
    */
   public detect(): DetectorResult {
-
+    
     const cornerPoints = this.rectangleDetector.detect();
     const pointA = cornerPoints[0];
     const pointB = cornerPoints[1];
@@ -347,10 +347,10 @@ export default class Detector {
    */
   private transitionsBetween(from: ResultPoint, to: ResultPoint): ResultPointsAndTransitions {
     // See QR Code Detector, sizeOfBlackWhiteBlackRun()
-    let fromX = from.getX();
-    let fromY = from.getY();
-    let toX = to.getX();
-    let toY = to.getY();
+    let fromX = from.getX() |0;
+    let fromY = from.getY() |0;
+    let toX = to.getX() |0;
+    let toY = to.getY() |0;
     const steep = Math.abs(toY - fromY) > Math.abs(toX - fromX);
     if (steep) {
       let temp = fromX;
@@ -368,7 +368,7 @@ export default class Detector {
     const xstep = fromX < toX ? 1 : -1;
     let transitions = 0;
     let inBlack = this.image.get(steep ? fromY : fromX, steep ? fromX : fromY);
-    for (let x = fromX, y = fromY; Math.abs(x - toX) >= 1; x += xstep) {
+    for (let x = fromX, y = fromY; x !== toX; x += xstep) {
       const isBlack = this.image.get(steep ? y : x, steep ? x : y);
       if (isBlack != inBlack) {
         transitions++;

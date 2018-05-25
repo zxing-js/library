@@ -57,6 +57,7 @@ export default class DataMatrixReader implements Reader {
   public decode(image: BinaryBitmap, hints: Map<DecodeHintType, any> | null = null): Result {
     let decoderResult: DecoderResult;
     let points: ResultPoint[];
+    
     if (hints != null && hints.has(DecodeHintType.PURE_BARCODE)) {
       const bits = DataMatrixReader.extractPureBits(image.getBlackMatrix());
       decoderResult = this.decoder.decode(bits);

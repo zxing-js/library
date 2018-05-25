@@ -71,9 +71,9 @@ export default class BitMatrixParser {
    * @return bytes encoded within the Data Matrix Code
    * @throws FormatException if the exact number of bytes expected is not read
    */
-  readCodewords(): Uint8Array {
+  readCodewords(): Int8Array {
 
-    const result = new Uint8Array(this.version.getTotalCodewords());
+    const result = new Int8Array(this.version.getTotalCodewords());
     let resultOffset = 0;
 
     let row = 4;
@@ -91,22 +91,26 @@ export default class BitMatrixParser {
     do {
       // Check the four corner cases
       if ((row == numRows) && (column == 0) && !corner1Read) {
-        result[resultOffset++] = this.readCorner1(numRows, numColumns);
+        result[resultOffset++] = this.readCorner1(numRows, numColumns) & 0xff;
+        console.log(row, column, result[resultOffset - 1]);
         row -= 2;
         column += 2;
         corner1Read = true;
       } else if ((row == numRows - 2) && (column == 0) && ((numColumns & 0x03) != 0) && !corner2Read) {
-        result[resultOffset++] = this.readCorner2(numRows, numColumns);
+        result[resultOffset++] = this.readCorner2(numRows, numColumns) & 0xff;
+        console.log(row, column, result[resultOffset - 1]);
         row -= 2;
         column += 2;
         corner2Read = true;
       } else if ((row == numRows + 4) && (column == 2) && ((numColumns & 0x07) == 0) && !corner3Read) {
-        result[resultOffset++] = this.readCorner3(numRows, numColumns);
+        result[resultOffset++] = this.readCorner3(numRows, numColumns) & 0xff;
+        console.log(row, column, result[resultOffset - 1]);
         row -= 2;
         column += 2;
         corner3Read = true;
       } else if ((row == numRows - 2) && (column == 0) && ((numColumns & 0x07) == 4) && !corner4Read) {
-        result[resultOffset++] = this.readCorner4(numRows, numColumns);
+        result[resultOffset++] = this.readCorner4(numRows, numColumns) & 0xff;
+        console.log(row, column, result[resultOffset - 1]);
         row -= 2;
         column += 2;
         corner4Read = true;
@@ -114,7 +118,8 @@ export default class BitMatrixParser {
         // Sweep upward diagonally to the right
         do {
           if ((row < numRows) && (column >= 0) && !this.readMappingMatrix.get(column, row)) {
-            result[resultOffset++] = this.readUtah(row, column, numRows, numColumns);
+            result[resultOffset++] = this.readUtah(row, column, numRows, numColumns) & 0xff;
+            console.log(row, column, result[resultOffset - 1]);
           }
           row -= 2;
           column += 2;
@@ -125,7 +130,8 @@ export default class BitMatrixParser {
         // Sweep downward diagonally to the left
         do {
           if ((row >= 0) && (column < numColumns) && !this.readMappingMatrix.get(column, row)) {
-             result[resultOffset++] = this.readUtah(row, column, numRows, numColumns);
+             result[resultOffset++] = this.readUtah(row, column, numRows, numColumns) & 0xff;
+             console.log(row, column, result[resultOffset - 1]);
           }
           row += 2;
           column -= 2;
@@ -409,11 +415,11 @@ export default class BitMatrixParser {
     const dataRegionSizeRows = this.version.getDataRegionSizeRows();
     const dataRegionSizeColumns = this.version.getDataRegionSizeColumns();
 
-    const numDataRegionsRow = symbolSizeRows / dataRegionSizeRows;
-    const numDataRegionsColumn = symbolSizeColumns / dataRegionSizeColumns;
+    const numDataRegionsRow = symbolSizeRows / dataRegionSizeRows |0;
+    const numDataRegionsColumn = symbolSizeColumns / dataRegionSizeColumns |0;
 
-    const sizeDataRegionRow = Math.floor(numDataRegionsRow) * dataRegionSizeRows;
-    const sizeDataRegionColumn = Math.floor(numDataRegionsColumn) * dataRegionSizeColumns;
+    const sizeDataRegionRow = numDataRegionsRow * dataRegionSizeRows;
+    const sizeDataRegionColumn = numDataRegionsColumn * dataRegionSizeColumns;
 
     const bitMatrixWithoutAlignment = new BitMatrix(sizeDataRegionColumn, sizeDataRegionRow);
     for (let dataRegionRow = 0; dataRegionRow < numDataRegionsRow; ++dataRegionRow) {

@@ -14,4 +14,5 @@ module.exports = {
         }]
     },
     target: 'node',
+    devtool: '#inline-cheap-module-source-map',
 };
