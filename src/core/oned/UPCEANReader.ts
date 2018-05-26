@@ -17,15 +17,14 @@
 /*namespace com.google.zxing.oned {*/
 
 import BarcodeFormat from '../BarcodeFormat';
-import BinaryBitmap from '../BinaryBitmap';
 import BitArray from '../common/BitArray';
 import DecodeHintType from '../DecodeHintType';
 import Exception from '../Exception';
-import Reader from '../Reader';
 import Result from '../Result';
 import ResultMetadataType from '../ResultMetadataType';
 import ResultPoint from '../ResultPoint';
 import OneDReader from './OneDReader';
+import UPCEANExtensionSupport from './UPCEANExtensionSupport';
 
 /**
  * <p>Decodes Code 128 barcodes.</p>
@@ -89,8 +88,8 @@ export default abstract class UPCEANReader extends OneDReader {
     */
 
     private decodeRowStringBuffer = '';
-    //private final UPCEANExtensionSupport extensionReader;
-    //private final EANManufacturerOrgSupport eanManSupport;
+    // private final UPCEANExtensionSupport extensionReader;
+    // private final EANManufacturerOrgSupport eanManSupport;
 
     /*
     protected UPCEANReader() {
@@ -156,7 +155,7 @@ export default abstract class UPCEANReader extends OneDReader {
         if (resultString.length < 8) {
             throw new Exception(Exception.FormatException);
         }
-        if (!this.checkChecksum(resultString)) {
+        if (!UPCEANReader.checkChecksum(resultString)) {
             throw new Exception(Exception.ChecksumException);
         }
 
@@ -169,7 +168,7 @@ export default abstract class UPCEANReader extends OneDReader {
         let extensionLength = 0;
 
         try {
-            let extensionResult = extensionReader.decodeRow(rowNumber, row, endRange[1]);
+            let extensionResult = UPCEANExtensionSupport.decodeRow(rowNumber, row, endRange[1]);
             decodeResult.putMetadata(ResultMetadataType.UPC_EAN_EXTENSION, extensionResult.getText());
             decodeResult.putAllMetadata(extensionResult.getResultMetadata());
             decodeResult.addResultPoints(extensionResult.getResultPoints());
@@ -191,25 +190,25 @@ export default abstract class UPCEANReader extends OneDReader {
             }
 
             if (format === BarcodeFormat.EAN_13 || format === BarcodeFormat.UPC_A) {
-                let countryID = eanManSupport.lookupContryIdentifier(resultString);
-                if (countryID != null) {
-                    decodeResult.putMetadata(ResultMetadataType.POSSIBLE_COUNTRY, countryID);
-                }
+                // let countryID = eanManSupport.lookupContryIdentifier(resultString); todo
+                // if (countryID != null) {
+                //     decodeResult.putMetadata(ResultMetadataType.POSSIBLE_COUNTRY, countryID);
+                // }
             }
         }
 
         return decodeResult;
     }
 
-    public checkChecksum(s: string): boolean {
-        return this.checkStandardUPCEANChecksum(s);
+    static checkChecksum(s: string): boolean {
+        return UPCEANReader.checkStandardUPCEANChecksum(s);
     }
 
-    public checkStandardUPCEANChecksum(s: string): boolean {
+    static checkStandardUPCEANChecksum(s: string): boolean {
         let length = s.length;
         if (length === 0) return false;
 
-        // int check = Character.digit(s.charAt(length - 1), 10); fixme
+        let check = parseInt(s.charAt(length - 1), 10);
         return UPCEANReader.getStandardUPCEANChecksum(s.substring(0, length - 1)) === check;
     }
 
@@ -217,7 +216,7 @@ export default abstract class UPCEANReader extends OneDReader {
         let length = s.length;
         let sum = 0;
         for (let i = length - 1; i >= 0; i -= 2) {
-            let digit = s.charAt(i) - '0';
+            let digit = s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
             if (digit < 0 || digit > 9) {
                 throw new Exception(Exception.FormatException);
             }
@@ -225,7 +224,7 @@ export default abstract class UPCEANReader extends OneDReader {
         }
         sum *= 3;
         for (let i = length - 2; i >= 0; i -= 2) {
-            let digit = s.charAt(i) - '0';
+            let digit = s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
             if (digit < 0 || digit > 9) {
                 throw new Exception(Exception.FormatException);
             }

@@ -1,13 +1,6 @@
 import BarcodeFormat from '../BarcodeFormat';
-import BinaryBitmap from '../BinaryBitmap';
 import BitArray from '../common/BitArray';
-import DecodeHintType from '../DecodeHintType';
 import Exception from '../Exception';
-import Reader from '../Reader';
-import Result from '../Result';
-import ResultMetadataType from '../ResultMetadataType';
-import ResultPoint from '../ResultPoint';
-import OneDReader from './OneDReader';
 import UPCEANReader from './UPCEANReader';
 
 /**
@@ -37,7 +30,7 @@ export default class EAN13Reader extends UPCEANReader {
         let lgPatternFound = 0;
 
         for (let x = 0; x < 6 && rowOffset < end; x++) {
-            let bestMatch = decodeDigit(row, counters, rowOffset, UPCEANReader.L_AND_G_PATTERNS);
+            let bestMatch = EAN13Reader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_AND_G_PATTERNS);
             resultString = resultString + '0' + bestMatch % 10;
             for (let counter in counters) {
                 rowOffset += counter;
@@ -49,11 +42,11 @@ export default class EAN13Reader extends UPCEANReader {
 
         EAN13Reader.determineFirstDigit(resultString, lgPatternFound);
 
-        let middleRange = UPCEANReader.findGuardPattern(row, rowOffset, true, MIDDLE_PATTERN);
+        let middleRange = UPCEANReader.findGuardPattern(row, rowOffset, true, EAN13Reader.MIDDLE_PATTERN, new Array(UPCEANReader.MIDDLE_PATTERN.length));
         rowOffset = middleRange[1];
 
         for (let x = 0; x < 6 && rowOffset < end; x++) {
-            let bestMatch = decodeDigit(row, counters, rowOffset, UPCEANReader.L_PATTERNS);
+            let bestMatch = EAN13Reader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_PATTERNS);
             resultString = resultString + '0' + bestMatch;
             for (let counter in counters) {
                 rowOffset += counter;
