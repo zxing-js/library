@@ -32,7 +32,7 @@ export default class EAN13Reader extends UPCEANReader {
         for (let x = 0; x < 6 && rowOffset < end; x++) {
             let bestMatch = EAN13Reader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_AND_G_PATTERNS);
             resultString = resultString + '0' + bestMatch % 10;
-            for (let counter in counters) {
+            for (let counter of counters) {
                 rowOffset += counter;
             }
             if (bestMatch >= 10) {
@@ -48,7 +48,7 @@ export default class EAN13Reader extends UPCEANReader {
         for (let x = 0; x < 6 && rowOffset < end; x++) {
             let bestMatch = EAN13Reader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_PATTERNS);
             resultString = resultString + '0' + bestMatch;
-            for (let counter in counters) {
+            for (let counter of counters) {
                 rowOffset += counter;
             }
         }

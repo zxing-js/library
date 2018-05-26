@@ -144,7 +144,7 @@ export default abstract class OneDReader implements Reader {
 
                 try {
                     // Look for a barcode
-                    const result = this.decodeRow(rowNumber, row, hints);
+                    const result = this.decodeRow(rowNumber, row, null, hints);
                     // We found our barcode
                     if (attempt === 1) {
                         // But it was upside down, so note that

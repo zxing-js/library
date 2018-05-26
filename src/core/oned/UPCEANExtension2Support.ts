@@ -5,7 +5,6 @@ import UPCEANReader from './UPCEANReader';
 import Result from '../Result';
 import ResultPoint from '../ResultPoint';
 import ResultMetadataType from '../ResultMetadataType';
-import UPCEANExtension5Support from './UPCEANExtension5Support';
 
 export default class UPCEANExtension2Support {
     private decodeMiddleCounters = [0, 0, 0, 0];
@@ -47,7 +46,7 @@ export default class UPCEANExtension2Support {
         for (let x = 0; x < 2 && rowOffset < end; x++) {
             let bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_AND_G_PATTERNS);
             resultString = resultString + '0' + bestMatch % 10;
-            for (let counter in counters) {
+            for (let counter of counters) {
                 rowOffset += counter;
             }
             if (bestMatch >= 10) {

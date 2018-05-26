@@ -83,12 +83,13 @@ export default class MultiFormatOneDReader extends OneDReader {
     public decodeRow(
         rowNumber: number,
         row: BitArray,
+        startGuardRange: number[],
         hints: Map<DecodeHintType, any>
     ): Result {
 
         for (let i = 0; i < this.readers.length; i++) {
             try {
-                return this.readers[i].decodeRow(rowNumber, row, hints);
+                return this.readers[i].decodeRow(rowNumber, row, null, hints);
             } catch (re) {
                 // continue
             }
