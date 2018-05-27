@@ -12,7 +12,7 @@
 
 ## Supported Formats
 
-**_WIP_**: see [Status and Roadmap](#roadmap) for what is currently done and what's planned next. 👀
+**_WIP_**: see [Projects](/zxing-js/library/projects) and [Milestones](/zxing-js/library/milestones) for what is currently done and what's planned next. 👀
 
 | 1D product             | 1D industrial        | 2D
 | ---------------------- | -------------------- | --------------
@@ -247,11 +247,6 @@ To decode a barcode, the library needs at some point to decode from bits to text
 To have full support for all encodings in [CharacterSetECI](https://github.com/odahcam/zxing-ts/blob/master/src/core/common/CharacterSetECI.ts) *except Cp437* use [text-encoding](https://github.com/inexorabletash/text-encoding) library. The library is used implicitly for node (and tests), but is an optional dependency for browser because is rather large (> 600k). You will need to include it yourself if you want/need to use it.
 
 By default, in browser, [TextDecoder](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder)/[TextEncoder](https://developer.mozilla.org/ro/docs/Web/API/TextEncoder) web api are used if available (take care as these are labeled as experimental as of this writing). Also, be aware that TextEncoder encodes only to UTF-8 as per spec. If these are not available the library falls back to a minimal implementation that only encodes and decodes to/from UTF-8 (see [`StringEncoding`](https://github.com/odahcam/zxing-ts/blob/master/src/core/util/StringEncoding.ts)).
-
-## Roadmap
-
-- [Projects](/zxing-js/library/projects).
-- [Milestones](/zxing-js/library/milestones).
 
 ### Porting Information
 
