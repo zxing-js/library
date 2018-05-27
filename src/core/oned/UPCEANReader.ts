@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.oned {*/
-
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
 import DecodeHintType from '../DecodeHintType';
@@ -27,9 +25,12 @@ import OneDReader from './OneDReader';
 import UPCEANExtensionSupport from './UPCEANExtensionSupport';
 
 /**
- * <p>Decodes Code 128 barcodes.</p>
+ * <p>Encapsulates functionality and implementation that is common to UPC and EAN families
+ * of one-dimensional barcodes.</p>
  *
+ * @author dswitkin@google.com (Daniel Switkin)
  * @author Sean Owen
+ * @author alasdair@google.com (Alasdair Mackintosh)
  */
 export default abstract class UPCEANReader extends OneDReader {
     // These two values are critical for determining how permissive the decoding will be.

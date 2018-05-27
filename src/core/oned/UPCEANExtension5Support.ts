@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2010 ZXing authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
 import Exception from '../Exception';
@@ -6,6 +22,9 @@ import Result from '../Result';
 import ResultPoint from '../ResultPoint';
 import ResultMetadataType from '../ResultMetadataType';
 
+/**
+ * @see UPCEANExtension2Support
+ */
 export default class UPCEANExtension5Support {
     private CHECK_DIGIT_ENCODINGS = [0x18, 0x14, 0x12, 0x11, 0x0C, 0x06, 0x03, 0x0A, 0x09, 0x05];
     private decodeMiddleCounters = [0, 0, 0, 0];

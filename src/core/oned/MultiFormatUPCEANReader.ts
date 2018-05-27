@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.oned {*/
-
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
 import DecodeHintType from '../DecodeHintType';
@@ -26,7 +24,9 @@ import UPCEANReader from './UPCEANReader';
 import EAN13Reader from './EAN13Reader';
 
 /**
- * <p>Decodes Code 128 barcodes.</p>
+ * <p>A reader that can read all available UPC/EAN formats. If a caller wants to try to
+ * read all such formats, it is most efficient to use this implementation rather than invoke
+ * individual readers.</p>
  *
  * @author Sean Owen
  */
