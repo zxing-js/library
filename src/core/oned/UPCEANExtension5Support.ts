@@ -46,7 +46,7 @@ export default class UPCEANExtension5Support {
 
         for (let x = 0; x < 5 && rowOffset < end; x++) {
             let bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_AND_G_PATTERNS);
-            resultString = resultString + '0' + bestMatch % 10;
+            resultString += String.fromCharCode(('0'.charCodeAt(0) + bestMatch % 10));
             for (let counter of counters) {
                 rowOffset += counter;
             }
@@ -138,7 +138,7 @@ export default class UPCEANExtension5Support {
         let rawAmount = parseInt(raw.substring(1));
         let unitsString = (rawAmount / 100).toString();
         let hundredths = rawAmount % 100;
-        let hundredthsString = hundredths < 10 ? '0' + hundredths : hundredths.toString();
+        let hundredthsString = hundredths < 10 ? '0' + hundredths : hundredths.toString(); // fixme
         return currency + unitsString + '.' + hundredthsString;
     }
 }

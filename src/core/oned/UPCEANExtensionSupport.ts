@@ -10,7 +10,7 @@ export default class UPCEANExtensionSupport {
     // private final UPCEANExtension2Support twoSupport = new UPCEANExtension2Support();
 
     static decodeRow(rowNumber: number, row: BitArray, rowOffset: number): Result {
-        let extensionStartRange = UPCEANReader.findGuardPattern(row, rowOffset, false, this.EXTENSION_START_PATTERN, new Array(this.EXTENSION_START_PATTERN.length));
+        let extensionStartRange = UPCEANReader.findGuardPattern(row, rowOffset, false, this.EXTENSION_START_PATTERN, new Array(this.EXTENSION_START_PATTERN.length).fill(0));
         try {
             let fiveSupport = new UPCEANExtension5Support();
             return fiveSupport.decodeRow(rowNumber, row, extensionStartRange);

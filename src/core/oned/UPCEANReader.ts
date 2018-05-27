@@ -72,24 +72,27 @@ export default abstract class UPCEANReader extends OneDReader {
      */
     public static L_AND_G_PATTERNS: number[][];
 
-    /*
-    static {
-        L_AND_G_PATTERNS = new int[20][];
-        System.arraycopy(L_PATTERNS, 0, L_AND_G_PATTERNS, 0, 10);
-        for (int i = 10; i < 20; i++) {
-            int[] widths = L_PATTERNS[i - 10];
-            int[] reversedWidths = new int[widths.length];
-            for (int j = 0; j < widths.length; j++) {
-                reversedWidths[j] = widths[widths.length - j - 1];
-            }
-            L_AND_G_PATTERNS[i] = reversedWidths;
-        }
-    }
-    */
-
     private decodeRowStringBuffer = '';
     // private final UPCEANExtensionSupport extensionReader;
     // private final EANManufacturerOrgSupport eanManSupport;
+
+    public constructor() {
+        super();
+        this.decodeRowStringBuffer = '';
+
+        UPCEANReader.L_AND_G_PATTERNS = UPCEANReader.L_PATTERNS.map(function(arr) {
+            return arr.slice();
+        });
+
+        for (let i = 10; i < 20; i++) {
+            let widths = UPCEANReader.L_PATTERNS[i - 10];
+            let reversedWidths = new Array(widths.length);
+            for (let j = 0; j < widths.length; j++) {
+                reversedWidths[j] = widths[widths.length - j - 1];
+            }
+            UPCEANReader.L_AND_G_PATTERNS[i] = reversedWidths;
+        }
+    }
 
     /*
     protected UPCEANReader() {
@@ -99,7 +102,7 @@ export default abstract class UPCEANReader extends OneDReader {
     }
     */
 
-    private static findStartPattern(row: BitArray): number[] {
+    static findStartGuardPattern(row: BitArray): number[] {
         let foundStart = false;
         let startRange: number[] = null;
         let nextStart = 0;
@@ -125,9 +128,9 @@ export default abstract class UPCEANReader extends OneDReader {
             resultPointCallback.foundPossibleResultPoint(resultPoint);
         }
 
-        let result = this.decodeRowStringBuffer;
-        result = '';
-        let endStart = this.decodeMiddle(row, startGuardRange, result);
+        let budello = this.decodeMiddle(row, startGuardRange, this.decodeRowStringBuffer);
+        let endStart = budello.rowOffset;
+        let result = budello.resultString;
 
         if (resultPointCallback != null) {
             const resultPoint = new ResultPoint(endStart, rowNumber);
@@ -234,7 +237,7 @@ export default abstract class UPCEANReader extends OneDReader {
     }
 
     static decodeEnd(row: BitArray, endStart: number): number[] {
-        return UPCEANReader.findGuardPattern(row, endStart, false, UPCEANReader.START_END_PATTERN, new Array(UPCEANReader.START_END_PATTERN.length));
+        return UPCEANReader.findGuardPattern(row, endStart, false, UPCEANReader.START_END_PATTERN, new Array(UPCEANReader.START_END_PATTERN.length).fill(0));
     }
 
     static findGuardPattern(row: BitArray, rowOffset: number, whiteFirst: boolean, pattern: number[], counters: number[]) {
@@ -249,11 +252,16 @@ export default abstract class UPCEANReader extends OneDReader {
                 counters[counterPosition]++;
             } else {
                 if (counterPosition === patternLength - 1) {
-                    if (UPCEANReader.patternMatchVariance(counters, pattern, UPCEANReader.MAX_INDIVIDUAL_VARIANCE) < UPCEANReader.MAX_AVG_VARIANCE) {
+                    if (OneDReader.patternMatchVariance(counters, pattern, UPCEANReader.MAX_INDIVIDUAL_VARIANCE) < UPCEANReader.MAX_AVG_VARIANCE) {
                         return [patternStart, x];
                     }
                     patternStart += counters[0] + counters[1];
-                    // System.arraycopy(counters, 2, counters, 0, counterPosition - 1); fixme
+
+                    let slice = counters.slice(2, counters.length);
+                    for (let i = 0; i < counterPosition - 1; i++) {
+                        counters[i] = slice[i];
+                    }
+
                     counters[counterPosition - 1] = 0;
                     counters[counterPosition] = 0;
                     counterPosition--;
@@ -274,7 +282,7 @@ export default abstract class UPCEANReader extends OneDReader {
         let max = patterns.length;
         for (let i = 0; i < max; i++) {
             let pattern = patterns[i];
-            let variance = UPCEANReader.patternMatchVariance(counters, pattern, UPCEANReader.MAX_INDIVIDUAL_VARIANCE);
+            let variance = OneDReader.patternMatchVariance(counters, pattern, UPCEANReader.MAX_INDIVIDUAL_VARIANCE);
             if (variance < bestVariance) {
                 bestVariance = variance;
                 bestMatch = i;

@@ -45,7 +45,7 @@ export default class UPCEANExtension2Support {
 
         for (let x = 0; x < 2 && rowOffset < end; x++) {
             let bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_AND_G_PATTERNS);
-            resultString = resultString + '0' + bestMatch % 10;
+            resultString += String.fromCharCode(('0'.charCodeAt(0) + bestMatch % 10));
             for (let counter of counters) {
                 rowOffset += counter;
             }
