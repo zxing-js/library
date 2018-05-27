@@ -49,18 +49,18 @@
 		<script type="text/javascript" src="../../../bundles/library.min.js"></script>
         <script type="text/javascript">
 			window.addEventListener('load', function() {
-				const codeReader = new Library.BrowserBarcodeReader('video')
-				console.log('ZXing code reader initialized')
+				const codeReader = new Library.BrowserBarcodeReader('video');
+				console.log('ZXing code reader initialized');
 
 				document.getElementById('decodeButton').addEventListener('click', () => {
-					const img = document.getElementById('img')
+					const img = document.getElementById('img');
 					codeReader.decodeFromImage(img).then((result) => {
-						console.log(result)
+						console.log(result);
 						document.getElementById('result').textContent = result.text
 					}).catch((err) => {
-						console.error(err)
+						console.error(err);
 						document.getElementById('result').textContent = err
-					})
+					});
 					console.log(`Started decode for image from ${img.src}`)
 				})
 

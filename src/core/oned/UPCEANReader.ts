@@ -191,13 +191,13 @@ export default abstract class UPCEANReader extends OneDReader {
             if (!valid) {
                 throw new Exception(Exception.NotFoundException);
             }
+        }
 
-            if (format === BarcodeFormat.EAN_13 || format === BarcodeFormat.UPC_A) {
-                // let countryID = eanManSupport.lookupContryIdentifier(resultString); todo
-                // if (countryID != null) {
-                //     decodeResult.putMetadata(ResultMetadataType.POSSIBLE_COUNTRY, countryID);
-                // }
-            }
+        if (format === BarcodeFormat.EAN_13 || format === BarcodeFormat.UPC_A) {
+            // let countryID = eanManSupport.lookupContryIdentifier(resultString); todo
+            // if (countryID != null) {
+            //     decodeResult.putMetadata(ResultMetadataType.POSSIBLE_COUNTRY, countryID);
+            // }
         }
 
         return decodeResult;

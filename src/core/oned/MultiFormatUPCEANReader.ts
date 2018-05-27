@@ -41,7 +41,6 @@ export default class MultiFormatUPCEANReader extends OneDReader {
             if (possibleFormats.indexOf(BarcodeFormat.EAN_13) > -1) {
                 readers.push(new EAN13Reader());
             }
-
             // todo add UPC_A, EAN_8, UPC_E
         }
 
@@ -51,17 +50,15 @@ export default class MultiFormatUPCEANReader extends OneDReader {
         }
 
         this.readers = readers;
-        // this.readers = readers.toArray(new UPCEANReader[readers.size()]); fixme
     }
 
     public decodeRow(rowNumber: number, row: BitArray, startGuardRange: number[], hints?: Map<DecodeHintType, any>): Result {
         let startGuardPattern = UPCEANReader.findStartGuardPattern(row);
         for (let reader of this.readers) {
             try {
-                let result = reader.decodeRow(rowNumber, row, startGuardPattern, hints);
+                return reader.decodeRow(rowNumber, row, startGuardPattern, hints);
                 // TODO ean13MayBeUPCA
             } catch (err) {
-                console.log(err);
                 // continue;
             }
         }

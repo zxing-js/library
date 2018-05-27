@@ -96,7 +96,6 @@ export default class MultiFormatOneDReader extends OneDReader {
             try {
                 return this.readers[i].decodeRow(rowNumber, row, null, hints);
             } catch (re) {
-                console.log(re);
                 // continue
             }
         }
