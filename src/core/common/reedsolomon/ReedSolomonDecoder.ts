@@ -70,7 +70,6 @@ export default class ReedSolomonDecoder {
         if (noError) {
             return;
         }
-        debugger;
         const syndrome = new GenericGFPoly(field, syndromeCoefficients);
         const sigmaOmega = this.runEuclideanAlgorithm(field.buildMonomial(twoS, 1), syndrome, twoS);
         const sigma = sigmaOmega[0];
@@ -158,7 +157,6 @@ export default class ReedSolomonDecoder {
             }
         }
         if (e !== numErrors) {
-            debugger;
             throw new Exception(Exception.ReedSolomonException, 'Error locator degree does not match number of roots');
         }
         return result;

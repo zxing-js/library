@@ -95,7 +95,10 @@ export default class BrowserCodeReader {
                     me.videoElement.srcObject = stream;
 
                     me.videoPlayingEventListener = () => {
-                        me.decodeOnceWithDelay(resolve, reject);
+                        me.decodeOnceWithDelay(result => {
+                            resolve(result); 
+                            stream.getTracks().forEach(streamTrack => streamTrack.stop()); 
+                        }, reject);
                     };
                     me.videoElement.addEventListener('playing', me.videoPlayingEventListener);
                     me.videoElement.play();
