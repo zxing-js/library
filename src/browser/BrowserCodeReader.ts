@@ -96,8 +96,8 @@ export default class BrowserCodeReader {
 
                     me.videoPlayingEventListener = () => {
                         me.decodeOnceWithDelay(result => {
-                            resolve(result); 
-                            stream.getTracks().forEach(streamTrack => streamTrack.stop()); 
+                            resolve(result);
+                            stream.getTracks().forEach(streamTrack => streamTrack.stop());
                         }, reject);
                     };
                     me.videoElement.addEventListener('playing', me.videoPlayingEventListener);
@@ -251,11 +251,11 @@ export default class BrowserCodeReader {
 
         const ratio = 2;
 
-        this.canvasElementContext.drawImage(this.videoElement || this.imageElement, 
-            (videoWidth - (videoWidth / ratio)) / 2, 
-            (videoHeight - (videoHeight / ratio)) / 2, 
+        this.canvasElementContext.drawImage(this.videoElement || this.imageElement,
+            (videoWidth - (videoWidth / ratio)) / 2,
+            (videoHeight - (videoHeight / ratio)) / 2,
             videoWidth / ratio,
-            videoHeight / ratio, 
+            videoHeight / ratio,
             0, 0, this.canvasElement.width, this.canvasElement.height
         );
 

@@ -122,7 +122,7 @@ export default class MultiFormatReader implements Reader {
                 readers.push(new QRCodeReader());
             }
             if (formats.contains(BarcodeFormat.DATA_MATRIX)) {
-              readers.push(new DataMatrixReader())
+              readers.push(new DataMatrixReader());
             }
             // if (formats.contains(BarcodeFormat.AZTEC)) {
             //   readers.push(new AztecReader())
