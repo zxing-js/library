@@ -243,7 +243,18 @@ export default class BrowserCodeReader {
             this.prepareCaptureCanvas();
         }
 
-        this.canvasElementContext.drawImage(this.videoElement || this.imageElement, 0, 0);
+        const videoWidth = this.videoElement.videoWidth;
+        const videoHeight = this.videoElement.videoHeight;
+
+        const ratio = 2;
+
+        this.canvasElementContext.drawImage(this.videoElement || this.imageElement, 
+            (videoWidth - (videoWidth / ratio)) / 2, 
+            (videoHeight - (videoHeight / ratio)) / 2, 
+            videoWidth / ratio,
+            videoHeight / ratio, 
+            0, 0, this.canvasElement.width, this.canvasElement.height
+        );
 
         const luminanceSource = new HTMLCanvasElementLuminanceSource(this.canvasElement);
         const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
