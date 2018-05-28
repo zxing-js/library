@@ -1,5 +1,5 @@
-import Reader from "../Reader";
-import ResultPoint from "../ResultPoint";
+import Reader from '../Reader';
+import ResultPoint from '../ResultPoint';
 import Decoder from './decoder/Decoder';
 import Result from './../Result';
 import BarcodeFormat from './../BarcodeFormat';
@@ -57,7 +57,7 @@ export default class DataMatrixReader implements Reader {
   public decode(image: BinaryBitmap, hints: Map<DecodeHintType, any> | null = null): Result {
     let decoderResult: DecoderResult;
     let points: ResultPoint[];
-    
+
     if (hints != null && hints.has(DecodeHintType.PURE_BARCODE)) {
       const bits = DataMatrixReader.extractPureBits(image.getBlackMatrix());
       decoderResult = this.decoder.decode(bits);
@@ -69,11 +69,11 @@ export default class DataMatrixReader implements Reader {
     }
     const rawBytes = decoderResult.getRawBytes();
     const result = new Result(
-      decoderResult.getText(), 
-      rawBytes, 
+      decoderResult.getText(),
+      rawBytes,
       8 * rawBytes.length,
       points,
-      BarcodeFormat.DATA_MATRIX, 
+      BarcodeFormat.DATA_MATRIX,
       System.currentTimeMillis()
     );
 
@@ -149,12 +149,12 @@ export default class DataMatrixReader implements Reader {
     while (x < width && image.get(x, y)) {
       x++;
     }
-    if (x == width) {
+    if (x === width) {
       throw new Exception(Exception.NotFoundException);
     }
 
     const moduleSize = x - leftTopBlack[0];
-    if (moduleSize == 0) {
+    if (moduleSize === 0) {
       throw new Exception(Exception.NotFoundException);
     }
     return moduleSize;

@@ -143,12 +143,12 @@ export default class Version {
    * @throws FormatException if dimensions do correspond to a valid Data Matrix size
    */
   public static getVersionForDimensions(numRows: number, numColumns: number): Version {
-    if ((numRows & 0x01) != 0 || (numColumns & 0x01) != 0) {
+    if ((numRows & 0x01) !== 0 || (numColumns & 0x01) !== 0) {
       throw new Exception(Exception.FormatException);
     }
 
     for (let version of Version.VERSIONS) {
-      if (version.symbolSizeRows == numRows && version.symbolSizeColumns == numColumns) {
+      if (version.symbolSizeRows === numRows && version.symbolSizeColumns === numColumns) {
         return version;
       }
     }

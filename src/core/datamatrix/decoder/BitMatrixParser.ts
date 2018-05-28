@@ -33,7 +33,7 @@ export default class BitMatrixParser {
    */
   constructor(bitMatrix: BitMatrix) {
     const dimension = bitMatrix.getHeight();
-    if (dimension < 8 || dimension > 144 || (dimension & 0x01) != 0) {
+    if (dimension < 8 || dimension > 144 || (dimension & 0x01) !== 0) {
       throw new Exception(Exception.FormatException);
     }
 
@@ -90,25 +90,25 @@ export default class BitMatrixParser {
     // Read all of the codewords
     do {
       // Check the four corner cases
-      if ((row == numRows) && (column == 0) && !corner1Read) {
+      if ((row == numRows) && (column === 0) && !corner1Read) {
         result[resultOffset++] = this.readCorner1(numRows, numColumns) & 0xff;
         console.log(row, column, result[resultOffset - 1]);
         row -= 2;
         column += 2;
         corner1Read = true;
-      } else if ((row == numRows - 2) && (column == 0) && ((numColumns & 0x03) != 0) && !corner2Read) {
+      } else if ((row === numRows - 2) && (column === 0) && ((numColumns & 0x03) !== 0) && !corner2Read) {
         result[resultOffset++] = this.readCorner2(numRows, numColumns) & 0xff;
         console.log(row, column, result[resultOffset - 1]);
         row -= 2;
         column += 2;
         corner2Read = true;
-      } else if ((row == numRows + 4) && (column == 2) && ((numColumns & 0x07) == 0) && !corner3Read) {
+      } else if ((row === numRows + 4) && (column === 2) && ((numColumns & 0x07) === 0) && !corner3Read) {
         result[resultOffset++] = this.readCorner3(numRows, numColumns) & 0xff;
         console.log(row, column, result[resultOffset - 1]);
         row -= 2;
         column += 2;
         corner3Read = true;
-      } else if ((row == numRows - 2) && (column == 0) && ((numColumns & 0x07) == 4) && !corner4Read) {
+      } else if ((row === numRows - 2) && (column === 0) && ((numColumns & 0x07) === 4) && !corner4Read) {
         result[resultOffset++] = this.readCorner4(numRows, numColumns) & 0xff;
         console.log(row, column, result[resultOffset - 1]);
         row -= 2;
@@ -141,7 +141,7 @@ export default class BitMatrixParser {
       }
     } while ((row < numRows) || (column < numColumns));
 
-    if (resultOffset != this.version.getTotalCodewords()) {
+    if (resultOffset !== this.version.getTotalCodewords()) {
       throw new Exception(Exception.FormatException);
     }
     return result;
@@ -408,15 +408,15 @@ export default class BitMatrixParser {
     const symbolSizeRows = this.version.getSymbolSizeRows();
     const symbolSizeColumns = this.version.getSymbolSizeColumns();
 
-    if (bitMatrix.getHeight() != symbolSizeRows) {
-      throw new Exception(Exception.IllegalArgumentException, "Dimension of bitMatrix must match the version size");
+    if (bitMatrix.getHeight() !== symbolSizeRows) {
+      throw new Exception(Exception.IllegalArgumentException, 'Dimension of bitMatrix must match the version size');
     }
 
     const dataRegionSizeRows = this.version.getDataRegionSizeRows();
     const dataRegionSizeColumns = this.version.getDataRegionSizeColumns();
 
-    const numDataRegionsRow = symbolSizeRows / dataRegionSizeRows |0;
-    const numDataRegionsColumn = symbolSizeColumns / dataRegionSizeColumns |0;
+    const numDataRegionsRow = symbolSizeRows / dataRegionSizeRows | 0;
+    const numDataRegionsColumn = symbolSizeColumns / dataRegionSizeColumns | 0;
 
     const sizeDataRegionRow = numDataRegionsRow * dataRegionSizeRows;
     const sizeDataRegionColumn = numDataRegionsColumn * dataRegionSizeColumns;

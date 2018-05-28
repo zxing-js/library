@@ -71,7 +71,7 @@ export default class DecodedBitStreamParser {
   private static TEXT_SHIFT3_SET_CHARS: string[] = [
     '`', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
     'O',  'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '{', '|', '}', '~', String.fromCharCode(127) /* ??? */
-  ]
+  ];
 
   static decode(bytes:  Uint8Array): DecoderResult {
     const bits = new BitSource(bytes);
@@ -80,7 +80,7 @@ export default class DecodedBitStreamParser {
     const byteSegments = new Array<Uint8Array>(); /* ??? */
     let mode = Mode.ASCII_ENCODE;
     do {
-      if (mode == Mode.ASCII_ENCODE) {
+      if (mode === Mode.ASCII_ENCODE) {
         mode = this.decodeAsciiSegment(bits, result, resultTrailer);
       } else {
         switch (mode) {
@@ -104,7 +104,7 @@ export default class DecodedBitStreamParser {
         }
         mode = Mode.ASCII_ENCODE;
       }
-    } while (mode != Mode.PAD_ENCODE && bits.available() > 0);
+    } while (mode !== Mode.PAD_ENCODE && bits.available() > 0);
     if (resultTrailer.length() > 0) {
       result.append(resultTrailer.toString());
     }
@@ -120,16 +120,16 @@ export default class DecodedBitStreamParser {
     let upperShift = false;
     do {
       let oneByte = bits.readBits(8);
-      if (oneByte == 0) {
+      if (oneByte === 0) {
         throw new Exception(Exception.FormatException);
       } else if (oneByte <= 128) {  // ASCII data (ASCII value + 1)
         if (upperShift) {
           oneByte += 128;
-          //upperShift = false;
+          // upperShift = false;
         }
         result.append(String.fromCharCode(oneByte - 1)); /* ??? */
         return Mode.ASCII_ENCODE;
-      } else if (oneByte == 129) {  // Pad
+      } else if (oneByte === 129) {  // Pad
         return Mode.PAD_ENCODE;
       } else if (oneByte <= 229) {  // 2-digit data 00-99 (Numeric Value + 130)
         const value = oneByte - 130;
@@ -149,18 +149,18 @@ export default class DecodedBitStreamParser {
           case 233: // Structured Append
           case 234: // Reader Programming
             // Ignore these symbols for now
-            //throw ReaderException.getInstance();
+            // throw ReaderException.getInstance();
             break;
           case 235: // Upper Shift (shift to Extended ASCII)
             upperShift = true;
             break;
           case 236: // 05 Macro
-            result.append("[)>\u001E05\u001D");
-            resultTrailer.insert(0, "\u001E\u0004");
+            result.append('[)>\u001E05\u001D');
+            resultTrailer.insert(0, '\u001E\u0004');
             break;
           case 237: // 06 Macro
-            result.append("[)>\u001E06\u001D");
-            resultTrailer.insert(0, "\u001E\u0004");
+            result.append('[)>\u001E06\u001D');
+            resultTrailer.insert(0, '\u001E\u0004');
             break;
           case 238: // Latch to ANSI X12 encodation
             return Mode.ANSIX12_ENCODE;
@@ -170,13 +170,13 @@ export default class DecodedBitStreamParser {
             return Mode.EDIFACT_ENCODE;
           case 241: // ECI Character
             // TODO(bbrown): I think we need to support ECI
-            //throw ReaderException.getInstance();
+            // throw ReaderException.getInstance();
             // Ignore this symbol for now
             break;
           default:
             // Not to be used in ASCII encodation
             // but work around encoders that end with 254, latch back to ASCII
-            if (oneByte != 254 || bits.available() != 0) {
+            if (oneByte !== 254 || bits.available() !== 0) {
               throw new Exception(Exception.FormatException);
             }
             break;
@@ -200,11 +200,11 @@ export default class DecodedBitStreamParser {
 
     do {
       // If there is only one byte left then it will be encoded as ASCII
-      if (bits.available() == 8) {
+      if (bits.available() === 8) {
         return;
       }
       const firstByte = bits.readBits(8);
-      if (firstByte == 254) {  // Unlatch codeword
+      if (firstByte === 254) {  // Unlatch codeword
         return;
       }
 
@@ -444,16 +444,16 @@ export default class DecodedBitStreamParser {
         let edifactValue = bits.readBits(6);
 
         // Check for the unlatch character
-        if (edifactValue == 0x1F) {  // 011111
+        if (edifactValue === 0x1F) {  // 011111
           // Read rest of byte, which should be 0, and stop
           const bitsLeft = 8 - bits.getBitOffset();
-          if (bitsLeft != 8) {
+          if (bitsLeft !== 8) {
             bits.readBits(bitsLeft);
           }
           return;
         }
 
-        if ((edifactValue & 0x20) == 0) {  // no 1 in the leading (6th) bit
+        if ((edifactValue & 0x20) === 0) {  // no 1 in the leading (6th) bit
           edifactValue |= 0x40;  // Add a leading 01 to the 6 bit binary value
         }
         result.append(String.fromCharCode(edifactValue)); /* ??? */
@@ -471,7 +471,7 @@ export default class DecodedBitStreamParser {
     let codewordPosition = 1 + bits.getByteOffset(); // position is 1-indexed
     const d1 = this.unrandomize255State(bits.readBits(8), codewordPosition++);
     let count: number;
-    if (d1 == 0) {  // Read the remainder of the symbol
+    if (d1 === 0) {  // Read the remainder of the symbol
       count = bits.available() / 8;
     } else if (d1 < 250) {
       count = d1;
@@ -495,9 +495,9 @@ export default class DecodedBitStreamParser {
     }
     byteSegments.push(bytes);
     try {
-      result.append(new TextDecoder("ISO8859_1").decode(bytes)); /* ??? */
+      result.append(new TextDecoder('ISO8859_1').decode(bytes)); /* ??? */
     } catch (uee) {
-      throw new Exception(Exception.IllegalStateException, "Platform does not support required encoding: " + uee.message); /* ??? */
+      throw new Exception(Exception.IllegalStateException, 'Platform does not support required encoding: ' + uee.message); /* ??? */
     }
   }
 

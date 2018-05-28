@@ -14,7 +14,7 @@ describe('DecodedBitStreamParser', () => {
         bytes[4] = 'B'.charCodeAt(0) + 1;
         bytes[5] = 'C'.charCodeAt(0) + 1;
         const decodedString = DecodedBitStreamParser.decode(bytes).getText();
-        assert.strictEqual(decodedString, "abcABC");
+        assert.strictEqual(decodedString, 'abcABC');
     });
 
     it('testAsciiDoubleDigitDecode', () => {
@@ -24,7 +24,7 @@ describe('DecodedBitStreamParser', () => {
         bytes[2] = 98 + 130;
         bytes[3] = 99 + 130;
         const decodedString = DecodedBitStreamParser.decode(bytes).getText();
-        assert.strictEqual(decodedString, "00019899");
+        assert.strictEqual(decodedString, '00019899');
     });
 
 });

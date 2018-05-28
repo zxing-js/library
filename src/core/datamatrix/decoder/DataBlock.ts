@@ -71,7 +71,7 @@ export default class DataBlock {
     // (where n may be 0) have 1 less byte. Figure out where these start.
     // TODO(bbrown): There is only one case where there is a difference for Data Matrix for size 144
     const longerBlocksTotalCodewords = result[0].codewords.length;
-    //int shorterBlocksTotalCodewords = longerBlocksTotalCodewords - 1;
+    // int shorterBlocksTotalCodewords = longerBlocksTotalCodewords - 1;
 
     const longerBlocksNumDataCodewords = longerBlocksTotalCodewords - ecBlocks.getECCodewords();
     const shorterBlocksNumDataCodewords = longerBlocksNumDataCodewords - 1;
@@ -85,7 +85,7 @@ export default class DataBlock {
     }
 
     // Fill out the last data block in the longer ones
-    const specialVersion = version.getVersionNumber() == 24;
+    const specialVersion = version.getVersionNumber() === 24;
     const numLongerBlocks = specialVersion ? 8 : numResultBlocks;
     for (let j = 0; j < numLongerBlocks; j++) {
       result[j].codewords[longerBlocksNumDataCodewords - 1] = rawCodewords[rawCodewordsOffset++];
@@ -101,7 +101,7 @@ export default class DataBlock {
       }
     }
 
-    if (rawCodewordsOffset != rawCodewords.length) {
+    if (rawCodewordsOffset !== rawCodewords.length) {
       throw new Exception(Exception.IllegalArgumentException);
     }
 

@@ -63,7 +63,7 @@ export default class Decoder {
       totalBytes += db.getNumDataCodewords();
     }
     const resultBytes = new Uint8Array(totalBytes);
-    
+
     const dataBlocksCount = dataBlocks.length;
     // Error-correct and copy data blocks together into a stream of bytes
     for (let j = 0; j < dataBlocksCount; j++) {

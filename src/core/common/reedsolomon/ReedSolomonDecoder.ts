@@ -101,7 +101,7 @@ export default class ReedSolomonDecoder {
         let t = field.getOne();
 
         // Run Euclidean algorithm until r's degree is less than R/2
-        while (r.getDegree() >= (R / 2 |0)) {
+        while (r.getDegree() >= (R / 2 | 0)) {
             let rLastLast = rLast;
             let tLastLast = tLast;
             rLast = r;

@@ -38,7 +38,7 @@ export default class Detector {
   private image: BitMatrix;
   private rectangleDetector: WhiteRectangleDetector;
 
-  constructor(image: BitMatrix){
+  constructor(image: BitMatrix) {
     this.image = image;
     this.rectangleDetector = new WhiteRectangleDetector(image);
   }
@@ -50,7 +50,7 @@ export default class Detector {
    * @throws NotFoundException if no Data Matrix Code can be found
    */
   public detect(): DetectorResult {
-    
+
     const cornerPoints = this.rectangleDetector.detect();
     const pointA = cornerPoints[0];
     const pointB = cornerPoints[1];
@@ -84,7 +84,7 @@ export default class Detector {
     let bottomLeft: ResultPoint | null  = null;
     let maybeBottomRight: ResultPoint | null = null;
     for (let [point, value] of Array.from(pointCount.entries())) {
-      if (value == 2) {
+      if (value === 2) {
         bottomLeft = point; // this is definitely the bottom left, then -- end of two L sides
       } else {
         // Otherwise it's either top left or bottom right -- just assign the two arbitrarily now
@@ -134,13 +134,13 @@ export default class Detector {
     let dimensionTop = this.transitionsBetween(topLeft, topRight).getTransitions();
     let dimensionRight = this.transitionsBetween(bottomRight, topRight).getTransitions();
 
-    if ((dimensionTop & 0x01) == 1) {
+    if ((dimensionTop & 0x01) === 1) {
       // it can't be odd, so, round... up?
       dimensionTop++;
     }
     dimensionTop += 2;
 
-    if ((dimensionRight & 0x01) == 1) {
+    if ((dimensionRight & 0x01) === 1) {
       // it can't be odd, so, round... up?
       dimensionRight++;
     }
@@ -190,7 +190,7 @@ export default class Detector {
       let dimensionCorrected = Math.max(this.transitionsBetween(topLeft, correctedTopRight).getTransitions(),
                                         this.transitionsBetween(bottomRight, correctedTopRight).getTransitions());
       dimensionCorrected++;
-      if ((dimensionCorrected & 0x01) == 1) {
+      if ((dimensionCorrected & 0x01) === 1) {
         dimensionCorrected++;
       }
 
@@ -347,10 +347,10 @@ export default class Detector {
    */
   private transitionsBetween(from: ResultPoint, to: ResultPoint): ResultPointsAndTransitions {
     // See QR Code Detector, sizeOfBlackWhiteBlackRun()
-    let fromX = from.getX() |0;
-    let fromY = from.getY() |0;
-    let toX = to.getX() |0;
-    let toY = to.getY() |0;
+    let fromX = from.getX() | 0;
+    let fromY = from.getY() | 0;
+    let toX = to.getX() | 0;
+    let toY = to.getY() | 0;
     const steep = Math.abs(toY - fromY) > Math.abs(toX - fromX);
     if (steep) {
       let temp = fromX;
@@ -370,13 +370,13 @@ export default class Detector {
     let inBlack = this.image.get(steep ? fromY : fromX, steep ? fromX : fromY);
     for (let x = fromX, y = fromY; x !== toX; x += xstep) {
       const isBlack = this.image.get(steep ? y : x, steep ? x : y);
-      if (isBlack != inBlack) {
+      if (isBlack !== inBlack) {
         transitions++;
         inBlack = isBlack;
       }
       error += dy;
       if (error > 0) {
-        if (y == toY) {
+        if (y === toY) {
           break;
         }
         y += ystep;
@@ -421,7 +421,7 @@ class ResultPointsAndTransitions {
 
   // @Override
   public toString() {
-    return this.from + "/" + this.to + '/' + this.transitions;
+    return this.from + '/' + this.to + '/' + this.transitions;
   }
 
   public static resultPointsAndTransitionsComparator(o1: ResultPointsAndTransitions, o2: ResultPointsAndTransitions): number {
