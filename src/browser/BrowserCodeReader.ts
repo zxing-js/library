@@ -7,7 +7,7 @@ import HTMLCanvasElementLuminanceSource from './HTMLCanvasElementLuminanceSource
 import VideoInputDevice from './VideoInputDevice';
 import DecodeHintType from '../core/DecodeHintType';
 
-export type CropFn = (videoWidth: number, videoHeight: number) => 
+export type CropFn = (videoWidth: number, videoHeight: number) =>
     ({scanWidth: number, scanHeight: number, xOffset: number, yOffset: number});
 
 /**
