@@ -52,11 +52,10 @@ export default class MultiFormatUPCEANReader extends OneDReader {
         this.readers = readers;
     }
 
-    public decodeRow(rowNumber: number, row: BitArray, startGuardRange: number[], hints?: Map<DecodeHintType, any>): Result {
-        let startGuardPattern = UPCEANReader.findStartGuardPattern(row);
+    public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
         for (let reader of this.readers) {
             try {
-                return reader.decodeRow(rowNumber, row, startGuardPattern, hints);
+                return reader.decodeRow(rowNumber, row, hints);
                 // TODO ean13MayBeUPCA
             } catch (err) {
                 // continue;

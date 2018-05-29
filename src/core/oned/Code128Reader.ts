@@ -229,7 +229,7 @@ export default class Code128Reader extends OneDReader {
         }
     }
 
-    public decodeRow(rowNumber: number, row: BitArray, startGuardRange: number[], hints?: Map<DecodeHintType, any>): Result {
+    public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
         const convertFNC1 = hints && (hints.get(DecodeHintType.ASSUME_GS1) === true);
 
         const startPatternInfo = Code128Reader.findStartPattern(row);

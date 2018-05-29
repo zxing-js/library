@@ -144,7 +144,7 @@ export default abstract class OneDReader implements Reader {
 
                 try {
                     // Look for a barcode
-                    const result = this.decodeRow(rowNumber, row, null, hints);
+                    const result = this.decodeRow(rowNumber, row, hints);
                     // We found our barcode
                     if (attempt === 1) {
                         // But it was upside down, so note that
@@ -276,12 +276,11 @@ export default abstract class OneDReader implements Reader {
      *
      * @param rowNumber row number from top of the row
      * @param row the black/white pixel data of the row
-     * @param startGuardRange start guard range
      * @param hints decode hints
      * @return {@link Result} containing encoded string and start/end of barcode
      * @throws NotFoundException if no potential barcode is found
      * @throws ChecksumException if a potential barcode is found but does not pass its checksum
      * @throws FormatException if a potential barcode is found but format is invalid
      */
-    public abstract decodeRow(rowNumber: number, row: BitArray, startGuardRange: number[], hints?: Map<DecodeHintType, any>): Result;
+    public abstract decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result;
 }

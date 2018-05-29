@@ -91,7 +91,7 @@ export default class ITFReader extends OneDReader {
      *!/
     */
 
-    public decodeRow(rowNumber: number, row: BitArray, startGuardRange: number[], hints?: Map<DecodeHintType, any>): Result {
+    public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
 
         // Find out where the Middle section (payload) starts & ends
         let startRange: number[] = this.decodeStart(row);

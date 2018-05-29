@@ -121,7 +121,8 @@ export default abstract class UPCEANReader extends OneDReader {
         return startRange;
     }
 
-    public decodeRow(rowNumber: number, row: BitArray, startGuardRange: number[], hints?: Map<DecodeHintType, any>): Result {
+    public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
+        let startGuardRange = UPCEANReader.findStartGuardPattern(row);
         let resultPointCallback = hints == null ? null : hints.get(DecodeHintType.NEED_RESULT_POINT_CALLBACK);
 
         if (resultPointCallback != null) {
