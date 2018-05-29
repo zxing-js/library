@@ -2,6 +2,8 @@ import DecoderResult from './../../common/DecoderResult';
 import BitSource from './../../common/BitSource';
 import StringBuilder from './../../util/StringBuilder';
 import Exception from './../../Exception';
+import StringEncoding from '../../util/StringEncoding';
+import { StringUtils } from '../../..';
 
 /*
  * Copyright 2008 ZXing authors
@@ -288,11 +290,11 @@ export default class DecodedBitStreamParser {
     let shift = 0;
     do {
       // If there is only one byte left then it will be encoded as ASCII
-      if (bits.available() == 8) {
+      if (bits.available() === 8) {
         return;
       }
       const firstByte = bits.readBits(8);
-      if (firstByte == 254) {  // Unlatch codeword
+      if (firstByte === 254) {  // Unlatch codeword
         return;
       }
 
@@ -467,12 +469,13 @@ export default class DecodedBitStreamParser {
   private static decodeBase256Segment(bits: BitSource,
                                            result: StringBuilder,
                                            byteSegments: Uint8Array[]): void {
+    debugger;
     // Figure out how long the Base 256 Segment is.
     let codewordPosition = 1 + bits.getByteOffset(); // position is 1-indexed
     const d1 = this.unrandomize255State(bits.readBits(8), codewordPosition++);
     let count: number;
     if (d1 === 0) {  // Read the remainder of the symbol
-      count = bits.available() / 8;
+      count = bits.available() / 8 | 0;
     } else if (d1 < 250) {
       count = d1;
     } else {
@@ -495,7 +498,7 @@ export default class DecodedBitStreamParser {
     }
     byteSegments.push(bytes);
     try {
-      result.append(new TextDecoder('ISO8859_1').decode(bytes)); /* ??? */
+      result.append(StringEncoding.decode(bytes, StringUtils.ISO88591)); /* ??? */
     } catch (uee) {
       throw new Exception(Exception.IllegalStateException, 'Platform does not support required encoding: ' + uee.message); /* ??? */
     }

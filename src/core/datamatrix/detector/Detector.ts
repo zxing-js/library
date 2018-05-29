@@ -164,12 +164,12 @@ export default class Detector {
       dimensionTop = this.transitionsBetween(topLeft, correctedTopRight).getTransitions();
       dimensionRight = this.transitionsBetween(bottomRight, correctedTopRight).getTransitions();
 
-      if ((dimensionTop & 0x01) == 1) {
+      if ((dimensionTop & 0x01) === 1) {
         // it can't be odd, so, round... up?
         dimensionTop++;
       }
 
-      if ((dimensionRight & 0x01) == 1) {
+      if ((dimensionRight & 0x01) === 1) {
         // it can't be odd, so, round... up?
         dimensionRight++;
       }

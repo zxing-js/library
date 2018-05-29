@@ -90,7 +90,7 @@ export default class BitMatrixParser {
     // Read all of the codewords
     do {
       // Check the four corner cases
-      if ((row == numRows) && (column === 0) && !corner1Read) {
+      if ((row === numRows) && (column === 0) && !corner1Read) {
         result[resultOffset++] = this.readCorner1(numRows, numColumns) & 0xff;
         row -= 2;
         column += 2;
