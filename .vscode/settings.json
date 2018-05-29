@@ -1,0 +1,8 @@
+
+// Place your settings in this file to overwrite default and user settings.
+{
+    "tslint.enable": true,
+    "autoimport.doubleQuotes": false,
+    "autoimport.spaceBetweenBraces": true,
+    "jshint.enable" : false
+}

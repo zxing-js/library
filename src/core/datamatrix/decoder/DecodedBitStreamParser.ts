@@ -72,14 +72,14 @@ export default class DecodedBitStreamParser {
 
   private static TEXT_SHIFT3_SET_CHARS: string[] = [
     '`', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-    'O',  'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '{', '|', '}', '~', String.fromCharCode(127) /* ??? */
+    'O',  'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '{', '|', '}', '~', String.fromCharCode(127)
   ];
 
   static decode(bytes:  Uint8Array): DecoderResult {
     const bits = new BitSource(bytes);
-    const result = new StringBuilder(); /* ??? */
-    const resultTrailer = new StringBuilder(); /* ??? */
-    const byteSegments = new Array<Uint8Array>(); /* ??? */
+    const result = new StringBuilder();
+    const resultTrailer = new StringBuilder();
+    const byteSegments = new Array<Uint8Array>();
     let mode = Mode.ASCII_ENCODE;
     do {
       if (mode === Mode.ASCII_ENCODE) {
@@ -129,14 +129,14 @@ export default class DecodedBitStreamParser {
           oneByte += 128;
           // upperShift = false;
         }
-        result.append(String.fromCharCode(oneByte - 1)); /* ??? */
+        result.append(String.fromCharCode(oneByte - 1));
         return Mode.ASCII_ENCODE;
       } else if (oneByte === 129) {  // Pad
         return Mode.PAD_ENCODE;
       } else if (oneByte <= 229) {  // 2-digit data 00-99 (Numeric Value + 130)
         const value = oneByte - 130;
         if (value < 10) { // pad with '0' for single digit values
-          result.append('0'); /* ??? */
+          result.append('0');
         }
         result.append('' + value);
       } else {
@@ -220,7 +220,7 @@ export default class DecodedBitStreamParser {
             } else if (cValue < this.C40_BASIC_SET_CHARS.length) {
               const c40char = this.C40_BASIC_SET_CHARS[cValue];
               if (upperShift) {
-                result.append(String.fromCharCode(c40char.charCodeAt(0) + 128)); /* ??? */
+                result.append(String.fromCharCode(c40char.charCodeAt(0) + 128));
                 upperShift = false;
               } else {
                 result.append(c40char);
@@ -231,10 +231,10 @@ export default class DecodedBitStreamParser {
             break;
           case 1:
             if (upperShift) {
-              result.append(String.fromCharCode(cValue + 128)); /* ??? */
+              result.append(String.fromCharCode(cValue + 128));
               upperShift = false;
             } else {
-              result.append(String.fromCharCode(cValue)); /* ??? */
+              result.append(String.fromCharCode(cValue));
             }
             shift = 0;
             break;
@@ -242,7 +242,7 @@ export default class DecodedBitStreamParser {
             if (cValue < this.C40_SHIFT2_SET_CHARS.length) {
               const c40char = this.C40_SHIFT2_SET_CHARS[cValue];
               if (upperShift) {
-                result.append(String.fromCharCode(c40char.charCodeAt(0) + 128)); /* ??? */
+                result.append(String.fromCharCode(c40char.charCodeAt(0) + 128));
                 upperShift = false;
               } else {
                 result.append(c40char);
@@ -250,7 +250,7 @@ export default class DecodedBitStreamParser {
             } else {
               switch (cValue) {
                 case 27: // FNC1
-                  result.append(String.fromCharCode(29)); // translate as ASCII 29  /* ??? */
+                  result.append(String.fromCharCode(29)); // translate as ASCII 29
                   break;
                 case 30: // Upper Shift
                   upperShift = true;
@@ -263,10 +263,10 @@ export default class DecodedBitStreamParser {
             break;
           case 3:
             if (upperShift) {
-              result.append(String.fromCharCode(cValue + 224)); /* ??? */
+              result.append(String.fromCharCode(cValue + 224));
               upperShift = false;
             } else {
-              result.append(String.fromCharCode(cValue + 96)); /* ??? */
+              result.append(String.fromCharCode(cValue + 96));
             }
             shift = 0;
             break;
@@ -309,7 +309,7 @@ export default class DecodedBitStreamParser {
             } else if (cValue < this.TEXT_BASIC_SET_CHARS.length) {
               const textChar = this.TEXT_BASIC_SET_CHARS[cValue];
               if (upperShift) {
-                result.append(String.fromCharCode(textChar.charCodeAt(0) + 128));  /* ??? */
+                result.append(String.fromCharCode(textChar.charCodeAt(0) + 128));
                 upperShift = false;
               } else {
                 result.append(textChar);
@@ -320,10 +320,10 @@ export default class DecodedBitStreamParser {
             break;
           case 1:
             if (upperShift) {
-              result.append(String.fromCharCode(cValue + 128)); /* ??? */
+              result.append(String.fromCharCode(cValue + 128));
               upperShift = false;
             } else {
-              result.append(String.fromCharCode(cValue)); /* ??? */
+              result.append(String.fromCharCode(cValue));
             }
             shift = 0;
             break;
@@ -332,7 +332,7 @@ export default class DecodedBitStreamParser {
             if (cValue < this.TEXT_SHIFT2_SET_CHARS.length) {
               const textChar = this.TEXT_SHIFT2_SET_CHARS[cValue];
               if (upperShift) {
-                result.append(String.fromCharCode(textChar.charCodeAt(0) + 128)); /* ??? */
+                result.append(String.fromCharCode(textChar.charCodeAt(0) + 128));
                 upperShift = false;
               } else {
                 result.append(textChar);
@@ -340,7 +340,7 @@ export default class DecodedBitStreamParser {
             } else {
               switch (cValue) {
                 case 27: // FNC1
-                  result.append(String.fromCharCode(29)); // translate as ASCII 29  /* ??? */
+                  result.append(String.fromCharCode(29)); // translate as ASCII 29
                   break;
                 case 30: // Upper Shift
                   upperShift = true;
@@ -355,7 +355,7 @@ export default class DecodedBitStreamParser {
             if (cValue < this.TEXT_SHIFT3_SET_CHARS.length) {
               const textChar = this.TEXT_SHIFT3_SET_CHARS[cValue];
               if (upperShift) {
-                result.append(String.fromCharCode(textChar.charCodeAt(0) + 128));  /* ??? */
+                result.append(String.fromCharCode(textChar.charCodeAt(0) + 128));
                 upperShift = false;
               } else {
                 result.append(textChar);
@@ -410,9 +410,9 @@ export default class DecodedBitStreamParser {
             break;
           default:
             if (cValue < 14) {  // 0 - 9
-              result.append(String.fromCharCode(cValue + 44));  /* ??? */
+              result.append(String.fromCharCode(cValue + 44));
             } else if (cValue < 40) {  // A - Z
-              result.append(String.fromCharCode(cValue + 51));  /* ??? */
+              result.append(String.fromCharCode(cValue + 51));
             } else {
               throw new Exception(Exception.FormatException);
             }
@@ -458,7 +458,7 @@ export default class DecodedBitStreamParser {
         if ((edifactValue & 0x20) === 0) {  // no 1 in the leading (6th) bit
           edifactValue |= 0x40;  // Add a leading 01 to the 6 bit binary value
         }
-        result.append(String.fromCharCode(edifactValue)); /* ??? */
+        result.append(String.fromCharCode(edifactValue));
       }
     } while (bits.available() > 0);
   }
@@ -498,9 +498,9 @@ export default class DecodedBitStreamParser {
     }
     byteSegments.push(bytes);
     try {
-      result.append(StringEncoding.decode(bytes, StringUtils.ISO88591)); /* ??? */
+      result.append(StringEncoding.decode(bytes, StringUtils.ISO88591));
     } catch (uee) {
-      throw new Exception(Exception.IllegalStateException, 'Platform does not support required encoding: ' + uee.message); /* ??? */
+      throw new Exception(Exception.IllegalStateException, 'Platform does not support required encoding: ' + uee.message);
     }
   }
 

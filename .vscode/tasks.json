@@ -1,0 +1,18 @@
+{
+    "version": "0.1.0",
+    "command": "tsc",
+    "showOutput": "always",
+    "echoCommand": true,
+    "isShellCommand": true,
+    "suppressTaskName": true,
+    "tasks": [
+        {
+            "taskName": "build.node",
+            "args": [
+                
+            ],
+            "isBuildCommand": true,
+            "problemMatcher": "$tsc"
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+
+      {
+          "name": "Unit tests",
+          "type": "node",
+          "request": "launch",
+          "preLaunchTask": "build.node",
+          "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+          "args": [
+              "--colors",
+              "--timeout", "999999",
+              "./build/commonjs/test/**/*.js",
+              "-g", "testHybridBinarizer"
+          ],
+          "protocol": "inspector",
+          "cwd": "${workspaceRoot}",
+          "stopOnEntry": false,
+          "runtimeExecutable": null,
+          "sourceMaps": true,
+          "outFiles": ["${workspaceRoot}/build/commonjs/**/*.js"],
+          "runtimeArgs": [
+              "--nolazy"
+          ],
+          "env": {
+              "NODE_ENV": "test"
+          }
+      }
+  ]
+
+}
