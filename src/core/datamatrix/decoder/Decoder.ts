@@ -47,7 +47,6 @@ export default class Decoder {
    * @throws ChecksumException if error correction fails
    */
   public decode(bits: BitMatrix): DecoderResult {
-    console.log(bits.toString());
     // Construct a parser and read version, error-correction level
     const parser = new BitMatrixParser(bits);
     const version = parser.getVersion();

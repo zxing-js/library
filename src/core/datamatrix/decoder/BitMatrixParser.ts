@@ -92,25 +92,21 @@ export default class BitMatrixParser {
       // Check the four corner cases
       if ((row == numRows) && (column === 0) && !corner1Read) {
         result[resultOffset++] = this.readCorner1(numRows, numColumns) & 0xff;
-        console.log(row, column, result[resultOffset - 1]);
         row -= 2;
         column += 2;
         corner1Read = true;
       } else if ((row === numRows - 2) && (column === 0) && ((numColumns & 0x03) !== 0) && !corner2Read) {
         result[resultOffset++] = this.readCorner2(numRows, numColumns) & 0xff;
-        console.log(row, column, result[resultOffset - 1]);
         row -= 2;
         column += 2;
         corner2Read = true;
       } else if ((row === numRows + 4) && (column === 2) && ((numColumns & 0x07) === 0) && !corner3Read) {
         result[resultOffset++] = this.readCorner3(numRows, numColumns) & 0xff;
-        console.log(row, column, result[resultOffset - 1]);
         row -= 2;
         column += 2;
         corner3Read = true;
       } else if ((row === numRows - 2) && (column === 0) && ((numColumns & 0x07) === 4) && !corner4Read) {
         result[resultOffset++] = this.readCorner4(numRows, numColumns) & 0xff;
-        console.log(row, column, result[resultOffset - 1]);
         row -= 2;
         column += 2;
         corner4Read = true;
@@ -119,7 +115,6 @@ export default class BitMatrixParser {
         do {
           if ((row < numRows) && (column >= 0) && !this.readMappingMatrix.get(column, row)) {
             result[resultOffset++] = this.readUtah(row, column, numRows, numColumns) & 0xff;
-            console.log(row, column, result[resultOffset - 1]);
           }
           row -= 2;
           column += 2;
@@ -131,7 +126,6 @@ export default class BitMatrixParser {
         do {
           if ((row >= 0) && (column < numColumns) && !this.readMappingMatrix.get(column, row)) {
              result[resultOffset++] = this.readUtah(row, column, numRows, numColumns) & 0xff;
-             console.log(row, column, result[resultOffset - 1]);
           }
           row += 2;
           column -= 2;
