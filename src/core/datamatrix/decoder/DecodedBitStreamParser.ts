@@ -383,11 +383,11 @@ export default class DecodedBitStreamParser {
     const cValues: number[] = [];
     do {
       // If there is only one byte left then it will be encoded as ASCII
-      if (bits.available() == 8) {
+      if (bits.available() === 8) {
         return;
       }
       const firstByte = bits.readBits(8);
-      if (firstByte == 254) {  // Unlatch codeword
+      if (firstByte === 254) {  // Unlatch codeword
         return;
       }
 
