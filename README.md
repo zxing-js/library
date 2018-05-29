@@ -2,32 +2,34 @@
 
 # ZXing
 
-## Written in TypeScript, Deployed in JavaScript
+### Runs on your favorite JavaScript ecosystem
 
-Multi-format 1D/2D barcode image processing library.
+> If it doesn't, we gonna make it.
+
+## What is ZXing?
 
 > [ZXing][1] ("zebra crossing") is an open-source, multi-format 1D/2D barcode image processing library implemented in Java, with ports to other languages.
 
 ## Supported Formats
 
-**_WIP_**: see [Status and Roadmap](#roadmap) for what is currently done and what's planned next. 👀
+**_WIP_**: see [Projects](/zxing-js/library/projects) and [Milestones](/zxing-js/library/milestones) for what is currently done and what's planned next. 👀
 
-| 1D product | 1D industrial            | 2D
-| ---------- | ------------------------ | --------------
-| ~UPC-A~    | ~Code 39~                | QR Code
-| ~UPC-E~    | ~Code 93~                | ~Data Matrix~
-| ~EAN-8~    | Code 128 (_no docs_)     | ~Aztec (beta)~
-| ~EAN-13~   | ~Codabar~                | PDF 417 (_in-progress_)
-|            | ITF (_in-progress_)      | ~MaxiCode~
-|            | ~RSS-14~                 |
-|            | ~RSS-Expanded~           |
+| 1D product             | 1D industrial        | 2D
+| ---------------------- | -------------------- | --------------
+| ~UPC-A~                | ~Code 39~            | QR Code
+| ~UPC-E~                | ~Code 93~            | Data Matrix (_in-progress_)
+| ~EAN-8~                | Code 128 (_no docs_) | ~Aztec (beta)~
+| EAN-13 (_in-progress_) | ~Codabar~            | PDF 417 (_in-progress_)
+|                        | ITF (_no docs_)      | ~MaxiCode~
+|                        | ~RSS-14~             |
+|                        | ~RSS-Expanded~       |
 
 ## Status
 
 [![Build Status](https://travis-ci.org/zxing-js/library.svg?branch=master)](https://travis-ci.org/zxing-js/library)
 
 [![NPM version](https://img.shields.io/npm/v/@zxing/library.svg?&label=npm)][0]
-[![NPM downloads](https://img.shields.io/npm/dt/@zxing/library.svg?&label=npm%20downloads)][0]
+[![npm](https://img.shields.io/npm/dm/localeval.svg)][0]
 ![Dependencies](https://david-dm.org/zxing-js/library.svg)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/39d86bc5d5f04bc8953cc68d729807b0)](https://www.codacy.com/app/zxing-js/library?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zxing-js/library&amp;utm_campaign=Badge_Grade)
@@ -245,11 +247,6 @@ To decode a barcode, the library needs at some point to decode from bits to text
 To have full support for all encodings in [CharacterSetECI](https://github.com/odahcam/zxing-ts/blob/master/src/core/common/CharacterSetECI.ts) *except Cp437* use [text-encoding](https://github.com/inexorabletash/text-encoding) library. The library is used implicitly for node (and tests), but is an optional dependency for browser because is rather large (> 600k). You will need to include it yourself if you want/need to use it.
 
 By default, in browser, [TextDecoder](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder)/[TextEncoder](https://developer.mozilla.org/ro/docs/Web/API/TextEncoder) web api are used if available (take care as these are labeled as experimental as of this writing). Also, be aware that TextEncoder encodes only to UTF-8 as per spec. If these are not available the library falls back to a minimal implementation that only encodes and decodes to/from UTF-8 (see [`StringEncoding`](https://github.com/odahcam/zxing-ts/blob/master/src/core/util/StringEncoding.ts)).
-
-## Roadmap
-
-- [Projects](/zxing-js/library/projects).
-- [Milestones](/zxing-js/library/milestones).
 
 ### Porting Information
 
