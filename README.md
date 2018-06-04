@@ -38,11 +38,9 @@
 
 ## Demo
 
-See [some demo examples](https://zxing-js.github.io/library/) in browser.
+See [Live Preview](https://zxing-js.github.io/library/) in browser.
 
 ## Usage
-
-The library can be used from browser with TypeScript (include anything from src/browser however you must do the packaging yourself) or with plain javascript (see below). It can also be used from node (see also below). The library is using separate builds for node and browser to allow different ES targeting.
 
 ### Environments
 
@@ -54,15 +52,17 @@ Examples below are for QR barcode, all other supported barcodes work similary.
 
 To use from JS you need to include what you need from `build/umd` folder (for example `zxing.min.js`).
 
-See [some demo examples](https://github.com/odahcam/zxing-ts/tree/master/docs/examples) for browser code examples with javascript.
+See [some demo examples](https://github.com/zxing-js/library/tree/master/docs/examples) for browser code examples with javascript.
 
-All the examples are using ES6, be sure is supported in your browser or modify as needed (eg. var instead of const etc.). 
+All the examples are using ES6, be sure is supported in your browser or modify as needed (eg. var instead of const etc.).
 
-The browser library is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web API which is marked as experimental as of this writing. 
+The browser layer is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web API which is marked as experimental as of this writing.
+
 _You can use external polyfills like [webrtc-adapter](https://github.com/webrtc/adapter) to increase browser compatiblity._
 
-Also, note that the library is using the [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (Int32Array, Uint8ClampedArray, etc.) which are not available in older browsers (e.g. Android 4 default browser). 
-_You can use a polyfill library like [core-js](https://github.com/zloirock/core-js) to support these browsers._
+Also, note that the library is using the [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (`Int32Array`, `Uint8ClampedArray`, etc.) which are not available in older browsers (e.g. Android 4 default browser).
+
+_You can use [core-js](https://github.com/zloirock/core-js) to add support to these browsers._
 
 #### TypeScript
 
@@ -102,13 +102,12 @@ To start decoding, first obtain a list of video input devices with:
 const codeReader = new ZXing.BrowserQRCodeReader();
 
 codeReader.getVideoInputDevices()
-    .then((videoInputDevices) => {
-        videoInputDevices.forEach((element) => {
-            console.log(`${element.label}, ${element.deviceId}`);          
-        });
-    .catch((err) => {
-        console.error(err);
-    });
+    .then(videoInputDevices => {
+        videoInputDevices.forEach(
+            device => console.log(`${device.label}, ${device.deviceId}`)
+        );
+    })
+    .catch(err => console.error(err));
 ```
 
 If there is just one input device you can use the first deviceId and the video element id (in the example below is also 'video') to decode:
@@ -117,11 +116,8 @@ If there is just one input device you can use the first deviceId and the video e
 const firstDeviceId = videoInputDevices[0].deviceId;
 
 codeReader.decodeFromInputVideoDevice(firstDeviceId, 'video')
-    .then((result) => {
-        console.log(result.text);
-    }).catch((err) => {
-        console.error(err);
-    });
+    .then(result => console.log(result.text))
+    .catch(err => console.error(err));
 ```
 
 If there are more input devices then you will need to chose one for `codeReader.decodeFromInputVideoDevice` device id parameter.
@@ -130,16 +126,14 @@ You can also provide `undefined` for the device id parameter in which case the l
 
 ```javascript
 codeReader.decodeFromInputVideoDevice(undefined, 'video')
-    .then((result) => {
-        console.log(result.text);
-    }).catch((err) => {
-        console.error(err);
-    });
+    .then(result => console.log(result.text))
+    .catch(err => console.error(err));
 ```
 
 A full working example for [QR Code from Video Camera](https://github.com/zxing-js/library/tree/master/docs/examples/qr-camera/) is provided in the [examples](https://github.com/zxing-js/library/tree/master/docs/examples/).
 
 ### Scanning from Video File
+
 Similar as above you can use a video element in the html page:
 
 ```html
@@ -153,28 +147,22 @@ const codeReader = new ZXing.BrowserQRCodeReader();
 const videoSrc = 'your url to a video';
 
 codeReader.decodeFromVideoSource(videoSrc, 'video')
-    .then((result) => {
-        console.log(result.text);
-    }).catch((err) => {
-        console.error(err);
-    });
+    .then(result => console.log(result.text))
+    .catch(err => console.error(err));
 ```
 
 You can also decode the video url without showing it in the page, in this case no `video` element is needed in html.
 
 ```javascript
 codeReader.decodeFromVideoSource(videoSrc)
-    .then((result) => {
-        console.log(result.text);
-    }).catch((err) => {
-        console.error(err);
-    });
+    .then(result => console.log(result.text))
+    .catch(err => console.error(err));
 ```
 
 A full working example for [QR Code from Video File](https://github.com/zxing-js/library/tree/master/docs/examples/qr-video/) is provided in the [examples](https://github.com/zxing-js/library/tree/master/docs/examples/).
 
-
 ### Scanning from Image
+
 Similar as above you can use a img element in the html page (with src attribute set):
 
 ```html
@@ -188,11 +176,8 @@ const codeReader = new ZXing.BrowserQRCodeReader();
 const img = document.getElementById('img');
 
 codeReader.decodeFromImage(img)
-    .then((result) => {
-        console.log(result.text);
-    }).catch((err) => {
-        console.error(err);
-    });
+    .then(result => console.log(result.text))
+    .catch(err => console.error(err));
 ```
 
 You can also decode the image url without showing it in the page, in this case no `img` element is needed in html:
@@ -201,11 +186,8 @@ You can also decode the image url without showing it in the page, in this case n
 const imgSrc = 'url to image';
 
 codeReader.decodeFromImage(undefined, imgSrc)
-    .then((result) => {
-        console.log(result.text);
-    }).catch((err) => {
-        console.error(err);
-    });
+    .then(result => console.log(result.text))
+    .catch(err => console.error(err));
 ```
 
 Or decode the image url directly from an url, with an `img` element in page (notice no `src` attribute is set for `img` element):
@@ -218,7 +200,7 @@ Or decode the image url directly from an url, with an `img` element in page (not
 const imgSrc = 'url to image';
 const imgDomId = 'img-to-decode';
 
-codeReader.decodeFromImage(imgDomId, imgSrc);
+codeReader.decodeFromImage(imgDomId, imgSrc)
     .then(result => console.log(result.text))
     .catch(err => console.error(err));
 ```
@@ -237,7 +219,7 @@ And then:
 
 ```javascript
 const codeWriter = new ZXing.BrowserQRCodeSvgWriter('result');
-var svgElement = codeWriter.write(input, 300, 300);
+const svgElement = codeWriter.write(input, 300, 300);
 ```
 
 A full working example for [QR Code write to SVG](https://github.com/zxing-js/library/tree/master/docs/examples/qr-svg-writer/) is provided in the [examples](https://github.com/zxing-js/library/tree/master/docs/examples/).
@@ -252,12 +234,11 @@ By default, in browser, [TextDecoder](https://developer.mozilla.org/en-US/docs/W
 
 ### Porting Information
 
-See [TypeScript Port Info](https://github.com/zxing-js/library/blob/master/typescriptport.md) for information regarding porting approach and reasoning behind some of the approaches taken.
+See [Contributing Guide](https://github.com/zxing-js/library/blob/master/CONTRIBUTING.md) for information regarding porting approach and reasoning behind some of the approaches taken.
 
 ---
 
 [![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/)
-
 
 [0]: https://www.npmjs.com/package/@zxing/library
 [1]: https://github.com/zxing/zxing
