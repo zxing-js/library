@@ -12,7 +12,7 @@
 
 ## Supported Formats
 
-**_WIP_**: see [Projects](https://github.com/zxing-js/library/projects) and [Milestones](https://github.com/zxing-js/library/milestones) for what is currently done and what's planned next. 👀
+> See [Projects](https://github.com/zxing-js/library/projects) and [Milestones](https://github.com/zxing-js/library/milestones) for what is currently done and what's planned next. 👀
 
 | 1D product             | 1D industrial        | 2D
 | ---------------------- | -------------------- | --------------
@@ -58,15 +58,21 @@ See [some demo examples](https://github.com/odahcam/zxing-ts/tree/master/docs/ex
 
 All the examples are using ES6, be sure is supported in your browser or modify as needed (eg. var instead of const etc.). 
 
-The browser library is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web api which is marked as experimental as of this writing. You can use external polyfills like [webrtc-adapter](https://github.com/webrtc/adapter) to increase browser compatiblity.
+The browser library is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web API which is marked as experimental as of this writing. 
+_You can use external polyfills like [webrtc-adapter](https://github.com/webrtc/adapter) to increase browser compatiblity._
 
-Also, note that the library is using the [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (Int32Array, Uint8ClampedArray, etc.) which are not available in older browsers (for example Android 4 default browser, etc.). You can use a polyfill library like [core-js](https://github.com/zloirock/core-js) to support these browsers.
+Also, note that the library is using the [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (Int32Array, Uint8ClampedArray, etc.) which are not available in older browsers (e.g. Android 4 default browser). 
+_You can use a polyfill library like [core-js](https://github.com/zloirock/core-js) to support these browsers._
 
 #### TypeScript
 
 Install the package:
 
 `npm i @zxing/library --save`
+
+or
+
+`yarn add @zxing/library`
 
 And then include directly the classes files you need, for example:
 
@@ -78,11 +84,9 @@ The usage is identical with the above.
 
 #### Node
 
-`npm i @zxing/library --save`
+To use in node you will need to provide an implementation of [`LuminanceSource`](https://github.com/zxing-js/library/blob/master/src/core/LuminanceSource.ts) for an image. A starting point is [`SharpImageLuminanceSource`](https://github.com/zxing-js/library/blob/master/src/test/core/SharpImageLuminanceSource.ts) from tests that is using [sharp image processing](https://github.com/lovell/sharp) node library.
 
-To use in node you will need to provide an implementation of [`LuminanceSource`](https://github.com/odahcam/zxing-ts/blob/master/src/core/LuminanceSource.ts) for an image. A starting point is [`SharpImageLuminanceSource`](https://github.com/odahcam/zxing-ts/blob/master/src/test/core/SharpImageLuminanceSource.ts) from tests that is using [sharp image processing](https://github.com/lovell/sharp) node library.
-
-No examples are availabe for now, however you can have a look at the extensive [tests cases](https://github.com/odahcam/zxing-ts/tree/master/src/test/core/qrcode).
+No examples are availabe for now, however you can have a look at the extensive [tests cases](https://github.com/zxing-js/library/tree/master/src/test/core/qrcode).
 
 ### Scanning from Video Camera
 
@@ -133,7 +137,7 @@ codeReader.decodeFromInputVideoDevice(undefined, 'video')
     });
 ```
 
-A full working example for [QR Code from Video Camera](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/qr-camera/) is provided in the [examples](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/).
+A full working example for [QR Code from Video Camera](https://github.com/zxing-js/library/tree/master/docs/examples/qr-camera/) is provided in the [examples](https://github.com/zxing-js/library/tree/master/docs/examples/).
 
 ### Scanning from Video File
 Similar as above you can use a video element in the html page:
@@ -167,7 +171,7 @@ codeReader.decodeFromVideoSource(videoSrc)
     });
 ```
 
-A full working example for [QR Code from Video File](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/qr-video/) is provided in the [examples](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/).
+A full working example for [QR Code from Video File](https://github.com/zxing-js/library/tree/master/docs/examples/qr-video/) is provided in the [examples](https://github.com/zxing-js/library/tree/master/docs/examples/).
 
 
 ### Scanning from Image
@@ -212,16 +216,14 @@ Or decode the image url directly from an url, with an `img` element in page (not
 
 ```javascript
 const imgSrc = 'url to image';
+const imgDomId = 'img-to-decode';
 
-codeReader.decodeFromImage('img', imgSrc); // here img is the image id from html, in our case 'img'
-    .then((result) => {
-        console.log(result.text);
-    }).catch((err) => {
-        console.error(err);
-    });
+codeReader.decodeFromImage(imgDomId, imgSrc);
+    .then(result => console.log(result.text))
+    .catch(err => console.error(err));
 ```
 
-A full working example for [QR Code from Image](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/qr-image/) is provided in the [examples](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/).
+A full working example for [QR Code from Image](https://github.com/zxing-js/library/tree/master/docs/examples/qr-image/) is provided in the [examples](https://github.com/zxing-js/library/tree/master/docs/examples/).
 
 ### Barcode generation
 
@@ -238,19 +240,19 @@ const codeWriter = new ZXing.BrowserQRCodeSvgWriter('result');
 var svgElement = codeWriter.write(input, 300, 300);
 ```
 
-A full working example for [QR Code write to SVG](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/qr-svg-writer/) is provided in the [examples](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/).
+A full working example for [QR Code write to SVG](https://github.com/zxing-js/library/tree/master/docs/examples/qr-svg-writer/) is provided in the [examples](https://github.com/zxing-js/library/tree/master/docs/examples/).
 
 ### Text Encoding and Decoding
 
 To decode a barcode, the library needs at some point to decode from bits to text. Also, to generate a barcode it needs to encode text to bits. Unfortunately, the state of encoding and decoding text in javascript/browser is somehow messy at the moment. 
 
-To have full support for all encodings in [CharacterSetECI](https://github.com/odahcam/zxing-ts/blob/master/src/core/common/CharacterSetECI.ts) *except Cp437* use [text-encoding](https://github.com/inexorabletash/text-encoding) library. The library is used implicitly for node (and tests), but is an optional dependency for browser because is rather large (> 600k). You will need to include it yourself if you want/need to use it.
+To have full support for all encodings in [CharacterSetECI](https://github.com/zxing-js/library/blob/master/src/core/common/CharacterSetECI.ts) *except Cp437* use [text-encoding](https://github.com/inexorabletash/text-encoding) library. The library is used implicitly for node (and tests), but is an optional dependency for browser because is rather large (> 600k). You will need to include it yourself if you want/need to use it.
 
-By default, in browser, [TextDecoder](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder)/[TextEncoder](https://developer.mozilla.org/ro/docs/Web/API/TextEncoder) web api are used if available (take care as these are labeled as experimental as of this writing). Also, be aware that TextEncoder encodes only to UTF-8 as per spec. If these are not available the library falls back to a minimal implementation that only encodes and decodes to/from UTF-8 (see [`StringEncoding`](https://github.com/odahcam/zxing-ts/blob/master/src/core/util/StringEncoding.ts)).
+By default, in browser, [TextDecoder](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder)/[TextEncoder](https://developer.mozilla.org/ro/docs/Web/API/TextEncoder) web API are used if available (take care as these are labeled as experimental as of this writing). Also, be aware that TextEncoder encodes only to UTF-8 as per spec. If these are not available the library falls back to a minimal implementation that only encodes and decodes to/from UTF-8 (see [`StringEncoding`](https://github.com/zxing-js/library/blob/master/src/core/util/StringEncoding.ts)).
 
 ### Porting Information
 
-See [TypeScript Port Info](typescriptport.md) for information regarding porting approach and reasoning behind some of the approaches taken.
+See [TypeScript Port Info](https://github.com/zxing-js/library/blob/master/typescriptport.md) for information regarding porting approach and reasoning behind some of the approaches taken.
 
 ---
 
