@@ -12,7 +12,7 @@
 
 ## Supported Formats
 
-**_WIP_**: see [Projects](/zxing-js/library/projects) and [Milestones](/zxing-js/library/milestones) for what is currently done and what's planned next. 👀
+**_WIP_**: see [Projects](https://github.com/zxing-js/library/projects) and [Milestones](https://github.com/zxing-js/library/milestones) for what is currently done and what's planned next. 👀
 
 | 1D product             | 1D industrial        | 2D
 | ---------------------- | -------------------- | --------------
