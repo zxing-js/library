@@ -2,7 +2,7 @@
 
 # ZXing
 
-### Runs on your favorite JavaScript ecosystem
+### Runs on your favorite ECMAScript ecosystem
 
 > If it doesn't, we gonna make it.
 
@@ -40,33 +40,11 @@
 
 See [Live Preview](https://zxing-js.github.io/library/) in browser.
 
+**Note:** All the examples are using ES6, be sure is supported in your browser or modify as needed, Chrome recomended.
+
 ## Usage
 
-### Environments
-
-#### Browser
-
-Examples below are for QR barcode, all other supported barcodes work similary.
-
-`npm i @zxing/library --save`
-
-To use from JS you need to include what you need from `build/umd` folder (for example `zxing.min.js`).
-
-See [some demo examples](https://github.com/zxing-js/library/tree/master/docs/examples) for browser code examples with javascript.
-
-All the examples are using ES6, be sure is supported in your browser or modify as needed (eg. var instead of const etc.).
-
-The browser layer is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web API which is marked as experimental as of this writing.
-
-_You can use external polyfills like [webrtc-adapter](https://github.com/webrtc/adapter) to increase browser compatiblity._
-
-Also, note that the library is using the [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (`Int32Array`, `Uint8ClampedArray`, etc.) which are not available in older browsers (e.g. Android 4 default browser).
-
-_You can use [core-js](https://github.com/zloirock/core-js) to add support to these browsers._
-
-#### TypeScript
-
-Install the package:
+### Instalation
 
 `npm i @zxing/library --save`
 
@@ -74,23 +52,41 @@ or
 
 `yarn add @zxing/library`
 
-And then include directly the classes files you need, for example:
+### Environments
 
-```javascript
+Examples below are for QR barcode, all other supported barcodes work similary.
+
+#### Browser
+
+To use from JS you need to include what you need from `build/umd` folder (for example `zxing.min.js`).
+
+##### Browser Support
+
+The browser layer is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web API which is not supported by older browsers.
+
+_You can use external polyfills like [WebRTC adapter](https://github.com/webrtc/adapter) to increase browser compatiblity._
+
+Also, note that the library is using the [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (`Int32Array`, `Uint8ClampedArray`, etc.) which are not available in older browsers (e.g. Android 4 default browser).
+
+_You can use [core-js](https://github.com/zloirock/core-js) to add support to these browsers._
+
+#### TypeScript
+
+You can include directly the classes you need, for example:
+
+```typescript
 import { BrowserQRCodeReader, VideoInputDevice } from '@zxing/library';
 ```
 
-The usage is identical with the above.
-
 #### Node
 
-To use in node you will need to provide an implementation of [`LuminanceSource`](https://github.com/zxing-js/library/blob/master/src/core/LuminanceSource.ts) for an image. A starting point is [`SharpImageLuminanceSource`](https://github.com/zxing-js/library/blob/master/src/test/core/SharpImageLuminanceSource.ts) from tests that is using [sharp image processing](https://github.com/lovell/sharp) node library.
+To use in node you will need to provide an implementation of [`LuminanceSource`](https://github.com/zxing-js/library/blob/master/src/core/LuminanceSource.ts) for an image. A starting point is [`SharpImageLuminanceSource`](https://github.com/zxing-js/library/blob/master/src/test/core/SharpImageLuminanceSource.ts) from tests that is using [sharp image processing](https://github.com/lovell/sharp) Node library.
 
 No examples are availabe for now, however you can have a look at the extensive [tests cases](https://github.com/zxing-js/library/tree/master/src/test/core/qrcode).
 
 ### Scanning from Video Camera
 
-To display the input from the video camera you will need to add a video element in the html page:
+To display the input from the video camera you will need to add a video element in the HTML page:
 
 ```html
 <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
@@ -130,11 +126,9 @@ codeReader.decodeFromInputVideoDevice(undefined, 'video')
     .catch(err => console.error(err));
 ```
 
-A full working example for [QR Code from Video Camera](https://github.com/zxing-js/library/tree/master/docs/examples/qr-camera/) is provided in the [examples](https://github.com/zxing-js/library/tree/master/docs/examples/).
-
 ### Scanning from Video File
 
-Similar as above you can use a video element in the html page:
+Similar as above you can use a video element in the HTML page:
 
 ```html
 <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
@@ -151,7 +145,7 @@ codeReader.decodeFromVideoSource(videoSrc, 'video')
     .catch(err => console.error(err));
 ```
 
-You can also decode the video url without showing it in the page, in this case no `video` element is needed in html.
+You can also decode the video url without showing it in the page, in this case no `video` element is needed in HTML.
 
 ```javascript
 codeReader.decodeFromVideoSource(videoSrc)
@@ -159,11 +153,9 @@ codeReader.decodeFromVideoSource(videoSrc)
     .catch(err => console.error(err));
 ```
 
-A full working example for [QR Code from Video File](https://github.com/zxing-js/library/tree/master/docs/examples/qr-video/) is provided in the [examples](https://github.com/zxing-js/library/tree/master/docs/examples/).
-
 ### Scanning from Image
 
-Similar as above you can use a img element in the html page (with src attribute set):
+Similar as above you can use a img element in the HTML page (with src attribute set):
 
 ```html
 <img id="img" src="qrcode-image.png" width="200" height="300" style="border: 1px solid gray"></img>
@@ -180,7 +172,7 @@ codeReader.decodeFromImage(img)
     .catch(err => console.error(err));
 ```
 
-You can also decode the image url without showing it in the page, in this case no `img` element is needed in html:
+You can also decode the image url without showing it in the page, in this case no `img` element is needed in HTML:
 
 ```javascript
 const imgSrc = 'url to image';
@@ -205,8 +197,6 @@ codeReader.decodeFromImage(imgDomId, imgSrc)
     .catch(err => console.error(err));
 ```
 
-A full working example for [QR Code from Image](https://github.com/zxing-js/library/tree/master/docs/examples/qr-image/) is provided in the [examples](https://github.com/zxing-js/library/tree/master/docs/examples/).
-
 ### Barcode generation
 
 To generate a QR Code SVG image include 'zxing.qrcodewriter.min.js' from `build/vanillajs`. You will need to include an element where the SVG element will be appended:
@@ -222,13 +212,11 @@ const codeWriter = new ZXing.BrowserQRCodeSvgWriter('result');
 const svgElement = codeWriter.write(input, 300, 300);
 ```
 
-A full working example for [QR Code write to SVG](https://github.com/zxing-js/library/tree/master/docs/examples/qr-svg-writer/) is provided in the [examples](https://github.com/zxing-js/library/tree/master/docs/examples/).
-
 ### Text Encoding and Decoding
 
-To decode a barcode, the library needs at some point to decode from bits to text. Also, to generate a barcode it needs to encode text to bits. Unfortunately, the state of encoding and decoding text in javascript/browser is somehow messy at the moment. 
+To decode a barcode, the library needs at some point to decode from bits to text. Also, to generate a barcode it needs to encode text to bits. Unfortunately, the state of encoding and decoding text in ECMAScript/browser is somehow messy at the moment.
 
-To have full support for all encodings in [CharacterSetECI](https://github.com/zxing-js/library/blob/master/src/core/common/CharacterSetECI.ts) *except Cp437* use [text-encoding](https://github.com/inexorabletash/text-encoding) library. The library is used implicitly for node (and tests), but is an optional dependency for browser because is rather large (> 600k). You will need to include it yourself if you want/need to use it.
+To have full support for all encodings in [CharacterSetECI](https://github.com/zxing-js/library/blob/master/src/core/common/CharacterSetECI.ts) *except Cp437* use [text-encoding](https://github.com/inexorabletash/text-encoding) library. The library is used implicitly for node (and tests), but is an optional dependency for browser because is rather large (> 600k). You will need to include it yourself if you want/need to use it. The `text-encoding` library will be removed as soon as this library starts to run on TypeScript 2.8.
 
 By default, in browser, [TextDecoder](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder)/[TextEncoder](https://developer.mozilla.org/ro/docs/Web/API/TextEncoder) web API are used if available (take care as these are labeled as experimental as of this writing). Also, be aware that TextEncoder encodes only to UTF-8 as per spec. If these are not available the library falls back to a minimal implementation that only encodes and decodes to/from UTF-8 (see [`StringEncoding`](https://github.com/zxing-js/library/blob/master/src/core/util/StringEncoding.ts)).
 
