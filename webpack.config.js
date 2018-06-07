@@ -3,7 +3,6 @@ const camelCaseToDash = (str) => str.replace(/([a-z])([A-Z])/g, '$1-$2').toLower
 const dashToCamelCase = (str) => str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 const toUpperCase = (str) => `${str.charAt(0).toUpperCase()}${str.substr(1)}`;
 const pascalCase = (str) => toUpperCase(dashToCamelCase(str));
-const normalizePackageName = (rawPkgName) => rawPkgName.substring(rawPkgName.indexOf('/') + 1);
 
 // webpack requires
 const webpack = require('webpack');
@@ -19,9 +18,6 @@ const {
     resolve
 } = require('path');
 
-const packageJSON = require('./package.json');
-const packageName = normalizePackageName(packageJSON.name);
-
 /**
  * this is equal to 'webpack --env=dev'
  *
@@ -31,7 +27,7 @@ const config = (env, argv) => {
 
     const mode = argv.mode;
     const isProd = mode === 'production';
-    const ifProd = (whenProd, whenNot) => isProd ? whenProd : whenNot;
+    const ifProd = (whenProd, whenNot) => (isProd ? whenProd : whenNot);
 
     /**
      * Configuration for Universal Module Definition bundling.
@@ -45,7 +41,7 @@ const config = (env, argv) => {
          * minification via UglifyJS
          */
         entry: {
-            [packageName + ifProd('.min', '')]: ['./src/index.ts'],
+            [`index${ifProd('.min', '')}`]: ['./src/index.ts'],
         },
 
         /**
@@ -54,9 +50,10 @@ const config = (env, argv) => {
          */
         output: {
             path: resolve(__dirname, 'umd'),
-            filename: '[name].js',
+            // module format
             libraryTarget: 'umd',
-            library: pascalCase(packageName),
+            // library name to be used in browser (e.g. `window.ZXing`).
+            library: 'ZXing',
             // will name the AMD module of the UMD build. Otherwise an anonymous define is used.
             umdNamedDefine: true
         },
@@ -113,14 +110,6 @@ const config = (env, argv) => {
                     }
                 })
             ),
-
-            /**
-             * Sets the options for webpack loader plugin.
-             */
-            new webpack.LoaderOptionsPlugin({
-                debug: ifProd(false, true),
-                minimize: ifProd(true, false),
-            }),
 
             /**
              * Plugin for defining environment variables.
