@@ -57,5 +57,6 @@ export { default as QRCodeWriter } from './core/qrcode/QRCodeWriter';
 
 // core/oned
 export { default as OneDReader } from './core/oned/OneDReader';
+export { default as EAN13Reader } from './core/oned/EAN13Reader';
 export { default as Code128Reader } from './core/oned/Code128Reader';
 export { default as ITFReader } from './core/oned/ITFReader';

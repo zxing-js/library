@@ -4,9 +4,9 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Adrian Toșcă">
-        <meta name="description" content="Scan QR Code from Image with ZXing javascript library.">
+		<meta name="description" content="Scan Barcode from Image with ZXing javascript library.">
 
-        <title>ZXing | Scan barcode from Image</title>
+		<title>ZXing | Scan barcode from Image</title>
 
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
@@ -17,24 +17,57 @@
 		<main class="wrapper">
 
 			<section class="container" id="demo-content">
-				<h1 class="title">Scan barcode from Image</h1>
+				<h1 class="title">Scan barcode from Images</h1>
 
-				<p>This example shows how to scan a barcode with ZXing javascript library from an image. The example decodes from the <code>src</code> in <code>img</code> tag, however is also possible to decode directly from an url without an <code>img</code> tag.</p>
+				<p>These examples show how to scan a barcode with ZXing javascript library from an image. The examples decode from the <code>src</code> in <code>img</code> tag, however is also possible to decode directly from an url without an <code>img</code> tag.</p>
 
-				<div>
-					<a class="button" id="decodeButton">Decode</a>
+				<div id="code-128">
+					<h2 class="title">Scan barcode from Code 128</h2>
+					<div>
+						<a class="button decodeButton">Decode</a>
+					</div>
+					<div>
+						<img class="img" src="../../../src/test/core/resources/blackbox/code128-1/1.png" style="border: 1px solid gray"/>
+					</div>
+					<label>Result:</label>
+					<blockquote>
+						<p class="result"></p>
+					</blockquote>
 				</div>
 
-				<div>
-					<img id="img" src="../img/2of5-interleaved_806002000537753383.png" style="border: 1px solid gray"></img>
+				<br/><br/>
+
+				<div id="ean-13">
+					<h2 class="title">Scan barcode from EAN-13</h2>
+					<div>
+						<a class="button decodeButton">Decode</a>
+					</div>
+					<div>
+						<img class="img" src="../../../src/test/core/resources/blackbox/ean13-1/1.png" style="border: 1px solid gray"/>
+					</div>
+					<label>Result:</label>
+					<blockquote>
+						<p class="result"></p>
+					</blockquote>
 				</div>
 
-				<label>Result:</label>
-				<blockquote>
-					<p id="result"></p>
-				</blockquote>
+				<br/><br/>
 
-				<p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/qr-image/">source code</a>  for this example.</p>
+				<div id="itf">
+					<h2 class="title">Scan barcode from ITF</h2>
+					<div>
+						<a class="button decodeButton">Decode</a>
+					</div>
+					<div>
+						<img class="img" src="../../../src/test/core/resources/blackbox/itf/1.png" style="border: 1px solid gray"/>
+					</div>
+					<label>Result:</label>
+					<blockquote>
+						<p class="result"></p>
+					</blockquote>
+				</div>
+
+				<p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/barcode-image/">source code</a>	for these examples.</p>
 
 			</section>
 
@@ -47,23 +80,29 @@
 		</main>
 
 		<script type="text/javascript" src="../../../bundles/library.min.js"></script>
-        <script type="text/javascript">
+		<script type="text/javascript">
 			window.addEventListener('load', function() {
-				const codeReader = new Library.BrowserBarcodeReader('video')
-				console.log('ZXing code reader initialized')
+				const codeReader = new Library.BrowserBarcodeReader('video');
+				console.log('ZXing code reader initialized');
 
-				document.getElementById('decodeButton').addEventListener('click', () => {
-					const img = document.getElementById('img')
+				const decodeButtons = document.getElementsByClassName("decodeButton");
+
+				const decodeFun = function(ev) {
+					const parent = this.parentNode.parentNode;
+					const img = parent.getElementsByClassName('img')[0].cloneNode(true);
 					codeReader.decodeFromImage(img).then((result) => {
-						console.log(result)
-						document.getElementById('result').textContent = result.text
+						console.log(result);
+						parent.getElementsByClassName('result')[0].textContent = result.text;
 					}).catch((err) => {
-						console.error(err)
-						document.getElementById('result').textContent = err
-					})
+						console.error(err);
+						parent.getElementsByClassName('result')[0].textContent = err;
+					});
 					console.log(`Started decode for image from ${img.src}`)
-				})
+				};
 
+				for (let i = 0; i < decodeButtons.length; i++) {
+					decodeButtons[i].addEventListener('click', decodeFun, false);
+				}
 			})
 		</script>
 
