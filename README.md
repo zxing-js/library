@@ -14,15 +14,15 @@
 
 > See [Projects](https://github.com/zxing-js/library/projects) and [Milestones](https://github.com/zxing-js/library/milestones) for what is currently done and what's planned next. 👀
 
-| 1D product             | 1D industrial        | 2D
-| ---------------------- | -------------------- | --------------
-| ~UPC-A~                | ~Code 39~            | QR Code
-| ~UPC-E~                | ~Code 93~            | Data Matrix (_in-progress_)
-| ~EAN-8~                | Code 128 (_no docs_) | ~Aztec (beta)~
-| EAN-13 (_in-progress_) | ~Codabar~            | PDF 417 (_in-progress_)
-|                        | ITF (_no docs_)      | ~MaxiCode~
-|                        | ~RSS-14~             |
-|                        | ~RSS-Expanded~       |
+| 1D product         | 1D industrial        | 2D
+| ------------------ | -------------------- | --------------
+| ~UPC-A~            | ~Code 39~            | QR Code
+| ~UPC-E~            | ~Code 93~            | Data Matrix (_in-progress_)
+| ~EAN-8~            | Code 128 (_no docs_) | ~Aztec (beta)~
+| EAN-13 (_no docs_) | ~Codabar~            | PDF 417 (_in-progress_)
+|                    | ITF (_no docs_)      | ~MaxiCode~
+|                    | ~RSS-14~             |
+|                    | ~RSS-Expanded~       |
 
 ## Status
 
