@@ -104,7 +104,7 @@ export default class GenericGFPoly {
             return this.getCoefficient(0);
         }
         const coefficients = this.coefficients;
-        let result;
+        let result: number;
         if (a === 1) {
             // Just the sum of the coefficients
             result = 0;

@@ -32,10 +32,10 @@ export default class StringUtils {
 
     public static SHIFT_JIS = CharacterSetECI.SJIS.getName(); // "SJIS"
     public static GB2312 = 'GB2312';
+    public static ISO88591 = CharacterSetECI.ISO8859_1.getName(); // "ISO8859_1"
     private static EUC_JP = 'EUC_JP';
     private static UTF8 = CharacterSetECI.UTF8.getName(); // "UTF8"
     private static PLATFORM_DEFAULT_ENCODING = StringUtils.UTF8; // "UTF8"//Charset.defaultCharset().name()
-    private static ISO88591 = CharacterSetECI.ISO8859_1.getName(); // "ISO8859_1"
     private static ASSUME_SHIFT_JIS = false;
     // SHIFT_JIS.equalsIgnoreCase(PLATFORM_DEFAULT_ENCODING) ||
     // EUC_JP.equalsIgnoreCase(PLATFORM_DEFAULT_ENCODING);
