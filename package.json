@@ -1,6 +1,6 @@
 {
     "name": "@zxing/library",
-    "version": "0.6.0-dev",
+    "version": "0.6.0-dev.7b4627",
     "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library, with Code128 and ITF support.",
     "keywords": [
         "reader",
@@ -43,12 +43,12 @@
         "url": "https://github.com/zxing-js/library"
     },
     "private": false,
-    "main": "./umd/library.js",
+    "main": "./umd/index.js",
     "module": "./esm5/index.js",
     "typings": "./esm5/index.d.ts",
     "scripts": {
         "clean": "yarn shx rm -rf umd esm5",
-        "build": "yarn clean && yarn tsc && yarn webpack",
+        "build": "yarn clean && yarn tsc && yarn webpack --mode production",
         "test": "yarn mocha-webpack --webpack-config webpack.config.test.js src/test.js --timeout 20000",
         "lint": "yarn tslint src/**/*.ts",
         "shx": "./node_modules/.bin/shx",
