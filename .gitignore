@@ -12,7 +12,7 @@ node_modules
 
 coverage
 esm5
-bundles
+umd
 typings
 docs
 
