@@ -20,10 +20,7 @@ export default function (config) {
 
         frameworks: ['mocha', 'karma-typescript', 'chai', 'sinon'],
 
-        files: [
-            // 'node_modules/expect.js/index.js',
-            'src/**/*.ts'
-        ],
+        files: ['src/**/*.ts'],
 
         preprocessors: {
             '**/*.ts': ['karma-typescript']
@@ -34,7 +31,6 @@ export default function (config) {
             require('karma-mocha'),
             require('karma-chai'),
             require('karma-sinon'),
-            require('karma-phantomjs-launcher'),
             require('karma-remap-coverage'),
             require('karma-typescript'),
             require('karma-typescript-preprocessor'),
@@ -88,7 +84,18 @@ export default function (config) {
         /**
          * What browsers should be used
          */
-        browsers: ['PhantomJS'],
+        browsers: ['Chrome_headless'],
+
+        customLaunchers: {
+            Chrome_headless: {
+                base: 'Chrome',
+                flags: [
+                    ' — headless',
+                    ' — disable-gpu',
+                    ' — remote-debugging-port=9222'
+                ]
+            }
+        },
 
         /**
          * Keep testing or not.

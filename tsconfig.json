@@ -13,5 +13,11 @@
         "noImplicitAny": false,
         "sourceMap": true,
         "declaration": true
-    }
+    },
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "src/test"
+    ]
 }
