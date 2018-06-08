@@ -3,5 +3,6 @@
     "tslint.enable": true,
     "autoimport.doubleQuotes": false,
     "autoimport.spaceBetweenBraces": true,
-    "jshint.enable" : false
+    "jshint.enable": false,
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }
