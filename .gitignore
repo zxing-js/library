@@ -4,10 +4,10 @@ autotransform/input/*
 autotransform/output/*
 node_modules/
 
-*.log
-.idea
 .DS_Store
-node_modules
+.idea
+.nyc_output
+*.log
 *.iml
 
 coverage
