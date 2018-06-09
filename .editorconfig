@@ -20,3 +20,7 @@ insert_final_newline = false
 
 [*.xml]
 insert_final_newline = false
+
+[*.yml]
+insert_final_newline = true
+indent_size = 2
