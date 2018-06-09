@@ -3,7 +3,7 @@ import Exception from './Exception';
 /**
  * Custom Error class of type Exception.
  */
-export default class ReaderException extends Exception {
+export default class ReaderException extends Error {
 
     /**
      * Allows Exception to be constructed directly
