@@ -38,24 +38,18 @@ number versus int is esential for bitwise operations), language style and older 
 
 ## Types
 
-**Java types:**
+### Java types
 https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
 
-**JavasSript TypedArray:**
+- `byte` has 8 bits, signed (eg -127 to 127), so `byte[]` would trasnforms to `Int8Array` however:
+  - `TextEncoder` will use `Uint8Array`.
+  - `canvas` image data will use `Uint8ClampedArray`.
+- `int` has 32 bits, signed, so `int[]` transforms to `Int32Array`.
+- `char` has 2 bytes, so `char[]` transfomrs to `Uint16Array`.
+- `long` has 64 bit two's complement `integer`, can be signed or unsigned.
+
+### JavasSript TypedArray
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
-
-Java byte has 8 bits, signed (eg -127 to 127)
-So `byte[]` would trasnforms to `Int8Array` however:
-- because of using TextEncoder will use `Uint8Array`.
-- because canvas image data will use `Uint8ClampedArray`.
-
-Java int has 32 bits, signed
-So `int[]` transforms to Int32Array
-
-Java char has 2 bytes
-So `char[]` transfomrs to Uint16Array
-
-Java long has 64-bit two's complement integer, can be signed or unsigned
 
 ## Things to look for
 
