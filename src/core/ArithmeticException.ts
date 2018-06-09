@@ -15,6 +15,6 @@ export default class ArithmeticException extends Exception {
         super(message);
 
         // Set the prototype explicitly.
-        Object.setPrototypeOf(this, Exception.prototype);
+        Object.setPrototypeOf(this, ArithmeticException.prototype);
     }
 }

@@ -15,6 +15,6 @@ export default class ArgumentException extends Exception {
         super(message);
 
         // Set the prototype explicitly.
-        Object.setPrototypeOf(this, Exception.prototype);
+        Object.setPrototypeOf(this, ArgumentException.prototype);
     }
 }

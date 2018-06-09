@@ -15,6 +15,6 @@ export default class ReedSolomonException extends Exception {
         super(message);
 
         // Set the prototype explicitly.
-        Object.setPrototypeOf(this, Exception.prototype);
+        Object.setPrototypeOf(this, ReedSolomonException.prototype);
     }
 }

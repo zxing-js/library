@@ -15,6 +15,6 @@ export default class NotFoundException extends Exception {
         super(message);
 
         // Set the prototype explicitly.
-        Object.setPrototypeOf(this, Exception.prototype);
+        Object.setPrototypeOf(this, NotFoundException.prototype);
     }
 }
