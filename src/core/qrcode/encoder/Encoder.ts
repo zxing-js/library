@@ -591,28 +591,40 @@ export default class Encoder {
         }
     }
 
-    public static appendKanjiBytes(content: string, bits: BitArray): void /*throws WriterException*/ {
+    /**
+     * @throws WriterException
+     */
+    public static appendKanjiBytes(content: string, bits: BitArray): void /*throws */ {
+
         let bytes: Uint8Array;
+
         try {
             bytes = StringEncoding.encode(content, CharacterSetECI.SJIS);
         } catch (uee/*: UnsupportedEncodingException*/) {
             throw new Exception(Exception.WriterException, uee);
         }
+
         const length = bytes.length;
+
         for (let i = 0; i < length; i += 2) {
+
             const byte1 = bytes[i] & 0xFF;
             const byte2 = bytes[i + 1] & 0xFF;
             const code = ((byte1 << 8) & 0xFFFFFFFF) | byte2;
             let subtracted = -1;
+
             if (code >= 0x8140 && code <= 0x9ffc) {
                 subtracted = code - 0x8140;
             } else if (code >= 0xe040 && code <= 0xebbf) {
                 subtracted = code - 0xc140;
             }
+
             if (subtracted === -1) {
                 throw new Exception(Exception.WriterException, 'Invalid byte sequence');
             }
+
             const encoded = ((subtracted >> 8) * 0xc0) + (subtracted & 0xff);
+
             bits.appendBits(encoded, 13);
         }
     }
