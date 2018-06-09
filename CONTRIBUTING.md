@@ -57,7 +57,6 @@ So `char[]` transfomrs to Uint16Array
 
 Java long has 64-bit two's complement integer, can be signed or unsigned
 
-
 ## Things to look for
 
 - Take care of `int` -> `number` (integer to number) port when doing bitwise transformation expecially `<<`. Do a `& 0xFFFFFFFF` for ints, a &0xFF for bytes.
