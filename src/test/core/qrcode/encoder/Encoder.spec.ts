@@ -593,7 +593,7 @@ describe('Encoder', () => {
 
     function shiftJISString(bytes: Uint8Array): string {
         try {
-            return StringEncoding.decode(bytes, CharacterSetECI.SJIS);
+            return StringEncoding.decode(bytes, CharacterSetECI.SJIS.getName());
         } catch (uee/*UnsupportedEncodingException*/) {
             throw new WriterException(uee.toString());
         }
