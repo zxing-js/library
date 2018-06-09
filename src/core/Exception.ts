@@ -1,4 +1,7 @@
-export default class Exception {
+/**
+ * Custom Error class of type Exception.
+ */
+export default class Exception extends Error {
 
     public static IllegalArgumentException = 'IllegalArgumentException';
     public static NotFoundException = 'NotFoundException';
@@ -12,17 +15,35 @@ export default class Exception {
     public static ArgumentException = 'ArgumentException';
     public static ReaderException = 'ReaderException';
 
-    public constructor(private type: string, private message?: string) { }
+    /**
+     * Allows Exception to be constructed directly
+     * with some type and message.
+     */
+    public constructor(
+        private type: string,
+        public message: string = ''
+    ) {
+        super(message);
+    }
 
+    /**
+     * Returns the Exception type.
+     */
     public getType(): string {
         return this.type;
     }
 
-    public getMessage(): string | undefined {
+    /**
+     * Returns the Exception message.
+     */
+    public getMessage(): string {
         return this.message;
     }
 
-    public static isOfType(ex: any, type: string): boolean {
-        return ex.type === type;
+    /**
+     * Checks if some Exception is of some Exception type.
+     */
+    public static isOfType(exception: any, type: string): boolean {
+        return exception.type === type;
     }
 }

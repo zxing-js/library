@@ -31,8 +31,6 @@ import StringBuilder from './../../../../core/util/StringBuilder';
 import StringEncoding from './../../../../core/util/StringEncoding';
 import Exception from './../../../../core/Exception';
 
-import { TextDecoder, TextEncoder } from 'text-encoding';
-
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator
  * @author mysen@google.com (Chris Mysen) - ported from C++
@@ -595,7 +593,7 @@ describe('Encoder', () => {
 
     function shiftJISString(bytes: Uint8Array): string {
         try {
-            return StringEncoding.decode(bytes, CharacterSetECI.SJIS.getName());
+            return StringEncoding.decode(bytes, CharacterSetECI.SJIS);
         } catch (uee/*UnsupportedEncodingException*/) {
             throw new Exception(Exception.WriterException, uee.toString());
         }

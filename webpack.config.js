@@ -67,19 +67,6 @@ const config = (env, argv) => {
         },
 
         /**
-         * Add here all 3rd party libraries that you will use as peerDependncies
-         * https://webpack.js.org/guides/author-libraries/#add-externals
-         */
-        externals: {
-            'text-encoding': {
-                commonjs: 'text-encoding',
-                commonjs2: 'text-encoding',
-                amd: 'text-encoding',
-                root: 'text-encoding'
-            }
-        },
-
-        /**
          * Activate source maps for the bundles in order to preserve the original
          * source when the user debugs the application
          */

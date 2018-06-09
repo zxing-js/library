@@ -240,7 +240,7 @@ export default class Encoder {
     private static isOnlyDoubleByteKanji(content: string): boolean {
         let bytes: Uint8Array;
         try {
-            bytes = StringEncoding.encode(content, CharacterSetECI.SJIS.getName()); // content.getBytes("Shift_JIS"))
+            bytes = StringEncoding.encode(content, CharacterSetECI.SJIS); // content.getBytes("Shift_JIS"))
         } catch (ignored/*: UnsupportedEncodingException*/) {
             return false;
         }
@@ -594,7 +594,7 @@ export default class Encoder {
     public static appendKanjiBytes(content: string, bits: BitArray): void /*throws WriterException*/ {
         let bytes: Uint8Array;
         try {
-            bytes = StringEncoding.encode(content, CharacterSetECI.SJIS.getName());
+            bytes = StringEncoding.encode(content, CharacterSetECI.SJIS);
         } catch (uee/*: UnsupportedEncodingException*/) {
             throw new Exception(Exception.WriterException, uee);
         }

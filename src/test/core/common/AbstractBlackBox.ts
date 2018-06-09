@@ -31,7 +31,6 @@ import ResultMetadataType from './../../../core/ResultMetadataType';
 import TestResult from './../common/TestResult';
 import HybridBinarizer from './../../../core/common/HybridBinarizer';
 import StringEncoding from './../../../core/util/StringEncoding';
-import { TextDecoder } from 'text-encoding';
 
 const fs = require('fs');
 const path = require('path');
