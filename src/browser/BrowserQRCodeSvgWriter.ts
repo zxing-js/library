@@ -45,10 +45,7 @@ class BrowserQRCodeSvgWriter {
         // }
 
         if (width < 0 || height < 0) {
-            throw new Exception(
-                'IllegalArgumentException',
-                'Requested dimensions are too small: ' + width + 'x' + height
-            );
+            throw new IllegalArgumentException('Requested dimensions are too small: ' + width + 'x' + height);
         }
 
         let errorCorrectionLevel = ErrorCorrectionLevel.L;

@@ -456,7 +456,7 @@ export default class Encoder {
             }
         }
         if (numTotalBytes !== result.getSizeInBytes()) {  // Should be same.
-            throw new Exception('WriterException', 'Interleaving error: ' + numTotalBytes + ' and ' +
+            throw new WriterException('Interleaving error: ' + numTotalBytes + ' and ' +
                 result.getSizeInBytes() + ' differ.');
         }
 

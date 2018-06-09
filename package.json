@@ -67,7 +67,8 @@
         "webpack": "./node_modules/.bin/webpack-cli"
     },
     "dependencies": {
-        "sharp": "^0.20.0"
+        "sharp": "^0.20.0",
+        "text-encoding": "^0.6.4"
     },
     "devDependencies": {
         "@types/async": "^2.0.47",

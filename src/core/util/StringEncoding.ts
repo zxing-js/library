@@ -1,4 +1,5 @@
 import CharacterSetECI from './../common/CharacterSetECI';
+import { TextEncoder as TextEncoderLegacy } from 'text-encoding';
 
 /**
  * Responsible for en/decoding strings.
@@ -17,15 +18,15 @@ export default class StringEncoding {
 
     /**
      * Encodes some string into a Uint8Array.
+     *
+      * @todo natively support other string formats than UTF-8.
      */
     public static encode(s: string, encoding: string | CharacterSetECI): Uint8Array {
 
-        // const encodingName = this.stringValue(encoding);
-
-        // TODO: natively support other string formats than UTF-8.
+        const encodingName = this.stringValue(encoding);
 
         // TextEncoder only encodes to UTF8 by default as specified by encoding.spec.whatwg.org
-        return new TextEncoder().encode(s);
+        return new TextEncoderLegacy(encodingName, { NONSTANDARD_allowLegacyEncoding: true }).encode(s);
     }
 
     /**
