@@ -1,6 +1,7 @@
 env:
-  - CXX=g++-4.8
-  - CC_TEST_REPORTER_ID=e6be83551acde45d90f95ab35d4dbd4136645ec8a9b621f40ba2bed83010b718
+  global:
+    - CXX=g++-4.8
+    - CC_TEST_REPORTER_ID=e6be83551acde45d90f95ab35d4dbd4136645ec8a9b621f40ba2bed83010b718
 
 language: node_js
 
