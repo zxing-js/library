@@ -2,6 +2,7 @@ env:
   global:
     - CXX=g++-4.8
     - CC_TEST_REPORTER_ID=e6be83551acde45d90f95ab35d4dbd4136645ec8a9b621f40ba2bed83010b718
+    - CODACY_PROJECT_TOKEN=b36d15c23793453eaee66463191749c2
 
 language: node_js
 
