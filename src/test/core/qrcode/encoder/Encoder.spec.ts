@@ -139,11 +139,7 @@ describe('Encoder', () => {
                 hints.set(EncodeHintType.QR_VERSION, 3);
                 Encoder.encode('THISMESSAGEISTOOLONGFORAQRCODEVERSION3', ErrorCorrectionLevel.H, hints);
             },
-            function (ex: any) {
-                if (ex instanceof WriterException) {
-                    return true;
-                }
-            },
+            WriterException,
             'unexpected exception thrown'
         );
     });
