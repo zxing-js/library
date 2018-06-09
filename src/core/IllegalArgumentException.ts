@@ -1,4 +1,4 @@
-import Exception from './Exception';
+
 
 /**
  * Custom Error class of type Exception.
@@ -10,8 +10,8 @@ export default class IllegalArgumentException extends Exception {
      * with some type and message.
      */
     public constructor(
-        public message: string = ''
+        message: string = ''
     ) {
-        super(Exception.IllegalArgumentException, message);
+        super(message);
     }
 }

@@ -20,7 +20,8 @@ import Binarizer from './../Binarizer';
 import LuminanceSource from './../LuminanceSource';
 import BitArray from './BitArray';
 import BitMatrix from './BitMatrix';
-import Exception from './../Exception';
+
+import NotFoundException from '../NotFoundException';
 
 /**
  * This Binarizer implementation uses the old ZXing global histogram approach. It is suitable
@@ -186,7 +187,7 @@ export default class GlobalHistogramBinarizer extends Binarizer {
         // If there is too little contrast in the image to pick a meaningful black point, throw rather
         // than waste time trying to decode the image, and risk false positives.
         if (secondPeak - firstPeak <= numBuckets / 16) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         // Find a valley between them that is low and closer to the white peak.

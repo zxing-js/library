@@ -1,4 +1,4 @@
-import Exception from './Exception';
+
 
 /**
  * Custom Error class of type Exception.
@@ -10,8 +10,8 @@ export default class ArithmeticException extends Exception {
      * with some type and message.
      */
     public constructor(
-        public message: string = ''
+        message: string = ''
     ) {
-        super(Exception.ArithmeticException, message);
+        super(message);
     }
 }

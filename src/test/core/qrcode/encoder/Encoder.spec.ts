@@ -29,7 +29,7 @@ import Version from './../../../../core/qrcode/decoder/Version';
 import QRCode from './../../../../core/qrcode/encoder/QRCode';
 import StringBuilder from './../../../../core/util/StringBuilder';
 import StringEncoding from './../../../../core/util/StringEncoding';
-import Exception from './../../../../core/Exception';
+import WriterException from './../../../../core/WriterException';
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator
@@ -140,7 +140,7 @@ describe('Encoder', () => {
                 Encoder.encode('THISMESSAGEISTOOLONGFORAQRCODEVERSION3', ErrorCorrectionLevel.H, hints);
             },
             function (ex: any) {
-                if (Exception.isOfType(ex, Exception.WriterException)) {
+                if (ex instanceof WriterException) {
                     return true;
                 }
             },
@@ -305,7 +305,7 @@ describe('Encoder', () => {
         try {
             Encoder.appendBytes('a', Mode.ALPHANUMERIC, bits, Encoder.DEFAULT_BYTE_MODE_ENCODING);
         } catch (we/*WriterException*/) {
-            if (Exception.isOfType(we, Exception.WriterException)) {
+            if (we instanceof WriterException) {
                 // good
             } else {
                 throw we;
@@ -595,7 +595,7 @@ describe('Encoder', () => {
         try {
             return StringEncoding.decode(bytes, CharacterSetECI.SJIS);
         } catch (uee/*UnsupportedEncodingException*/) {
-            throw new Exception(Exception.WriterException, uee.toString());
+            throw new WriterException(uee.toString());
         }
     }
 

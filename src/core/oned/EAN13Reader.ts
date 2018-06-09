@@ -16,8 +16,9 @@
 
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
-import Exception from '../Exception';
+
 import UPCEANReader from './UPCEANReader';
+import NotFoundException from '../NotFoundException';
 
 /**
  * <p>Implements decoding of the EAN-13 format.</p>
@@ -85,6 +86,6 @@ export default class EAN13Reader extends UPCEANReader {
                 return resultString;
             }
         }
-        throw new Exception(Exception.NotFoundException);
+        throw new NotFoundException();
     }
 }

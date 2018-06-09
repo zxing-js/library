@@ -23,18 +23,18 @@
 
 /*namespace com.google.zxing {*/
 
-import Exception from './Exception';
 import Binarizer from './Binarizer';
 import BitArray from './common/BitArray';
 import BitMatrix from './common/BitMatrix';
 import LuminanceSource from './LuminanceSource';
+import IllegalArgumentException from './IllegalArgumentException';
 
 export default class BinaryBitmap {
     private matrix: BitMatrix;
 
     public constructor(private binarizer: Binarizer) {
         if (binarizer === null) {
-            throw new Exception(Exception.IllegalArgumentException, 'Binarizer must be non-null.');
+            throw new IllegalArgumentException('Binarizer must be non-null.');
         }
     }
 

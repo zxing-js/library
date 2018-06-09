@@ -16,7 +16,8 @@
 
 /*namespace com.google.zxing.common {*/
 
-import Exception from './../Exception';
+
+import FormatException from '../FormatException';
 
 /*import java.util.HashMap;*/
 /*import java.util.Map;*/
@@ -215,13 +216,13 @@ export default class CharacterSetECI {
     public static getCharacterSetECIByValue(value: number /*int*/): CharacterSetECI /*throws FormatException*/ {
 
         if (value < 0 || value >= 900) {
-            throw new Exception(Exception.FormatException, 'incorect value');
+            throw new FormatException('incorect value');
         }
 
         const characterSet = CharacterSetECI.VALUES_TO_ECI.get(value);
 
         if (undefined === characterSet) {
-            throw new Exception(Exception.FormatException, 'incorect value');
+            throw new FormatException('incorect value');
         }
 
         return characterSet;
@@ -237,7 +238,7 @@ export default class CharacterSetECI {
         const characterSet = CharacterSetECI.NAME_TO_ECI.get(name);
 
         if (undefined === characterSet) {
-            throw new Exception(Exception.FormatException, 'incorect value');
+            throw new FormatException('incorect value');
         }
 
         return characterSet;

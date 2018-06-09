@@ -18,7 +18,9 @@
 
 import GenericGF from './GenericGF';
 import GenericGFPoly from './GenericGFPoly';
-import Exception from './../../Exception';
+
+import ReedSolomonException from '../../ReedSolomonException';
+import IllegalStateException from '../../IllegalStateException';
 
 /**
  * <p>Implements Reed-Solomon decoding, as the name implies.</p>
@@ -79,7 +81,7 @@ export default class ReedSolomonDecoder {
         for (let i = 0; i < errorLocations.length; i++) {
             const position = received.length - 1 - field.log(errorLocations[i]);
             if (position < 0) {
-                throw new Exception(Exception.ReedSolomonException, 'Bad error location');
+                throw new ReedSolomonException('Bad error location');
             }
             received[position] = GenericGF.addOrSubtract(received[position], errorMagnitudes[i]);
         }
@@ -110,7 +112,7 @@ export default class ReedSolomonDecoder {
             // Divide rLastLast by rLast, with quotient in q and remainder in r
             if (rLast.isZero()) {
                 // Oops, Euclidean algorithm already terminated?
-                throw new Exception(Exception.ReedSolomonException, 'r_{i-1} was zero');
+                throw new ReedSolomonException('r_{i-1} was zero');
             }
             r = rLastLast;
             let q = field.getZero();
@@ -126,13 +128,13 @@ export default class ReedSolomonDecoder {
             t = q.multiply(tLast).addOrSubtract(tLastLast);
 
             if (r.getDegree() >= rLast.getDegree()) {
-                throw new Exception(Exception.IllegalStateException, 'Division algorithm failed to reduce polynomial?');
+                throw new IllegalStateException('Division algorithm failed to reduce polynomial?');
             }
         }
 
         const sigmaTildeAtZero = t.getCoefficient(0);
         if (sigmaTildeAtZero === 0) {
-            throw new Exception(Exception.ReedSolomonException, 'sigmaTilde(0) was zero');
+            throw new ReedSolomonException('sigmaTilde(0) was zero');
         }
 
         const inverse = field.inverse(sigmaTildeAtZero);
@@ -157,7 +159,7 @@ export default class ReedSolomonDecoder {
             }
         }
         if (e !== numErrors) {
-            throw new Exception(Exception.ReedSolomonException, 'Error locator degree does not match number of roots');
+            throw new ReedSolomonException('Error locator degree does not match number of roots');
         }
         return result;
     }

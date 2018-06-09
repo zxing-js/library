@@ -20,9 +20,10 @@ import Result from './Result';
 import BinaryBitmap from './BinaryBitmap';
 import BarcodeFormat from './BarcodeFormat';
 import QRCodeReader from './qrcode/QRCodeReader';
-import Exception from './Exception';
+
 import MultiFormatOneDReader from './oned/MultiFormatOneDReader';
 import DataMatrixReader from './datamatrix/DataMatrixReader';
+import NotFoundException from './NotFoundException';
 
 /*namespace com.google.zxing {*/
 
@@ -180,7 +181,7 @@ export default class MultiFormatReader implements Reader {
                 }
             }
         }
-        throw new Exception(Exception.NotFoundException);
+        throw new NotFoundException();
     }
 
 }

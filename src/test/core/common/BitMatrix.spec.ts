@@ -21,8 +21,9 @@ import * as assert from 'assert';
 import AssertUtils from './../util/AssertUtils';
 import BitMatrix from './../../../core/common/BitMatrix';
 import BitArray from './../../../core/common/BitArray';
-import Exception from './../../../core/Exception';
+
 import StringBuilder from './../../../core/util/StringBuilder';
+import IllegalArgumentException from '../../../core/IllegalArgumentException';
 
 /**
  * @author Sean Owen
@@ -230,7 +231,7 @@ describe('BitMatrix', () => {
             BitMatrix.parseFromString('   \n xy\n   \n', 'x', ' ');
             assert.ok(false);
         } catch (ex/*IllegalArgumentException ex*/) {
-            if (Exception.isOfType(ex, Exception.IllegalArgumentException)) {
+            if (ex instanceof IllegalArgumentException) {
                 // good
             } else {
                 assert.ok(false);
@@ -291,7 +292,7 @@ describe('BitMatrix', () => {
             emptyMatrix.clone().xor(badMatrix);
             assert.ok(false);
         } catch (ex/*IllegalArgumentException*/) {
-            if (Exception.isOfType(ex, Exception.IllegalArgumentException)) {
+            if (ex instanceof IllegalArgumentException) {
                 // good
             } else {
                 assert.ok(false);
@@ -302,7 +303,7 @@ describe('BitMatrix', () => {
             badMatrix.clone().xor(emptyMatrix);
             assert.ok(false);
         } catch (ex/*IllegalArgumentException*/) {
-            if (Exception.isOfType(ex, Exception.IllegalArgumentException)) {
+            if (ex instanceof IllegalArgumentException) {
                 // good
             } else {
                 assert.ok(false);

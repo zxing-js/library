@@ -1,8 +1,9 @@
-import Exception from '../core/Exception';
 import EncodeHintType from '../core/EncodeHintType';
 import Encoder from '../core/qrcode/encoder/Encoder';
 import QRCode from '../core/qrcode/encoder/QRCode';
 import ErrorCorrectionLevel from '../core/qrcode/decoder/ErrorCorrectionLevel';
+import IllegalArgumentException from '../core/IllegalArgumentException';
+import IllegalStateException from '../core/IllegalStateException';
 
 class BrowserQRCodeSvgWriter {
 
@@ -36,11 +37,11 @@ class BrowserQRCodeSvgWriter {
     ): SVGSVGElement {
 
         if (contents.length === 0) {
-            throw new Exception(Exception.IllegalArgumentException, 'Found empty contents');
+            throw new IllegalArgumentException('Found empty contents');
         }
 
         // if (format != BarcodeFormat.QR_CODE) {
-        //   throw new Exception(Exception.IllegalArgumentException, "Can only encode QR_CODE, but got " + format)
+        //   throw new IllegalArgumentException("Can only encode QR_CODE, but got " + format)
         // }
 
         if (width < 0 || height < 0) {
@@ -78,7 +79,7 @@ class BrowserQRCodeSvgWriter {
         const input = code.getMatrix();
 
         if (input === null) {
-            throw new Exception(Exception.IllegalStateException);
+            throw new IllegalStateException();
         }
 
         const inputWidth = input.getWidth();

@@ -29,9 +29,10 @@ import Version from './../decoder/Version';
 import FinderPatternFinder from './FinderPatternFinder';
 import FinderPatternInfo from './FinderPatternInfo';
 import FinderPattern from './FinderPattern';
-import Exception from './../../Exception';
+
 import AlignmentPattern from './AlignmentPattern';
 import AlignmentPatternFinder from './AlignmentPatternFinder';
+import NotFoundException from '../../NotFoundException';
 
 /*import java.util.Map;*/
 
@@ -93,7 +94,7 @@ export default class Detector {
 
         const moduleSize: number /*float*/ = this.calculateModuleSize(topLeft, topRight, bottomLeft);
         if (moduleSize < 1.0) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
         const dimension = Detector.computeDimension(topLeft, topRight, bottomLeft, moduleSize);
         const provisionalVersion: Version = Version.getProvisionalVersionForDimension(dimension);
@@ -122,7 +123,7 @@ export default class Detector {
                         i);
                     break;
                 } catch (re/*NotFoundException*/) {
-                    if (!Exception.isOfType(re, Exception.NotFoundException)) {
+                    if (!(re instanceof NotFoundException)) {
                         throw re;
                     }
                     // try next round
@@ -215,7 +216,7 @@ export default class Detector {
                 dimension--;
                 break;
             case 3:
-                throw new Exception(Exception.NotFoundException);
+                throw new NotFoundException();
         }
         return dimension;
     }
@@ -384,13 +385,13 @@ export default class Detector {
         const alignmentAreaLeftX = Math.max(0, estAlignmentX - allowance);
         const alignmentAreaRightX = Math.min(this.image.getWidth() - 1, estAlignmentX + allowance);
         if (alignmentAreaRightX - alignmentAreaLeftX < overallEstModuleSize * 3) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         const alignmentAreaTopY = Math.max(0, estAlignmentY - allowance);
         const alignmentAreaBottomY = Math.min(this.image.getHeight() - 1, estAlignmentY + allowance);
         if (alignmentAreaBottomY - alignmentAreaTopY < overallEstModuleSize * 3) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         const alignmentFinder =
