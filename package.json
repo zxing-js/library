@@ -67,7 +67,6 @@
         "webpack": "./node_modules/.bin/webpack-cli"
     },
     "dependencies": {
-        "sharp": "^0.20.3",
         "text-encoding": "^0.6.4",
         "ts-custom-error": "^2.2.1"
     },
@@ -99,6 +98,7 @@
         "mocha-webpack": "^2.0.0-beta.0",
         "nyc": "^12.0.2",
         "seedrandom": "^2.4.3",
+        "sharp": "^0.20.3",
         "shx": "0.2.2",
         "sinon": "^4.2.2",
         "ts-loader": "^4.3.1",
