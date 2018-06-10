@@ -27,7 +27,6 @@ import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
  * @author Sean Owen
  */
 class Code128BlackBox1Spec extends AbstractBlackBoxSpec {
-
     public constructor() {
         super('src/test/core/resources/blackbox/code128-1', new MultiFormatReader(), BarcodeFormat.CODE_128);
         this.addTest(6, 6, 0.0);

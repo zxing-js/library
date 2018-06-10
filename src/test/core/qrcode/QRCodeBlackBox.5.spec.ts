@@ -45,8 +45,6 @@ describe('QRCodeBlackBox.5', () => {
     it('testBlackBox', (done) => {
         const test = new QRCodeBlackBox5Spec();
 
-        return test.testBlackBox(() => {
-            done();
-        });
+        return test.testBlackBox(() => done());
     });
 });

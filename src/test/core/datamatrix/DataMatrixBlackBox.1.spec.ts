@@ -41,8 +41,6 @@ describe('DataMatrixBlackBox.1', () => {
     it('testBlackBox', (done) => {
         const test = new DataMatrixBlackBox1Spec();
 
-        return test.testBlackBox(() => {
-            done();
-        });
+        return test.testBlackBox(() => done());
     });
 });
