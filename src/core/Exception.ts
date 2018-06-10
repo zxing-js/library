@@ -1,18 +1,19 @@
 /**
  * Custom Error class of type Exception.
  */
-export default class Exception extends Error {
+class Exception {
 
     /**
      * Allows Exception to be constructed directly
      * with some message and prototype definition.
      */
     public constructor(
-        message: string = ''
+        public message: string = ''
     ) {
-        super(message);
-
-        // Set the prototype explicitly.
-        Object.setPrototypeOf(this, Exception.prototype);
+        Error.apply(this, arguments);
     }
 }
+
+Exception.prototype = new Error();
+
+export default Exception;
