@@ -48,10 +48,11 @@ export default class MultiFormatReader implements Reader {
      *
      * @param image The pixel data to decode
      * @return The contents of the image
+     *
      * @throws NotFoundException Any errors which occurred
      */
     /*@Override*/
-    // public decode(image: BinaryBitmap): Result /*throws NotFoundException */ {
+    // public decode(image: BinaryBitmap): Result {
     //   setHints(null)
     //   return decodeInternal(image)
     // }
@@ -62,10 +63,11 @@ export default class MultiFormatReader implements Reader {
      * @param image The pixel data to decode
      * @param hints The hints to use, clearing the previous state.
      * @return The contents of the image
+     *
      * @throws NotFoundException Any errors which occurred
      */
     /*@Override*/
-    public decode(image: BinaryBitmap, hints?: Map<DecodeHintType, any>): Result /*throws NotFoundException */ {
+    public decode(image: BinaryBitmap, hints?: Map<DecodeHintType, any>): Result {
         this.setHints(hints);
         return this.decodeInternal(image);
     }
@@ -76,9 +78,10 @@ export default class MultiFormatReader implements Reader {
      *
      * @param image The pixel data to decode
      * @return The contents of the image
+     *
      * @throws NotFoundException Any errors which occurred
      */
-    public decodeWithState(image: BinaryBitmap): Result /*throws NotFoundException */ {
+    public decodeWithState(image: BinaryBitmap): Result {
         // Make sure to set up the default state so we don't crash
         if (this.readers === null || this.readers === undefined) {
             this.setHints(null);
@@ -168,19 +171,26 @@ export default class MultiFormatReader implements Reader {
         }
     }
 
-    private decodeInternal(image: BinaryBitmap): Result /*throws NotFoundException */ {
-        if (this.readers !== null) {
-            for (let i = 0, length = this.readers.length; i !== length; i++) {
-                const reader = this.readers[i];
-                try {
-                    return reader.decode(image, this.hints);
-                } catch (re/*ReaderException*/) {
-                    if (re instanceof ReaderException) {
-                        continue;
-                    }
+    /**
+     * @throws NotFoundException
+     */
+    private decodeInternal(image: BinaryBitmap): Result {
+
+        if (this.readers === null) {
+            throw new ReaderException('No readers where selected, nothing can be read.');
+        }
+
+        for (const reader of this.readers) {
+            try {
+                return reader.decode(image, this.hints);
+            } catch (ex) {
+                if (ex instanceof ReaderException) {
+                    continue;
                 }
+                console.error('decodeInternal', `Exception of type ${ex.constructor.name} was thrown.`);
             }
         }
+
         throw new NotFoundException();
     }
 
