@@ -1,19 +1,17 @@
+import { CustomError } from 'ts-custom-error';
+
 /**
  * Custom Error class of type Exception.
  */
-class Exception {
+export default class Exception extends CustomError {
 
     /**
      * Allows Exception to be constructed directly
      * with some message and prototype definition.
      */
-    public constructor(
-        public message: string = ''
+    constructor(
+        public message: string = 'A exception has occoured.'
     ) {
-        Error.apply(this, arguments);
-    }
+        super(message);
+   }
 }
-
-Exception.prototype = new Error();
-
-export default Exception;
