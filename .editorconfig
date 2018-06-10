@@ -12,13 +12,7 @@ insert_final_newline = true
 [*.md]
 trim_trailing_whitespace = false
 
-[*.txt]
-insert_final_newline = false
-
-[*.json]
-insert_final_newline = false
-
-[*.xml]
+[{*.txt,*.json,*.xml}]
 insert_final_newline = false
 
 [*.yml]
