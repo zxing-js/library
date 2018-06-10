@@ -24,6 +24,7 @@ import QRCodeReader from './qrcode/QRCodeReader';
 import MultiFormatOneDReader from './oned/MultiFormatOneDReader';
 import DataMatrixReader from './datamatrix/DataMatrixReader';
 import NotFoundException from './NotFoundException';
+import ReaderException from './ReaderException';
 
 /*namespace com.google.zxing {*/
 
@@ -174,8 +175,7 @@ export default class MultiFormatReader implements Reader {
                 try {
                     return reader.decode(image, this.hints);
                 } catch (re/*ReaderException*/) {
-                    // console.log(`Exception ${re.type} ${re.message}`)
-                    if (re.type === 'ReaderException') {
+                    if (re instanceof ReaderException) {
                         continue;
                     }
                 }
