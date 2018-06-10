@@ -11,62 +11,36 @@ export default class SharpImage {
         private height: number
     ) { }
 
-    public static async loadWithRotation(path: string, rotation: number): Promise<SharpImage> {
-        // This `sharp` is not in the original ZXing.
-        const wrapper = sharp(path).raw();
-        let metadata: sharp.Metadata;
-
-        try {
-            metadata = await wrapper.metadata();
-        } catch (e) {
-            throw e;
-        }
-
-        if (metadata.channels !== 3 && metadata.space !== 'srgb') {
-            // console.log(`Image ${path} has ${metadata.channels} channels and will be transformed to sRGB`)
-            wrapper.toColorspace('sRGB');
-        }
-
-        try {
-            const { data, info } = await wrapper.rotate(rotation).toBuffer({ resolveWithObject: true });
-            const grayscaleBuffer = SharpImage.toGrayscaleBuffer(new Uint8ClampedArray(data.buffer), info.width, info.height, info.channels);
-            return new SharpImage(wrapper, grayscaleBuffer, info.width, info.height);
-        } catch (err) {
-            throw err;
-        }
-    }
-
     public static async loadWithRotations(path: string, rotations: number[]): Promise<Map<number, SharpImage>> {
-        // This `sharp` is not in the original ZXing.
-        const wrapper = sharp(path).raw();
-        let metadata: sharp.Metadata;
-        try {
-            metadata = await wrapper.metadata();
-        } catch (e) {
-            throw e;
-        }
-        if (metadata.channels !== 3 && metadata.space !== 'srgb') {
-            // console.log(`Image ${path} has ${metadata.channels} channels and will be transformed to sRGB`)
-            wrapper.toColorspace('sRGB');
-        }
 
         const images = new Map<number, SharpImage>();
+
         for (const rotation of rotations) {
-            // More `sharp` code.
-            const wrapperClone = wrapper.clone();
-            try {
-                const { data, info } = await wrapperClone.rotate(rotation).toBuffer({ resolveWithObject: true });
-                const channels = info.channels;
-                const width = info.width;
-                const height = info.height;
-                const grayscaleBuffer = SharpImage.toGrayscaleBuffer(new Uint8ClampedArray(data.buffer), width, height, channels);
-                const image = new SharpImage(wrapperClone, grayscaleBuffer, width, height);
-                images.set(rotation, image);
-                return images;
-            } catch (err) {
-                throw err;
-            }
+
+            const image = await this.loadWithRotation(path, rotation);
+
+            images.set(rotation, image);
         }
+
+        return images;
+    }
+
+    public static async loadWithRotation(path: string, rotation: number): Promise<SharpImage> {
+
+        // This `sharp` is not in the original ZXing.
+        const wrapper = sharp(path).raw();
+
+        const metadata: sharp.Metadata = await wrapper.metadata();
+
+        if (metadata.channels !== 3 && metadata.space !== 'srgb') {
+            // console.log(`Image ${path} has ${metadata.channels} channels and will be transformed to sRGB`)
+            wrapper.toColorspace('sRGB');
+        }
+
+        const { data, info } = await wrapper.rotate(rotation).toBuffer({ resolveWithObject: true });
+        const grayscaleBuffer = SharpImage.toGrayscaleBuffer(new Uint8ClampedArray(data.buffer), info.width, info.height, info.channels);
+
+        return new SharpImage(wrapper, grayscaleBuffer, info.width, info.height);
     }
 
     public static loadAsBitMatrix(path: string, done: (err: any, bitMatrix?: BitMatrix) => any): void {
