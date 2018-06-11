@@ -181,7 +181,7 @@ export default class MultiFormatReader implements Reader {
 
         for (const reader of this.readers) {
 
-            console.log(`Trying to decode with ${reader.constructor.name} reader.`);
+            // console.log(`Trying to decode with ${reader.constructor.name} reader.`);
 
             try {
                 return reader.decode(image, this.hints);
