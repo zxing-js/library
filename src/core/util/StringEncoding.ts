@@ -15,12 +15,11 @@ export default class StringEncoding {
         const encodingName = this.encodingName(encoding);
 
         // Node.js environment fallback.
-        // if (typeof TextDecoder === 'undefined') {
-        //     // fall back to minimal decoding
-        //     return StringEncoding.decodeFallBack(bytes, encodingName);
-        // }
+        if (!StringEncoding.isBrowser()) {
+            return new TextDecoderLegacy(encodingName).decode(bytes);
+        }
 
-        return new TextDecoderLegacy(encodingName).decode(bytes);
+        return new TextDecoder(encodingName).decode(bytes);
     }
 
     /**
@@ -32,8 +31,12 @@ export default class StringEncoding {
 
         const encodingName = this.encodingName(encoding);
 
+        if (!StringEncoding.isBrowser()) {
+            return new TextEncoderLegacy(encodingName, { NONSTANDARD_allowLegacyEncoding: true }).encode(s);
+        }
+
         // TextEncoder only encodes to UTF8 by default as specified by encoding.spec.whatwg.org
-        return new TextEncoderLegacy(encodingName, { NONSTANDARD_allowLegacyEncoding: true }).encode(s);
+        return new TextEncoder().encode(s);
     }
 
     private static isBrowser(): boolean {

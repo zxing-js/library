@@ -67,8 +67,10 @@
         "webpack": "./node_modules/.bin/webpack-cli"
     },
     "dependencies": {
-        "text-encoding": "^0.6.4",
         "ts-custom-error": "^2.2.1"
+    },
+    "peerDependencies": {
+        "text-encoding": "^0.6.4"
     },
     "devDependencies": {
         "@types/chai": "^4.1.2",
