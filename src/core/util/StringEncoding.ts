@@ -1,6 +1,6 @@
-import { TextEncoder as TextEncoderLegacy } from 'text-encoding';
+import { TextEncoder as TextEncoderLegacy, TextDecoder as TextDecoderLegacy } from 'text-encoding';
 import CharacterSetECI from './../common/CharacterSetECI';
-import UnsupportedOperationException from '../UnsupportedOperationException';
+import Exception from '../Exception';
 
 /**
  * Responsible for en/decoding strings.
@@ -15,12 +15,12 @@ export default class StringEncoding {
         const encodingName = this.encodingName(encoding);
 
         // Node.js environment fallback.
-        if (typeof TextDecoder === 'undefined') {
-            // fall back to minimal decoding
-            return StringEncoding.decodeFallBack(bytes, encodingName);
-        }
+        // if (typeof TextDecoder === 'undefined') {
+        //     // fall back to minimal decoding
+        //     return StringEncoding.decodeFallBack(bytes, encodingName);
+        // }
 
-        return new TextDecoder(encodingName).decode(bytes);
+        return new TextDecoderLegacy(encodingName).decode(bytes);
     }
 
     /**
@@ -70,6 +70,6 @@ export default class StringEncoding {
             return String.fromCharCode.apply(null, new Uint16Array(bytes.buffer));
         }
 
-        throw new UnsupportedOperationException(`Encoding ${encoding} not supported by fallback.`);
+        throw new Exception(Exception.UnsupportedOperationException, `Encoding ${encoding} not supported by fallback.`);
     }
 }
