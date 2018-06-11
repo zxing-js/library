@@ -164,8 +164,7 @@ export default class MultiFormatReader implements Reader {
     /*@Override*/
     public reset(): void {
         if (this.readers !== null) {
-            for (let i = 0, length = this.readers.length; i !== length; i++) {
-                const reader = this.readers[i];
+            for (const reader of this.readers) {
                 reader.reset();
             }
         }
@@ -181,6 +180,9 @@ export default class MultiFormatReader implements Reader {
         }
 
         for (const reader of this.readers) {
+
+            console.log(`Trying to decode with ${reader.constructor.name} reader.`);
+
             try {
                 return reader.decode(image, this.hints);
             } catch (ex) {

@@ -74,9 +74,11 @@ abstract class AbstractBlackBoxSpec {
         return testBase;
     }
 
-    protected constructor(testBasePathSuffix: string,
+    protected constructor(
+        testBasePathSuffix: string,
         private barcodeReader: Reader,
-        private expectedFormat: BarcodeFormat) {
+        private expectedFormat: BarcodeFormat
+    ) {
         this.testBase = AbstractBlackBoxSpec.buildTestBase(testBasePathSuffix);
         this.testResults = new Array<TestResult>();
     }
@@ -208,7 +210,7 @@ abstract class AbstractBlackBoxSpec {
                         misreadCounts[x]++;
                     }
                 } catch (e) {
-                    console.log(`could not read at rotation ${rotation} failed with ${e.constructor.name}.`);
+                    console.log(`could not read at rotation ${rotation} failed with ${e.constructor.name}. Message: ${e.message}`);
                 }
                 try {
                     if (this.decode(bitmap, rotation, expectedText, expectedMetadata, true)) {
@@ -310,8 +312,10 @@ abstract class AbstractBlackBoxSpec {
             result = this.barcodeReader.decode(source, hints);
         }
 
-        if (this.expectedFormat !== result.getBarcodeFormat()) {
-            console.warn(`Format mismatch: expected '${this.expectedFormat}' but got '${result.getBarcodeFormat()}'${suffix}`);
+        const resultFormat = result.getBarcodeFormat();
+
+        if (this.expectedFormat !== resultFormat) {
+            console.warn(`Format mismatch: expected '${this.expectedFormat}' but got '${resultFormat}'${suffix}`);
             return false;
         }
 
