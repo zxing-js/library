@@ -19,8 +19,9 @@
 import './InvertedLuminanceSource'; // required because of circular dependencies between LuminanceSource and InvertedLuminanceSource
 import InvertedLuminanceSource from './InvertedLuminanceSource';
 import LuminanceSource from './LuminanceSource';
-import Exception from './Exception';
+
 import System from './util/System';
+import IllegalArgumentException from './IllegalArgumentException';
 
 /**
  * This class is used to help decode images from files which arrive as RGB data from
@@ -95,14 +96,14 @@ export default class RGBLuminanceSource extends LuminanceSource {
             this.top = 0;
         }
         if (this.left + width > this.dataWidth || this.top + height > this.dataHeight) {
-            throw new Exception(Exception.IllegalArgumentException, 'Crop rectangle does not fit within image data.');
+            throw new IllegalArgumentException('Crop rectangle does not fit within image data.');
         }
     }
 
     /*@Override*/
     public getRow(y: number /*int*/, row?: Uint8ClampedArray): Uint8ClampedArray {
         if (y < 0 || y >= this.getHeight()) {
-            throw new Exception(Exception.IllegalArgumentException, 'Requested row is outside the image: ' + y);
+            throw new IllegalArgumentException('Requested row is outside the image: ' + y);
         }
         const width = this.getWidth();
         if (row === null || row === undefined || row.length < width) {

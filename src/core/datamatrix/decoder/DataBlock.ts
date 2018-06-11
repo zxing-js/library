@@ -1,5 +1,6 @@
 import Version from './Version';
-import Exception from './../../Exception';
+
+import IllegalArgumentException from '../../IllegalArgumentException';
 
 /*
  * Copyright 2008 ZXing authors
@@ -102,7 +103,7 @@ export default class DataBlock {
     }
 
     if (rawCodewordsOffset !== rawCodewords.length) {
-      throw new Exception(Exception.IllegalArgumentException);
+      throw new IllegalArgumentException();
     }
 
     return result;

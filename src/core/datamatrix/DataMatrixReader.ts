@@ -10,8 +10,9 @@ import BitMatrix from './../common/BitMatrix';
 import DecoderResult from './../common/DecoderResult';
 import DetectorResult from './../common/DetectorResult';
 import Detector from './detector/Detector';
-import Exception from './../Exception';
+
 import System from '../util/System';
+import NotFoundException from '../NotFoundException';
 
 /*
  * Copyright 2007 ZXing authors
@@ -106,7 +107,7 @@ export default class DataMatrixReader implements Reader {
     const leftTopBlack = image.getTopLeftOnBit();
     const rightBottomBlack = image.getBottomRightOnBit();
     if (leftTopBlack == null || rightBottomBlack == null) {
-      throw new Exception(Exception.NotFoundException);
+      throw new NotFoundException();
     }
 
     const moduleSize = this.moduleSize(leftTopBlack, image);
@@ -119,7 +120,7 @@ export default class DataMatrixReader implements Reader {
     const matrixWidth = (right - left + 1) / moduleSize;
     const matrixHeight = (bottom - top + 1) / moduleSize;
     if (matrixWidth <= 0 || matrixHeight <= 0) {
-      throw new Exception(Exception.NotFoundException);
+      throw new NotFoundException();
     }
 
     // Push in the "border" by half the module width so that we start
@@ -150,12 +151,12 @@ export default class DataMatrixReader implements Reader {
       x++;
     }
     if (x === width) {
-      throw new Exception(Exception.NotFoundException);
+      throw new NotFoundException();
     }
 
     const moduleSize = x - leftTopBlack[0];
     if (moduleSize === 0) {
-      throw new Exception(Exception.NotFoundException);
+      throw new NotFoundException();
     }
     return moduleSize;
   }

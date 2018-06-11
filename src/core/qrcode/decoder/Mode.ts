@@ -16,8 +16,9 @@
 
 /*namespace com.google.zxing.qrcode.decoder {*/
 
-import Exception from './../../Exception';
+
 import Version from './Version';
+import IllegalArgumentException from '../../IllegalArgumentException';
 
 export const enum ModeValues {
     TERMINATOR, // Not really a mode...
@@ -69,7 +70,7 @@ export default class Mode {
     public static forBits(bits: number /*int*/): Mode {
         const mode = Mode.FOR_BITS.get(bits);
         if (undefined === mode) {
-            throw new Exception(Exception.IllegalArgumentException);
+            throw new IllegalArgumentException();
         }
         return mode;
     }

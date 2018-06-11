@@ -17,12 +17,15 @@
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
 import DecodeHintType from '../DecodeHintType';
-import Exception from '../Exception';
+
 import Result from '../Result';
 import ResultMetadataType from '../ResultMetadataType';
 import ResultPoint from '../ResultPoint';
 import OneDReader from './OneDReader';
 import UPCEANExtensionSupport from './UPCEANExtensionSupport';
+import NotFoundException from '../NotFoundException';
+import FormatException from '../FormatException';
+import ChecksumException from '../ChecksumException';
 
 /**
  * <p>Encapsulates functionality and implementation that is common to UPC and EAN families
@@ -152,16 +155,16 @@ export default abstract class UPCEANReader extends OneDReader {
         let quietEnd = end + (end - endRange[0]);
 
         if (quietEnd >= row.getSize() || !row.isRange(end, quietEnd, false)) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         let resultString = result.toString();
         // UPC/EAN should never be less than 8 chars anyway
         if (resultString.length < 8) {
-            throw new Exception(Exception.FormatException);
+            throw new FormatException();
         }
         if (!UPCEANReader.checkChecksum(resultString)) {
-            throw new Exception(Exception.ChecksumException);
+            throw new ChecksumException();
         }
 
         let left = (startGuardRange[1] + startGuardRange[0]) / 2.0;
@@ -191,7 +194,7 @@ export default abstract class UPCEANReader extends OneDReader {
                 }
             }
             if (!valid) {
-                throw new Exception(Exception.NotFoundException);
+                throw new NotFoundException();
             }
         }
 
@@ -223,7 +226,7 @@ export default abstract class UPCEANReader extends OneDReader {
         for (let i = length - 1; i >= 0; i -= 2) {
             let digit = s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
             if (digit < 0 || digit > 9) {
-                throw new Exception(Exception.FormatException);
+                throw new FormatException();
             }
             sum += digit;
         }
@@ -231,7 +234,7 @@ export default abstract class UPCEANReader extends OneDReader {
         for (let i = length - 2; i >= 0; i -= 2) {
             let digit = s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
             if (digit < 0 || digit > 9) {
-                throw new Exception(Exception.FormatException);
+                throw new FormatException();
             }
             sum += digit;
         }
@@ -274,7 +277,7 @@ export default abstract class UPCEANReader extends OneDReader {
                 isWhite = !isWhite;
             }
         }
-        throw new Exception(Exception.NotFoundException);
+        throw new NotFoundException();
     }
 
     static decodeDigit(row: BitArray, counters: number[], rowOffset: number, patterns: number[][]) {
@@ -293,7 +296,7 @@ export default abstract class UPCEANReader extends OneDReader {
         if (bestMatch >= 0) {
             return bestMatch;
         } else {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
     }
 

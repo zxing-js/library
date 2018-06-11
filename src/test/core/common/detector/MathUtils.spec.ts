@@ -16,7 +16,6 @@
 
 /*package com.google.zxing.common.detector;*/
 
-import 'mocha';
 import * as assert from 'assert';
 import MathUtils from './../../../../core/common/detector/MathUtils';
 

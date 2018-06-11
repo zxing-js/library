@@ -19,7 +19,8 @@
 import ResultPointCallback from './../../ResultPointCallback';
 import BitMatrix from './../../common/BitMatrix';
 import AlignmentPattern from './AlignmentPattern';
-import Exception from './../../Exception';
+
+import NotFoundException from '../../NotFoundException';
 
 /*import java.util.ArrayList;*/
 /*import java.util.List;*/
@@ -142,7 +143,7 @@ export default class AlignmentPatternFinder {
             return this.possibleCenters[0];
         }
 
-        throw new Exception(Exception.NotFoundException);
+        throw new NotFoundException();
     }
 
     /**

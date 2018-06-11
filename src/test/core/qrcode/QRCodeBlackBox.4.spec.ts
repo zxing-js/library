@@ -16,8 +16,6 @@
 
 /*package com.google.zxing.qrcode;*/
 
-import 'mocha';
-
 import BarcodeFormat from './../../../core/BarcodeFormat';
 import MultiFormatReader from './../../../core/MultiFormatReader';
 import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
@@ -43,8 +41,6 @@ describe('QRCodeBlackBox.4', () => {
     it('testBlackBox', (done) => {
         const test = new QRCodeBlackBox4Spec();
 
-        return test.testBlackBox(() => {
-            done();
-        });
+        return test.testBlackBox(() => done());
     });
 });

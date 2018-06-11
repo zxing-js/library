@@ -22,9 +22,10 @@ import BarcodeFormat from '../BarcodeFormat';
 import Code128Reader from './Code128Reader';
 import Result from '../Result';
 import BitArray from './../common/BitArray';
-import Exception from '../Exception';
+
 import ITFReader from './ITFReader';
 import MultiFormatUPCEANReader from './MultiFormatUPCEANReader';
+import NotFoundException from '../NotFoundException';
 
 /**
  * @author Daniel Switkin <dswitkin@google.com>
@@ -99,7 +100,7 @@ export default class MultiFormatOneDReader extends OneDReader {
             }
         }
 
-        throw new Exception(Exception.NotFoundException);
+        throw new NotFoundException();
     }
 
     // @Override

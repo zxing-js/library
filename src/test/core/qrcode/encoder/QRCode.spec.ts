@@ -16,7 +16,6 @@
 
 /*package com.google.zxing.qrcode.encoder;*/
 
-import 'mocha';
 import * as assert from 'assert';
 import ErrorCorrectionLevel from './../../../../core/qrcode/decoder/ErrorCorrectionLevel';
 import Mode from './../../../../core/qrcode/decoder/Mode';

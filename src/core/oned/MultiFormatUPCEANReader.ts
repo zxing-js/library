@@ -17,11 +17,12 @@
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
 import DecodeHintType from '../DecodeHintType';
-import Exception from '../Exception';
+
 import Result from '../Result';
 import OneDReader from './OneDReader';
 import UPCEANReader from './UPCEANReader';
 import EAN13Reader from './EAN13Reader';
+import NotFoundException from '../NotFoundException';
 
 /**
  * <p>A reader that can read all available UPC/EAN formats. If a caller wants to try to
@@ -61,7 +62,7 @@ export default class MultiFormatUPCEANReader extends OneDReader {
                 // continue;
             }
         }
-        throw new Exception(Exception.NotFoundException);
+        throw new NotFoundException();
     }
 
     public reset() {

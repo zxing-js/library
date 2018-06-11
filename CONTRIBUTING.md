@@ -71,7 +71,6 @@ Will became: `StringEncoding.decode(<ByteArray>, encoding)`.
   - `common/AbstractNegativeBlackBoxTestCase.java`
   - `common/AbstractBlackBoxTestCase.java`
 - `Cp437` not supported by TextEncoding library see `DecodedBitStreamParserTestCase`.
-- Need to completely redesign exception based "not found" pattern as exceptions do not work on node async environment.
 - Replace `instanceof` with something more robust.
 - Simplify double `null !== <something> && undefined !== <something>` checks.
 

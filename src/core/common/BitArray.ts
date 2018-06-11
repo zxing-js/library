@@ -21,7 +21,8 @@
 import System from './../util/System';
 import Integer from './../util/Integer';
 import Arrays from './../util/Arrays';
-import Exception from './../Exception';
+
+import IllegalArgumentException from '../IllegalArgumentException';
 
 /**
  * <p>A simple, fast array of bits, represented compactly by an array of ints internally.</p>
@@ -176,7 +177,7 @@ export default class BitArray /*implements Cloneable*/ {
      */
     public setRange(start: number /*int*/, end: number /*int*/): void {
         if (end < start || start < 0 || end > this.size) {
-            throw new Exception(Exception.IllegalArgumentException);
+            throw new IllegalArgumentException();
         }
         if (end === start) {
             return;
@@ -216,7 +217,7 @@ export default class BitArray /*implements Cloneable*/ {
      */
     public isRange(start: number /*int*/, end: number /*int*/, value: boolean): boolean {
         if (end < start || start < 0 || end > this.size) {
-            throw new Exception(Exception.IllegalArgumentException);
+            throw new IllegalArgumentException();
         }
         if (end === start) {
             return true; // empty range matches
@@ -258,7 +259,7 @@ export default class BitArray /*implements Cloneable*/ {
      */
     public appendBits(value: number /*int*/, numBits: number /*int*/): void {
         if (numBits < 0 || numBits > 32) {
-            throw new Exception(Exception.IllegalArgumentException, 'Num bits must be between 0 and 32');
+            throw new IllegalArgumentException('Num bits must be between 0 and 32');
         }
         this.ensureCapacity(this.size + numBits);
         const appendBit = this.appendBit;
@@ -278,7 +279,7 @@ export default class BitArray /*implements Cloneable*/ {
 
     public xor(other: BitArray): void {
         if (this.size !== other.size) {
-            throw new Exception(Exception.IllegalArgumentException, 'Sizes don\'t match');
+            throw new IllegalArgumentException('Sizes don\'t match');
         }
         const bits = this.bits;
         for (let i = 0, length = bits.length; i < length; i++) {

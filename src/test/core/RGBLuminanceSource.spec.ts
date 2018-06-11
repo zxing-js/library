@@ -16,7 +16,6 @@
 
 /*package com.google.zxing;*/
 
-import 'mocha';
 import * as assert from 'assert';
 import AssertUtils from './util/AssertUtils';
 import LuminanceSource from '../../core/LuminanceSource';

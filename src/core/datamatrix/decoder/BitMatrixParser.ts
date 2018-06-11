@@ -1,6 +1,8 @@
 import BitMatrix from '../../common/BitMatrix';
 import Version from './Version';
-import Exception from './../../Exception';
+
+import FormatException from '../../FormatException';
+import IllegalArgumentException from '../../IllegalArgumentException';
 
 /*
  * Copyright 2007 ZXing authors
@@ -34,7 +36,7 @@ export default class BitMatrixParser {
   constructor(bitMatrix: BitMatrix) {
     const dimension = bitMatrix.getHeight();
     if (dimension < 8 || dimension > 144 || (dimension & 0x01) !== 0) {
-      throw new Exception(Exception.FormatException);
+      throw new FormatException();
     }
 
     this.version = BitMatrixParser.readVersion(bitMatrix);
@@ -136,7 +138,7 @@ export default class BitMatrixParser {
     } while ((row < numRows) || (column < numColumns));
 
     if (resultOffset !== this.version.getTotalCodewords()) {
-      throw new Exception(Exception.FormatException);
+      throw new FormatException();
     }
     return result;
   }
@@ -403,7 +405,7 @@ export default class BitMatrixParser {
     const symbolSizeColumns = this.version.getSymbolSizeColumns();
 
     if (bitMatrix.getHeight() !== symbolSizeRows) {
-      throw new Exception(Exception.IllegalArgumentException, 'Dimension of bitMatrix must match the version size');
+      throw new IllegalArgumentException('Dimension of bitMatrix must match the version size');
     }
 
     const dataRegionSizeRows = this.version.getDataRegionSizeRows();

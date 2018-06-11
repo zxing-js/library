@@ -16,11 +16,12 @@
 
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
-import Exception from '../Exception';
+
 import UPCEANReader from './UPCEANReader';
 import Result from '../Result';
 import ResultPoint from '../ResultPoint';
 import ResultMetadataType from '../ResultMetadataType';
+import NotFoundException from '../NotFoundException';
 
 /**
  * @see UPCEANExtension5Support
@@ -79,11 +80,11 @@ export default class UPCEANExtension2Support {
         }
 
         if (resultString.length !== 2) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         if (parseInt(resultString.toString()) % 4 !== checkParity) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         return rowOffset;

@@ -19,7 +19,8 @@
 import GridSampler from './GridSampler';
 import BitMatrix from './BitMatrix';
 import PerspectiveTransform from './PerspectiveTransform';
-import Exception from './../Exception';
+
+import NotFoundException from '../NotFoundException';
 
 /**
  * @author Sean Owen
@@ -52,7 +53,7 @@ export default class DefaultGridSampler extends GridSampler {
         dimensionY: number /*int*/,
         transform: PerspectiveTransform): BitMatrix /*throws NotFoundException*/ {
         if (dimensionX <= 0 || dimensionY <= 0) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
         const bits = new BitMatrix(dimensionX, dimensionY);
         const points = new Float32Array(2 * dimensionX);
@@ -82,7 +83,7 @@ export default class DefaultGridSampler extends GridSampler {
                 // This results in an ugly runtime exception despite our clever checks above -- can't have
                 // that. We could check each point's coordinates but that feels duplicative. We settle for
                 // catching and wrapping ArrayIndexOutOfBoundsException.
-                throw new Exception(Exception.NotFoundException);
+                throw new NotFoundException();
             }
         }
         return bits;
