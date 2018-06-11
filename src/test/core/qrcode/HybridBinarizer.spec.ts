@@ -15,7 +15,7 @@ describe('HybridBinarizer', () => {
         try {
             images = await SharpImage.loadWithRotations(path.resolve('src/test/core/resources/blackbox/common/simple.png'), [0]);
         } catch (ex) {
-            assert.ok(false, (<Exception>ex).message);
+            assert.ok(false, ex);
             done(ex);
         }
 
