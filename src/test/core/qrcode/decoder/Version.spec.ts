@@ -16,7 +16,6 @@
 
 /*package com.google.zxing.qrcode.decoder;*/
 
-import 'mocha';
 import * as assert from 'assert';
 
 import ErrorCorrectionLevel from './../../../../core/qrcode/decoder/ErrorCorrectionLevel';
@@ -31,8 +30,8 @@ describe('Version', () => {
         try {
             Version.getVersionForNumber(0);
             assert.ok(false, 'Should have thrown an exception');
-        } catch (iae/*IllegalArgumentException */) {
-            // good
+        } catch (ex) {
+            // good for IllegalArgumentException
         }
         for (let i: number /*int*/ = 1; i <= 40; i++) {
             checkVersion(Version.getVersionForNumber(i), i, 4 * i + 17);

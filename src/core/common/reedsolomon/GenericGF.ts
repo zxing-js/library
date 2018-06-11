@@ -17,8 +17,10 @@
 /*namespace com.google.zxing.common.reedsolomon {*/
 
 import GenericGFPoly from './GenericGFPoly';
-import Exception from './../../Exception';
+
 import Integer from './../../util/Integer';
+import IllegalArgumentException from '../../IllegalArgumentException';
+import ArithmeticException from '../../ArithmeticException';
 
 /**
  * <p>This class contains utility methods for performing mathematical operations over
@@ -96,7 +98,7 @@ export default class GenericGF {
      */
     public buildMonomial(degree: number /*int*/, coefficient: number /*int*/): GenericGFPoly {
         if (degree < 0) {
-            throw new Exception(Exception.IllegalArgumentException);
+            throw new IllegalArgumentException();
         }
         if (coefficient === 0) {
             return this.zero;
@@ -127,7 +129,7 @@ export default class GenericGF {
      */
     public log(a: number /*int*/): number /*int*/ {
         if (a === 0) {
-            throw new Exception(Exception.IllegalArgumentException);
+            throw new IllegalArgumentException();
         }
         return this.logTable[a];
     }
@@ -137,7 +139,7 @@ export default class GenericGF {
      */
     public inverse(a: number /*int*/): number /*int*/ {
         if (a === 0) {
-            throw new Exception(Exception.ArithmeticException);
+            throw new ArithmeticException();
         }
         return this.expTable[this.size - this.logTable[a] - 1];
     }

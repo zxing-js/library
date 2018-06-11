@@ -20,8 +20,11 @@ import Result from './Result';
 import BinaryBitmap from './BinaryBitmap';
 import BarcodeFormat from './BarcodeFormat';
 import QRCodeReader from './qrcode/QRCodeReader';
-import Exception from './Exception';
+
 import MultiFormatOneDReader from './oned/MultiFormatOneDReader';
+import DataMatrixReader from './datamatrix/DataMatrixReader';
+import NotFoundException from './NotFoundException';
+import ReaderException from './ReaderException';
 
 /*namespace com.google.zxing {*/
 
@@ -45,10 +48,11 @@ export default class MultiFormatReader implements Reader {
      *
      * @param image The pixel data to decode
      * @return The contents of the image
+     *
      * @throws NotFoundException Any errors which occurred
      */
     /*@Override*/
-    // public decode(image: BinaryBitmap): Result /*throws NotFoundException */ {
+    // public decode(image: BinaryBitmap): Result {
     //   setHints(null)
     //   return decodeInternal(image)
     // }
@@ -59,10 +63,11 @@ export default class MultiFormatReader implements Reader {
      * @param image The pixel data to decode
      * @param hints The hints to use, clearing the previous state.
      * @return The contents of the image
+     *
      * @throws NotFoundException Any errors which occurred
      */
     /*@Override*/
-    public decode(image: BinaryBitmap, hints?: Map<DecodeHintType, any>): Result /*throws NotFoundException */ {
+    public decode(image: BinaryBitmap, hints?: Map<DecodeHintType, any>): Result {
         this.setHints(hints);
         return this.decodeInternal(image);
     }
@@ -73,9 +78,10 @@ export default class MultiFormatReader implements Reader {
      *
      * @param image The pixel data to decode
      * @return The contents of the image
+     *
      * @throws NotFoundException Any errors which occurred
      */
-    public decodeWithState(image: BinaryBitmap): Result /*throws NotFoundException */ {
+    public decodeWithState(image: BinaryBitmap): Result {
         // Make sure to set up the default state so we don't crash
         if (this.readers === null || this.readers === undefined) {
             this.setHints(null);
@@ -120,9 +126,9 @@ export default class MultiFormatReader implements Reader {
             if (formats.contains(BarcodeFormat.QR_CODE)) {
                 readers.push(new QRCodeReader());
             }
-            // if (formats.contains(BarcodeFormat.DATA_MATRIX)) {
-            //   readers.push(new DataMatrixReader())
-            // }
+            if (formats.contains(BarcodeFormat.DATA_MATRIX)) {
+              readers.push(new DataMatrixReader());
+            }
             // if (formats.contains(BarcodeFormat.AZTEC)) {
             //   readers.push(new AztecReader())
             // }
@@ -143,7 +149,7 @@ export default class MultiFormatReader implements Reader {
             }
 
             readers.push(new QRCodeReader());
-            // readers.push(new DataMatrixReader())
+            readers.push(new DataMatrixReader());
             // readers.push(new AztecReader())
             // readers.push(new PDF417Reader())
             // readers.push(new MaxiCodeReader())
@@ -158,28 +164,39 @@ export default class MultiFormatReader implements Reader {
     /*@Override*/
     public reset(): void {
         if (this.readers !== null) {
-            for (let i = 0, length = this.readers.length; i !== length; i++) {
-                const reader = this.readers[i];
+            for (const reader of this.readers) {
                 reader.reset();
             }
         }
     }
 
-    private decodeInternal(image: BinaryBitmap): Result /*throws NotFoundException */ {
-        if (this.readers !== null) {
-            for (let i = 0, length = this.readers.length; i !== length; i++) {
-                const reader = this.readers[i];
-                try {
-                    return reader.decode(image, this.hints);
-                } catch (re/*ReaderException*/) {
-                    // console.log(`Exception ${re.type} ${re.message}`)
-                    if (re.type === 'ReaderException') {
-                        continue;
-                    }
+    /**
+     * @throws NotFoundException
+     */
+    private decodeInternal(image: BinaryBitmap): Result {
+
+        if (this.readers === null) {
+            throw new ReaderException('No readers where selected, nothing can be read.');
+        }
+
+        for (const reader of this.readers) {
+
+            // console.log(`Trying to decode with ${reader.constructor.name} reader.`);
+
+            try {
+                return reader.decode(image, this.hints);
+            } catch (ex) {
+                if (ex instanceof ReaderException) {
+                    continue;
                 }
+
+                // Uncomment for test outputting.
+                // const extra = !ex.message ? '.' : ` with the message: \n\n\t${ex.message}\n\n`;
+                // console.error('[decodeInternal]', `Exception of type \`${ex.constructor.name}\` was thrown${extra}`);
             }
         }
-        throw new Exception(Exception.NotFoundException);
+
+        throw new NotFoundException('No MultiFormat Readers were able to detect the code.');
     }
 
 }

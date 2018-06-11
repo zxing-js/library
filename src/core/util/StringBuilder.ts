@@ -30,4 +30,8 @@ export default class StringBuilder {
     public toString(): string {
         return this.value;
     }
+
+    public insert(n: number, c: string) {
+        this.value = this.value.substr(0, n) + c + this.value.substr(n + c.length);
+    }
 }

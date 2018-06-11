@@ -2,32 +2,34 @@
 
 # ZXing
 
-## Written in TypeScript, Deployed in JavaScript
+### Runs on your favorite ECMAScript ecosystem
 
-Multi-format 1D/2D barcode image processing library.
+> If it doesn't, we gonna make it.
+
+## What is ZXing?
 
 > [ZXing][1] ("zebra crossing") is an open-source, multi-format 1D/2D barcode image processing library implemented in Java, with ports to other languages.
 
 ## Supported Formats
 
-**_WIP_**: see [Status and Roadmap](#roadmap) for what is currently done and what's planned next. 👀
+> See [Projects](https://github.com/zxing-js/library/projects) and [Milestones](https://github.com/zxing-js/library/milestones) for what is currently done and what's planned next. 👀
 
-| 1D product | 1D industrial            | 2D
-| ---------- | ------------------------ | --------------
-| ~UPC-A~    | ~Code 39~                | QR Code
-| ~UPC-E~    | ~Code 93~                | ~Data Matrix~
-| ~EAN-8~    | Code 128 (_no docs_)     | ~Aztec (beta)~
-| ~EAN-13~   | ~Codabar~                | PDF 417 (_in-progress_)
-|            | ITF (_in-progress_)      | ~MaxiCode~
-|            | ~RSS-14~                 |
-|            | ~RSS-Expanded~           |
+| 1D product         | 1D industrial        | 2D
+| ------------------ | -------------------- | --------------
+| ~UPC-A~            | ~Code 39~            | QR Code
+| ~UPC-E~            | ~Code 93~            | Data Matrix (_no docs_)
+| ~EAN-8~            | Code 128 (_no docs_) | ~Aztec (beta)~
+| EAN-13 (_no docs_) | ~Codabar~            | PDF 417 (_in-progress_)
+|                    | ITF (_no docs_)      | ~MaxiCode~
+|                    | ~RSS-14~             |
+|                    | ~RSS-Expanded~       |
 
 ## Status
 
 [![Build Status](https://travis-ci.org/zxing-js/library.svg?branch=master)](https://travis-ci.org/zxing-js/library)
 
 [![NPM version](https://img.shields.io/npm/v/@zxing/library.svg?&label=npm)][0]
-[![NPM downloads](https://img.shields.io/npm/dt/@zxing/library.svg?&label=npm%20downloads)][0]
+[![npm](https://img.shields.io/npm/dm/localeval.svg)][0]
 ![Dependencies](https://david-dm.org/zxing-js/library.svg)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/39d86bc5d5f04bc8953cc68d729807b0)](https://www.codacy.com/app/zxing-js/library?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zxing-js/library&amp;utm_campaign=Badge_Grade)
@@ -36,55 +38,55 @@ Multi-format 1D/2D barcode image processing library.
 
 ## Demo
 
-See [some demo examples](https://zxing-js.github.io/library/) in browser.
+See [Live Preview](https://zxing-js.github.io/library/) in browser.
+
+**Note:** All the examples are using ES6, be sure is supported in your browser or modify as needed, Chrome recomended.
 
 ## Usage
 
-The library can be used from browser with TypeScript (include anything from src/browser however you must do the packaging yourself) or with plain javascript (see below). It can also be used from node (see also below). The library is using separate builds for node and browser to allow different ES targeting.
+### Instalation
+
+`npm i @zxing/library --save`
+
+or
+
+`yarn add @zxing/library`
 
 ### Environments
 
-#### Browser
-
 Examples below are for QR barcode, all other supported barcodes work similary.
 
-`npm i @zxing/library --save`
+#### Browser
 
 To use from JS you need to include what you need from `build/umd` folder (for example `zxing.min.js`).
 
-See [some demo examples](https://github.com/odahcam/zxing-ts/tree/master/docs/examples) for browser code examples with javascript.
+##### Browser Support
 
-All the examples are using ES6, be sure is supported in your browser or modify as needed (eg. var instead of const etc.). 
+The browser layer is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web API which is not supported by older browsers.
 
-The browser library is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web api which is marked as experimental as of this writing. You can use external polyfills like [webrtc-adapter](https://github.com/webrtc/adapter) to increase browser compatiblity.
+_You can use external polyfills like [WebRTC adapter](https://github.com/webrtc/adapter) to increase browser compatiblity._
 
-Also, note that the library is using the [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (Int32Array, Uint8ClampedArray, etc.) which are not available in older browsers (for example Android 4 default browser, etc.). You can use a polyfill library like [core-js](https://github.com/zloirock/core-js) to support these browsers.
+Also, note that the library is using the [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (`Int32Array`, `Uint8ClampedArray`, etc.) which are not available in older browsers (e.g. Android 4 default browser).
+
+_You can use [core-js](https://github.com/zloirock/core-js) to add support to these browsers._
 
 #### TypeScript
 
-Install the package:
+You can include directly the classes you need, for example:
 
-`npm i @zxing/library --save`
-
-And then include directly the classes files you need, for example:
-
-```javascript
+```typescript
 import { BrowserQRCodeReader, VideoInputDevice } from '@zxing/library';
 ```
 
-The usage is identical with the above.
-
 #### Node
 
-`npm i @zxing/library --save`
+To use in node you will need to provide an implementation of [`LuminanceSource`](https://github.com/zxing-js/library/blob/master/src/core/LuminanceSource.ts) for an image. A starting point is [`SharpImageLuminanceSource`](https://github.com/zxing-js/library/blob/master/src/test/core/SharpImageLuminanceSource.ts) from tests that is using [sharp image processing](https://github.com/lovell/sharp) Node library.
 
-To use in node you will need to provide an implementation of [`LuminanceSource`](https://github.com/odahcam/zxing-ts/blob/master/src/core/LuminanceSource.ts) for an image. A starting point is [`SharpImageLuminanceSource`](https://github.com/odahcam/zxing-ts/blob/master/src/test/core/SharpImageLuminanceSource.ts) from tests that is using [sharp image processing](https://github.com/lovell/sharp) node library.
-
-No examples are availabe for now, however you can have a look at the extensive [tests cases](https://github.com/odahcam/zxing-ts/tree/master/src/test/core/qrcode).
+No examples are availabe for now, however you can have a look at the extensive [tests cases](https://github.com/zxing-js/library/tree/master/src/test/core/qrcode).
 
 ### Scanning from Video Camera
 
-To display the input from the video camera you will need to add a video element in the html page:
+To display the input from the video camera you will need to add a video element in the HTML page:
 
 ```html
 <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
@@ -96,13 +98,12 @@ To start decoding, first obtain a list of video input devices with:
 const codeReader = new ZXing.BrowserQRCodeReader();
 
 codeReader.getVideoInputDevices()
-    .then((videoInputDevices) => {
-        videoInputDevices.forEach((element) => {
-            console.log(`${element.label}, ${element.deviceId}`);          
-        });
-    .catch((err) => {
-        console.error(err);
-    });
+    .then(videoInputDevices => {
+        videoInputDevices.forEach(
+            device => console.log(`${device.label}, ${device.deviceId}`)
+        );
+    })
+    .catch(err => console.error(err));
 ```
 
 If there is just one input device you can use the first deviceId and the video element id (in the example below is also 'video') to decode:
@@ -111,11 +112,8 @@ If there is just one input device you can use the first deviceId and the video e
 const firstDeviceId = videoInputDevices[0].deviceId;
 
 codeReader.decodeFromInputVideoDevice(firstDeviceId, 'video')
-    .then((result) => {
-        console.log(result.text);
-    }).catch((err) => {
-        console.error(err);
-    });
+    .then(result => console.log(result.text))
+    .catch(err => console.error(err));
 ```
 
 If there are more input devices then you will need to chose one for `codeReader.decodeFromInputVideoDevice` device id parameter.
@@ -124,17 +122,13 @@ You can also provide `undefined` for the device id parameter in which case the l
 
 ```javascript
 codeReader.decodeFromInputVideoDevice(undefined, 'video')
-    .then((result) => {
-        console.log(result.text);
-    }).catch((err) => {
-        console.error(err);
-    });
+    .then(result => console.log(result.text))
+    .catch(err => console.error(err));
 ```
 
-A full working example for [QR Code from Video Camera](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/qr-camera/) is provided in the [examples](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/).
-
 ### Scanning from Video File
-Similar as above you can use a video element in the html page:
+
+Similar as above you can use a video element in the HTML page:
 
 ```html
 <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
@@ -147,29 +141,21 @@ const codeReader = new ZXing.BrowserQRCodeReader();
 const videoSrc = 'your url to a video';
 
 codeReader.decodeFromVideoSource(videoSrc, 'video')
-    .then((result) => {
-        console.log(result.text);
-    }).catch((err) => {
-        console.error(err);
-    });
+    .then(result => console.log(result.text))
+    .catch(err => console.error(err));
 ```
 
-You can also decode the video url without showing it in the page, in this case no `video` element is needed in html.
+You can also decode the video url without showing it in the page, in this case no `video` element is needed in HTML.
 
 ```javascript
 codeReader.decodeFromVideoSource(videoSrc)
-    .then((result) => {
-        console.log(result.text);
-    }).catch((err) => {
-        console.error(err);
-    });
+    .then(result => console.log(result.text))
+    .catch(err => console.error(err));
 ```
 
-A full working example for [QR Code from Video File](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/qr-video/) is provided in the [examples](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/).
-
-
 ### Scanning from Image
-Similar as above you can use a img element in the html page (with src attribute set):
+
+Similar as above you can use a img element in the HTML page (with src attribute set):
 
 ```html
 <img id="img" src="qrcode-image.png" width="200" height="300" style="border: 1px solid gray"></img>
@@ -182,24 +168,18 @@ const codeReader = new ZXing.BrowserQRCodeReader();
 const img = document.getElementById('img');
 
 codeReader.decodeFromImage(img)
-    .then((result) => {
-        console.log(result.text);
-    }).catch((err) => {
-        console.error(err);
-    });
+    .then(result => console.log(result.text))
+    .catch(err => console.error(err));
 ```
 
-You can also decode the image url without showing it in the page, in this case no `img` element is needed in html:
+You can also decode the image url without showing it in the page, in this case no `img` element is needed in HTML:
 
 ```javascript
 const imgSrc = 'url to image';
 
 codeReader.decodeFromImage(undefined, imgSrc)
-    .then((result) => {
-        console.log(result.text);
-    }).catch((err) => {
-        console.error(err);
-    });
+    .then(result => console.log(result.text))
+    .catch(err => console.error(err));
 ```
 
 Or decode the image url directly from an url, with an `img` element in page (notice no `src` attribute is set for `img` element):
@@ -210,16 +190,12 @@ Or decode the image url directly from an url, with an `img` element in page (not
 
 ```javascript
 const imgSrc = 'url to image';
+const imgDomId = 'img-to-decode';
 
-codeReader.decodeFromImage('img', imgSrc); // here img is the image id from html, in our case 'img'
-    .then((result) => {
-        console.log(result.text);
-    }).catch((err) => {
-        console.error(err);
-    });
+codeReader.decodeFromImage(imgDomId, imgSrc)
+    .then(result => console.log(result.text))
+    .catch(err => console.error(err));
 ```
-
-A full working example for [QR Code from Image](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/qr-image/) is provided in the [examples](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/).
 
 ### Barcode generation
 
@@ -233,32 +209,16 @@ And then:
 
 ```javascript
 const codeWriter = new ZXing.BrowserQRCodeSvgWriter('result');
-var svgElement = codeWriter.write(input, 300, 300);
+const svgElement = codeWriter.write(input, 300, 300);
 ```
-
-A full working example for [QR Code write to SVG](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/qr-svg-writer/) is provided in the [examples](https://github.com/odahcam/zxing-ts/tree/master/docs/examples/).
-
-### Text Encoding and Decoding
-
-To decode a barcode, the library needs at some point to decode from bits to text. Also, to generate a barcode it needs to encode text to bits. Unfortunately, the state of encoding and decoding text in javascript/browser is somehow messy at the moment. 
-
-To have full support for all encodings in [CharacterSetECI](https://github.com/odahcam/zxing-ts/blob/master/src/core/common/CharacterSetECI.ts) *except Cp437* use [text-encoding](https://github.com/inexorabletash/text-encoding) library. The library is used implicitly for node (and tests), but is an optional dependency for browser because is rather large (> 600k). You will need to include it yourself if you want/need to use it.
-
-By default, in browser, [TextDecoder](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder)/[TextEncoder](https://developer.mozilla.org/ro/docs/Web/API/TextEncoder) web api are used if available (take care as these are labeled as experimental as of this writing). Also, be aware that TextEncoder encodes only to UTF-8 as per spec. If these are not available the library falls back to a minimal implementation that only encodes and decodes to/from UTF-8 (see [`StringEncoding`](https://github.com/odahcam/zxing-ts/blob/master/src/core/util/StringEncoding.ts)).
-
-## Roadmap
-
-- [Projects](/zxing-js/library/projects).
-- [Milestones](/zxing-js/library/milestones).
 
 ### Porting Information
 
-See [TypeScript Port Info](typescriptport.md) for information regarding porting approach and reasoning behind some of the approaches taken.
+See [Contributing Guide](https://github.com/zxing-js/library/blob/master/CONTRIBUTING.md) for information regarding porting approach and reasoning behind some of the approaches taken.
 
 ---
 
 [![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/)
-
 
 [0]: https://www.npmjs.com/package/@zxing/library
 [1]: https://github.com/zxing/zxing

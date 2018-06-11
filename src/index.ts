@@ -1,9 +1,10 @@
 // browser
-export { default as BrowserCodeReader } from './browser/BrowserCodeReader';
+export * from './browser/BrowserCodeReader';
 export * from './browser/BrowserQRCodeReader';
+export * from './browser/BrowserDatamatrixCodeReader';
 export * from './browser/BrowserQRCodeSvgWriter';
-export { default as HTMLCanvasElementLuminanceSource } from './browser/HTMLCanvasElementLuminanceSource';
-export { default as VideoInputDevice } from './browser/VideoInputDevice';
+export * from './browser/HTMLCanvasElementLuminanceSource';
+export * from './browser/VideoInputDevice';
 export * from './browser/BrowserBarcodeReader';
 
 // core
@@ -50,11 +51,12 @@ export { default as GenericGFPoly } from './core/common/reedsolomon/GenericGFPol
 export { default as ReedSolomonDecoder } from './core/common/reedsolomon/ReedSolomonDecoder';
 export { default as ReedSolomonEncoder } from './core/common/reedsolomon/ReedSolomonEncoder';
 
-// core/qrcode
+// core/twod/qrcode
 export { default as QRCodeReader } from './core/qrcode/QRCodeReader';
 export { default as QRCodeWriter } from './core/qrcode/QRCodeWriter';
 
 // core/oned
 export { default as OneDReader } from './core/oned/OneDReader';
+export { default as EAN13Reader } from './core/oned/EAN13Reader';
 export { default as Code128Reader } from './core/oned/Code128Reader';
 export { default as ITFReader } from './core/oned/ITFReader';

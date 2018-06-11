@@ -17,7 +17,8 @@
 /*namespace com.google.zxing.qrcode.encoder {*/
 
 import ByteMatrix from './ByteMatrix';
-import Exception from './../../Exception';
+
+import IllegalArgumentException from '../../IllegalArgumentException';
 
 /**
  * @author Satoru Takabayashi
@@ -186,7 +187,7 @@ export default class MaskUtil {
                 intermediate = ((temp % 3) + ((y + x) & 0x1)) & 0x1;
                 break;
             default:
-                throw new Exception(Exception.IllegalArgumentException, 'Invalid mask pattern: ' + maskPattern);
+                throw new IllegalArgumentException('Invalid mask pattern: ' + maskPattern);
         }
         return intermediate === 0;
     }

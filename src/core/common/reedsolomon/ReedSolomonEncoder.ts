@@ -21,8 +21,9 @@
 
 import GenericGF from './GenericGF';
 import GenericGFPoly from './GenericGFPoly';
-import Exception from './../../Exception';
+
 import System from './../../util/System';
+import IllegalArgumentException from '../../IllegalArgumentException';
 
 /**
  * <p>Implements Reed-Solomon encoding, as the name implies.</p>
@@ -58,11 +59,11 @@ export default class ReedSolomonEncoder {
 
     public encode(toEncode: Int32Array, ecBytes: number /*int*/): void {
         if (ecBytes === 0) {
-            throw new Exception(Exception.IllegalArgumentException, 'No error correction bytes');
+            throw new IllegalArgumentException('No error correction bytes');
         }
         const dataBytes = toEncode.length - ecBytes;
         if (dataBytes <= 0) {
-            throw new Exception(Exception.IllegalArgumentException, 'No data bytes provided');
+            throw new IllegalArgumentException('No data bytes provided');
         }
         const generator = this.buildGenerator(ecBytes);
         const infoCoefficients: Int32Array = new Int32Array(dataBytes);

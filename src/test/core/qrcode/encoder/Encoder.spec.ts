@@ -16,7 +16,6 @@
 
 /*package com.google.zxing.qrcode.encoder;*/
 
-import 'mocha';
 import * as assert from 'assert';
 
 import Encoder from './../../../../core/qrcode/encoder/Encoder';
@@ -29,9 +28,7 @@ import Version from './../../../../core/qrcode/decoder/Version';
 import QRCode from './../../../../core/qrcode/encoder/QRCode';
 import StringBuilder from './../../../../core/util/StringBuilder';
 import StringEncoding from './../../../../core/util/StringEncoding';
-import Exception from './../../../../core/Exception';
-
-import { TextDecoder, TextEncoder } from 'text-encoding';
+import WriterException from './../../../../core/WriterException';
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator
@@ -141,11 +138,7 @@ describe('Encoder', () => {
                 hints.set(EncodeHintType.QR_VERSION, 3);
                 Encoder.encode('THISMESSAGEISTOOLONGFORAQRCODEVERSION3', ErrorCorrectionLevel.H, hints);
             },
-            function (ex: any) {
-                if (Exception.isOfType(ex, Exception.WriterException)) {
-                    return true;
-                }
-            },
+            WriterException,
             'unexpected exception thrown'
         );
     });
@@ -307,7 +300,7 @@ describe('Encoder', () => {
         try {
             Encoder.appendBytes('a', Mode.ALPHANUMERIC, bits, Encoder.DEFAULT_BYTE_MODE_ENCODING);
         } catch (we/*WriterException*/) {
-            if (Exception.isOfType(we, Exception.WriterException)) {
+            if (we instanceof WriterException) {
                 // good
             } else {
                 throw we;
@@ -597,7 +590,7 @@ describe('Encoder', () => {
         try {
             return StringEncoding.decode(bytes, CharacterSetECI.SJIS.getName());
         } catch (uee/*UnsupportedEncodingException*/) {
-            throw new Exception(Exception.WriterException, uee.toString());
+            throw new WriterException(uee.toString());
         }
     }
 

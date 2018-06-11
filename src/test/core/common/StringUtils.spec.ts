@@ -16,7 +16,6 @@
 
 /*package com.google.zxing.common;*/
 
-import 'mocha';
 import * as assert from 'assert';
 
 import StringUtils from './../../../core/common/StringUtils';

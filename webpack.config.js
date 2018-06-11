@@ -3,13 +3,11 @@ const camelCaseToDash = (str) => str.replace(/([a-z])([A-Z])/g, '$1-$2').toLower
 const dashToCamelCase = (str) => str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 const toUpperCase = (str) => `${str.charAt(0).toUpperCase()}${str.substr(1)}`;
 const pascalCase = (str) => toUpperCase(dashToCamelCase(str));
-const normalizePackageName = (rawPkgName) => rawPkgName.substring(rawPkgName.indexOf('/') + 1);
 
 // webpack requires
 const webpack = require('webpack');
 
 const {
-    getIfUtils,
     removeEmpty
 } = require('webpack-config-utils');
 
@@ -20,25 +18,21 @@ const {
     resolve
 } = require('path');
 
-const packageJSON = require('./package.json');
-const packageName = normalizePackageName(packageJSON.name);
-
 /**
  * this is equal to 'webpack --env=dev'
  *
  * @see https://webpack.js.org/configuration/configuration-types/#exporting-a-function-to-use-env
  */
-const config = (env = 'dev') => {
+const config = (env, argv) => {
 
-    const {
-        ifProd,
-        ifNotProd
-    } = getIfUtils(env);
+    const mode = argv.mode;
+    const isProd = mode === 'production';
+    const ifProd = (whenProd, whenNot) => (isProd ? whenProd : whenNot);
 
     /**
      * Configuration for Universal Module Definition bundling.
      */
-    const UMDConfig = {
+    return [{
 
         /**
          * These are the entry point of our library. We tell webpack to use
@@ -47,23 +41,21 @@ const config = (env = 'dev') => {
          * minification via UglifyJS
          */
         entry: {
-            [ifProd(`${packageName}.min`, packageName)]: ['./src/index.ts'],
+            [`index${ifProd('.min', '')}`]: ['./src/index.ts'],
         },
 
         /**
          * The output defines how and where we want the bundles. The special
          * value `[name]` in `filename` tell Webpack to use the name we defined above.
-         * We target a UMD and name it MyLib. When including the bundle in the browser
-         * it will be accessible at `window.MyLib`
          */
         output: {
-            path: resolve(__dirname, 'bundles'),
-            filename: '[name].js',
+            path: resolve(__dirname, 'umd'),
+            // module format
             libraryTarget: 'umd',
-            library: pascalCase(packageName),
-            // libraryExport:  LIB_NAME,
+            // library name to be used in browser (e.g. `window.ZXing`).
+            library: 'ZXing',
             // will name the AMD module of the UMD build. Otherwise an anonymous define is used.
-            umdNamedDefine: true,
+            umdNamedDefine: true
         },
 
         /**
@@ -80,10 +72,19 @@ const config = (env = 'dev') => {
          */
         externals: {
             'text-encoding': {
-                commonjs: 'text-encoding',
-                commonjs2: 'text-encoding',
                 amd: 'text-encoding',
+                commonjs2: 'text-encoding',
+                commonjs: 'text-encoding',
                 root: 'text-encoding'
+            }
+        },
+
+        /**
+         * Optimizations Webpack shall apply.
+         */
+        optimization: {
+            splitChunks: {
+                chunks: 'all'
             }
         },
 
@@ -120,19 +121,11 @@ const config = (env = 'dev') => {
             ),
 
             /**
-             * Sets the options for webpack loader plugin.
-             */
-            new webpack.LoaderOptionsPlugin({
-                debug: false,
-                minimize: true,
-            }),
-
-            /**
              * Plugin for defining environment variables.
              */
             new webpack.DefinePlugin({
                 'process.env': {
-                    NODE_ENV: ifProd('"production"', '"development"')
+                    NODE_ENV: mode
                 },
             }),
 
@@ -145,12 +138,11 @@ const config = (env = 'dev') => {
             rules: [{
                 test: /\.ts?$/,
                 include: /src/,
+                exclude: /src\/test/,
                 loader: 'awesome-typescript-loader',
             }],
         },
-    };
-
-    return [UMDConfig];
+    }];
 };
 
 module.exports = config;

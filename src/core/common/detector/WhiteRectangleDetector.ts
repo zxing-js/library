@@ -18,8 +18,9 @@
 
 import ResultPoint from './../../ResultPoint';
 import BitMatrix from './../BitMatrix';
-import Exception from './../../Exception';
+
 import MathUtils from './MathUtils';
+import NotFoundException from '../../NotFoundException';
 
 /**
  * <p>
@@ -61,18 +62,18 @@ export default class WhiteRectangleDetector {
             initSize = WhiteRectangleDetector.INIT_SIZE;
         }
         if (undefined === x || null === x) {
-            x = image.getWidth() / 2;
+            x = image.getWidth() / 2 | 0;
         }
         if (undefined === y || null === y) {
-            y = image.getHeight() / 2;
+            y = image.getHeight() / 2 | 0;
         }
-        const halfsize = initSize / 2;
+        const halfsize = initSize / 2 | 0;
         this.leftInit = x - halfsize;
         this.rightInit = x + halfsize;
         this.upInit = y - halfsize;
         this.downInit = y + halfsize;
         if (this.upInit < 0 || this.leftInit < 0 || this.downInit >= this.height || this.rightInit >= this.width) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
     }
 
@@ -91,7 +92,6 @@ export default class WhiteRectangleDetector {
      * @throws NotFoundException if no Data Matrix Code can be found
      */
     public detect(): Array<ResultPoint> /*throws NotFoundException*/ {
-
         let left = this.leftInit;
         let right = this.rightInit;
         let up = this.upInit;
@@ -208,7 +208,7 @@ export default class WhiteRectangleDetector {
             }
 
             if (z == null) {
-                throw new Exception(Exception.NotFoundException);
+                throw new NotFoundException();
             }
 
             let t: ResultPoint | null = null;
@@ -218,7 +218,7 @@ export default class WhiteRectangleDetector {
             }
 
             if (t == null) {
-                throw new Exception(Exception.NotFoundException);
+                throw new NotFoundException();
             }
 
             let x: ResultPoint | null = null;
@@ -228,7 +228,7 @@ export default class WhiteRectangleDetector {
             }
 
             if (x == null) {
-                throw new Exception(Exception.NotFoundException);
+                throw new NotFoundException();
             }
 
             let y: ResultPoint | null = null;
@@ -238,13 +238,13 @@ export default class WhiteRectangleDetector {
             }
 
             if (y == null) {
-                throw new Exception(Exception.NotFoundException);
+                throw new NotFoundException();
             }
 
             return this.centerEdges(y, z, x, t);
 
         } else {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
     }
 

@@ -53,7 +53,7 @@ export default class Result {
         private numBits: number /*int*/,
         private resultPoints: Array<ResultPoint>,
         private format: BarcodeFormat,
-        private timestamp: number/*long*/) {
+        private timestamp: number /*long*/) {
         this.text = text;
         this.rawBytes = rawBytes;
         if (undefined === numBits || null === numBits) {

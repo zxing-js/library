@@ -17,11 +17,12 @@
 /*namespace com.google.zxing.common {*/
 
 /*import java.util.Arrays;*/
-import Exception from './../Exception';
+
 import BitArray from './BitArray';
 import System from './../util/System';
 import Arrays from './../util/Arrays';
 import StringBuilder from './../util/StringBuilder';
+import IllegalArgumentException from '../IllegalArgumentException';
 
 /**
  * <p>Represents a 2D matrix of bits. In function arguments below, and throughout the common
@@ -57,7 +58,7 @@ export default class BitMatrix /*implements Cloneable*/ {
      */
     // public constructor(width: number /*int*/, height: number /*int*/) {
     //   if (width < 1 || height < 1) {
-    //     throw new Exception(Exception.IllegalArgumentException, "Both dimensions must be greater than 0")
+    //     throw new IllegalArgumentException("Both dimensions must be greater than 0")
     //   }
     //   this.width = width
     //   this.height = height
@@ -72,7 +73,7 @@ export default class BitMatrix /*implements Cloneable*/ {
         }
         this.height = height;
         if (width < 1 || height < 1) {
-            throw new Exception(Exception.IllegalArgumentException, 'Both dimensions must be greater than 0');
+            throw new IllegalArgumentException('Both dimensions must be greater than 0');
         }
         if (undefined === rowSize || null === rowSize) {
             rowSize = Math.floor((width + 31) / 32);
@@ -106,7 +107,7 @@ export default class BitMatrix /*implements Cloneable*/ {
 
     public static parseFromString(stringRepresentation: string, setString: string, unsetString: string): BitMatrix {
         if (stringRepresentation === null) {
-            throw new Exception(Exception.IllegalArgumentException, 'stringRepresentation cannot be null');
+            throw new IllegalArgumentException('stringRepresentation cannot be null');
         }
 
         const bits = new Array<boolean>(stringRepresentation.length);
@@ -122,7 +123,7 @@ export default class BitMatrix /*implements Cloneable*/ {
                     if (rowLength === -1) {
                         rowLength = bitsPos - rowStartPos;
                     } else if (bitsPos - rowStartPos !== rowLength) {
-                        throw new Exception(Exception.IllegalArgumentException, 'row lengths do not match');
+                        throw new IllegalArgumentException('row lengths do not match');
                     }
                     rowStartPos = bitsPos;
                     nRows++;
@@ -137,7 +138,7 @@ export default class BitMatrix /*implements Cloneable*/ {
                 bits[bitsPos] = false;
                 bitsPos++;
             } else {
-                throw new Exception(Exception.IllegalArgumentException,
+                throw new IllegalArgumentException(
                     'illegal character encountered: ' + stringRepresentation.substring(pos));
             }
         }
@@ -147,7 +148,7 @@ export default class BitMatrix /*implements Cloneable*/ {
             if (rowLength === -1) {
                 rowLength = bitsPos - rowStartPos;
             } else if (bitsPos - rowStartPos !== rowLength) {
-                throw new Exception(Exception.IllegalArgumentException, 'row lengths do not match');
+                throw new IllegalArgumentException('row lengths do not match');
             }
             nRows++;
         }
@@ -209,7 +210,7 @@ export default class BitMatrix /*implements Cloneable*/ {
     public xor(mask: BitMatrix): void {
         if (this.width !== mask.getWidth() || this.height !== mask.getHeight()
             || this.rowSize !== mask.getRowSize()) {
-            throw new Exception(Exception.IllegalArgumentException, 'input matrix dimensions do not match');
+            throw new IllegalArgumentException('input matrix dimensions do not match');
         }
         const rowArray = new BitArray(Math.floor(this.width / 32) + 1);
         const rowSize = this.rowSize;
@@ -244,15 +245,15 @@ export default class BitMatrix /*implements Cloneable*/ {
      */
     public setRegion(left: number /*int*/, top: number /*int*/, width: number /*int*/, height: number /*int*/): void {
         if (top < 0 || left < 0) {
-            throw new Exception(Exception.IllegalArgumentException, 'Left and top must be nonnegative');
+            throw new IllegalArgumentException('Left and top must be nonnegative');
         }
         if (height < 1 || width < 1) {
-            throw new Exception(Exception.IllegalArgumentException, 'Height and width must be at least 1');
+            throw new IllegalArgumentException('Height and width must be at least 1');
         }
         const right = left + width;
         const bottom = top + height;
         if (bottom > this.height || right > this.width) {
-            throw new Exception(Exception.IllegalArgumentException, 'The region must fit inside the matrix');
+            throw new IllegalArgumentException('The region must fit inside the matrix');
         }
         const rowSize = this.rowSize;
         const bits = this.bits;
