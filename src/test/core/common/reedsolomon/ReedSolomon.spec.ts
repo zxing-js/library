@@ -16,11 +16,9 @@
 
 /*package com.google.zxing.common.reedsolomon;*/
 
-import 'mocha';
 import * as assert from 'assert';
 import StringBuilder from './../../../../core/util/StringBuilder';
 import Random from './../../util/Random';
-import Arrays from './../../../../core/util/Arrays';
 import System from './../../../../core/util/System';
 import GenericGF from './../../../../core/common/reedsolomon/GenericGF';
 import ReedSolomonEncoder from './../../../../core/common/reedsolomon/ReedSolomonEncoder';

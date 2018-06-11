@@ -16,7 +16,6 @@
 
 /*package com.google.zxing.qrcode.encoder;*/
 
-import 'mocha';
 import * as assert from 'assert';
 
 import Encoder from './../../../../core/qrcode/encoder/Encoder';

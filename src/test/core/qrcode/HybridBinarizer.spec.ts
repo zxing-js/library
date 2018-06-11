@@ -1,5 +1,4 @@
 import * as assert from 'assert';
-import 'mocha';
 import HybridBinarizer from '../../../core/common/HybridBinarizer';
 import SharpImageLuminanceSource from '../SharpImageLuminanceSource';
 import SharpImage from '../util/SharpImage';

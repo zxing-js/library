@@ -17,8 +17,6 @@
 
 // package com.google.zxing.oned;
 
-import 'mocha';
-
 import BarcodeFormat from './../../../core/BarcodeFormat';
 import MultiFormatReader from './../../../core/MultiFormatReader';
 import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
