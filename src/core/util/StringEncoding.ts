@@ -1,6 +1,6 @@
 import { TextEncoder as TextEncoderLegacy, TextDecoder as TextDecoderLegacy } from 'text-encoding';
 import CharacterSetECI from './../common/CharacterSetECI';
-import Exception from '../Exception';
+import UnsupportedOperationException from '../UnsupportedOperationException';
 
 /**
  * Responsible for en/decoding strings.
@@ -34,6 +34,10 @@ export default class StringEncoding {
 
         // TextEncoder only encodes to UTF8 by default as specified by encoding.spec.whatwg.org
         return new TextEncoderLegacy(encodingName, { NONSTANDARD_allowLegacyEncoding: true }).encode(s);
+    }
+
+    private static isBrowser(): boolean {
+        return typeof window !== 'undefined' && ({}).toString.call(window) === '[object Window]';
     }
 
     /**
@@ -70,6 +74,6 @@ export default class StringEncoding {
             return String.fromCharCode.apply(null, new Uint16Array(bytes.buffer));
         }
 
-        throw new Exception(Exception.UnsupportedOperationException, `Encoding ${encoding} not supported by fallback.`);
+        throw new UnsupportedOperationException(`Encoding ${encoding} not supported by fallback.`);
     }
 }
