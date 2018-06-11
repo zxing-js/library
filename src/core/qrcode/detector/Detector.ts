@@ -94,7 +94,7 @@ export default class Detector {
 
         const moduleSize: number /*float*/ = this.calculateModuleSize(topLeft, topRight, bottomLeft);
         if (moduleSize < 1.0) {
-            throw new NotFoundException();
+            throw new NotFoundException('No pattern found in proccess finder.');
         }
         const dimension = Detector.computeDimension(topLeft, topRight, bottomLeft, moduleSize);
         const provisionalVersion: Version = Version.getProvisionalVersionForDimension(dimension);
@@ -216,7 +216,7 @@ export default class Detector {
                 dimension--;
                 break;
             case 3:
-                throw new NotFoundException();
+                throw new NotFoundException('Dimensions could be not found.');
         }
         return dimension;
     }
@@ -385,24 +385,25 @@ export default class Detector {
         const alignmentAreaLeftX = Math.max(0, estAlignmentX - allowance);
         const alignmentAreaRightX = Math.min(this.image.getWidth() - 1, estAlignmentX + allowance);
         if (alignmentAreaRightX - alignmentAreaLeftX < overallEstModuleSize * 3) {
-            throw new NotFoundException();
+            throw new NotFoundException('Alignment top exceeds estimated module size.');
         }
 
         const alignmentAreaTopY = Math.max(0, estAlignmentY - allowance);
         const alignmentAreaBottomY = Math.min(this.image.getHeight() - 1, estAlignmentY + allowance);
         if (alignmentAreaBottomY - alignmentAreaTopY < overallEstModuleSize * 3) {
-            throw new NotFoundException();
+            throw new NotFoundException('Alignment bottom exceeds estimated module size.');
         }
 
-        const alignmentFinder =
-            new AlignmentPatternFinder(
-                this.image,
-                alignmentAreaLeftX,
-                alignmentAreaTopY,
-                alignmentAreaRightX - alignmentAreaLeftX,
-                alignmentAreaBottomY - alignmentAreaTopY,
-                overallEstModuleSize,
-                this.resultPointCallback);
+        const alignmentFinder = new AlignmentPatternFinder(
+            this.image,
+            alignmentAreaLeftX,
+            alignmentAreaTopY,
+            alignmentAreaRightX - alignmentAreaLeftX,
+            alignmentAreaBottomY - alignmentAreaTopY,
+            overallEstModuleSize,
+            this.resultPointCallback
+        );
+
         return alignmentFinder.find();
     }
 
