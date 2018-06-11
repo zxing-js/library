@@ -11,7 +11,7 @@ export default class StringEncoding {
      */
     public static decode(bytes: Uint8Array, encoding: string | CharacterSetECI): string {
 
-        const encodingName = this.stringValue(encoding);
+        const encodingName = this.encodingName(encoding);
 
         return new TextDecoder(encodingName).decode(bytes);
     }
@@ -23,7 +23,7 @@ export default class StringEncoding {
      */
     public static encode(s: string, encoding: string | CharacterSetECI): Uint8Array {
 
-        const encodingName = this.stringValue(encoding);
+        const encodingName = this.encodingName(encoding);
 
         // TextEncoder only encodes to UTF8 by default as specified by encoding.spec.whatwg.org
         return new TextEncoderLegacy(encodingName, { NONSTANDARD_allowLegacyEncoding: true }).encode(s);
@@ -32,7 +32,7 @@ export default class StringEncoding {
     /**
      * Returns the string value from some encoding character set.
      */
-    public static stringValue(encoding: string | CharacterSetECI): string {
+    public static encodingName(encoding: string | CharacterSetECI): string {
         return typeof encoding === 'string'
             ? encoding
             : encoding.getName();
