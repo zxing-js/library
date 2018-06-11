@@ -190,9 +190,9 @@ export default class MultiFormatReader implements Reader {
                     continue;
                 }
 
-                const extra = !ex.message ? '.' : ` with the message: \n\n\t${ex.message}\n\n`;
-
-                console.error('[decodeInternal]', `Exception of type \`${ex.constructor.name}\` was thrown${extra}`);
+                // Uncomment for test outputting.
+                // const extra = !ex.message ? '.' : ` with the message: \n\n\t${ex.message}\n\n`;
+                // console.error('[decodeInternal]', `Exception of type \`${ex.constructor.name}\` was thrown${extra}`);
             }
         }
 
