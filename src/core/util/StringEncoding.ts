@@ -1,5 +1,6 @@
-import CharacterSetECI from './../common/CharacterSetECI';
 import { TextEncoder as TextEncoderLegacy } from 'text-encoding';
+import CharacterSetECI from './../common/CharacterSetECI';
+import UnsupportedOperationException from '../UnsupportedOperationException';
 
 /**
  * Responsible for en/decoding strings.
@@ -12,6 +13,12 @@ export default class StringEncoding {
     public static decode(bytes: Uint8Array, encoding: string | CharacterSetECI): string {
 
         const encodingName = this.encodingName(encoding);
+
+        // Node.js environment fallback.
+        if (typeof TextDecoder === 'undefined') {
+            // fall back to minimal decoding
+            return StringEncoding.decodeFallBack(bytes, encodingName);
+        }
 
         return new TextDecoder(encodingName).decode(bytes);
     }
@@ -36,5 +43,33 @@ export default class StringEncoding {
         return typeof encoding === 'string'
             ? encoding
             : encoding.getName();
+    }
+
+    private static decodeFallBack(bytes: Uint8Array, encoding: string): string {
+
+        const ec = CharacterSetECI.getCharacterSetECIByName(encoding);
+
+        if (ec.equals(CharacterSetECI.UTF8) ||
+            ec.equals(CharacterSetECI.ISO8859_1) ||
+            ec.equals(CharacterSetECI.ASCII)) {
+
+            let s = '';
+
+            for (let i = 0, length = bytes.length; i < length; i++) {
+                let h = bytes[i].toString(16);
+                if (h.length < 2) {
+                    h = '0' + h;
+                }
+                s += '%' + h;
+            }
+
+            return decodeURIComponent(s);
+        }
+
+        if (ec.equals(CharacterSetECI.UnicodeBigUnmarked)) {
+            return String.fromCharCode.apply(null, new Uint16Array(bytes.buffer));
+        }
+
+        throw new UnsupportedOperationException(`Encoding ${encoding} not supported by fallback.`);
     }
 }

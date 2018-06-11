@@ -198,14 +198,7 @@ abstract class AbstractBlackBoxSpec {
 
             for (let x: number /*int*/ = 0; x < testCount; x++) {
                 const rotation: number /*float*/ = this.testResults[x].getRotation();
-                let rotatedImage: SharpImage;
-
-                try {
-                    rotatedImage = await SharpImage.loadWithRotation(testImage, rotation);
-                } catch (err) {
-                    console.error(err);
-                }
-
+                const rotatedImage = await SharpImage.loadWithRotation(testImage, rotation);
                 const source: LuminanceSource = new SharpImageLuminanceSource(rotatedImage);
                 const bitmap = new BinaryBitmap(new HybridBinarizer(source));
                 try {
@@ -252,7 +245,9 @@ abstract class AbstractBlackBoxSpec {
         }
 
         const totalTests: number /*int*/ = imageFiles.length * testCount * 2;
+
         console.log(`Decoded ${totalFound} images out of ${totalTests} (${totalFound * 100 / totalTests}%, ${totalMustPass} required)`);
+
         if (totalFound > totalMustPass) {
             console.warn(`+++ Test too lax by ${totalFound - totalMustPass} images`);
         } else if (totalFound < totalMustPass) {
@@ -265,16 +260,17 @@ abstract class AbstractBlackBoxSpec {
             console.error(`--- Test had too many misreads by ${totalMisread - totalMaxMisread} images`);
         }
 
-        // Then run through again and assert if any failed
+        // Then run through again and assert if any failed.
         if (assertOnFailure) {
             for (let x: number /*int*/ = 0; x < testCount; x++) {
-                const testResult: TestResult = this.testResults[x];
-                let label: string = 'Rotation ' + testResult.getRotation() + ' degrees: Too many images failed';
+
+                const testResult = this.testResults[x];
+                const label = 'Rotation ' + testResult.getRotation() + ' degrees: Too many images failed.';
+
                 assert.strictEqual(passedCounts[x] >= testResult.getMustPassCount(), true, label);
-                assert.strictEqual(tryHarderCounts[x] >= testResult.getTryHarderCount(), true, 'Try harder, ' + label);
-                label = 'Rotation ' + testResult.getRotation() + ' degrees: Too many images misread';
+                assert.strictEqual(tryHarderCounts[x] >= testResult.getTryHarderCount(), true, `Try harder, ${label}`);
                 assert.strictEqual(misreadCounts[x] <= testResult.getMaxMisreads(), true, label);
-                assert.strictEqual(tryHarderMisreadCounts[x] <= testResult.getMaxTryHarderMisreads(), true, 'Try harder, ' + label);
+                assert.strictEqual(tryHarderMisreadCounts[x] <= testResult.getMaxTryHarderMisreads(), true, `Try harder, ${label}`);
             }
         }
 

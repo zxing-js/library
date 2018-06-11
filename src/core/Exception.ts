@@ -10,7 +10,7 @@ export default class Exception extends CustomError {
      * with some message and prototype definition.
      */
     constructor(
-        public message: string = 'A exception has occoured.'
+        public message: string = undefined
     ) {
         super(message);
    }
