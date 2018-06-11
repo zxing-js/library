@@ -194,7 +194,7 @@ export default class MultiFormatReader implements Reader {
             }
         }
 
-        throw new NotFoundException();
+        throw new NotFoundException('No MultiFormat Readers were able to detect the code.');
     }
 
 }
