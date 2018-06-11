@@ -16,7 +16,8 @@
 
 /*namespace com.google.zxing.common {*/
 
-import Exception from './../Exception';
+
+import IllegalArgumentException from '../IllegalArgumentException';
 
 /**
  * <p>This provides an easy abstraction to read bits at a time from a sequence of bytes, where the
@@ -63,7 +64,7 @@ export default class BitSource {
      */
     public readBits(numBits: number /*int*/): number /*int*/ {
         if (numBits < 1 || numBits > 32 || numBits > this.available()) {
-            throw new Exception(Exception.IllegalArgumentException, '' + numBits);
+            throw new IllegalArgumentException('' + numBits);
         }
 
         let result = 0;

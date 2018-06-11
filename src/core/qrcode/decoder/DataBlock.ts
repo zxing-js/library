@@ -20,7 +20,8 @@ import Version from './Version';
 import ECBlocks from './ECBlocks';
 import ECB from './ECB';
 import ErrorCorrectionLevel from './ErrorCorrectionLevel';
-import Exception from './../../Exception';
+
+import IllegalArgumentException from '../../IllegalArgumentException';
 
 /**
  * <p>Encapsulates a block of data within a QR Code. QR Codes may split their data into
@@ -49,7 +50,7 @@ export default class DataBlock {
         ecLevel: ErrorCorrectionLevel): DataBlock[] {
 
         if (rawCodewords.length !== version.getTotalCodewords()) {
-            throw new Exception(Exception.IllegalArgumentException);
+            throw new IllegalArgumentException();
         }
 
         // Figure out the number and size of data blocks used by this version and

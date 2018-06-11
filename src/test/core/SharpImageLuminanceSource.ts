@@ -25,7 +25,7 @@
 import SharpImage from './util/SharpImage';
 import LuminanceSource from './../../core/LuminanceSource';
 import InvertedLuminanceSource from './../../core/InvertedLuminanceSource';
-import Exception from './../../core/Exception';
+import IllegalArgumentException from '../../core/IllegalArgumentException';
 
 /**
  * This LuminanceSource implementation is meant for J2SE clients and our blackbox unit tests.
@@ -48,7 +48,7 @@ export default class SharpImageLuminanceSource extends LuminanceSource {
         // const sourceWidth: number /*int*/ = image.getWidth()
         // const sourceHeight: number /*int*/ = image.getHeight()
         // if (left + width > sourceWidth || top + height > sourceHeight) {
-        //   throw new Exception(Exception.IllegalArgumentException, "Crop rectangle does not fit within image data.")
+        //   throw new IllegalArgumentException("Crop rectangle does not fit within image data.")
         // }
 
         // if (left > 0 || width < sourceWidth || top > 0 || height < sourceHeight) {
@@ -60,7 +60,7 @@ export default class SharpImageLuminanceSource extends LuminanceSource {
 
     public getRow(y: number /*int*/, row: Uint8ClampedArray): Uint8ClampedArray {
         if (y < 0 || y >= this.image.getHeight()) {
-            throw new Exception(Exception.IllegalArgumentException, 'Requested row is outside the image: ' + y);
+            throw new IllegalArgumentException('Requested row is outside the image: ' + y);
         }
         const width: number /*int*/ = this.image.getWidth();
         if (row === null || row.length < width) {

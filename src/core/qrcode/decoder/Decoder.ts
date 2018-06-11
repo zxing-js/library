@@ -25,7 +25,8 @@ import BitMatrixParser from './BitMatrixParser';
 import QRCodeDecoderMetaData from './QRCodeDecoderMetaData';
 import DataBlock from './DataBlock';
 import DecodedBitStreamParser from './DecodedBitStreamParser';
-import Exception from './../../Exception';
+
+import ChecksumException from '../../ChecksumException';
 
 /*import java.util.Map;*/
 
@@ -176,7 +177,7 @@ export default class Decoder {
         try {
             this.rsDecoder.decode(codewordsInts, codewordBytes.length - numDataCodewords);
         } catch (ignored/*: ReedSolomonException*/) {
-            throw new Exception(Exception.ChecksumException);
+            throw new ChecksumException();
         }
         // Copy back into array of bytes -- only need to worry about the bytes that were data
         // We don't care about errors in the error-correction codewords

@@ -22,7 +22,8 @@ import ResultPointCallback from './../../ResultPointCallback';
 import BitMatrix from './../../common/BitMatrix';
 import FinderPattern from './FinderPattern';
 import FinderPatternInfo from './FinderPatternInfo';
-import Exception from './../../Exception';
+
+import NotFoundException from '../../NotFoundException';
 
 /*import java.io.Serializable;*/
 /*import java.util.ArrayList;*/
@@ -591,7 +592,7 @@ export default class FinderPatternFinder {
         const startSize = this.possibleCenters.length;
         if (startSize < 3) {
             // Couldn't find enough finder patterns
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         const possibleCenters = this.possibleCenters;

@@ -1,4 +1,5 @@
-import Exception from './../../Exception';
+
+import FormatException from '../../FormatException';
 
 /*
  * Copyright 2007 ZXing authors
@@ -144,7 +145,7 @@ export default class Version {
    */
   public static getVersionForDimensions(numRows: number, numColumns: number): Version {
     if ((numRows & 0x01) !== 0 || (numColumns & 0x01) !== 0) {
-      throw new Exception(Exception.FormatException);
+      throw new FormatException();
     }
 
     for (let version of Version.VERSIONS) {
@@ -153,7 +154,7 @@ export default class Version {
       }
     }
 
-    throw new Exception(Exception.FormatException);
+    throw new FormatException();
   }
 
 //  @Override

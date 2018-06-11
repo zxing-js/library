@@ -16,7 +16,6 @@
 
 /*package com.google.zxing.qrcode.encoder;*/
 
-import 'mocha';
 import * as assert from 'assert';
 import ByteMatrix from './../../../../core/qrcode/encoder/ByteMatrix';
 import MaskUtil from './../../../../core/qrcode/encoder/MaskUtil';

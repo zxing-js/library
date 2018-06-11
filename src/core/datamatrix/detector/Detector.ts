@@ -9,7 +9,8 @@ import PerspectiveTransform from './../../common/PerspectiveTransform';
 import MathUtils from './../../common/detector/MathUtils';
 import Version from './../decoder/Version';
 import WhiteRectangleDetector from '../../common/detector/WhiteRectangleDetector';
-import Exception from '../../Exception';
+
+import NotFoundException from '../../NotFoundException';
 
 /*
  * Copyright 2008 ZXing authors
@@ -97,7 +98,7 @@ export default class Detector {
     }
 
     if (maybeTopLeft == null || bottomLeft == null || maybeBottomRight == null) {
-      throw new Exception(Exception.NotFoundException);
+      throw new NotFoundException();
     }
 
     // Bottom left is correct but top left and bottom right might be switched

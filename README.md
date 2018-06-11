@@ -212,14 +212,6 @@ const codeWriter = new ZXing.BrowserQRCodeSvgWriter('result');
 const svgElement = codeWriter.write(input, 300, 300);
 ```
 
-### Text Encoding and Decoding
-
-To decode a barcode, the library needs at some point to decode from bits to text. Also, to generate a barcode it needs to encode text to bits. Unfortunately, the state of encoding and decoding text in ECMAScript/browser is somehow messy at the moment.
-
-To have full support for all encodings in [CharacterSetECI](https://github.com/zxing-js/library/blob/master/src/core/common/CharacterSetECI.ts) *except Cp437* use [text-encoding](https://github.com/inexorabletash/text-encoding) library. The library is used implicitly for node (and tests), but is an optional dependency for browser because is rather large (> 600k). You will need to include it yourself if you want/need to use it. The `text-encoding` library will be removed as soon as this library starts to run on TypeScript 2.8.
-
-By default, in browser, [TextDecoder](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder)/[TextEncoder](https://developer.mozilla.org/ro/docs/Web/API/TextEncoder) web API are used if available (take care as these are labeled as experimental as of this writing). Also, be aware that TextEncoder encodes only to UTF-8 as per spec. If these are not available the library falls back to a minimal implementation that only encodes and decodes to/from UTF-8 (see [`StringEncoding`](https://github.com/zxing-js/library/blob/master/src/core/util/StringEncoding.ts)).
-
 ### Porting Information
 
 See [Contributing Guide](https://github.com/zxing-js/library/blob/master/CONTRIBUTING.md) for information regarding porting approach and reasoning behind some of the approaches taken.

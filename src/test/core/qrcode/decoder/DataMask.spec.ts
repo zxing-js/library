@@ -16,7 +16,6 @@
 
 /*package com.google.zxing.qrcode.decoder;*/
 
-import 'mocha';
 import * as assert from 'assert';
 import BitMatrix from './../../../../core/common/BitMatrix';
 import DataMask from './../../../../core/qrcode/decoder/DataMask';

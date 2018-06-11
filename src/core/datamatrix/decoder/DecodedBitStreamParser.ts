@@ -1,9 +1,11 @@
 import DecoderResult from './../../common/DecoderResult';
 import BitSource from './../../common/BitSource';
 import StringBuilder from './../../util/StringBuilder';
-import Exception from './../../Exception';
+
 import StringEncoding from '../../util/StringEncoding';
 import { StringUtils } from '../../..';
+import FormatException from '../../FormatException';
+import IllegalStateException from '../../IllegalStateException';
 
 /*
  * Copyright 2008 ZXing authors
@@ -102,7 +104,7 @@ export default class DecodedBitStreamParser {
             this.decodeBase256Segment(bits, result, byteSegments);
             break;
           default:
-            throw new Exception(Exception.FormatException);
+            throw new FormatException();
         }
         mode = Mode.ASCII_ENCODE;
       }
@@ -123,7 +125,7 @@ export default class DecodedBitStreamParser {
     do {
       let oneByte = bits.readBits(8);
       if (oneByte === 0) {
-        throw new Exception(Exception.FormatException);
+        throw new FormatException();
       } else if (oneByte <= 128) {  // ASCII data (ASCII value + 1)
         if (upperShift) {
           oneByte += 128;
@@ -179,7 +181,7 @@ export default class DecodedBitStreamParser {
             // Not to be used in ASCII encodation
             // but work around encoders that end with 254, latch back to ASCII
             if (oneByte !== 254 || bits.available() !== 0) {
-              throw new Exception(Exception.FormatException);
+              throw new FormatException();
             }
             break;
         }
@@ -226,7 +228,7 @@ export default class DecodedBitStreamParser {
                 result.append(c40char);
               }
             } else {
-              throw new Exception(Exception.FormatException);
+              throw new FormatException();
             }
             break;
           case 1:
@@ -256,7 +258,7 @@ export default class DecodedBitStreamParser {
                   upperShift = true;
                   break;
                 default:
-                throw new Exception(Exception.FormatException);
+                throw new FormatException();
               }
             }
             shift = 0;
@@ -271,7 +273,7 @@ export default class DecodedBitStreamParser {
             shift = 0;
             break;
           default:
-            throw new Exception(Exception.FormatException);
+            throw new FormatException();
         }
       }
     } while (bits.available() > 0);
@@ -315,7 +317,7 @@ export default class DecodedBitStreamParser {
                 result.append(textChar);
               }
             } else {
-              throw new Exception(Exception.FormatException);
+              throw new FormatException();
             }
             break;
           case 1:
@@ -346,7 +348,7 @@ export default class DecodedBitStreamParser {
                   upperShift = true;
                   break;
                 default:
-                throw new Exception(Exception.FormatException);
+                throw new FormatException();
               }
             }
             shift = 0;
@@ -362,11 +364,11 @@ export default class DecodedBitStreamParser {
               }
               shift = 0;
             } else {
-              throw new Exception(Exception.FormatException);
+              throw new FormatException();
             }
             break;
           default:
-          throw new Exception(Exception.FormatException);
+          throw new FormatException();
         }
       }
     } while (bits.available() > 0);
@@ -414,7 +416,7 @@ export default class DecodedBitStreamParser {
             } else if (cValue < 40) {  // A - Z
               result.append(String.fromCharCode(cValue + 51));
             } else {
-              throw new Exception(Exception.FormatException);
+              throw new FormatException();
             }
             break;
         }
@@ -484,7 +486,7 @@ export default class DecodedBitStreamParser {
 
     // We're seeing NegativeArraySizeException errors from users.
     if (count < 0) {
-      throw new Exception(Exception.FormatException);
+      throw new FormatException();
     }
 
     const bytes = new Uint8Array(count);
@@ -492,7 +494,7 @@ export default class DecodedBitStreamParser {
       // Have seen this particular error in the wild, such as at
       // http://www.bcgen.com/demo/IDAutomationStreamingDataMatrix.aspx?MODE=3&D=Fred&PFMT=3&PT=F&X=0.3&O=0&LM=0.2
       if (bits.available() < 8) {
-        throw new Exception(Exception.FormatException);
+        throw new FormatException();
       }
       bytes[i] = this.unrandomize255State(bits.readBits(8), codewordPosition++);
     }
@@ -500,7 +502,7 @@ export default class DecodedBitStreamParser {
     try {
       result.append(StringEncoding.decode(bytes, StringUtils.ISO88591));
     } catch (uee) {
-      throw new Exception(Exception.IllegalStateException, 'Platform does not support required encoding: ' + uee.message);
+      throw new IllegalStateException('Platform does not support required encoding: ' + uee.message);
     }
   }
 
