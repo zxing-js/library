@@ -12,4 +12,3 @@ tslint.json
 node_modules
 docs
 test
-test.js
