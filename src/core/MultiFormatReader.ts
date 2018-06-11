@@ -187,7 +187,7 @@ export default class MultiFormatReader implements Reader {
                 if (ex instanceof ReaderException) {
                     continue;
                 }
-                console.error('decodeInternal', `Exception of type ${ex.constructor.name} was thrown.`);
+                console.error('[decodeInternal]', `Exception of type \`${ex.constructor.name}\` was thrown.`);
             }
         }
 
