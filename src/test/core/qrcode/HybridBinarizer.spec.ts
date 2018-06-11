@@ -3,6 +3,7 @@ import 'mocha';
 import HybridBinarizer from '../../../core/common/HybridBinarizer';
 import SharpImageLuminanceSource from '../SharpImageLuminanceSource';
 import SharpImage from '../util/SharpImage';
+import Exception from '../../../core/Exception';
 
 const path = require('path');
 
@@ -13,9 +14,9 @@ describe('HybridBinarizer', () => {
 
         try {
             images = await SharpImage.loadWithRotations(path.resolve('src/test/core/resources/blackbox/common/simple.png'), [0]);
-        } catch (err) {
-            assert.ok(false, err);
-            done(err);
+        } catch (ex) {
+            assert.ok(false, (<Exception>ex).message);
+            done(ex);
         }
 
         const image = images.get(0);

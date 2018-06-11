@@ -34,8 +34,8 @@ describe('ErrorCorrectionLevel', () => {
         try {
             ErrorCorrectionLevel.forBits(4);
             assert.ok(false, 'Should have thrown an exception');
-        } catch (iae/*IllegalArgumentException */) {
-            // good
+        } catch (ex) {
+            // good for IllegalArgumentException
         }
     });
 

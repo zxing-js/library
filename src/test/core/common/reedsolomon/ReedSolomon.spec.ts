@@ -610,11 +610,10 @@ describe('ReedSolomon', () => {
     function assertDataEquals(received: Int32Array, expected: Int32Array, message: string): void {
         for (let i: number /*int*/ = 0; i < expected.length; i++) {
             if (expected[i] !== received[i]) {
-                assert.ok(
-                    false,
-                    message + '. Mismatch at ' + i + '. Expected ' + arrayToString(expected) + ', got ' +
-                    arrayToString(Int32Array.from(received.subarray(0, expected.length)))
-                );
+
+                const receivedToString = arrayToString(Int32Array.from(received.subarray(0, expected.length)));
+
+                assert.ok(false, `${message}. Mismatch at ${i}. Expected ${arrayToString(expected)}, got ${receivedToString}`);
             }
         }
     }

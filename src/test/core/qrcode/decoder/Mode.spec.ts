@@ -36,8 +36,8 @@ describe('Mode', () => {
         try {
             Mode.forBits(0x10);
             assert.ok(false, 'Should have thrown an exception');
-        } catch (iae/*IllegalArgumentException*/) {
-            // good
+        } catch (ex) {
+            // good for InvalidArgumentException
         }
     });
 

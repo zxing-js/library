@@ -230,10 +230,8 @@ describe('BitMatrix', () => {
         try {
             BitMatrix.parseFromString('   \n xy\n   \n', 'x', ' ');
             assert.ok(false);
-        } catch (ex/*IllegalArgumentException ex*/) {
-            if (ex instanceof IllegalArgumentException) {
-                // good
-            } else {
+        } catch (ex) {
+            if (!(ex instanceof IllegalArgumentException)) {
                 assert.ok(false);
             }
         }
@@ -291,10 +289,8 @@ describe('BitMatrix', () => {
         try {
             emptyMatrix.clone().xor(badMatrix);
             assert.ok(false);
-        } catch (ex/*IllegalArgumentException*/) {
-            if (ex instanceof IllegalArgumentException) {
-                // good
-            } else {
+        } catch (ex) {
+            if (!(ex instanceof IllegalArgumentException)) {
                 assert.ok(false);
             }
         }
@@ -302,10 +298,8 @@ describe('BitMatrix', () => {
         try {
             badMatrix.clone().xor(emptyMatrix);
             assert.ok(false);
-        } catch (ex/*IllegalArgumentException*/) {
-            if (ex instanceof IllegalArgumentException) {
-                // good
-            } else {
+        } catch (ex) {
+            if (!(ex instanceof IllegalArgumentException)) {
                 assert.ok(false);
             }
         }
