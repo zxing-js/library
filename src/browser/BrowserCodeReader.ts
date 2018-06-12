@@ -14,10 +14,10 @@ import DecodeHintType from '../core/DecodeHintType';
  * @class BrowserCodeReader
  */
 export default class BrowserCodeReader {
-    protected videoElement: HTMLVideoElement;
-    protected imageElement: HTMLImageElement;
-    protected canvasElementContext: CanvasRenderingContext2D;
+    private videoElement: HTMLVideoElement;
+    private imageElement: HTMLImageElement;
     private canvasElement: HTMLCanvasElement;
+    private canvasElementContext: CanvasRenderingContext2D;
     private timeoutHandler: number;
     private stream: MediaStream;
     private videoPlayEndedEventListener: EventListener;
@@ -264,8 +264,11 @@ export default class BrowserCodeReader {
         }
     }
 
-    protected drawImageOnCanvas() {
-        this.canvasElementContext.drawImage(this.videoElement || this.imageElement, 0, 0);
+    /**
+     * This will remain protected, so who extends this class can customize this method.
+     */
+    protected drawImageOnCanvas(canvasElementContext: CanvasRenderingContext2D, srcElement: HTMLVideoElement | HTMLImageElement) {
+        canvasElementContext.drawImage(srcElement, 0, 0);
     }
 
     protected readerDecode(binaryBitmap: BinaryBitmap): Result {
