@@ -14,10 +14,10 @@ import DecodeHintType from '../core/DecodeHintType';
  * @class BrowserCodeReader
  */
 export default class BrowserCodeReader {
-    private videoElement: HTMLVideoElement;
-    private imageElement: HTMLImageElement;
+    protected videoElement: HTMLVideoElement;
+    protected imageElement: HTMLImageElement;
+    protected canvasElementContext: CanvasRenderingContext2D;
     private canvasElement: HTMLCanvasElement;
-    private canvasElementContext: CanvasRenderingContext2D;
     private timeoutHandler: number;
     private stream: MediaStream;
     private videoPlayEndedEventListener: EventListener;
@@ -243,7 +243,7 @@ export default class BrowserCodeReader {
             this.prepareCaptureCanvas();
         }
 
-        this.canvasElementContext.drawImage(this.videoElement || this.imageElement, 0, 0);
+        this.drawImageOnCanvas();
 
         const luminanceSource = new HTMLCanvasElementLuminanceSource(this.canvasElement);
         const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
@@ -262,6 +262,10 @@ export default class BrowserCodeReader {
                 reject(re);
             }
         }
+    }
+    
+    protected drawImageOnCanvas() {
+        this.canvasElementContext.drawImage(this.videoElement || this.imageElement, 0, 0);
     }
 
     protected readerDecode(binaryBitmap: BinaryBitmap): Result {
