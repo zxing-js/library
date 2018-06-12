@@ -10,6 +10,9 @@ import DecodeHintType from '../core/DecodeHintType';
 import ChecksumException from '../core/ChecksumException';
 import FormatException from '../core/FormatException';
 
+export type CropFn = (videoWidth: number, videoHeight: number) =>
+    ({scanWidth: number, scanHeight: number, xOffset: number, yOffset: number});
+
 /**
  * Base class for browser code reader.
  *
@@ -73,7 +76,7 @@ export default class BrowserCodeReader {
      *
      * @memberOf BrowserCodeReader
      */
-    public decodeFromInputVideoDevice(deviceId?: string, videoElement?: string | HTMLVideoElement): Promise<Result> {
+    public decodeFromInputVideoDevice(deviceId?: string, videoElement?: string | HTMLVideoElement, cropFn?: CropFn): Promise<Result> {
         this.reset();
 
         this.prepareVideoElement(videoElement);
@@ -98,7 +101,7 @@ export default class BrowserCodeReader {
                     me.videoElement.srcObject = stream;
 
                     me.videoPlayingEventListener = () => {
-                        me.decodeOnceWithDelay(resolve, reject);
+                        me.decodeOnceWithDelay(resolve, reject, cropFn);
                     };
                     me.videoElement.addEventListener('playing', me.videoPlayingEventListener);
                     me.videoElement.play();
@@ -237,16 +240,26 @@ export default class BrowserCodeReader {
         }
     }
 
-    private decodeOnceWithDelay(resolve: (result: Result) => any, reject: (error: any) => any): void {
-        this.timeoutHandler = window.setTimeout(this.decodeOnce.bind(this, resolve, reject), this.timeBetweenScansMillis);
+    private decodeOnceWithDelay(resolve: (result: Result) => any, reject: (error: any) => any, cropFn?: CropFn): void {
+        this.timeoutHandler = window.setTimeout(this.decodeOnce.bind(this, resolve, reject, undefined, undefined, cropFn), this.timeBetweenScansMillis);
     }
 
-    private decodeOnce(resolve: (result: Result) => any, reject: (error: any) => any, retryIfNotFound: boolean = true, retryIfChecksumOrFormatError: boolean = true): void {
+    private decodeOnce(resolve: (result: Result) => any, reject: (error: any) => any, retryIfNotFound: boolean = true, retryIfChecksumOrFormatError: boolean = true, cropFn?: CropFn): void {
         if (undefined === this.canvasElementContext) {
             this.prepareCaptureCanvas();
         }
 
-        this.canvasElementContext.drawImage(this.videoElement || this.imageElement, 0, 0);
+        if (cropFn && this.videoElement) {
+            const videoWidth = this.videoElement.videoWidth;
+            const videoHeight = this.videoElement.videoHeight;
+
+            const { xOffset, yOffset, scanWidth, scanHeight } = cropFn(videoWidth, videoHeight);
+
+            this.canvasElementContext.drawImage(this.videoElement || this.imageElement, xOffset, yOffset, scanWidth, scanHeight, 0, 0, videoWidth, videoHeight);
+
+        } else {
+            this.canvasElementContext.drawImage(this.videoElement || this.imageElement, 0, 0);
+        }
 
         const luminanceSource = new HTMLCanvasElementLuminanceSource(this.canvasElement);
         const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
