@@ -29,7 +29,8 @@ import DetectorResult from './../common/DetectorResult';
 import Decoder from './decoder/Decoder';
 import QRCodeDecoderMetaData from './decoder/QRCodeDecoderMetaData';
 import Detector from './detector/Detector';
-import Exception from './../Exception';
+
+import NotFoundException from '../NotFoundException';
 
 /*import java.util.List;*/
 /*import java.util.Map;*/
@@ -117,7 +118,7 @@ export default class QRCodeReader implements Reader {
         const leftTopBlack: Int32Array = image.getTopLeftOnBit();
         const rightBottomBlack: Int32Array = image.getBottomRightOnBit();
         if (leftTopBlack === null || rightBottomBlack === null) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         const moduleSize: number /*float*/ = this.moduleSize(leftTopBlack, image);
@@ -129,7 +130,7 @@ export default class QRCodeReader implements Reader {
 
         // Sanity check!
         if (left >= right || top >= bottom) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         if (bottom - top !== right - left) {
@@ -138,18 +139,18 @@ export default class QRCodeReader implements Reader {
             right = left + (bottom - top);
             if (right >= image.getWidth()) {
                 // Abort if that would not make sense -- off image
-                throw new Exception(Exception.NotFoundException);
+                throw new NotFoundException();
             }
         }
 
         const matrixWidth = Math.round((right - left + 1) / moduleSize);
         const matrixHeight = Math.round((bottom - top + 1) / moduleSize);
         if (matrixWidth <= 0 || matrixHeight <= 0) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
         if (matrixHeight !== matrixWidth) {
             // Only possibly decode square regions
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         // Push in the "border" by half the module width so that we start
@@ -166,7 +167,7 @@ export default class QRCodeReader implements Reader {
         if (nudgedTooFarRight > 0) {
             if (nudgedTooFarRight > nudge) {
                 // Neither way fits; abort
-                throw new Exception(Exception.NotFoundException);
+                throw new NotFoundException();
             }
             left -= nudgedTooFarRight;
         }
@@ -175,7 +176,7 @@ export default class QRCodeReader implements Reader {
         if (nudgedTooFarDown > 0) {
             if (nudgedTooFarDown > nudge) {
                 // Neither way fits; abort
-                throw new Exception(Exception.NotFoundException);
+                throw new NotFoundException();
             }
             top -= nudgedTooFarDown;
         }
@@ -211,7 +212,7 @@ export default class QRCodeReader implements Reader {
             y++;
         }
         if (x === width || y === height) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
         return (x - leftTopBlack[0]) / 7.0;
     }

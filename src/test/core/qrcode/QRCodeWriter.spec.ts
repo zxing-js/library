@@ -16,7 +16,6 @@
 
 /*package com.google.zxing.qrcode;*/
 
-import 'mocha';
 import * as assert from 'assert';
 
 import BarcodeFormat from './../../../core/BarcodeFormat';
@@ -89,36 +88,49 @@ describe('QRCodeWriter', () => {
         assert.strictEqual(matrix.getHeight(), strangeHeight);
     });
 
-    function compareToGoldenFile(contents: string,
+    async function compareToGoldenFile(
+        contents: string,
         ecLevel: ErrorCorrectionLevel,
         resolution: number /*int*/,
-        fileName: string) {
+        fileName: string
+    ): Promise<void> {
 
         const filePath = path.resolve(BASE_IMAGE_PATH, fileName);
-        SharpImage.loadAsBitMatrix(filePath, (err, goldenResult: BitMatrix) => {
-            if (err) {
-                assert.ok(false, err);
-            } else {
-                const hints = new Map<EncodeHintType, ErrorCorrectionLevel>();
-                hints.set(EncodeHintType.ERROR_CORRECTION, ecLevel);
-                const writer: Writer = new QRCodeWriter();
-                const generatedResult: BitMatrix = writer.encode(contents, BarcodeFormat.QR_CODE, resolution,
-                    resolution, hints);
 
-                assert.strictEqual(generatedResult.getWidth(), resolution);
-                assert.strictEqual(generatedResult.getHeight(), resolution);
-                assert.strictEqual(generatedResult.equals(goldenResult), true);
-            }
-        });
+        let goldenResult: BitMatrix;
 
+        try {
+            goldenResult = await SharpImage.loadAsBitMatrix(filePath);
+        } catch (err) {
+            assert.ok(false, err);
+        }
+
+        const hints = new Map<EncodeHintType, ErrorCorrectionLevel>();
+        hints.set(EncodeHintType.ERROR_CORRECTION, ecLevel);
+        const writer: Writer = new QRCodeWriter();
+        const generatedResult: BitMatrix = writer.encode(
+            contents,
+            BarcodeFormat.QR_CODE,
+            resolution,
+            resolution,
+            hints
+        );
+
+        assert.strictEqual(generatedResult.getWidth(), resolution);
+        assert.strictEqual(generatedResult.getHeight(), resolution);
+        assert.strictEqual(generatedResult.equals(goldenResult), true);
     }
 
     // Golden images are generated with "qrcode_sample.cc". The images are checked with both eye balls
     // and cell phones. We expect pixel-perfect results, because the error correction level is known,
     // and the pixel dimensions matches exactly.
     it('testRegressionTest', () => {
-        compareToGoldenFile('http://www.google.com/', ErrorCorrectionLevel.M, 99,
-            'renderer-test-01.png');
+        compareToGoldenFile(
+            'http://www.google.com/',
+            ErrorCorrectionLevel.M,
+            99,
+            'renderer-test-01.png'
+        );
     });
 
 });

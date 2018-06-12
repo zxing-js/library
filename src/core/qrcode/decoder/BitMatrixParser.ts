@@ -19,8 +19,9 @@
 import BitMatrix from './../../common/BitMatrix';
 import Version from './Version';
 import FormatInformation from './FormatInformation';
-import Exception from './../../Exception';
+
 import DataMask from './DataMask';
+import FormatException from '../../FormatException';
 /**
  * @author Sean Owen
  */
@@ -38,7 +39,7 @@ export default class BitMatrixParser {
     public constructor(bitMatrix: BitMatrix) /*throws FormatException*/ {
         const dimension = bitMatrix.getHeight();
         if (dimension < 21 || (dimension & 0x03) !== 1) {
-            throw new Exception(Exception.FormatException);
+            throw new FormatException();
         }
         this.bitMatrix = bitMatrix;
     }
@@ -85,7 +86,7 @@ export default class BitMatrixParser {
         if (this.parsedFormatInfo !== null) {
             return this.parsedFormatInfo;
         }
-        throw new Exception(Exception.FormatException);
+        throw new FormatException();
     }
 
     /**
@@ -136,7 +137,7 @@ export default class BitMatrixParser {
             this.parsedVersion = theParsedVersion;
             return theParsedVersion;
         }
-        throw new Exception(Exception.FormatException);
+        throw new FormatException();
     }
 
     private copyBit(i: number /*int*/, j: number /*int*/, versionBits: number /*int*/): number /*int*/ {
@@ -201,7 +202,7 @@ export default class BitMatrixParser {
             readingUp = !readingUp; // readingUp ^= true; // readingUp = !readingUp; // switch directions
         }
         if (resultOffset !== version.getTotalCodewords()) {
-            throw new Exception(Exception.FormatException);
+            throw new FormatException();
         }
         return result;
     }

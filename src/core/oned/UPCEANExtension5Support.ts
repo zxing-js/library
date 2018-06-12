@@ -16,11 +16,12 @@
 
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
-import Exception from '../Exception';
+
 import UPCEANReader from './UPCEANReader';
 import Result from '../Result';
 import ResultPoint from '../ResultPoint';
 import ResultMetadataType from '../ResultMetadataType';
+import NotFoundException from '../NotFoundException';
 
 /**
  * @see UPCEANExtension2Support
@@ -80,12 +81,12 @@ export default class UPCEANExtension5Support {
         }
 
         if (resultString.length !== 5) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         let checkDigit = this.determineCheckDigit(lgPatternFound);
         if (UPCEANExtension5Support.extensionChecksum(resultString.toString()) !== checkDigit) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         return rowOffset;
@@ -111,7 +112,7 @@ export default class UPCEANExtension5Support {
                 return d;
             }
         }
-        throw new Exception(Exception.NotFoundException);
+        throw new NotFoundException();
     }
 
     static parseExtensionString(raw: string) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import Exception from './Exception';
+import IllegalArgumentException from './IllegalArgumentException';
 
 /*namespace com.google.zxing {*/
 
@@ -24,7 +24,7 @@ import Exception from './Exception';
 export default class Dimension {
     public constructor(private width: number /*int*/, private height: number /*int*/) {
         if (width < 0 || height < 0) {
-            throw new Exception(Exception.IllegalArgumentException);
+            throw new IllegalArgumentException();
         }
     }
 

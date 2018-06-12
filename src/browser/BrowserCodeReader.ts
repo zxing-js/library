@@ -2,10 +2,13 @@ import Reader from './../core/Reader';
 import BinaryBitmap from './../core/BinaryBitmap';
 import HybridBinarizer from './../core/common/HybridBinarizer';
 import Result from './../core/Result';
-import Exception from './../core/Exception';
+import NotFoundException from '../core/NotFoundException';
+import ArgumentException from '../core/ArgumentException';
 import HTMLCanvasElementLuminanceSource from './HTMLCanvasElementLuminanceSource';
 import VideoInputDevice from './VideoInputDevice';
 import DecodeHintType from '../core/DecodeHintType';
+import ChecksumException from '../core/ChecksumException';
+import FormatException from '../core/FormatException';
 
 /**
  * Base class for browser code reader.
@@ -124,7 +127,7 @@ export default class BrowserCodeReader {
         return new Promise<Result>((resolve, reject) => {
             me.videoPlayEndedEventListener = () => {
                 me.stop();
-                reject(new Exception(Exception.NotFoundException));
+                reject(new NotFoundException());
             };
             me.videoElement.addEventListener('ended', me.videoPlayEndedEventListener);
 
@@ -158,11 +161,11 @@ export default class BrowserCodeReader {
     private getMediaElement(mediaElementId: string, type: string) {
         const mediaElement = document.getElementById(mediaElementId);
         if (null === mediaElement) {
-            throw new Exception(Exception.ArgumentException, `element with id '${mediaElementId}' not found`);
+            throw new ArgumentException(`element with id '${mediaElementId}' not found`);
         }
         if (mediaElement.nodeName.toLowerCase() !== type.toLowerCase()) {
             console.log(mediaElement.nodeName);
-            throw new Exception(Exception.ArgumentException, `element with id '${mediaElementId}' must be an ${type} element`);
+            throw new ArgumentException(`element with id '${mediaElementId}' must be an ${type} element`);
         }
         return mediaElement;
     }
@@ -180,7 +183,7 @@ export default class BrowserCodeReader {
         this.reset();
 
         if (undefined === imageElement && undefined === imageUrl) {
-            throw new Exception(Exception.ArgumentException, 'either imageElement with a src set or an url must be provided');
+            throw new ArgumentException('either imageElement with a src set or an url must be provided');
         }
 
         this.prepareImageElement(imageElement);
@@ -197,7 +200,7 @@ export default class BrowserCodeReader {
             } else if (this.isImageLoaded(this.imageElement)) {
                 me.decodeOnce(resolve, reject, false, true);
             } else {
-                throw new Exception(Exception.ArgumentException, `either src or a loaded img should be provided`);
+                throw new ArgumentException(`either src or a loaded img should be provided`);
             }
         });
     }
@@ -252,10 +255,10 @@ export default class BrowserCodeReader {
             resolve(result);
         } catch (re) {
             console.log(retryIfChecksumOrFormatError, re);
-            if (retryIfNotFound && Exception.isOfType(re, Exception.NotFoundException)) {
+            if (retryIfNotFound && re instanceof NotFoundException) {
                 console.log('not found, trying again...');
                 this.decodeOnceWithDelay(resolve, reject);
-            } else if (retryIfChecksumOrFormatError && (Exception.isOfType(re, Exception.ChecksumException) || Exception.isOfType(re, Exception.FormatException))) {
+            } else if (retryIfChecksumOrFormatError && (re instanceof ChecksumException || re instanceof FormatException)) {
                 console.log('checksum or format error, trying again...', re);
                 this.decodeOnceWithDelay(resolve, reject);
             } else {

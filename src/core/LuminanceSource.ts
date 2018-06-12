@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import Exception from './Exception';
+
 import InvertedLuminanceSource from './InvertedLuminanceSource';
 import StringBuilder from './util/StringBuilder';
+import UnsupportedOperationException from './UnsupportedOperationException';
 
 /*namespace com.google.zxing {*/
 
@@ -89,7 +90,7 @@ abstract class LuminanceSource {
      * @return A cropped version of this object.
      */
     public crop(left: number /*int*/, top: number /*int*/, width: number /*int*/, height: number /*int*/): LuminanceSource {
-        throw new Exception(Exception.UnsupportedOperationException, 'This luminance source does not support cropping.');
+        throw new UnsupportedOperationException('This luminance source does not support cropping.');
     }
 
     /**
@@ -112,7 +113,7 @@ abstract class LuminanceSource {
      * @return A rotated version of this object.
      */
     public rotateCounterClockwise(): LuminanceSource {
-        throw new Exception(Exception.UnsupportedOperationException, 'This luminance source does not support rotation by 90 degrees.');
+        throw new UnsupportedOperationException('This luminance source does not support rotation by 90 degrees.');
     }
 
     /**
@@ -122,7 +123,7 @@ abstract class LuminanceSource {
      * @return A rotated version of this object.
      */
     public rotateCounterClockwise45(): LuminanceSource {
-        throw new Exception(Exception.UnsupportedOperationException, 'This luminance source does not support rotation by 45 degrees.');
+        throw new UnsupportedOperationException('This luminance source does not support rotation by 45 degrees.');
     }
 
     /*@Override*/

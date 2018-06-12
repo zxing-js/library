@@ -16,11 +16,9 @@
 
 /*package com.google.zxing.common.reedsolomon;*/
 
-import 'mocha';
 import * as assert from 'assert';
 import StringBuilder from './../../../../core/util/StringBuilder';
 import Random from './../../util/Random';
-import Arrays from './../../../../core/util/Arrays';
 import System from './../../../../core/util/System';
 import GenericGF from './../../../../core/common/reedsolomon/GenericGF';
 import ReedSolomonEncoder from './../../../../core/common/reedsolomon/ReedSolomonEncoder';
@@ -610,11 +608,10 @@ describe('ReedSolomon', () => {
     function assertDataEquals(received: Int32Array, expected: Int32Array, message: string): void {
         for (let i: number /*int*/ = 0; i < expected.length; i++) {
             if (expected[i] !== received[i]) {
-                assert.ok(
-                    false,
-                    message + '. Mismatch at ' + i + '. Expected ' + arrayToString(expected) + ', got ' +
-                    arrayToString(Int32Array.from(received.subarray(0, expected.length)))
-                );
+
+                const receivedToString = arrayToString(Int32Array.from(received.subarray(0, expected.length)));
+
+                assert.ok(false, `${message}. Mismatch at ${i}. Expected ${arrayToString(expected)}, got ${receivedToString}`);
             }
         }
     }

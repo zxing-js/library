@@ -16,7 +16,6 @@
 
 /*package com.google.zxing.qrcode.decoder;*/
 
-import 'mocha';
 import * as assert from 'assert';
 import DecodedBitStreamParser from './../../../../core/qrcode/decoder/DecodedBitStreamParser';
 import BitSourceBuilder from './../../common/BitSourceBuilder';

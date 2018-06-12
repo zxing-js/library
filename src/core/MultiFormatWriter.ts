@@ -32,7 +32,8 @@ import QRCodeWriter from './qrcode/QRCodeWriter';
 import Writer from './Writer';
 import BarcodeFormat from './BarcodeFormat';
 import EncodeHintType from './EncodeHintType';
-import Exception from './Exception';
+
+import IllegalArgumentException from './IllegalArgumentException';
 
 /*import java.util.Map;*/
 
@@ -100,7 +101,7 @@ export default class MultiFormatWriter implements Writer {
             //   writer = new AztecWriter()
             //   break
             default:
-                throw new Exception(Exception.IllegalArgumentException, 'No encoder available for format ' + format);
+                throw new IllegalArgumentException('No encoder available for format ' + format);
         }
         return writer.encode(contents, format, width, height, hints);
     }

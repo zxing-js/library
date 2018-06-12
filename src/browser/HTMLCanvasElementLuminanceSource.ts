@@ -1,6 +1,6 @@
 import InvertedLuminanceSource from './../core/InvertedLuminanceSource';
 import LuminanceSource from './../core/LuminanceSource';
-import Exception from './../core/Exception';
+import IllegalArgumentException from '../core/IllegalArgumentException';
 
 export default class HTMLCanvasElementLuminanceSource extends LuminanceSource {
     private buffer: Uint8ClampedArray;
@@ -49,7 +49,7 @@ export default class HTMLCanvasElementLuminanceSource extends LuminanceSource {
 
     public getRow(y: number /*int*/, row: Uint8ClampedArray): Uint8ClampedArray {
         if (y < 0 || y >= this.getHeight()) {
-            throw new Exception(Exception.IllegalArgumentException, 'Requested row is outside the image: ' + y);
+            throw new IllegalArgumentException('Requested row is outside the image: ' + y);
         }
         const width: number /*int*/ = this.getWidth();
         const start = y * width;
