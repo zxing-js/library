@@ -243,7 +243,7 @@ export default class BrowserCodeReader {
             this.prepareCaptureCanvas();
         }
 
-        this.drawImageOnCanvas();
+        this.drawImageOnCanvas(this.canvasElementContext, this.videoElement || this.imageElement);
 
         const luminanceSource = new HTMLCanvasElementLuminanceSource(this.canvasElement);
         const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
