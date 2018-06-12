@@ -263,7 +263,7 @@ export default class BrowserCodeReader {
             }
         }
     }
-    
+
     protected drawImageOnCanvas() {
         this.canvasElementContext.drawImage(this.videoElement || this.imageElement, 0, 0);
     }
