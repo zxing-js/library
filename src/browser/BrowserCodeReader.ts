@@ -246,7 +246,7 @@ export default class BrowserCodeReader {
             this.prepareCaptureCanvas();
         }
 
-        this.canvasElementContext.drawImage(this.videoElement || this.imageElement, 0, 0);
+        this.drawImageOnCanvas(this.canvasElementContext, this.videoElement || this.imageElement);
 
         const luminanceSource = new HTMLCanvasElementLuminanceSource(this.canvasElement);
         const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
@@ -265,6 +265,13 @@ export default class BrowserCodeReader {
                 reject(re);
             }
         }
+    }
+
+    /**
+     * This will remain protected, so who extends this class can customize this method.
+     */
+    protected drawImageOnCanvas(canvasElementContext: CanvasRenderingContext2D, srcElement: HTMLVideoElement | HTMLImageElement) {
+        canvasElementContext.drawImage(srcElement, 0, 0);
     }
 
     protected readerDecode(binaryBitmap: BinaryBitmap): Result {
