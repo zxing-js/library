@@ -34,10 +34,10 @@ export default class StringEncoding {
      */
     public static encode(s: string, encoding: string | CharacterSetECI): Uint8Array {
 
-        const encodingName = this.encodingName(encoding);
 
+        // Uses `text-encoding` package.
         if (!StringEncoding.isBrowser()) {
-            return new TextEncoderLegacy(encodingName, { NONSTANDARD_allowLegacyEncoding: true }).encode(s);
+            return new TextEncoderLegacy(this.encodingName(encoding), { NONSTANDARD_allowLegacyEncoding: true }).encode(s);
         }
 
         // TextEncoder only encodes to UTF8 by default as specified by encoding.spec.whatwg.org
