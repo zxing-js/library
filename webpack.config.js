@@ -72,10 +72,10 @@ const config = (env, argv) => {
          */
         externals: {
             'text-encoding': {
-                amd: 'text-encoding',
-                commonjs2: 'text-encoding',
                 commonjs: 'text-encoding',
-                root: 'text-encoding'
+                commonjs2: 'text-encoding',
+                amd: '',
+                root: ''
             }
         },
 
