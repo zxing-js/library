@@ -18,10 +18,10 @@ export default class StringEncoding {
         if (!StringEncoding.isBrowser()) {
             return new TextDecoderLegacy(encodingName).decode(bytes);
         }
-        
+
         // TextDecoder not available
         if (typeof TextDecoder === 'undefined') {
-            return this.decodeFallbaack(encodingName, bytes);
+            return this.decodeFallback(bytes, encodingName);
         }
 
         return new TextDecoder(encodingName).decode(bytes);
@@ -78,13 +78,13 @@ export default class StringEncoding {
             let s = '';
 
             for (let i = 0, length = bytes.length; i < length; i++) {
-                
+
                 let h = bytes[i].toString(16);
-                
+
                 if (h.length < 2) {
                     h = '0' + h;
                 }
-                
+
                 s += '%' + h;
             }
 
