@@ -19,8 +19,6 @@ http-server ./docs -a localhost -p 4040 -o
 
 **Note:** `http-server` is a package that runs a local server, install with `npm i -g http-server`.
 
-
-
 ## Porting
 
 Initial port from 3.3.1-SNAPSHOT on May 2017 by Adrian Toșcă (@aleris).
@@ -44,6 +42,13 @@ number versus int is esential for bitwise operations), language style and older 
 - Package level visibility will transform to public to avoid module complexity.
 - Keep enum as similar with the original interface as possible (transform to class and use static fields for enum values).
 - Allways use `===` for `==` to avoid gliches from type transforms.
+
+### Cheat Sheet 💩
+
+| Java     | TypeScript          |
+| -------- | ------------------- |
+| `byte[]` | `Uint8ClampedArray` |
+| `int[]`  | `Int32Array`        |
 
 ## Types
 
