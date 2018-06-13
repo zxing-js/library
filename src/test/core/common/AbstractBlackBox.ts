@@ -233,13 +233,13 @@ abstract class AbstractBlackBoxSpec {
 
         for (let x: number /*int*/ = 0, length = this.testResults.length; x < length; x++) {
             const testResult: TestResult = this.testResults[x];
-            console.log(`Rotation ${testResult.getRotation()} degrees:`);
-            console.log(` ${passedCounts[x]} of ${imageFiles.length} images passed (${testResult.getMustPassCount()} required)`);
+            console.log(`\nRotation ${testResult.getRotation()} degrees:`);
+            console.log(`\t${passedCounts[x]} of ${imageFiles.length} images passed (${testResult.getMustPassCount()} required)`);
             let failed: number /*int*/ = imageFiles.length - passedCounts[x];
-            console.log(` ${misreadCounts[x]} failed due to misreads, ${failed - misreadCounts[x]} not detected`);
-            console.log(` ${tryHarderCounts[x]} of ${imageFiles.length} images passed with try harder (${testResult.getTryHarderCount()} required)`);
+            console.log(`\t${misreadCounts[x]} failed due to misreads, ${failed - misreadCounts[x]} not detected`);
+            console.log(`\t${tryHarderCounts[x]} of ${imageFiles.length} images passed with try harder (${testResult.getTryHarderCount()} required)`);
             failed = imageFiles.length - tryHarderCounts[x];
-            console.log(` ${tryHarderMisreadCounts[x]} failed due to misreads, ${failed - tryHarderMisreadCounts[x]} not detected`);
+            console.log(`\t${tryHarderMisreadCounts[x]} failed due to misreads, ${failed - tryHarderMisreadCounts[x]} not detected`);
             totalFound += passedCounts[x] + tryHarderCounts[x];
             totalMustPass += testResult.getMustPassCount() + testResult.getTryHarderCount();
             totalMisread += misreadCounts[x] + tryHarderMisreadCounts[x];
@@ -267,7 +267,7 @@ abstract class AbstractBlackBoxSpec {
             for (let x: number /*int*/ = 0; x < testCount; x++) {
 
                 const testResult = this.testResults[x];
-                const label = 'Rotation ' + testResult.getRotation() + ' degrees: Too many images failed.';
+                const label = '\nRotation ' + testResult.getRotation() + ' degrees: Too many images failed.';
 
                 assert.strictEqual(passedCounts[x] >= testResult.getMustPassCount(), true, label);
                 assert.strictEqual(tryHarderCounts[x] >= testResult.getTryHarderCount(), true, `Try harder, ${label}`);
@@ -403,7 +403,7 @@ abstract class AbstractBlackBoxSpec {
      * @throws IOException
      */
     protected static readTextFileAsMetadata(file: string): Map<string, string> {
-        // TODO:
+        // TODO: read text-file as metadata.
         return null;
     }
 
