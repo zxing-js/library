@@ -1,7 +1,7 @@
 {
     "name": "@zxing/library",
     "version": "0.6.0-beta.1",
-    "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library, with Code128 and ITF support.",
+    "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
     "keywords": [
         "reader",
         "writer",
