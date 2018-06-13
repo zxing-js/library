@@ -4,13 +4,22 @@ This document contains rules and guidelines for porting the library from Java to
 
 ## Tooling
 
-Local development using Node and npm, see package.json for dependencies.
+Local development using Node.js and `npm` or `yarn`, see `package.json` for dependencies.
 
-**Note:** Keep dependencies at minimum necessary.
+**Note:** Keep dependencies at minimum necessary. 🖤
 
-Unit tests: Mocha
+### Run the docs
 
-If using Visual Studio Code IDE hava a look at tsconfig.json and .vscode for default configurations
+To run the docs, open the CLI in this project root folder (something like `<somepath>/zxing-js/library`):
+
+```bash
+user@computer BUILDV <somepath>/zxing-js/library (develop)
+http-server ./docs -a localhost -p 4040 -o
+```
+
+**Note:** `http-server` is a package that runs a local server, install with `npm i -g http-server`.
+
+
 
 ## Porting
 
@@ -39,6 +48,7 @@ number versus int is esential for bitwise operations), language style and older 
 ## Types
 
 ### Java types
+
 https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
 
 - `byte` has 8 bits, signed (eg -127 to 127), so `byte[]` would trasnforms to `Int8Array` however:
@@ -49,6 +59,7 @@ https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
 - `long` has 64 bit two's complement `integer`, can be signed or unsigned.
 
 ### JavasSript TypedArray
+
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
 
 ## Things to look for
