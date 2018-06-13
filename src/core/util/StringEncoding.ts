@@ -18,6 +18,11 @@ export default class StringEncoding {
         if (!StringEncoding.isBrowser()) {
             return new TextDecoderLegacy(encodingName).decode(bytes);
         }
+        
+        // TextDecoder not available
+        if (typeof TextDecoder === 'undefined') {
+            return this.decodeFallbaack(encodingName, bytes);
+        }
 
         return new TextDecoder(encodingName).decode(bytes);
     }
@@ -52,31 +57,44 @@ export default class StringEncoding {
             : encoding.getName();
     }
 
-    private static decodeFallBack(bytes: Uint8Array, encoding: string): string {
+    /**
+     * Returns character set from some encoding character set.
+     */
+    public static encodingCharacterSet(encoding: string | CharacterSetECI): CharacterSetECI {
+        return CharacterSetECI.getCharacterSetECIByName(this.getName(encoding));
+    }
 
-        const ec = CharacterSetECI.getCharacterSetECIByName(encoding);
+    /**
+     * Runs a fallback for the native decoding funcion.
+     */
+    private static decodeFallback(bytes: Uint8Array, encoding: string | CharacterSetECI): string {
 
-        if (ec.equals(CharacterSetECI.UTF8) ||
-            ec.equals(CharacterSetECI.ISO8859_1) ||
-            ec.equals(CharacterSetECI.ASCII)) {
+        const characterSet = this.encodingCharacterSet(encoding);
+
+        if (characterSet.equals(CharacterSetECI.UTF8) ||
+            characterSet.equals(CharacterSetECI.ISO8859_1) ||
+            characterSet.equals(CharacterSetECI.ASCII)) {
 
             let s = '';
 
             for (let i = 0, length = bytes.length; i < length; i++) {
+                
                 let h = bytes[i].toString(16);
+                
                 if (h.length < 2) {
                     h = '0' + h;
                 }
+                
                 s += '%' + h;
             }
 
             return decodeURIComponent(s);
         }
 
-        if (ec.equals(CharacterSetECI.UnicodeBigUnmarked)) {
+        if (characterSet.equals(CharacterSetECI.UnicodeBigUnmarked)) {
             return String.fromCharCode.apply(null, new Uint16Array(bytes.buffer));
         }
 
-        throw new UnsupportedOperationException(`Encoding ${encoding} not supported by fallback.`);
+        throw new UnsupportedOperationException(`Encoding ${this.encodingName(encoding)} not supported by fallback.`);
     }
 }
