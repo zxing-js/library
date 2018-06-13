@@ -61,7 +61,7 @@ export default class StringEncoding {
      * Returns character set from some encoding character set.
      */
     public static encodingCharacterSet(encoding: string | CharacterSetECI): CharacterSetECI {
-        return CharacterSetECI.getCharacterSetECIByName(this.getName(encoding));
+        return CharacterSetECI.getCharacterSetECIByName(this.encodingName(encoding));
     }
 
     /**
