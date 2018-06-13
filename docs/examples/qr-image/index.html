@@ -1,69 +1,79 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="author" content="Adrian Toșcă">
-		<meta name="description" content="Scan QR Code from Image with ZXing javascript library">
-		<title>ZXing | Scan QR Code from Image</title>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
-		<link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
-	</head>
-	<body>
 
-		<main class="wrapper">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="ZXing for JS">
 
-			<section class="container" id="demo-content">
-				<h1 class="title">Scan QR Code from Image</h1>
-				
-				<p>This example shows how to scan a QR code with ZXing javascript library from an image. The example decodes from the <code>src</code> in <code>img</code> tag, however is also possible to decode directly from an url without an <code>img</code> tag.</p>
+    <title>ZXing TypeScript | Decoding QR Code from image file</title>
 
-				<div>
-					<a class="button" id="decodeButton">Decode</a>
-				</div>
+    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/normalize.css@8.0.0/normalize.css">
+    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/milligram@1.3.0/dist/milligram.min.css">
+</head>
 
-				<div>
-					<img id="img" src="qrcode-image-3.png" style="border: 1px solid gray"></img>
-				</div>
+<body>
 
-				<label>Result:</label>
-				<blockquote>
-					<p id="result"></p>
-				</blockquote>
-				
-				<p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/qr-image/">source code</a>  for this example.</p>
+    <main class="wrapper" style="padding-top:2em">
 
-			</section>
+        <section class="container" id="demo-content">
+            <h1 class="title">Scan QR Code from Image</h1>
 
-			<footer class="footer">
-				<section class="container">
-					<p>ZXing TypeScript Demo. Licensed under the <a target="_blank" href="https://github.com/zxing-js/library#license" title="MIT">MIT</a>.</p>
-				</section>
-			</footer>
+            <p>
+                This example shows how to scan a QR code with ZXing javascript library from an image.
+                The example decodes from the
+                <code>src</code> in
+                <code>img</code> tag, however is also possible to decode directly from an url without an
+                <code>img</code> tag.
+            </p>
 
-		</main>
+            <div>
+                <a class="button" id="decodeButton">Decode</a>
+            </div>
 
-		<script type="text/javascript" src="../zxing.qrcodereader.min.js"></script>
-        <script type="text/javascript">
-			window.addEventListener('load', function() {
-				const codeReader = new ZXing.BrowserQRCodeReader('video')
-				console.log('ZXing code reader initialized')
+            <div>
+                <img id="img" src="qrcode-image-3.png" style="border: 1px solid gray"></img>
+            </div>
 
-				document.getElementById('decodeButton').addEventListener('click', () => {
-					const img = document.getElementById('img')
-					codeReader.decodeFromImage(img).then((result) => {
-						console.log(result)
-						document.getElementById('result').textContent = result.text
-					}).catch((err) => {
-						console.error(err)
-						document.getElementById('result').textContent = err
-					})
-					console.log(`Started decode for image from ${img.src}`)
-				})
+            <label>Result:</label>
+            <blockquote>
+                <p id="result"></p>
+            </blockquote>
 
-			})
-		</script>
+            <p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/qr-image/">source code</a> for this example.</p>
 
-	</body>
+        </section>
+
+        <footer class="footer">
+            <section class="container">
+                <p>ZXing TypeScript Demo. Licensed under the <a target="_blank" href="https://github.com/zxing-js/library#license" title="MIT">MIT</a>.</p>
+            </section>
+        </footer>
+
+    </main>
+
+    <script type="text/javascript" src="../zxing.qrcodereader.min.js"></script>
+    <script type="text/javascript">
+        window.addEventListener('load', function () {
+            const codeReader = new ZXing.BrowserQRCodeReader('video')
+            console.log('ZXing code reader initialized')
+
+            document.getElementById('decodeButton').addEventListener('click', () => {
+                const img = document.getElementById('img')
+                codeReader.decodeFromImage(img).then((result) => {
+                    console.log(result)
+                    document.getElementById('result').textContent = result.text
+                }).catch((err) => {
+                    console.error(err)
+                    document.getElementById('result').textContent = err
+                })
+                console.log(`Started decode for image from ${img.src}`)
+            })
+
+        })
+    </script>
+
+</body>
+
 </html>

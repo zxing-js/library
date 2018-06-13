@@ -1,55 +1,84 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="author" content="ZXing for JS">
-        <meta name="description" content="ZXing TypeScript Demo &amp; Examples">
 
-        <title>ZXing TypeScript | Demo &amp; Examples</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="ZXing for JS">
 
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
-		<link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
-	</head>
-	<body>
+    <title>ZXing TypeScript | Demo & Examples</title>
 
-		<main class="wrapper">
+    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/normalize.css@8.0.0/normalize.css">
+    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/milligram@1.3.0/dist/milligram.min.css">
+</head>
 
-			<section class="container" id="demo-content">
-				<h1 class="title">ZXing TypeScript Examples</h1>
+<body>
 
-                <p>ZXing ("zebra crossing") TypeScript is an open-source, multi-format 1D/2D barcode image processing library ported to TypeScript from Java.</p>
+    <main class="wrapper" style="padding-top:2em">
 
-                <p>The library can be used from browser or from node. Below are links to browser demo &amp; examples.</p>
+        <section class="container" id="demo-content">
+            <h1 class="title">ZXing TypeScript Examples</h1>
 
-                <p>
-                    More information can be found in <a href="https://github.com/zxing-js/library">GitHub project home page</a>.
-                </p>
+            <p>ZXing ("zebra crossing") TypeScript is an open-source, multi-format 1D/2D barcode image processing library ported
+                to TypeScript from Java.</p>
 
-                <h3>QR Code Scanning Examples</h3>
-                <ul>
-                    <li><a href="examples/qr-camera">Scan QR Code from Video Camera</a></li>
-                    <li><a href="examples/qr-image">Scan QR Code from Image</a></li>
-                    <li><a href="examples/qr-video">Scan QR Code from Video File</a></li>
-                    <li><a href="examples/qr-svg-writer">Write QR Code to SVG</a></li>
-                    <li><a href="examples/barcode-camera">Scan Barcode from Video Camera</a></li>
-                    <li><a href="examples/barcode-image">Scan Barcode from Image</a></li>
-                </ul>
+            <p>The library can be used from browser or from node. Below are links to browser demo &amp; examples.</p>
 
-                <p>
-                    View <a href="https://github.com/zxing-js/library">source code</a> on GitHub.
-                </p>
+            <p>
+                More information can be found in
+                <a href="https://github.com/zxing-js/library">GitHub project home page</a>.
+            </p>
 
-			</section>
+            <h3>Scanning Examples</h3>
+            <ul>
+                <li>
+                    <strong>2D</strong>
+                    <ul>
+                        <li>
+                            <a href="examples/qr-camera">Scan QR Code from Video Camera</a>
+                        </li>
+                        <li>
+                            <a href="examples/qr-image">Scan QR Code from Image</a>
+                        </li>
+                        <li>
+                            <a href="examples/qr-video">Scan QR Code from Video File</a>
+                        </li>
+                        <li>
+                            <a href="examples/qr-svg-writer">Write QR Code to SVG</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>1D</strong>
+                    <ul>
+                        <li>
+                            <a href="examples/barcode-camera">Scan Barcode from Video Camera</a>
+                        </li>
+                        <li>
+                            <a href="examples/barcode-image">Scan Barcode from Image</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
 
-			<footer class="footer">
-				<section class="container">
-					<p>ZXing TypeScript Demo. Licensed under the <a target="_blank" href="https://github.com/zxing-js/library#license" title="MIT">MIT</a>.</p>
-				</section>
-			</footer>
+            <p>
+                View
+                <a href="https://github.com/zxing-js/library">source code</a> on GitHub.
+            </p>
 
-		</main>
+        </section>
 
-	</body>
+        <footer class="footer">
+            <section class="container">
+                <p>ZXing TypeScript Demo. Licensed under the
+                    <a target="_blank" href="https://github.com/zxing-js/library#license"
+                        title="MIT">MIT</a>.</p>
+            </section>
+        </footer>
+
+    </main>
+
+</body>
+
 </html>

@@ -1,98 +1,104 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="author" content="Adrian Toșcă">
-		<meta name="description" content="Scan QR Code from Video Camera with ZXing javascript library">
-		<title>ZXing | Scan QR Code from Video Camera</title>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
-		<link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
-	</head>
-	<body>
 
-		<main class="wrapper">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="ZXing for JS">
 
-			<section class="container" id="demo-content">
-				<h1 class="title">Scan QR Code from Video Camera</h1>
-				
-				<p>This example shows how to scan a QR code with ZXing javascript library from the device video camera. If more than one video input devices are available (for example front and back camera) the example shows how to read them and use a select to change the input device.</p>
+    <title>ZXing TypeScript | Decoding from camera stream</title>
 
-				<div>
-					<a class="button" id="startButton">Start</a>
-					<a class="button" id="resetButton">Reset</a>
-				</div>
+    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/normalize.css@8.0.0/normalize.css">
+    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/milligram@1.3.0/dist/milligram.min.css">
+</head>
 
-				<div>
-					<video id="video" width="300" height="200" style="border: 1px solid gray"></video>
-				</div>
-				
-				<div id="sourceSelectPanel" style="display:none">
-					<label for="sourceSelect">Change video source:</label>
-					<select id="sourceSelect" style="max-width:400px">
-					</select>
-				</div>
+<body>
 
-				<label>Result:</label>
-				<blockquote>
-					<p id="result"></p>
-				</blockquote>
+    <main class="wrapper" style="padding-top:2em">
 
-				<p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/qr-camera/">source code</a>  for this example.</p>
-			</section>
+        <section class="container" id="demo-content">
+            <h1 class="title">Scan QR Code from Video Camera</h1>
 
-			<footer class="footer">
-				<section class="container">
-					<p>ZXing TypeScript Demo. Licensed under the <a target="_blank" href="https://github.com/zxing-js/library#license" title="MIT">MIT</a>.</p>
-				</section>
-			</footer>
+            <p>This example shows how to scan a QR code with ZXing javascript library from the device video camera. If more
+                than one video input devices are available (for example front and back camera) the example shows how to read
+                them and use a select to change the input device.</p>
 
-		</main>
+            <div>
+                <a class="button" id="startButton">Start</a>
+                <a class="button" id="resetButton">Reset</a>
+            </div>
 
-		<script type="text/javascript" src="../zxing.qrcodereader.min.js"></script>
-        <script type="text/javascript">
-			window.addEventListener('load', function() {
-				const codeReader = new ZXing.BrowserQRCodeReader()
-				console.log('ZXing code reader initialized')
-				codeReader.getVideoInputDevices()
-					.then((videoInputDevices) => {
-						const sourceSelect = document.getElementById('sourceSelect')
-						const firstDeviceId = videoInputDevices[0].deviceId
-						if (videoInputDevices.length > 1) {
-							videoInputDevices.forEach((element) => {
-								const sourceOption = document.createElement('option')
-								sourceOption.text = element.label
-								sourceOption.value = element.deviceId
-								sourceSelect.appendChild(sourceOption)
-							})
+            <div>
+                <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
+            </div>
 
-							const sourceSelectPanel = document.getElementById('sourceSelectPanel')
-							sourceSelectPanel.style.display = 'block'
-						}
+            <div id="sourceSelectPanel" style="display:none">
+                <label for="sourceSelect">Change video source:</label>
+                <select id="sourceSelect" style="max-width:400px">
+                </select>
+            </div>
 
-						document.getElementById('startButton').addEventListener('click', () => {
-							codeReader.decodeFromInputVideoDevice(firstDeviceId, 'video').then((result) => {
-								console.log(result)
-								document.getElementById('result').textContent = result.text
-							}).catch((err) => {
-								console.error(err)
-								document.getElementById('result').textContent = err
-							})
-							console.log(`Started continous decode from camera with id ${firstDeviceId}`)
-						})
+            <label>Result:</label>
+            <blockquote>
+                <p id="result"></p>
+            </blockquote>
 
-						document.getElementById('resetButton').addEventListener('click', () => {
-							codeReader.reset()
-							console.log('Reset.')
-						})
+            <p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/qr-camera/">source code</a> for this example.</p>
+        </section>
 
-					})
-					.catch((err) => {
-						console.error(err)
-					})
-			})
-		</script>
+        <footer class="footer">
+            <section class="container">
+                <p>ZXing TypeScript Demo. Licensed under the <a target="_blank" href="https://github.com/zxing-js/library#license" title="MIT">MIT</a>.</p>
+            </section>
+        </footer>
 
-	</body>
+    </main>
+
+    <script type="text/javascript" src="../zxing.qrcodereader.min.js"></script>
+    <script type="text/javascript">
+        window.addEventListener('load', function () {
+            const codeReader = new ZXing.BrowserQRCodeReader()
+            console.log('ZXing code reader initialized')
+            codeReader.getVideoInputDevices()
+                .then((videoInputDevices) => {
+                    const sourceSelect = document.getElementById('sourceSelect')
+                    const firstDeviceId = videoInputDevices[0].deviceId
+                    if (videoInputDevices.length > 1) {
+                        videoInputDevices.forEach((element) => {
+                            const sourceOption = document.createElement('option')
+                            sourceOption.text = element.label
+                            sourceOption.value = element.deviceId
+                            sourceSelect.appendChild(sourceOption)
+                        })
+
+                        const sourceSelectPanel = document.getElementById('sourceSelectPanel')
+                        sourceSelectPanel.style.display = 'block'
+                    }
+
+                    document.getElementById('startButton').addEventListener('click', () => {
+                        codeReader.decodeFromInputVideoDevice(firstDeviceId, 'video').then((result) => {
+                            console.log(result)
+                            document.getElementById('result').textContent = result.text
+                        }).catch((err) => {
+                            console.error(err)
+                            document.getElementById('result').textContent = err
+                        })
+                        console.log(`Started continous decode from camera with id ${firstDeviceId}`)
+                    })
+
+                    document.getElementById('resetButton').addEventListener('click', () => {
+                        codeReader.reset()
+                        console.log('Reset.')
+                    })
+
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+        })
+    </script>
+
+</body>
+
 </html>
