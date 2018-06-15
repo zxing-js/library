@@ -1,17 +1,31 @@
 // browser
-export { default as BrowserCodeReader } from './browser/BrowserCodeReader';
 export * from './browser/BrowserQRCodeReader';
+export * from './browser/BrowserDatamatrixCodeReader';
 export * from './browser/BrowserQRCodeSvgWriter';
+export * from './browser/BrowserBarcodeReader';
+export { default as BrowserCodeReader } from './browser/BrowserCodeReader';
 export { default as HTMLCanvasElementLuminanceSource } from './browser/HTMLCanvasElementLuminanceSource';
 export { default as VideoInputDevice } from './browser/VideoInputDevice';
-export * from './browser/BrowserBarcodeReader';
+
+// Exceptions
+export { default as Exception } from './core/Exception';
+export { default as ArgumentException } from './core/ArgumentException';
+export { default as ArithmeticException } from './core/ArithmeticException';
+export { default as ChecksumException } from './core/ChecksumException';
+export { default as FormatException } from './core/FormatException';
+export { default as IllegalArgumentException } from './core/IllegalArgumentException';
+export { default as IllegalStateException } from './core/IllegalStateException';
+export { default as NotFoundException } from './core/NotFoundException';
+export { default as ReaderException } from './core/ReaderException';
+export { default as ReedSolomonException } from './core/ReedSolomonException';
+export { default as UnsupportedOperationException } from './core/UnsupportedOperationException';
+export { default as WriterException } from './core/WriterException';
 
 // core
 export { default as BarcodeFormat } from './core/BarcodeFormat';
 export { default as Binarizer } from './core/Binarizer';
 export { default as BinaryBitmap } from './core/BinaryBitmap';
 export { default as DecodeHintType } from './core/DecodeHintType';
-export { default as Exception } from './core/Exception';
 export { default as InvertedLuminanceSource } from './core/InvertedLuminanceSource';
 export { default as LuminanceSource } from './core/LuminanceSource';
 export { default as MultiFormatReader } from './core/MultiFormatReader';
@@ -50,11 +64,12 @@ export { default as GenericGFPoly } from './core/common/reedsolomon/GenericGFPol
 export { default as ReedSolomonDecoder } from './core/common/reedsolomon/ReedSolomonDecoder';
 export { default as ReedSolomonEncoder } from './core/common/reedsolomon/ReedSolomonEncoder';
 
-// core/qrcode
+// core/twod/qrcode
 export { default as QRCodeReader } from './core/qrcode/QRCodeReader';
 export { default as QRCodeWriter } from './core/qrcode/QRCodeWriter';
 
 // core/oned
 export { default as OneDReader } from './core/oned/OneDReader';
+export { default as EAN13Reader } from './core/oned/EAN13Reader';
 export { default as Code128Reader } from './core/oned/Code128Reader';
 export { default as ITFReader } from './core/oned/ITFReader';

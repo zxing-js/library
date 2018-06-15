@@ -16,7 +16,6 @@
 
 /*package com.google.zxing.qrcode.encoder;*/
 
-import 'mocha';
 import * as assert from 'assert';
 import BitArray from './../../../../core/common/BitArray';
 import ByteMatrix from './../../../../core/qrcode/encoder/ByteMatrix';

@@ -19,11 +19,12 @@
 import BinaryBitmap from '../BinaryBitmap';
 import BitArray from '../common/BitArray';
 import DecodeHintType from '../DecodeHintType';
-import Exception from '../Exception';
+
 import Reader from '../Reader';
 import Result from '../Result';
 import ResultMetadataType from '../ResultMetadataType';
 import ResultPoint from '../ResultPoint';
+import NotFoundException from '../NotFoundException';
 
 /**
  * Encapsulates functionality and implementation that is common to all families
@@ -70,7 +71,7 @@ export default abstract class OneDReader implements Reader {
                 }
                 return result;
             } else {
-                throw new Exception(Exception.NotFoundException);
+                throw new NotFoundException();
             }
         }
     }
@@ -163,7 +164,7 @@ export default abstract class OneDReader implements Reader {
             }
         }
 
-        throw new Exception(Exception.NotFoundException);
+        throw new NotFoundException();
     }
 
     /**
@@ -186,7 +187,7 @@ export default abstract class OneDReader implements Reader {
 
         const end = row.getSize();
         if (start >= end) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         let isWhite = !row.get(start);
@@ -209,7 +210,7 @@ export default abstract class OneDReader implements Reader {
         // If we read fully the last section of pixels and filled up our counters -- or filled
         // the last counter but ran off the side of the image, OK. Otherwise, a problem.
         if (!(counterPosition === numCounters || (counterPosition === numCounters - 1 && i === end))) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
     }
 
@@ -224,7 +225,7 @@ export default abstract class OneDReader implements Reader {
             }
         }
         if (numTransitionsLeft >= 0) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         OneDReader.recordPattern(row, start + 1, counters);

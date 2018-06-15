@@ -16,7 +16,6 @@
 
 /*package com.google.zxing.qrcode.decoder;*/
 
-import 'mocha';
 import * as assert from 'assert';
 
 import ErrorCorrectionLevel from './../../../../core/qrcode/decoder/ErrorCorrectionLevel';
@@ -34,8 +33,8 @@ describe('ErrorCorrectionLevel', () => {
         try {
             ErrorCorrectionLevel.forBits(4);
             assert.ok(false, 'Should have thrown an exception');
-        } catch (iae/*IllegalArgumentException */) {
-            // good
+        } catch (ex) {
+            // good for IllegalArgumentException
         }
     });
 

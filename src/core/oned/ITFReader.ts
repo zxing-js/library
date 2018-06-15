@@ -19,12 +19,14 @@
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
 import DecodeHintType from '../DecodeHintType';
-import Exception from '../Exception';
+
 import Result from '../Result';
 import ResultPoint from '../ResultPoint';
 import OneDReader from './OneDReader';
 import StringBuilder from '../util/StringBuilder';
 import System from '../util/System';
+import FormatException from '../FormatException';
+import NotFoundException from '../NotFoundException';
 
 /**
  * <p>Decodes ITF barcodes.</p>
@@ -131,7 +133,7 @@ export default class ITFReader extends OneDReader {
         }
 
         if (!lengthOK) {
-            throw new Exception(Exception.FormatException);
+            throw new FormatException();
         }
 
         const points: ResultPoint[] = [new ResultPoint(startRange[1], rowNumber), new ResultPoint(endRange[0], rowNumber)];
@@ -249,7 +251,7 @@ export default class ITFReader extends OneDReader {
         }
         if (quietCount !== 0) {
             // Unable to find the necessary number of quiet zone pixels.
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
     }
     /*
@@ -266,7 +268,7 @@ export default class ITFReader extends OneDReader {
         const endStart = row.getNextSet(0);
 
         if (endStart === width) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         return endStart;
@@ -361,7 +363,7 @@ export default class ITFReader extends OneDReader {
                 isWhite = !isWhite;
             }
         }
-        throw new Exception (Exception.NotFoundException);
+        throw new NotFoundException();
     }
 
     /*/!**
@@ -395,7 +397,7 @@ export default class ITFReader extends OneDReader {
         if (bestMatch >= 0) {
             return bestMatch % 10;
         } else {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
     }
 

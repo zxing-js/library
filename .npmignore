@@ -3,8 +3,10 @@
 **/tsconfig.json
 tsconfig.*.json
 tslint.json
-**/webpack.config.js
-**/webpack.config.*.js
+_config.yml
+**/*.conf.js
+**/*.config.js
+**/*.config.*.js
 *.lock
 *.tar.gz
 *.tgz
@@ -12,4 +14,3 @@ tslint.json
 node_modules
 docs
 test
-test.js

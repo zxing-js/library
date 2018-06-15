@@ -20,11 +20,12 @@ import BarcodeFormat from './../BarcodeFormat';
 import EncodeHintType from './../EncodeHintType';
 import Writer from './../Writer';
 import BitMatrix from './../common/BitMatrix';
-import ByteMatrix from './encoder/ByteMatrix';
 import ErrorCorrectionLevel from './decoder/ErrorCorrectionLevel';
 import Encoder from './encoder/Encoder';
 import QRCode from './encoder/QRCode';
-import Exception from './../Exception';
+
+import IllegalArgumentException from '../IllegalArgumentException';
+import IllegalStateException from '../IllegalStateException';
 
 /*import java.util.Map;*/
 
@@ -52,16 +53,15 @@ export default class QRCodeWriter implements Writer {
         hints: Map<EncodeHintType, any>): BitMatrix /*throws WriterException */ {
 
         if (contents.length === 0) {
-            throw new Exception(Exception.IllegalArgumentException, 'Found empty contents');
+            throw new IllegalArgumentException('Found empty contents');
         }
 
         if (format !== BarcodeFormat.QR_CODE) {
-            throw new Exception(Exception.IllegalArgumentException, 'Can only encode QR_CODE, but got ' + format);
+            throw new IllegalArgumentException('Can only encode QR_CODE, but got ' + format);
         }
 
         if (width < 0 || height < 0) {
-            throw new Exception('IllegalArgumentException', 'Requested dimensions are too small: ' + width + 'x' +
-                height);
+            throw new IllegalArgumentException(`Requested dimensions are too small: ${width}x${height}`);
         }
 
         let errorCorrectionLevel = ErrorCorrectionLevel.L;
@@ -84,7 +84,7 @@ export default class QRCodeWriter implements Writer {
     private static renderResult(code: QRCode, width: number /*int*/, height: number /*int*/, quietZone: number /*int*/): BitMatrix {
         const input = code.getMatrix();
         if (input === null) {
-            throw new Exception(Exception.IllegalStateException);
+            throw new IllegalStateException();
         }
         const inputWidth = input.getWidth();
         const inputHeight = input.getHeight();

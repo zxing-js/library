@@ -20,12 +20,15 @@ import BarcodeFormat from '../BarcodeFormat';
 import BinaryBitmap from '../BinaryBitmap';
 import BitArray from '../common/BitArray';
 import DecodeHintType from '../DecodeHintType';
-import Exception from '../Exception';
+
 import Reader from '../Reader';
 import Result from '../Result';
 import ResultMetadataType from '../ResultMetadataType';
 import ResultPoint from '../ResultPoint';
 import OneDReader from './OneDReader';
+import NotFoundException from '../NotFoundException';
+import FormatException from '../FormatException';
+import ChecksumException from '../ChecksumException';
 
 /**
  * <p>Decodes Code 128 barcodes.</p>
@@ -206,7 +209,7 @@ export default class Code128Reader extends OneDReader {
                 isWhite = !isWhite;
             }
         }
-        throw new Exception(Exception.NotFoundException);
+        throw new NotFoundException();
     }
 
     private static decodeCode(row: BitArray, counters: number[], rowOffset: number): number {
@@ -225,7 +228,7 @@ export default class Code128Reader extends OneDReader {
         if (bestMatch >= 0) {
             return bestMatch;
         } else {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
     }
 
@@ -251,7 +254,7 @@ export default class Code128Reader extends OneDReader {
                 codeSet = Code128Reader.CODE_CODE_C;
                 break;
             default:
-                throw new Exception(Exception.FormatException);
+                throw new FormatException();
         }
 
         let done = false;
@@ -304,7 +307,7 @@ export default class Code128Reader extends OneDReader {
                 case Code128Reader.CODE_START_A:
                 case Code128Reader.CODE_START_B:
                 case Code128Reader.CODE_START_C:
-                    throw new Exception(Exception.FormatException);
+                    throw new FormatException();
             }
 
             switch (codeSet) {
@@ -483,21 +486,21 @@ export default class Code128Reader extends OneDReader {
         if (!row.isRange(nextStart,
             Math.min(row.getSize(), nextStart + (nextStart - lastStart) / 2),
             false)) {
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         // Pull out from sum the value of the penultimate check code
         checksumTotal -= multiplier * lastCode;
         // lastCode is the checksum then:
         if (checksumTotal % 103 !== lastCode) {
-            throw new Exception(Exception.ChecksumException);
+            throw new ChecksumException();
         }
 
         // Need to pull out the check digits from string
         const resultLength = result.length;
         if (resultLength === 0) {
             // false positive
-            throw new Exception(Exception.NotFoundException);
+            throw new NotFoundException();
         }
 
         // Only bother if the result had at least one character, and if the checksum digit happened to

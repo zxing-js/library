@@ -1,75 +1,80 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="author" content="Adrian Toșcă">
-		<meta name="description" content="Scan QR Code from Video File with ZXing javascript library">
-		<title>ZXing | Demo</title>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
-		<link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
-	</head>
-	<body>
 
-		<main class="wrapper">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="ZXing for JS">
 
-			<section class="container" id="demo-content">
-				<h1 class="title">Scan QR Code from Video File</h1>
-				
-				<p>This example shows how to scan a QR code with ZXing javascript library from a video file. The example decodes from an url and shows the video while decoding, however is also possbile to decode without showing the video.</p>
+    <title>ZXing TypeScript | Decoding from video</title>
 
-				<div>
-					<a class="button" id="startButton">Start</a>
-					<a class="button" id="resetButton">Reset</a>
-				</div>
+    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/normalize.css@8.0.0/normalize.css">
+    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/milligram@1.3.0/dist/milligram.min.css">
+</head>
 
-				<div>
-					<video id="video" width="200" height="300" style="border: 1px solid gray" muted="muted"></video>
-				</div>
+<body>
 
-				<label>Result:</label>
-				<blockquote>
-					<p id="result"></p>
-				</blockquote>
-				
-				<p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/qr-video/">source code</a>  for this example.</p>
+    <main class="wrapper" style="padding-top:2em">
 
-			</section>
+        <section class="container" id="demo-content">
+            <h1 class="title">Scan QR Code from Video File</h1>
 
-			<footer class="footer">
-				<section class="container">
-					<p>ZXing TypeScript Demo. Licensed under the <a target="_blank" href="https://github.com/zxing-js/library#license" title="MIT">MIT</a>.</p>
-				</section>
-			</footer>
+            <p>This example shows how to scan a QR code with ZXing javascript library from a video file. The example decodes
+                from an url and shows the video while decoding, however is also possbile to decode without showing the video.</p>
 
-		</main>
+            <div>
+                <a class="button" id="startButton">Start</a>
+                <a class="button" id="resetButton">Reset</a>
+            </div>
 
-		<script type="text/javascript" src="../zxing.qrcodereader.min.js"></script>
-        <script type="text/javascript">
-			window.addEventListener('load', function() {
-				const codeReader = new ZXing.BrowserQRCodeReader()
-				console.log('ZXing code reader initialized')
+            <div>
+                <video id="video" width="200" height="300" style="border: 1px solid gray" muted="muted"></video>
+            </div>
 
-				document.getElementById('startButton').addEventListener('click', () => {
-					const videoSrc = 'qrcode-video.mp4'
-					codeReader.decodeFromVideoSource(videoSrc, 'video').then((result) => {
-						console.log(result)
-						document.getElementById('result').textContent = result.text
-					}).catch((err) => {
-						console.error(err)
-						document.getElementById('result').textContent = err
-					})
-					console.log(`Started decode for video from ${videoSrc}`)
-				})
+            <label>Result:</label>
+            <blockquote>
+                <p id="result"></p>
+            </blockquote>
 
-				document.getElementById('resetButton').addEventListener('click', () => {
-					codeReader.reset()
-					console.log('Reset.')
-				})
+            <p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/qr-video/">source code</a> for this example.</p>
 
-			})
-		</script>
+        </section>
 
-	</body>
+        <footer class="footer">
+            <section class="container">
+                <p>ZXing TypeScript Demo. Licensed under the <a target="_blank" href="https://github.com/zxing-js/library#license" title="MIT">MIT</a>.</p>
+            </section>
+        </footer>
+
+    </main>
+
+    <script type="text/javascript" src="../zxing.qrcodereader.min.js"></script>
+    <script type="text/javascript">
+        window.addEventListener('load', function () {
+            const codeReader = new ZXing.BrowserQRCodeReader()
+            console.log('ZXing code reader initialized')
+
+            document.getElementById('startButton').addEventListener('click', () => {
+                const videoSrc = 'qrcode-video.mp4'
+                codeReader.decodeFromVideoSource(videoSrc, 'video').then((result) => {
+                    console.log(result)
+                    document.getElementById('result').textContent = result.text
+                }).catch((err) => {
+                    console.error(err)
+                    document.getElementById('result').textContent = err
+                })
+                console.log(`Started decode for video from ${videoSrc}`)
+            })
+
+            document.getElementById('resetButton').addEventListener('click', () => {
+                codeReader.reset()
+                console.log('Reset.')
+            })
+
+        })
+    </script>
+
+</body>
+
 </html>

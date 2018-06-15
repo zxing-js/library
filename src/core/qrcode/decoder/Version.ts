@@ -17,11 +17,13 @@
 /*namespace com.google.zxing.qrcode.decoder {*/
 
 import BitMatrix from './../../common/BitMatrix';
-import Exception from './../../Exception';
+
 import ErrorCorrectionLevel from './ErrorCorrectionLevel';
 import FormatInformation from './FormatInformation';
 import ECBlocks from './ECBlocks';
 import ECB from './ECB';
+import FormatException from '../../FormatException';
+import IllegalArgumentException from '../../IllegalArgumentException';
 
 /**
  * See ISO 18004:2006 Annex D
@@ -424,18 +426,18 @@ export default class Version {
      */
     public static getProvisionalVersionForDimension(dimension: number /*int*/): Version /*throws FormatException */ {
         if (dimension % 4 !== 1) {
-            throw new Exception(Exception.FormatException);
+            throw new FormatException();
         }
         try {
             return this.getVersionForNumber((dimension - 17) / 4);
         } catch (ignored/*: IllegalArgumentException*/) {
-            throw new Exception(Exception.FormatException);
+            throw new FormatException();
         }
     }
 
     public static getVersionForNumber(versionNumber: number /*int*/): Version {
         if (versionNumber < 1 || versionNumber > 40) {
-            throw new Exception(Exception.IllegalArgumentException);
+            throw new IllegalArgumentException();
         }
         return Version.VERSIONS[versionNumber - 1];
     }

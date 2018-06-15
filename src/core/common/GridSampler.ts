@@ -18,7 +18,8 @@
 
 import BitMatrix from './BitMatrix';
 import PerspectiveTransform from './PerspectiveTransform';
-import Exception from './../Exception';
+
+import NotFoundException from '../NotFoundException';
 
 /**
  * Implementations of this class can, given locations of finder patterns for a QR code in an
@@ -119,7 +120,7 @@ abstract class GridSampler {
             const y = Math.floor(points[offset + 1]);
 
             if (x < -1 || x > width || y < -1 || y > height) {
-                throw new Exception(Exception.NotFoundException);
+                throw new NotFoundException();
             }
 
             nudged = false;
@@ -150,7 +151,7 @@ abstract class GridSampler {
             const y = Math.floor(points[offset + 1]);
 
             if (x < -1 || x > width || y < -1 || y > height) {
-                throw new Exception(Exception.NotFoundException);
+                throw new NotFoundException();
             }
 
             nudged = false;
