@@ -91,7 +91,7 @@ export default class Code39Reader extends OneDReader {
     this.usingCheckDigit = usingCheckDigit;
     this.extendedMode = extendedMode;
     this.decodeRowResult = '';
-    this.counters = new Array<number>();
+    this.counters = new Array<number>(9);
   }
 
   public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
