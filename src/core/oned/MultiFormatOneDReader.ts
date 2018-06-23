@@ -26,6 +26,7 @@ import BitArray from './../common/BitArray';
 import ITFReader from './ITFReader';
 import MultiFormatUPCEANReader from './MultiFormatUPCEANReader';
 import NotFoundException from '../NotFoundException';
+import Code39Reader from './Code39Reader';
 
 /**
  * @author Daniel Switkin <dswitkin@google.com>
@@ -50,9 +51,9 @@ export default class MultiFormatOneDReader extends OneDReader {
             //     possibleFormats.get(BarcodeFormat.UPC_E)) {
             //   readers.push(new MultiFormatUPCEANReader(hints));
             // }
-            // if (possibleFormats.get(BarcodeFormat.CODE_39)) {
-            //    this.readers.push(new Code39Reader(useCode39CheckDigit));
-            // }
+            if (possibleFormats.get(BarcodeFormat.CODE_39)) {
+               this.readers.push(new Code39Reader(useCode39CheckDigit));
+            }
             // if (possibleFormats.get(BarcodeFormat.CODE_93)) {
             //    this.readers.push(new Code93Reader());
             // }
@@ -74,7 +75,7 @@ export default class MultiFormatOneDReader extends OneDReader {
         }
         if (this.readers.length === 0) {
             // this.readers.push(new MultiFormatUPCEANReader(hints));
-            // this.readers.push(new Code39Reader());
+            this.readers.push(new Code39Reader());
             // this.readers.push(new CodaBarReader());
             // this.readers.push(new Code93Reader());
             this.readers.push(new MultiFormatUPCEANReader(hints));
