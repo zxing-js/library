@@ -16,17 +16,16 @@
 
 /*namespace com.google.zxing.oned {*/
 
-import DecodeHintType from './../DecodeHintType';
-import OneDReader from './OneDReader';
 import BarcodeFormat from '../BarcodeFormat';
-import Code128Reader from './Code128Reader';
-import Result from '../Result';
 import BitArray from './../common/BitArray';
-
+import Code39Reader from './Code39Reader';
+import Code128Reader from './Code128Reader';
+import DecodeHintType from './../DecodeHintType';
 import ITFReader from './ITFReader';
 import MultiFormatUPCEANReader from './MultiFormatUPCEANReader';
 import NotFoundException from '../NotFoundException';
-import Code39Reader from './Code39Reader';
+import OneDReader from './OneDReader';
+import Result from '../Result';
 
 /**
  * @author Daniel Switkin <dswitkin@google.com>

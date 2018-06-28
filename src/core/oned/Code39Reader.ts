@@ -18,14 +18,13 @@
 
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
+import ChecksumException from '../ChecksumException';
 import DecodeHintType from '../DecodeHintType';
-
+import FormatException from '../FormatException';
+import NotFoundException from '../NotFoundException';
+import OneDReader from './OneDReader';
 import Result from '../Result';
 import ResultPoint from '../ResultPoint';
-import OneDReader from './OneDReader';
-import NotFoundException from '../NotFoundException';
-import FormatException from '../FormatException';
-import ChecksumException from '../ChecksumException';
 
 /**
  * <p>Decodes Code 39 barcodes. Supports "Full ASCII Code 39" if USE_CODE_39_EXTENDED_MODE is set.</p>
