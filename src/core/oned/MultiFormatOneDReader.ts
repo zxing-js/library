@@ -16,16 +16,16 @@
 
 /*namespace com.google.zxing.oned {*/
 
-import DecodeHintType from './../DecodeHintType';
-import OneDReader from './OneDReader';
 import BarcodeFormat from '../BarcodeFormat';
-import Code128Reader from './Code128Reader';
-import Result from '../Result';
 import BitArray from './../common/BitArray';
-
+import Code39Reader from './Code39Reader';
+import Code128Reader from './Code128Reader';
+import DecodeHintType from './../DecodeHintType';
 import ITFReader from './ITFReader';
 import MultiFormatUPCEANReader from './MultiFormatUPCEANReader';
 import NotFoundException from '../NotFoundException';
+import OneDReader from './OneDReader';
+import Result from '../Result';
 
 /**
  * @author Daniel Switkin <dswitkin@google.com>
@@ -50,9 +50,9 @@ export default class MultiFormatOneDReader extends OneDReader {
             //     possibleFormats.get(BarcodeFormat.UPC_E)) {
             //   readers.push(new MultiFormatUPCEANReader(hints));
             // }
-            // if (possibleFormats.get(BarcodeFormat.CODE_39)) {
-            //    this.readers.push(new Code39Reader(useCode39CheckDigit));
-            // }
+            if (possibleFormats.get(BarcodeFormat.CODE_39)) {
+               this.readers.push(new Code39Reader(useCode39CheckDigit));
+            }
             // if (possibleFormats.get(BarcodeFormat.CODE_93)) {
             //    this.readers.push(new Code93Reader());
             // }
@@ -74,7 +74,7 @@ export default class MultiFormatOneDReader extends OneDReader {
         }
         if (this.readers.length === 0) {
             // this.readers.push(new MultiFormatUPCEANReader(hints));
-            // this.readers.push(new Code39Reader());
+            this.readers.push(new Code39Reader());
             // this.readers.push(new CodaBarReader());
             // this.readers.push(new Code93Reader());
             this.readers.push(new MultiFormatUPCEANReader(hints));
