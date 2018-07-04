@@ -124,19 +124,19 @@ export default class MultiFormatReader implements Reader {
             if (addOneDReader && !tryHarder) {
                readers.push(new MultiFormatOneDReader(hints));
             }
-            if (formats.indexOf(BarcodeFormat.QR_CODE) >= 0) {
+            if (formats.includes(BarcodeFormat.QR_CODE)) {
                 readers.push(new QRCodeReader());
             }
-            if (formats.indexOf(BarcodeFormat.DATA_MATRIX) >= 0) {
+            if (formats.includes(BarcodeFormat.DATA_MATRIX)) {
               readers.push(new DataMatrixReader());
             }
-            // if (formats.indexOf(BarcodeFormat.AZTEC) >= 0) {
+            // if (formats.includes(BarcodeFormat.AZTEC)) {
             //   readers.push(new AztecReader())
             // }
-            // if (formats.indexOf(BarcodeFormat.PDF_417) >= 0) {
+            // if (formats.includes(BarcodeFormat.PDF_417)) {
             //    readers.push(new PDF417Reader())
             // }
-            // if (formats.indexOf(BarcodeFormat.MAXICODE) >= 0) {
+            // if (formats.includes(BarcodeFormat.MAXICODE)) {
             //    readers.push(new MaxiCodeReader())
             // }
             // At end in "try harder" mode
