@@ -1,4 +1,3 @@
-import { TextEncoder as TextEncoderLegacy, TextDecoder as TextDecoderLegacy } from 'text-encoding';
 import CharacterSetECI from './../common/CharacterSetECI';
 import UnsupportedOperationException from '../UnsupportedOperationException';
 
@@ -14,12 +13,7 @@ export default class StringEncoding {
 
         const encodingName = this.encodingName(encoding);
 
-        // Node.js environment fallback.
-        if (!StringEncoding.isBrowser()) {
-            return new TextDecoderLegacy(encodingName).decode(bytes);
-        }
-
-        // TextDecoder not available
+        // Increases browser support.
         if (typeof TextDecoder === 'undefined') {
             return this.decodeFallback(bytes, encodingName);
         }
@@ -34,10 +28,10 @@ export default class StringEncoding {
      */
     public static encode(s: string, encoding: string | CharacterSetECI): Uint8Array {
 
-
         // Uses `text-encoding` package.
         if (!StringEncoding.isBrowser()) {
-            return new TextEncoderLegacy(this.encodingName(encoding), { NONSTANDARD_allowLegacyEncoding: true }).encode(s);
+            const TextDecoder = require('text-encoding').TextDecoder;
+            return new TextDecoder(this.encodingName(encoding), { NONSTANDARD_allowLegacyEncoding: true }).encode(s);
         }
 
         // TextEncoder only encodes to UTF8 by default as specified by encoding.spec.whatwg.org
