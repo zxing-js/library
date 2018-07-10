@@ -5,7 +5,7 @@
  * @class VideoInputDevice
  */
 
-export default class VideoInputDevice {
+export class VideoInputDevice {
     /**
      * Creates an instance of VideoInputDevice.
      * @param {string} deviceId the video input device id

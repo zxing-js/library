@@ -3,9 +3,9 @@ export * from './browser/BrowserQRCodeReader';
 export * from './browser/BrowserDatamatrixCodeReader';
 export * from './browser/BrowserQRCodeSvgWriter';
 export * from './browser/BrowserBarcodeReader';
-export { default as BrowserCodeReader } from './browser/BrowserCodeReader';
-export { default as HTMLCanvasElementLuminanceSource } from './browser/HTMLCanvasElementLuminanceSource';
-export { default as VideoInputDevice } from './browser/VideoInputDevice';
+export * from './browser/BrowserCodeReader';
+export * from './browser/HTMLCanvasElementLuminanceSource';
+export * from './browser/VideoInputDevice';
 
 // Exceptions
 export { default as Exception } from './core/Exception';
