@@ -1,5 +1,5 @@
-import CharacterSetECI from './../common/CharacterSetECI';
 import UnsupportedOperationException from '../UnsupportedOperationException';
+import CharacterSetECI from './../common/CharacterSetECI';
 
 /**
  * Responsible for en/decoding strings.
@@ -24,14 +24,22 @@ export default class StringEncoding {
     /**
      * Encodes some string into a Uint8Array.
      *
-      * @todo natively support other string formats than UTF-8.
+     * @todo natively support other string formats than UTF-8.
      */
     public static encode(s: string, encoding: string | CharacterSetECI): Uint8Array {
 
         // Uses `text-encoding` package.
         if (!StringEncoding.isBrowser()) {
-            const TextDecoder = require('text-encoding').TextDecoder;
-            return new TextDecoder(this.encodingName(encoding), { NONSTANDARD_allowLegacyEncoding: true }).encode(s);
+            // SEE: https://nodejs.org/api/buffer.html#buffer_class_buffer
+            // SEE: https://github.com/polygonplanet/encoding.js/
+            // SEE: https://stackoverflow.com/questions/17191945/conversion-between-utf-8-arraybuffer-and-string
+            const EncoderConstructor = TextEncoder as any;
+            return new EncoderConstructor(this.encodingName(encoding), { NONSTANDARD_allowLegacyEncoding: true }).encode(s);
+        }
+
+        // Increases browser support.
+        if (typeof TextEncoder === 'undefined') {
+            return this.encodeFallback(s);
         }
 
         // TextEncoder only encodes to UTF8 by default as specified by encoding.spec.whatwg.org
@@ -39,7 +47,7 @@ export default class StringEncoding {
     }
 
     private static isBrowser(): boolean {
-        return typeof window !== 'undefined' && ({}).toString.call(window) === '[object Window]';
+        return (typeof window !== 'undefined' && {}.toString.call(window) === '[object Window]');
     }
 
     /**
@@ -90,5 +98,23 @@ export default class StringEncoding {
         }
 
         throw new UnsupportedOperationException(`Encoding ${this.encodingName(encoding)} not supported by fallback.`);
+    }
+
+    /**
+     * Runs a fallback for the native encoding funcion.
+     *
+     * @see https://stackoverflow.com/a/17192845/4367683
+     */
+    private static encodeFallback(s: string): Uint8Array {
+
+        const encodedURIstring = btoa(unescape(encodeURIComponent(s)));
+        const charList = encodedURIstring.split('');
+        const uintArray = [];
+
+        for (let i = 0; i < charList.length; i++) {
+            uintArray.push(charList[i].charCodeAt(0));
+        }
+
+        return new Uint8Array(uintArray);
     }
 }
