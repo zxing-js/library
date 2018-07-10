@@ -16,7 +16,7 @@
 
 | 1D product         | 1D industrial        | 2D
 | ------------------ | -------------------- | --------------
-| ~UPC-A~            | ~Code 39~            | QR Code
+| ~UPC-A~            | Code 39 (_no docs_)  | QR Code
 | ~UPC-E~            | ~Code 93~            | Data Matrix (_no docs_)
 | ~EAN-8~            | Code 128 (_no docs_) | ~Aztec (beta)~
 | EAN-13 (_no docs_) | ~Codabar~            | PDF 417 (_in-progress_)

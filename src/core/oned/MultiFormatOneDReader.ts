@@ -16,16 +16,16 @@
 
 /*namespace com.google.zxing.oned {*/
 
-import DecodeHintType from '../DecodeHintType';
-import OneDReader from './OneDReader';
 import BarcodeFormat from '../BarcodeFormat';
-import Code128Reader from './Code128Reader';
-import Result from '../Result';
 import BitArray from '../common/BitArray';
-
+import Code39Reader from './Code39Reader';
+import Code128Reader from './Code128Reader';
+import DecodeHintType from '../DecodeHintType';
 import ITFReader from './ITFReader';
 import MultiFormatUPCEANReader from './MultiFormatUPCEANReader';
 import NotFoundException from '../NotFoundException';
+import OneDReader from './OneDReader';
+import Result from '../Result';
 
 /**
  * @author Daniel Switkin <dswitkin@google.com>
@@ -37,44 +37,44 @@ export default class MultiFormatOneDReader extends OneDReader {
 
     public constructor(hints: Map<DecodeHintType, any>) {
         super();
-        const possibleFormats = !hints ? null : hints.get(DecodeHintType.POSSIBLE_FORMATS);
+        const possibleFormats = !hints ? null : <BarcodeFormat[]>hints.get(DecodeHintType.POSSIBLE_FORMATS);
         const useCode39CheckDigit = hints && hints.get(DecodeHintType.ASSUME_CODE_39_CHECK_DIGIT) !== undefined;
 
         if (possibleFormats) {
-            if (possibleFormats.get(BarcodeFormat.EAN_13)) {
+            if (possibleFormats.includes(BarcodeFormat.EAN_13)) {
                 this.readers.push(new MultiFormatUPCEANReader(hints));
             }
-            // if (possibleFormats.get(BarcodeFormat.EAN_13) ||
-            //     possibleFormats.get(BarcodeFormat.UPC_A)  ||
-            //     possibleFormats.get(BarcodeFormat.EAN_8)  ||
-            //     possibleFormats.get(BarcodeFormat.UPC_E)) {
+            // if (possibleFormats.includes(BarcodeFormat.EAN_13) ||
+            //     possibleFormats.includes(BarcodeFormat.UPC_A) ||
+            //     possibleFormats.includes(BarcodeFormat.EAN_8) ||
+            //     possibleFormats.includes(BarcodeFormat.UPC_E)) {
             //   readers.push(new MultiFormatUPCEANReader(hints));
             // }
-            // if (possibleFormats.get(BarcodeFormat.CODE_39)) {
-            //    this.readers.push(new Code39Reader(useCode39CheckDigit));
-            // }
-            // if (possibleFormats.get(BarcodeFormat.CODE_93)) {
+            if (possibleFormats.includes(BarcodeFormat.CODE_39)) {
+               this.readers.push(new Code39Reader(useCode39CheckDigit));
+            }
+            // if (possibleFormats.includes(BarcodeFormat.CODE_93)) {
             //    this.readers.push(new Code93Reader());
             // }
-            if (possibleFormats.get(BarcodeFormat.CODE_128)) {
+            if (possibleFormats.includes(BarcodeFormat.CODE_128)) {
                 this.readers.push(new Code128Reader());
             }
-            if (possibleFormats.get(BarcodeFormat.ITF)) {
+            if (possibleFormats.includes(BarcodeFormat.ITF)) {
                this.readers.push(new ITFReader());
             }
-            // if (possibleFormats.get(BarcodeFormat.CODABAR)) {
+            // if (possibleFormats.includes(BarcodeFormat.CODABAR)) {
             //    this.readers.push(new CodaBarReader());
             // }
-            // if (possibleFormats.get(BarcodeFormat.RSS_14)) {
+            // if (possibleFormats.includes(BarcodeFormat.RSS_14)) {
             //    this.readers.push(new RSS14Reader());
             // }
-            // if (possibleFormats.get(BarcodeFormat.RSS_EXPANDED)) {
+            // if (possibleFormats.includes(BarcodeFormat.RSS_EXPANDED)) {
             //   this.readers.push(new RSSExpandedReader());
             // }
         }
         if (this.readers.length === 0) {
             // this.readers.push(new MultiFormatUPCEANReader(hints));
-            // this.readers.push(new Code39Reader());
+            this.readers.push(new Code39Reader());
             // this.readers.push(new CodaBarReader());
             // this.readers.push(new Code93Reader());
             this.readers.push(new MultiFormatUPCEANReader(hints));

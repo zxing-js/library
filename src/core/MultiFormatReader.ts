@@ -101,21 +101,22 @@ export default class MultiFormatReader implements Reader {
 
         const tryHarder: boolean = hints !== null && hints !== undefined && undefined !== hints.get(DecodeHintType.TRY_HARDER);
         /*@SuppressWarnings("unchecked")*/
-        const formats = hints === null || hints === undefined ? null : hints.get(DecodeHintType.POSSIBLE_FORMATS);
+        const formats = hints === null || hints === undefined ? null : <BarcodeFormat[]>hints.get(DecodeHintType.POSSIBLE_FORMATS);
         const readers = new Array<Reader>();
         if (formats !== null && formats !== undefined) {
-            const addOneDReader: boolean =
-                formats.contains(BarcodeFormat.UPC_A) ||
-                formats.contains(BarcodeFormat.UPC_E) ||
-                formats.contains(BarcodeFormat.EAN_13) ||
-                formats.contains(BarcodeFormat.EAN_8) ||
-                formats.contains(BarcodeFormat.CODABAR) ||
-                formats.contains(BarcodeFormat.CODE_39) ||
-                formats.contains(BarcodeFormat.CODE_93) ||
-                formats.contains(BarcodeFormat.CODE_128) ||
-                formats.contains(BarcodeFormat.ITF) ||
-                formats.contains(BarcodeFormat.RSS_14) ||
-                formats.contains(BarcodeFormat.RSS_EXPANDED);
+            const addOneDReader: boolean = formats.some(f =>
+                f === BarcodeFormat.UPC_A ||
+                f === BarcodeFormat.UPC_E ||
+                f === BarcodeFormat.EAN_13 ||
+                f === BarcodeFormat.EAN_8 ||
+                f === BarcodeFormat.CODABAR ||
+                f === BarcodeFormat.CODE_39 ||
+                f === BarcodeFormat.CODE_93 ||
+                f === BarcodeFormat.CODE_128 ||
+                f === BarcodeFormat.ITF ||
+                f === BarcodeFormat.RSS_14 ||
+                f === BarcodeFormat.RSS_EXPANDED
+            );
             // Put 1D readers upfront in "normal" mode
 
             // TYPESCRIPTPORT: TODO: uncomment below as they are ported
@@ -123,19 +124,19 @@ export default class MultiFormatReader implements Reader {
             if (addOneDReader && !tryHarder) {
                readers.push(new MultiFormatOneDReader(hints));
             }
-            if (formats.contains(BarcodeFormat.QR_CODE)) {
+            if (formats.includes(BarcodeFormat.QR_CODE)) {
                 readers.push(new QRCodeReader());
             }
-            if (formats.contains(BarcodeFormat.DATA_MATRIX)) {
+            if (formats.includes(BarcodeFormat.DATA_MATRIX)) {
               readers.push(new DataMatrixReader());
             }
-            // if (formats.contains(BarcodeFormat.AZTEC)) {
+            // if (formats.includes(BarcodeFormat.AZTEC)) {
             //   readers.push(new AztecReader())
             // }
-            // if (formats.contains(BarcodeFormat.PDF_417)) {
+            // if (formats.includes(BarcodeFormat.PDF_417)) {
             //    readers.push(new PDF417Reader())
             // }
-            // if (formats.contains(BarcodeFormat.MAXICODE)) {
+            // if (formats.includes(BarcodeFormat.MAXICODE)) {
             //    readers.push(new MaxiCodeReader())
             // }
             // At end in "try harder" mode

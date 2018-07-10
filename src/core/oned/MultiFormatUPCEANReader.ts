@@ -36,7 +36,7 @@ export default class MultiFormatUPCEANReader extends OneDReader {
 
     public constructor(hints?: Map<DecodeHintType, any>) {
         super();
-        let possibleFormats = hints == null ? null : hints.get(DecodeHintType.POSSIBLE_FORMATS);
+        let possibleFormats = hints == null ? null : <BarcodeFormat[]>hints.get(DecodeHintType.POSSIBLE_FORMATS);
         let readers: UPCEANReader[] = [];
         if (possibleFormats != null) {
             if (possibleFormats.indexOf(BarcodeFormat.EAN_13) > -1) {
