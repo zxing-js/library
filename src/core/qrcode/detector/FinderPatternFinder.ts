@@ -16,10 +16,10 @@
 
 /*namespace com.google.zxing.qrcode.detector {*/
 
-import DecodeHintType from './../../DecodeHintType';
-import ResultPoint from './../../ResultPoint';
-import ResultPointCallback from './../../ResultPointCallback';
-import BitMatrix from './../../common/BitMatrix';
+import DecodeHintType from '../../DecodeHintType';
+import ResultPoint from '../../ResultPoint';
+import ResultPointCallback from '../../ResultPointCallback';
+import BitMatrix from '../../common/BitMatrix';
 import FinderPattern from './FinderPattern';
 import FinderPatternInfo from './FinderPatternInfo';
 

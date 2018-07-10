@@ -17,7 +17,7 @@
 /*package com.google.zxing.common.detector;*/
 
 import * as assert from 'assert';
-import MathUtils from './../../../../core/common/detector/MathUtils';
+import MathUtils from '../../../../core/common/detector/MathUtils';
 
 describe('MathUtils', () => {
 

@@ -16,12 +16,12 @@
 
 /*namespace com.google.zxing.oned {*/
 
-import DecodeHintType from './../DecodeHintType';
+import DecodeHintType from '../DecodeHintType';
 import OneDReader from './OneDReader';
 import BarcodeFormat from '../BarcodeFormat';
 import Code128Reader from './Code128Reader';
 import Result from '../Result';
-import BitArray from './../common/BitArray';
+import BitArray from '../common/BitArray';
 
 import ITFReader from './ITFReader';
 import MultiFormatUPCEANReader from './MultiFormatUPCEANReader';

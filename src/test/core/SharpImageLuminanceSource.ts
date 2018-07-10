@@ -23,8 +23,8 @@
 /*import java.awt.image.WritableRaster;*/
 
 import SharpImage from './util/SharpImage';
-import LuminanceSource from './../../core/LuminanceSource';
-import InvertedLuminanceSource from './../../core/InvertedLuminanceSource';
+import LuminanceSource from '../../core/LuminanceSource';
+import InvertedLuminanceSource from '../../core/InvertedLuminanceSource';
 import IllegalArgumentException from '../../core/IllegalArgumentException';
 
 /**

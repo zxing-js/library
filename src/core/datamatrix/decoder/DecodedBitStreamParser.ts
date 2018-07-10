@@ -1,6 +1,6 @@
-import DecoderResult from './../../common/DecoderResult';
-import BitSource from './../../common/BitSource';
-import StringBuilder from './../../util/StringBuilder';
+import DecoderResult from '../../common/DecoderResult';
+import BitSource from '../../common/BitSource';
+import StringBuilder from '../../util/StringBuilder';
 
 import StringEncoding from '../../util/StringEncoding';
 import { StringUtils } from '../../..';

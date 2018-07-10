@@ -16,7 +16,7 @@
 
 /*namespace com.google.zxing.qrcode.decoder {*/
 
-import BitMatrix from './../../common/BitMatrix';
+import BitMatrix from '../../common/BitMatrix';
 import Version from './Version';
 import FormatInformation from './FormatInformation';
 

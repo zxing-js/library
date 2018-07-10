@@ -16,9 +16,9 @@
 
 /*package com.google.zxing.qrcode;*/
 
-import BarcodeFormat from './../../../core/BarcodeFormat';
-import MultiFormatReader from './../../../core/MultiFormatReader';
-import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
+import BarcodeFormat from '../../../core/BarcodeFormat';
+import MultiFormatReader from '../../../core/MultiFormatReader';
+import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 
 /**
  * These tests are supplied by Tim Gernat and test finder pattern detection at small size and under

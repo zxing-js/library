@@ -17,10 +17,10 @@
 /*package com.google.zxing.qrcode.decoder;*/
 
 import * as assert from 'assert';
-import DecodedBitStreamParser from './../../../../core/qrcode/decoder/DecodedBitStreamParser';
-import BitSourceBuilder from './../../common/BitSourceBuilder';
-import Version from './../../../../core/qrcode/decoder/Version';
-import Random from './../../util/Random';
+import DecodedBitStreamParser from '../../../../core/qrcode/decoder/DecodedBitStreamParser';
+import BitSourceBuilder from '../../common/BitSourceBuilder';
+import Version from '../../../../core/qrcode/decoder/Version';
+import Random from '../../util/Random';
 
 /**
  * Tests {@link DecodedBitStreamParser}.

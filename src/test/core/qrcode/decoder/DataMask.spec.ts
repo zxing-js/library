@@ -17,8 +17,8 @@
 /*package com.google.zxing.qrcode.decoder;*/
 
 import * as assert from 'assert';
-import BitMatrix from './../../../../core/common/BitMatrix';
-import DataMask from './../../../../core/qrcode/decoder/DataMask';
+import BitMatrix from '../../../../core/common/BitMatrix';
+import DataMask from '../../../../core/qrcode/decoder/DataMask';
 
 interface MaskCondition {
     isMasked(i: number /*int*/, j: number /*int*/): boolean;

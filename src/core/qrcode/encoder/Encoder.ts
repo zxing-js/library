@@ -16,21 +16,21 @@
 
 /*namespace com.google.zxing.qrcode.encoder {*/
 
-import EncodeHintType from './../../EncodeHintType';
-import BitArray from './../../common/BitArray';
-import CharacterSetECI from './../../common/CharacterSetECI';
-import GenericGF from './../../common/reedsolomon/GenericGF';
-import ReedSolomonEncoder from './../../common/reedsolomon/ReedSolomonEncoder';
-import ErrorCorrectionLevel from './../decoder/ErrorCorrectionLevel';
-import Mode from './../decoder/Mode';
-import Version from './../decoder/Version';
+import EncodeHintType from '../../EncodeHintType';
+import BitArray from '../../common/BitArray';
+import CharacterSetECI from '../../common/CharacterSetECI';
+import GenericGF from '../../common/reedsolomon/GenericGF';
+import ReedSolomonEncoder from '../../common/reedsolomon/ReedSolomonEncoder';
+import ErrorCorrectionLevel from '../decoder/ErrorCorrectionLevel';
+import Mode from '../decoder/Mode';
+import Version from '../decoder/Version';
 import MaskUtil from './MaskUtil';
 import ByteMatrix from './ByteMatrix';
 import QRCode from './QRCode';
 
-import ECBlocks from './../decoder/ECBlocks';
+import ECBlocks from '../decoder/ECBlocks';
 import MatrixUtil from './MatrixUtil';
-import StringEncoding from './../../util/StringEncoding';
+import StringEncoding from '../../util/StringEncoding';
 import BlockPair from './BlockPair';
 import WriterException from '../../WriterException';
 

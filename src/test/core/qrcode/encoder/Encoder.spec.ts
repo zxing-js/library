@@ -18,17 +18,17 @@
 
 import * as assert from 'assert';
 
-import Encoder from './../../../../core/qrcode/encoder/Encoder';
-import EncodeHintType from './../../../../core/EncodeHintType';
-import CharacterSetECI from './../../../../core/common/CharacterSetECI';
-import BitArray from './../../../../core/common/BitArray';
-import ErrorCorrectionLevel from './../../../../core/qrcode/decoder/ErrorCorrectionLevel';
-import Mode from './../../../../core/qrcode/decoder/Mode';
-import Version from './../../../../core/qrcode/decoder/Version';
-import QRCode from './../../../../core/qrcode/encoder/QRCode';
-import StringBuilder from './../../../../core/util/StringBuilder';
-import StringEncoding from './../../../../core/util/StringEncoding';
-import WriterException from './../../../../core/WriterException';
+import Encoder from '../../../../core/qrcode/encoder/Encoder';
+import EncodeHintType from '../../../../core/EncodeHintType';
+import CharacterSetECI from '../../../../core/common/CharacterSetECI';
+import BitArray from '../../../../core/common/BitArray';
+import ErrorCorrectionLevel from '../../../../core/qrcode/decoder/ErrorCorrectionLevel';
+import Mode from '../../../../core/qrcode/decoder/Mode';
+import Version from '../../../../core/qrcode/decoder/Version';
+import QRCode from '../../../../core/qrcode/encoder/QRCode';
+import StringBuilder from '../../../../core/util/StringBuilder';
+import StringEncoding from '../../../../core/util/StringEncoding';
+import WriterException from '../../../../core/WriterException';
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator

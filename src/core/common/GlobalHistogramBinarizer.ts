@@ -16,8 +16,8 @@
 
 /*namespace com.google.zxing.common {*/
 
-import Binarizer from './../Binarizer';
-import LuminanceSource from './../LuminanceSource';
+import Binarizer from '../Binarizer';
+import LuminanceSource from '../LuminanceSource';
 import BitArray from './BitArray';
 import BitMatrix from './BitMatrix';
 

@@ -16,7 +16,7 @@
 
 /*namespace com.google.zxing.qrcode.decoder {*/
 
-import ResultPoint from './../../ResultPoint';
+import ResultPoint from '../../ResultPoint';
 
 /**
  * Meta-data container for QR Code decoding. Instances of this class may be used to convey information back to the

@@ -16,17 +16,17 @@
 
 /*namespace com.google.zxing.qrcode.decoder {*/
 
-import DecodeHintType from './../../DecodeHintType';
-import BitSource from './../../common/BitSource';
-import CharacterSetECI from './../../common/CharacterSetECI';
-import DecoderResult from './../../common/DecoderResult';
-import StringUtils from './../../common/StringUtils';
+import DecodeHintType from '../../DecodeHintType';
+import BitSource from '../../common/BitSource';
+import CharacterSetECI from '../../common/CharacterSetECI';
+import DecoderResult from '../../common/DecoderResult';
+import StringUtils from '../../common/StringUtils';
 import Version from './Version';
 import ErrorCorrectionLevel from './ErrorCorrectionLevel';
 import Mode from './Mode';
 
-import StringBuilder from './../../util/StringBuilder';
-import StringEncoding from './../../util/StringEncoding';
+import StringBuilder from '../../util/StringBuilder';
+import StringEncoding from '../../util/StringEncoding';
 import FormatException from '../../FormatException';
 
 /*import java.io.UnsupportedEncodingException;*/

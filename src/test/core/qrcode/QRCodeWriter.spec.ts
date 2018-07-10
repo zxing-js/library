@@ -18,13 +18,13 @@
 
 import * as assert from 'assert';
 
-import BarcodeFormat from './../../../core/BarcodeFormat';
-import EncodeHintType from './../../../core/EncodeHintType';
-import Writer from './../../../core/Writer';
-import BitMatrix from './../../../core/common/BitMatrix';
-import ErrorCorrectionLevel from './../../../core/qrcode/decoder/ErrorCorrectionLevel';
-import SharpImage from './../util/SharpImage';
-import QRCodeWriter from './../../../core/qrcode/QRCodeWriter';
+import BarcodeFormat from '../../../core/BarcodeFormat';
+import EncodeHintType from '../../../core/EncodeHintType';
+import Writer from '../../../core/Writer';
+import BitMatrix from '../../../core/common/BitMatrix';
+import ErrorCorrectionLevel from '../../../core/qrcode/decoder/ErrorCorrectionLevel';
+import SharpImage from '../util/SharpImage';
+import QRCodeWriter from '../../../core/qrcode/QRCodeWriter';
 
 const path = require('path');
 

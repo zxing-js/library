@@ -18,8 +18,8 @@
 
 import * as assert from 'assert';
 
-import ErrorCorrectionLevel from './../../../../core/qrcode/decoder/ErrorCorrectionLevel';
-import FormatInformation from './../../../../core/qrcode/decoder/FormatInformation';
+import ErrorCorrectionLevel from '../../../../core/qrcode/decoder/ErrorCorrectionLevel';
+import FormatInformation from '../../../../core/qrcode/decoder/FormatInformation';
 
 /**
  * @author Sean Owen

@@ -16,9 +16,9 @@
 
 /*package com.google.zxing.qrcode;*/
 
-import BarcodeFormat from './../../../core/BarcodeFormat';
-import MultiFormatReader from './../../../core/MultiFormatReader';
-import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
+import BarcodeFormat from '../../../core/BarcodeFormat';
+import MultiFormatReader from '../../../core/MultiFormatReader';
+import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 
 /**
  * Some very difficult exposure conditions including self-shadowing, which happens a lot when

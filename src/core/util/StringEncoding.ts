@@ -1,5 +1,5 @@
 import { TextEncoder as TextEncoderLegacy, TextDecoder as TextDecoderLegacy } from 'text-encoding';
-import CharacterSetECI from './../common/CharacterSetECI';
+import CharacterSetECI from '../common/CharacterSetECI';
 import UnsupportedOperationException from '../UnsupportedOperationException';
 
 /**

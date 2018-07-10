@@ -17,8 +17,8 @@
 /*package com.google.zxing.qrcode.encoder;*/
 
 import * as assert from 'assert';
-import ByteMatrix from './../../../../core/qrcode/encoder/ByteMatrix';
-import MaskUtil from './../../../../core/qrcode/encoder/MaskUtil';
+import ByteMatrix from '../../../../core/qrcode/encoder/ByteMatrix';
+import MaskUtil from '../../../../core/qrcode/encoder/MaskUtil';
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator

@@ -17,10 +17,10 @@
 /*package com.google.zxing.common;*/
 
 import * as assert from 'assert';
-import Random from './../util/Random';
-import BitArray from './../../../core/common/BitArray';
-import Integer from './../../../core/util/Integer';
-import AssertUtils from './../util/AssertUtils';
+import Random from '../util/Random';
+import BitArray from '../../../core/common/BitArray';
+import Integer from '../../../core/util/Integer';
+import AssertUtils from '../util/AssertUtils';
 
 /**
  * @author Sean Owen

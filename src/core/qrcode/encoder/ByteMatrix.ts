@@ -18,8 +18,8 @@
 
 /*import java.util.Arrays;*/
 
-import Arrays from './../../util/Arrays';
-import StringBuilder from './../../util/StringBuilder';
+import Arrays from '../../util/Arrays';
+import StringBuilder from '../../util/StringBuilder';
 
 /**
  * JAVAPORT: The original code was a 2D array of ints, but since it only ever gets assigned
