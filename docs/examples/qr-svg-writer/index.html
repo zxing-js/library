@@ -8,9 +8,9 @@
 
     <title>ZXing | Write QR Code to SVG</title>
 
-    <link rel="stylesheet" href="https:https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
-    <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https:https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
 </head>
 
 <body>
@@ -19,6 +19,10 @@
 
         <section class="container" id="demo-content">
             <h1 class="title">Write QR Code to SVG</h1>
+
+            <p>
+                <a class="button-small button-outline" href="../../index.html">HOME 🏡</a>
+            </p>
 
             <p>This example shows how to write a QR code to SVG with ZXing javascript library.
 
@@ -49,18 +53,20 @@
 
     </main>
 
-    <script type="text/javascript" src="../zxing.qrcodewriter.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2014-11-29/FileSaver.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@zxing/library@dev"></script>
+    <script type="text/javascript" src="https://unpkg.com/file-saver@latest"></script>
     <script type="text/javascript">
         window.addEventListener('load', () => {
+
             const codeWriter = new ZXing.BrowserQRCodeSvgWriter('result')
+
             console.log('ZXing code writer initialized')
 
             let svgElement;
+
             document.getElementById('writeButton').addEventListener('click', () => {
                 const input = document.getElementById('textInput').value
                 svgElement = codeWriter.write(input, 300, 300)
-                console.log(`done writing`)
                 document.getElementById('saveButton').removeAttribute('disabled')
             })
 
