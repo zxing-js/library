@@ -4,8 +4,15 @@ const path = require('path');
 const ProvidePlugin = require('webpack').ProvidePlugin;
 
 module.exports = (env, argv) => {
+
     const isDebug = env == 'dbg';
-    const ifDebug = (whenDebug, whenNot) => (isDebug ? whenDebug : whenNot);
+    const loaders = [];
+
+    if (!isDebug) {
+        loaders.push('istanbul-instrumenter-loader');
+    }
+
+    loaders.push('ts-loader');
 
     return {
         mode: 'development',
@@ -18,7 +25,7 @@ module.exports = (env, argv) => {
                 test: /\.ts$/,
                 exclude: /node_modules/,
                 include: path.resolve('src'), // instrument only testing sources with Istanbul, after ts-loader runs
-                use: ifDebug('ts-loader', ['istanbul-instrumenter-loader', 'ts-loader'])
+                use: loaders
             }],
         },
         plugins: [

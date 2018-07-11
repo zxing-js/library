@@ -21,6 +21,10 @@
             <h1 class="title">Scan barcode from Video Camera</h1>
 
             <p>
+                <a class="button-small button-outline" href="../../index.html">HOME 🏡</a>
+            </p>
+
+            <p>
                 This example shows how to scan a barcode with ZXing javascript library from the device video camera. If more
                 than one video input devices are available (for example front and back camera) the example shows how to read
                 them and use a select to change the input device.
@@ -58,7 +62,7 @@
 
     </main>
 
-    <script type="text/javascript" src="../../../umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@zxing/library@dev"></script>
     <script type="text/javascript">
         window.addEventListener('load', function () {
             const codeReader = new ZXing.BrowserBarcodeReader()

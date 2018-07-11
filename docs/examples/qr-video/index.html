@@ -20,6 +20,10 @@
         <section class="container" id="demo-content">
             <h1 class="title">Scan QR Code from Video File</h1>
 
+            <p>
+                <a class="button-small button-outline" href="../../index.html">HOME 🏡</a>
+            </p>
+
             <p>This example shows how to scan a QR code with ZXing javascript library from a video file. The example decodes
                 from an url and shows the video while decoding, however is also possbile to decode without showing the video.</p>
 
@@ -28,6 +32,7 @@
                 <a class="button" id="resetButton">Reset</a>
             </div>
 
+            <small>QR code video from <a href="https://cirocosta.github.io/qcode-decoder/">https://cirocosta.github.io/qcode-decoder/</a>.</small>
             <div>
                 <video id="video" width="200" height="300" style="border: 1px solid gray" muted="muted"></video>
             </div>
@@ -49,14 +54,14 @@
 
     </main>
 
-    <script type="text/javascript" src="../zxing.qrcodereader.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@zxing/library@dev"></script>
     <script type="text/javascript">
         window.addEventListener('load', function () {
             const codeReader = new ZXing.BrowserQRCodeReader()
             console.log('ZXing code reader initialized')
 
             document.getElementById('startButton').addEventListener('click', () => {
-                const videoSrc = 'qrcode-video.mp4'
+                const videoSrc = '../../resources/qrcode-video.mp4'
                 codeReader.decodeFromVideoSource(videoSrc, 'video').then((result) => {
                     console.log(result)
                     document.getElementById('result').textContent = result.text
