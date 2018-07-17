@@ -114,10 +114,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/text-encoding@0.0.33":
-  version "0.0.33"
-  resolved "https://registry.yarnpkg.com/@types/text-encoding/-/text-encoding-0.0.33.tgz#67618d2da2cb6055c16c7caa2e967c1c6d1e7600"
-
 "@webassemblyjs/ast@1.5.12":
   version "1.5.12"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.5.12.tgz#a9acbcb3f25333c4edfa1fdf3186b1ccf64e6664"
