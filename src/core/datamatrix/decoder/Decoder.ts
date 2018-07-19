@@ -1,7 +1,7 @@
-import ReedSolomonDecoder from './../../common/reedsolomon/ReedSolomonDecoder';
-import GenericGF from './../../common/reedsolomon/GenericGF';
-import DecoderResult from './../../common/DecoderResult';
-import BitMatrix from './../../common/BitMatrix';
+import ReedSolomonDecoder from '../../common/reedsolomon/ReedSolomonDecoder';
+import GenericGF from '../../common/reedsolomon/GenericGF';
+import DecoderResult from '../../common/DecoderResult';
+import BitMatrix from '../../common/BitMatrix';
 import BitMatrixParser from './BitMatrixParser';
 import DataBlock from './DataBlock';
 import { Exception } from '../../..';

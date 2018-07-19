@@ -16,7 +16,7 @@
 
 /*namespace com.google.zxing.qrcode.detector {*/
 
-import ResultPoint from './../../ResultPoint';
+import ResultPoint from '../../ResultPoint';
 
 /**
  * <p>Encapsulates a finder pattern, which are the three square patterns found in

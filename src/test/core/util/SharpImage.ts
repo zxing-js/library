@@ -1,6 +1,6 @@
 import * as sharp from 'sharp';
 
-import BitMatrix from './../../../core/common/BitMatrix';
+import BitMatrix from '../../../core/common/BitMatrix';
 
 export default class SharpImage {
 

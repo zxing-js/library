@@ -18,7 +18,7 @@
 
 import GenericGF from './GenericGF';
 
-import System from './../../util/System';
+import System from '../../util/System';
 import IllegalArgumentException from '../../IllegalArgumentException';
 
 /**

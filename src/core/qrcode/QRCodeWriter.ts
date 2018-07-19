@@ -16,10 +16,10 @@
 
 /*namespace com.google.zxing.qrcode {*/
 
-import BarcodeFormat from './../BarcodeFormat';
-import EncodeHintType from './../EncodeHintType';
-import Writer from './../Writer';
-import BitMatrix from './../common/BitMatrix';
+import BarcodeFormat from '../BarcodeFormat';
+import EncodeHintType from '../EncodeHintType';
+import Writer from '../Writer';
+import BitMatrix from '../common/BitMatrix';
 import ErrorCorrectionLevel from './decoder/ErrorCorrectionLevel';
 import Encoder from './encoder/Encoder';
 import QRCode from './encoder/QRCode';

@@ -17,11 +17,11 @@
 /*package com.google.zxing.common;*/
 
 import * as assert from 'assert';
-import AssertUtils from './../util/AssertUtils';
-import BitMatrix from './../../../core/common/BitMatrix';
-import BitArray from './../../../core/common/BitArray';
+import AssertUtils from '../util/AssertUtils';
+import BitMatrix from '../../../core/common/BitMatrix';
+import BitArray from '../../../core/common/BitArray';
 
-import StringBuilder from './../../../core/util/StringBuilder';
+import StringBuilder from '../../../core/util/StringBuilder';
 import IllegalArgumentException from '../../../core/IllegalArgumentException';
 
 /**

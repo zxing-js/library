@@ -17,18 +17,18 @@
 /*package com.google.zxing.common;*/
 
 import * as assert from 'assert';
-import SharpImage from './../util/SharpImage';
-import SharpImageLuminanceSource from './../SharpImageLuminanceSource';
-import BarcodeFormat from './../../../core/BarcodeFormat';
-import BinaryBitmap from './../../../core/BinaryBitmap';
-import DecodeHintType from './../../../core/DecodeHintType';
-import LuminanceSource from './../../../core/LuminanceSource';
-import Reader from './../../../core/Reader';
-import Result from './../../../core/Result';
-import ResultMetadataType from './../../../core/ResultMetadataType';
-import TestResult from './../common/TestResult';
-import HybridBinarizer from './../../../core/common/HybridBinarizer';
-import StringEncoding from './../../../core/util/StringEncoding';
+import SharpImage from '../util/SharpImage';
+import SharpImageLuminanceSource from '../SharpImageLuminanceSource';
+import BarcodeFormat from '../../../core/BarcodeFormat';
+import BinaryBitmap from '../../../core/BinaryBitmap';
+import DecodeHintType from '../../../core/DecodeHintType';
+import LuminanceSource from '../../../core/LuminanceSource';
+import Reader from '../../../core/Reader';
+import Result from '../../../core/Result';
+import ResultMetadataType from '../../../core/ResultMetadataType';
+import TestResult from '../common/TestResult';
+import HybridBinarizer from '../../../core/common/HybridBinarizer';
+import StringEncoding from '../../../core/util/StringEncoding';
 
 import * as fs from 'fs';
 import * as path from 'path';

@@ -17,11 +17,11 @@
 /*package com.google.zxing.qrcode.encoder;*/
 
 import * as assert from 'assert';
-import ErrorCorrectionLevel from './../../../../core/qrcode/decoder/ErrorCorrectionLevel';
-import Mode from './../../../../core/qrcode/decoder/Mode';
-import Version from './../../../../core/qrcode/decoder/Version';
-import QRCode from './../../../../core/qrcode/encoder/QRCode';
-import ByteMatrix from './../../../../core/qrcode/encoder/ByteMatrix';
+import ErrorCorrectionLevel from '../../../../core/qrcode/decoder/ErrorCorrectionLevel';
+import Mode from '../../../../core/qrcode/decoder/Mode';
+import Version from '../../../../core/qrcode/decoder/Version';
+import QRCode from '../../../../core/qrcode/encoder/QRCode';
+import ByteMatrix from '../../../../core/qrcode/encoder/ByteMatrix';
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator

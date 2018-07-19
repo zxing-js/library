@@ -16,16 +16,16 @@
 
 /*namespace com.google.zxing.qrcode.detector {*/
 
-import DecodeHintType from './../../DecodeHintType';
-import ResultPoint from './../../ResultPoint';
-import ResultPointCallback from './../../ResultPointCallback';
-import BitMatrix from './../../common/BitMatrix';
-import DetectorResult from './../../common/DetectorResult';
-import GridSampler from './../../common/GridSampler';
-import GridSamplerInstance from './../../common/GridSamplerInstance';
-import PerspectiveTransform from './../../common/PerspectiveTransform';
-import MathUtils from './../../common/detector/MathUtils';
-import Version from './../decoder/Version';
+import DecodeHintType from '../../DecodeHintType';
+import ResultPoint from '../../ResultPoint';
+import ResultPointCallback from '../../ResultPointCallback';
+import BitMatrix from '../../common/BitMatrix';
+import DetectorResult from '../../common/DetectorResult';
+import GridSampler from '../../common/GridSampler';
+import GridSamplerInstance from '../../common/GridSamplerInstance';
+import PerspectiveTransform from '../../common/PerspectiveTransform';
+import MathUtils from '../../common/detector/MathUtils';
+import Version from '../decoder/Version';
 import FinderPatternFinder from './FinderPatternFinder';
 import FinderPatternInfo from './FinderPatternInfo';
 import FinderPattern from './FinderPattern';

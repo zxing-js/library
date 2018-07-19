@@ -1,8 +1,8 @@
-import InvertedLuminanceSource from './../core/InvertedLuminanceSource';
-import LuminanceSource from './../core/LuminanceSource';
+import InvertedLuminanceSource from '../core/InvertedLuminanceSource';
+import LuminanceSource from '../core/LuminanceSource';
 import IllegalArgumentException from '../core/IllegalArgumentException';
 
-export default class HTMLCanvasElementLuminanceSource extends LuminanceSource {
+export class HTMLCanvasElementLuminanceSource extends LuminanceSource {
     private buffer: Uint8ClampedArray;
 
     private static DEGREE_TO_RADIANS = Math.PI / 180;

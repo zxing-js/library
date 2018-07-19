@@ -19,7 +19,7 @@
 /*import java.nio.charset.Charset;*/
 /*import java.util.Map;*/
 
-import DecodeHintType from './../DecodeHintType';
+import DecodeHintType from '../DecodeHintType';
 import CharacterSetECI from './CharacterSetECI';
 
 /**

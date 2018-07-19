@@ -1,6 +1,5 @@
+import { BrowserCodeReader } from './BrowserCodeReader';
 import MultiFormatOneDReader from '../core/oned/MultiFormatOneDReader';
-import VideoInputDevice from './VideoInputDevice';
-import BrowserCodeReader from './BrowserCodeReader';
 import DecodeHintType from '../core/DecodeHintType';
 
 /**
@@ -9,7 +8,7 @@ import DecodeHintType from '../core/DecodeHintType';
  * @class BrowserBarcodeReader
  * @extends {BrowserCodeReader}
  */
-class BrowserBarcodeReader extends BrowserCodeReader {
+export class BrowserBarcodeReader extends BrowserCodeReader {
     /**
      * Creates an instance of BrowserBarcodeReader.
      * @param {number} [timeBetweenScansMillis=500] the time delay between subsequent decode tries
@@ -20,5 +19,3 @@ class BrowserBarcodeReader extends BrowserCodeReader {
         super(new MultiFormatOneDReader(hints), timeBetweenScansMillis, hints);
     }
 }
-
-export { VideoInputDevice, BrowserBarcodeReader };

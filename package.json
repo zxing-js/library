@@ -1,6 +1,6 @@
 {
     "name": "@zxing/library",
-    "version": "0.6.0",
+    "version": "0.7.0",
     "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
     "keywords": [
         "reader",
@@ -43,7 +43,7 @@
         "url": "https://github.com/zxing-js/library"
     },
     "private": false,
-    "main": "./umd/index.js",
+    "main": "./umd/index.min.js",
     "module": "./esm5/index.js",
     "typings": "./esm5/index.d.ts",
     "nyc": {

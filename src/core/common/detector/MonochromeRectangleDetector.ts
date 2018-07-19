@@ -16,8 +16,8 @@
 
 // /*namespace com.google.zxing.common.detector {*/
 
-// import ResultPoint from './../../ResultPoint'
-// import BitMatrix from './../BitMatrix'
+// import ResultPoint from '../../ResultPoint'
+// import BitMatrix from '../BitMatrix'
 
 // /**
 //  * <p>A somewhat generic detector that looks for a barcode-like rectangular region within an image.

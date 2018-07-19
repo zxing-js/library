@@ -18,8 +18,8 @@
 
 import * as assert from 'assert';
 
-import Version from './../../../../core/qrcode/decoder/Version';
-import Mode from './../../../../core/qrcode/decoder/Mode';
+import Version from '../../../../core/qrcode/decoder/Version';
+import Mode from '../../../../core/qrcode/decoder/Mode';
 
 /**
  * @author Sean Owen

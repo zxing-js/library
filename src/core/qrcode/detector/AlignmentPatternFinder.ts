@@ -16,8 +16,8 @@
 
 /*namespace com.google.zxing.qrcode.detector {*/
 
-import ResultPointCallback from './../../ResultPointCallback';
-import BitMatrix from './../../common/BitMatrix';
+import ResultPointCallback from '../../ResultPointCallback';
+import BitMatrix from '../../common/BitMatrix';
 import AlignmentPattern from './AlignmentPattern';
 
 import NotFoundException from '../../NotFoundException';

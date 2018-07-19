@@ -1,6 +1,5 @@
-import QRCodeReader from './../core/qrcode/QRCodeReader';
-import VideoInputDevice from './VideoInputDevice';
-import BrowserCodeReader from './BrowserCodeReader';
+import { BrowserCodeReader } from './BrowserCodeReader';
+import QRCodeReader from '../core/qrcode/QRCodeReader';
 
 /**
  * QR Code reader to use from browser.
@@ -8,7 +7,7 @@ import BrowserCodeReader from './BrowserCodeReader';
  * @class BrowserQRCodeReader
  * @extends {BrowserCodeReader}
  */
-class BrowserQRCodeReader extends BrowserCodeReader {
+export class BrowserQRCodeReader extends BrowserCodeReader {
     /**
      * Creates an instance of BrowserQRCodeReader.
      * @param {number} [timeBetweenScansMillis=500] the time delay between subsequent decode tries
@@ -19,5 +18,3 @@ class BrowserQRCodeReader extends BrowserCodeReader {
         super(new QRCodeReader(), timeBetweenScansMillis);
     }
 }
-
-export { VideoInputDevice, BrowserQRCodeReader };

@@ -1,11 +1,11 @@
-import Reader from './../core/Reader';
-import BinaryBitmap from './../core/BinaryBitmap';
-import HybridBinarizer from './../core/common/HybridBinarizer';
-import Result from './../core/Result';
+import { HTMLCanvasElementLuminanceSource } from './HTMLCanvasElementLuminanceSource';
+import { VideoInputDevice } from './VideoInputDevice';
+import Reader from '../core/Reader';
+import BinaryBitmap from '../core/BinaryBitmap';
+import HybridBinarizer from '../core/common/HybridBinarizer';
+import Result from '../core/Result';
 import NotFoundException from '../core/NotFoundException';
 import ArgumentException from '../core/ArgumentException';
-import HTMLCanvasElementLuminanceSource from './HTMLCanvasElementLuminanceSource';
-import VideoInputDevice from './VideoInputDevice';
 import DecodeHintType from '../core/DecodeHintType';
 import ChecksumException from '../core/ChecksumException';
 import FormatException from '../core/FormatException';
@@ -16,7 +16,7 @@ import FormatException from '../core/FormatException';
  * @export
  * @class BrowserCodeReader
  */
-export default class BrowserCodeReader {
+export class BrowserCodeReader {
     private videoElement: HTMLVideoElement;
     private imageElement: HTMLImageElement;
     private canvasElement: HTMLCanvasElement;

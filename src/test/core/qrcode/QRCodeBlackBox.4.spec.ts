@@ -16,9 +16,9 @@
 
 /*package com.google.zxing.qrcode;*/
 
-import BarcodeFormat from './../../../core/BarcodeFormat';
-import MultiFormatReader from './../../../core/MultiFormatReader';
-import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
+import BarcodeFormat from '../../../core/BarcodeFormat';
+import MultiFormatReader from '../../../core/MultiFormatReader';
+import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 
 /**
  * Tests of various QR Codes from t-shirts, which are notoriously not flat.

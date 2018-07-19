@@ -16,7 +16,7 @@
 
 /*namespace com.google.zxing.qrcode.decoder {*/
 
-import BitMatrix from './../../common/BitMatrix';
+import BitMatrix from '../../common/BitMatrix';
 
 export const enum DataMaskValues {
     DATA_MASK_000,

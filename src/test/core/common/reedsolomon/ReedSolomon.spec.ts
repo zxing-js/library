@@ -17,12 +17,12 @@
 /*package com.google.zxing.common.reedsolomon;*/
 
 import * as assert from 'assert';
-import StringBuilder from './../../../../core/util/StringBuilder';
-import Random from './../../util/Random';
-import System from './../../../../core/util/System';
-import GenericGF from './../../../../core/common/reedsolomon/GenericGF';
-import ReedSolomonEncoder from './../../../../core/common/reedsolomon/ReedSolomonEncoder';
-import ReedSolomonDecoder from './../../../../core/common/reedsolomon/ReedSolomonDecoder';
+import StringBuilder from '../../../../core/util/StringBuilder';
+import Random from '../../util/Random';
+import System from '../../../../core/util/System';
+import GenericGF from '../../../../core/common/reedsolomon/GenericGF';
+import ReedSolomonEncoder from '../../../../core/common/reedsolomon/ReedSolomonEncoder';
+import ReedSolomonDecoder from '../../../../core/common/reedsolomon/ReedSolomonDecoder';
 
 /*import java.util.Arrays;*/
 /*import java.util.BitSet;*/
