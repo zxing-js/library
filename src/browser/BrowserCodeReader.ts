@@ -164,6 +164,7 @@ export class BrowserCodeReader {
             throw new ArgumentException(`element with id '${mediaElementId}' not found`);
         }
         if (mediaElement.nodeName.toLowerCase() !== type.toLowerCase()) {
+            console.log(mediaElement.nodeName);
             throw new ArgumentException(`element with id '${mediaElementId}' must be an ${type} element`);
         }
         return mediaElement;
@@ -241,7 +242,6 @@ export class BrowserCodeReader {
     }
 
     private decodeOnce(resolve: (result: Result) => any, reject: (error: any) => any, retryIfNotFound: boolean = true, retryIfChecksumOrFormatError: boolean = true): void {
-
         if (undefined === this.canvasElementContext) {
             this.prepareCaptureCanvas();
         }
@@ -250,16 +250,16 @@ export class BrowserCodeReader {
 
         const luminanceSource = new HTMLCanvasElementLuminanceSource(this.canvasElement);
         const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
-
         try {
             const result = this.readerDecode(binaryBitmap);
             resolve(result);
         } catch (re) {
+            console.log(retryIfChecksumOrFormatError, re);
             if (retryIfNotFound && re instanceof NotFoundException) {
-                // Not found, trying again
+                console.log('not found, trying again...');
                 this.decodeOnceWithDelay(resolve, reject);
             } else if (retryIfChecksumOrFormatError && (re instanceof ChecksumException || re instanceof FormatException)) {
-                // checksum or format error, trying again
+                console.log('checksum or format error, trying again...', re);
                 this.decodeOnceWithDelay(resolve, reject);
             } else {
                 reject(re);

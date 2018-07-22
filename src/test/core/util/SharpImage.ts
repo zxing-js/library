@@ -32,7 +32,7 @@ export default class SharpImage {
         const metadata = await wrapper.metadata();
 
         if (metadata.channels !== 3 && metadata.space !== 'srgb') {
-            // Image ${path} has ${metadata.channels} channels and will be transformed to sRGB.
+            // console.log(`Image ${path} has ${metadata.channels} channels and will be transformed to sRGB`)
             wrapper.toColorspace('sRGB');
         }
 
@@ -48,7 +48,7 @@ export default class SharpImage {
         const metadata = await wrapper.metadata();
 
         if (metadata.channels !== 3) {
-            // Image ${path} has ${metadata.channels} channels and will be transformed to sRGB
+            // console.log(`Image ${path} has ${metadata.channels} channels and will be transformed to sRGB`)
             wrapper.toColorspace('sRGB');
         }
 

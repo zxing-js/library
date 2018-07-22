@@ -182,7 +182,7 @@ export default class MultiFormatReader implements Reader {
 
         for (const reader of this.readers) {
 
-            // Trying to decode with ${reader} reader.
+            // console.log(`Trying to decode with ${reader.constructor.name} reader.`);
 
             try {
                 return reader.decode(image, this.hints);
@@ -191,7 +191,9 @@ export default class MultiFormatReader implements Reader {
                     continue;
                 }
 
-                // Bad Exception.
+                // Uncomment for test outputting.
+                // const extra = !ex.message ? '.' : ` with the message: \n\n\t${ex.message}\n\n`;
+                // console.error('[decodeInternal]', `Exception of type \`${ex.constructor.name}\` was thrown${extra}`);
             }
         }
 
