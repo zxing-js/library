@@ -41,11 +41,11 @@
 
 See [Live Preview](https://zxing-js.github.io/library/) in browser.
 
-**Note:** All the examples are using ES6, be sure is supported in your browser or modify as needed, Chrome recomended.
+**Note:** All the examples are using ES6, be sure is supported in your browser or modify as needed, Chrome recommended.
 
 ## Usage
 
-### Instalation
+### Installation
 
 `npm i @zxing/library --save`
 
@@ -55,7 +55,7 @@ or
 
 ### Environments
 
-Examples below are for QR barcode, all other supported barcodes work similary.
+Examples below are for QR barcode, all other supported barcodes work similarly.
 
 #### Browser
 
@@ -65,7 +65,7 @@ To use from JS you need to include what you need from `build/umd` folder (for ex
 
 The browser layer is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web API which is not supported by older browsers.
 
-_You can use external polyfills like [WebRTC adapter](https://github.com/webrtc/adapter) to increase browser compatiblity._
+_You can use external polyfills like [WebRTC adapter](https://github.com/webrtc/adapter) to increase browser compatibility._
 
 Also, note that the library is using the [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (`Int32Array`, `Uint8ClampedArray`, etc.) which are not available in older browsers (e.g. Android 4 default browser).
 
@@ -119,7 +119,7 @@ codeReader.decodeFromInputVideoDevice(firstDeviceId, 'video')
 
 If there are more input devices then you will need to chose one for `codeReader.decodeFromInputVideoDevice` device id parameter.
 
-You can also provide `undefined` for the device id parameter in which case the library will automatically choose the camera, prefering the main (environment facing) camera if more are available:
+You can also provide `undefined` for the device id parameter in which case the library will automatically choose the camera, preferring the main (environment facing) camera if more are available:
 
 ```javascript
 codeReader.decodeFromInputVideoDevice(undefined, 'video')
