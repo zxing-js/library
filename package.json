@@ -105,7 +105,7 @@
         "sinon": "^4.2.2",
         "ts-loader": "^4.3.1",
         "tslint": "^5.10.0",
-        "typescript": "^2.8",
+        "typescript": "^2.9.2",
         "uglify-js": "^3.3.25",
         "uglifyjs-webpack-plugin": "^1.1.8",
         "webpack": "^4.11.1",
