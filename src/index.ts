@@ -1,6 +1,7 @@
 // browser
 export * from './browser/BrowserQRCodeReader';
 export * from './browser/BrowserDatamatrixCodeReader';
+export * from './browser/BrowserAztecCodeReader';
 export * from './browser/BrowserQRCodeSvgWriter';
 export * from './browser/BrowserBarcodeReader';
 export * from './browser/BrowserCodeReader';
@@ -67,6 +68,8 @@ export { default as ReedSolomonEncoder } from './core/common/reedsolomon/ReedSol
 // core/twod/qrcode
 export { default as QRCodeReader } from './core/qrcode/QRCodeReader';
 export { default as QRCodeWriter } from './core/qrcode/QRCodeWriter';
+
+export { default as AztecCodeReader } from './core/aztec/AztecReader';
 
 // core/oned
 export { default as OneDReader } from './core/oned/OneDReader';
