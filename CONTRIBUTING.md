@@ -63,7 +63,7 @@ https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
 - `char` has 2 bytes, so `char[]` transforms to `Uint16Array`.
 - `long` has 64 bit two's complement `integer`, can be signed or unsigned.
 
-### JavasScript TypedArray
+### JavaScript's TypedArray
 
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
 
