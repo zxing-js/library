@@ -159,7 +159,7 @@ codeReader.decodeFromVideoSource(videoSrc)
 Similar as above you can use a img element in the HTML page (with src attribute set):
 
 ```html
-<img id="img" src="qrcode-image.png" width="200" height="300" style="border: 1px solid gray"></img>
+<img id="img" src="qrcode-image.png" width="200" height="300" style="border: 1px solid gray">
 ```
 
 And to decode the image:
@@ -186,7 +186,7 @@ codeReader.decodeFromImage(undefined, imgSrc)
 Or decode the image url directly from an url, with an `img` element in page (notice no `src` attribute is set for `img` element):
 
 ```html
-<img id="img" width="200" height="300" style="border: 1px solid gray"></img>
+<img id="img-to-decode" width="200" height="300" style="border: 1px solid gray">
 ```
 
 ```javascript
