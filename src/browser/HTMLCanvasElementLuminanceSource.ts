@@ -2,7 +2,11 @@ import InvertedLuminanceSource from '../core/InvertedLuminanceSource';
 import LuminanceSource from '../core/LuminanceSource';
 import IllegalArgumentException from '../core/IllegalArgumentException';
 
+/**
+ * @deprecated Moving to @zxing/browser
+ */
 export class HTMLCanvasElementLuminanceSource extends LuminanceSource {
+
     private buffer: Uint8ClampedArray;
 
     private static DEGREE_TO_RADIANS = Math.PI / 180;
@@ -11,7 +15,6 @@ export class HTMLCanvasElementLuminanceSource extends LuminanceSource {
 
     public constructor(private canvas: HTMLCanvasElement) {
         super(canvas.width, canvas.height);
-
         this.buffer = HTMLCanvasElementLuminanceSource.makeBufferFromCanvasImageData(canvas);
     }
 

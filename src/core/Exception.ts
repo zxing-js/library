@@ -13,5 +13,5 @@ export default class Exception extends CustomError {
         public message: string = undefined
     ) {
         super(message);
-   }
+    }
 }
