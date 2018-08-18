@@ -11,10 +11,9 @@ import ChecksumException from '../core/ChecksumException';
 import FormatException from '../core/FormatException';
 
 /**
- * Base class for browser code reader.
+ * @deprecated Moving to @zxing/browser
  *
- * @export
- * @class BrowserCodeReader
+ * Base class for browser code reader.
  */
 export class BrowserCodeReader {
     private videoElement: HTMLVideoElement;
