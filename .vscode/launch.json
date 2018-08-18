@@ -4,29 +4,50 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Code39 Tests",
-            "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
-            "args": [
-                "./src/**/Code39*.spec.ts",
-                "--colors",
-                "--timeout", "999999",
-                "--webpack-env", "dbg",
-                "--webpack-config", "webpack.config.test.js"
-            ]
-        },
-        {
-            "type": "node",
-            "request": "launch",
             "name": "Unit Tests",
             "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
             "args": [
                 "./src/**/*.spec.ts",
                 "--colors",
-                "--timeout", "999999",
-                "--webpack-env", "dbg",
-                "--webpack-config", "webpack.config.test.js"
+                "--timeout",
+                "999999",
+                "--webpack-env",
+                "dbg",
+                "--webpack-config",
+                "webpack.config.test.js"
             ]
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Code 39 Tests",
+            "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
+            "args": [
+                "./src/**/Code39*.spec.ts",
+                "--colors",
+                "--timeout",
+                "999999",
+                "--webpack-env",
+                "dbg",
+                "--webpack-config",
+                "webpack.config.test.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "EAN 13 Tests",
+            "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
+            "args": [
+                "./src/**/Ean13*.spec.ts",
+                "--colors",
+                "--timeout",
+                "999999",
+                "--webpack-env",
+                "dbg",
+                "--webpack-config",
+                "webpack.config.test.js"
+            ]
+        },
     ]
-
 }
