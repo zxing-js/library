@@ -14,3 +14,4 @@ _config.yml
 node_modules
 docs
 test
+src
