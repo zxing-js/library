@@ -46,6 +46,7 @@ export { default as CharacterSetECI } from './core/common/CharacterSetECI';
 export { default as DecoderResult } from './core/common/DecoderResult';
 export { default as DefaultGridSampler } from './core/common/DefaultGridSampler';
 export { default as DetectorResult } from './core/common/DetectorResult';
+export { default as EncodeHintType } from './core/EncodeHintType';
 export { default as GlobalHistogramBinarizer } from './core/common/GlobalHistogramBinarizer';
 export { default as GridSampler } from './core/common/GridSampler';
 export { default as GridSamplerInstance } from './core/common/GridSamplerInstance';
@@ -64,9 +65,15 @@ export { default as GenericGFPoly } from './core/common/reedsolomon/GenericGFPol
 export { default as ReedSolomonDecoder } from './core/common/reedsolomon/ReedSolomonDecoder';
 export { default as ReedSolomonEncoder } from './core/common/reedsolomon/ReedSolomonEncoder';
 
+// core/datamatrix
+export { default as DataMatrixReader } from './core/datamatrix/DataMatrixReader';
+
 // core/twod/qrcode
 export { default as QRCodeReader } from './core/qrcode/QRCodeReader';
 export { default as QRCodeWriter } from './core/qrcode/QRCodeWriter';
+export { default as QRCodeDecoderErrorCorrectionLevel } from './core/qrcode/decoder/ErrorCorrectionLevel';
+export { default as QRCodeEncoder } from './core/qrcode/encoder/Encoder';
+export { default as QRCodeEncoderQRCode } from './core/qrcode/encoder/QRCode';
 
 // core/oned
 export { default as OneDReader } from './core/oned/OneDReader';
@@ -74,3 +81,4 @@ export { default as EAN13Reader } from './core/oned/EAN13Reader';
 export { default as Code128Reader } from './core/oned/Code128Reader';
 export { default as ITFReader } from './core/oned/ITFReader';
 export { default as Code39Reader } from './core/oned/Code39Reader';
+export { default as MultiformatReader } from './core/oned/MultiFormatOnedReader';
