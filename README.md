@@ -31,8 +31,8 @@
 
 [![NPM version](https://img.shields.io/npm/v/@zxing/library.svg?&label=npm)][0]
 [![npm](https://img.shields.io/npm/dm/localeval.svg)][0]
-[![Contributors](https://img.shields.io/github/contributors/zxing-js/library.svg)](https://github.com/zxing-js/library")
-[![Commits to deploy](https://img.shields.io/github/commits-since/manekinekko/klingon/master.svg?label=commits%20to%20deploy)](https://github.com/manekinekko/klingon/compare/master...develop)
+[![Contributors](https://img.shields.io/github/contributors/zxing-js/library.svg)](https://github.com/zxing-js/library/graphs/contributors)
+[![Commits to deploy](https://img.shields.io/github/commits-since/zxing-js/library/master.svg?label=commits%20to%20deploy)](https://github.com/zxing-js/library/compare/master...develop)
 
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/39d86bc5d5f04bc8953cc68d729807b0)](https://www.codacy.com/app/zxing-js/library?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zxing-js/library&amp;utm_campaign=Badge_Grade)
