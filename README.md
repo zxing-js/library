@@ -27,10 +27,13 @@
 ## Status
 
 [![Build Status](https://travis-ci.org/zxing-js/library.svg?branch=master)](https://travis-ci.org/zxing-js/library)
+![Dependencies](https://david-dm.org/zxing-js/library.svg)
 
 [![NPM version](https://img.shields.io/npm/v/@zxing/library.svg?&label=npm)][0]
 [![npm](https://img.shields.io/npm/dm/localeval.svg)][0]
-![Dependencies](https://david-dm.org/zxing-js/library.svg)
+[![Contributors](https://img.shields.io/github/contributors/zxing-js/library.svg)](https://github.com/zxing-js/library")
+[![Commits to deploy](https://img.shields.io/github/commits-since/manekinekko/klingon/master.svg?label=commits%20to%20deploy)](https://github.com/manekinekko/klingon/compare/master...develop)
+
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/39d86bc5d5f04bc8953cc68d729807b0)](https://www.codacy.com/app/zxing-js/library?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zxing-js/library&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b9c6ae92412ee8e15a9/maintainability)](https://codeclimate.com/github/zxing-js/library/maintainability)
