@@ -226,3 +226,11 @@ See [Contributing Guide](https://github.com/zxing-js/library/blob/master/CONTRIB
 
 [0]: https://www.npmjs.com/package/@zxing/library
 [1]: https://github.com/zxing/zxing
+
+### Contributors
+
+Special thanks to all the contributors who have contributed for this project. We heartly thankful to you 
+
+    1. @aleris (the project itself plus QR code)
+    2. @rikmms (Code 128)
+    3. @Tjieco (ITF or i2of5)
