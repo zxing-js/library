@@ -220,13 +220,6 @@ const svgElement = codeWriter.write(input, 300, 300);
 
 See [Contributing Guide](https://github.com/zxing-js/library/blob/master/CONTRIBUTING.md) for information regarding porting approach and reasoning behind some of the approaches taken.
 
----
-
-[![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/)
-
-[0]: https://www.npmjs.com/package/@zxing/library
-[1]: https://github.com/zxing/zxing
-
 ### Contributors
 
 Special thanks to all the contributors who have contributed for this project. We heartly thankful to you 
@@ -235,3 +228,10 @@ Special thanks to all the contributors who have contributed for this project. We
 - @rikmms (Code 128)
 - @Tjieco (ITF or i2of5)
 - [*See everyone...*](https://github.com/zxing-js/library/graphs/contributors)
+
+---
+
+[![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/)
+
+[0]: https://www.npmjs.com/package/@zxing/library
+[1]: https://github.com/zxing/zxing
