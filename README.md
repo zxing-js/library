@@ -231,6 +231,7 @@ See [Contributing Guide](https://github.com/zxing-js/library/blob/master/CONTRIB
 
 Special thanks to all the contributors who have contributed for this project. We heartly thankful to you 
 
-    1. @aleris (the project itself plus QR code)
-    2. @rikmms (Code 128)
-    3. @Tjieco (ITF or i2of5)
+- @aleris (the project itself plus QR code)
+- @rikmms (Code 128)
+- @Tjieco (ITF or i2of5)
+- [*See everyone...*](https://github.com/zxing-js/library/graphs/contributors)
