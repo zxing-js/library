@@ -80,7 +80,7 @@ export class BrowserCodeReader {
         let constraints: MediaStreamConstraints;
         if (undefined === deviceId) {
             constraints = {
-                video: { facingMode: { exact: "environment" } }
+                video: { facingMode: { exact: 'environment' } }
             };
         } else {
             constraints = {
