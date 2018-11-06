@@ -24,6 +24,11 @@ before_script:
 script:
   - yarn cover
 
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
   - cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage
