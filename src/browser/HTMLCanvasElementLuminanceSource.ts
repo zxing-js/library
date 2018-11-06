@@ -105,7 +105,7 @@ export class HTMLCanvasElementLuminanceSource extends LuminanceSource {
     private getTempCanvasElement() {
         if (null === this.tempCanvasElement) {
             const tempCanvasElement = this.canvas.ownerDocument.createElement('canvas');
-            tempCanvasElement.width = this.canvas.width};
+            tempCanvasElement.width = this.canvas.width;
             tempCanvasElement.height = this.canvas.height;
             this.tempCanvasElement = tempCanvasElement;
         }
