@@ -1,4 +1,4 @@
-import { Sharp } from 'sharp';
+import sharp, { Sharp} from 'sharp';
 
 import BitMatrix from '../../../core/common/BitMatrix';
 
