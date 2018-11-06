@@ -119,8 +119,8 @@ export class HTMLCanvasElementLuminanceSource extends LuminanceSource {
         const angleRadians = angle * HTMLCanvasElementLuminanceSource.DEGREE_TO_RADIANS;
 
         // Calculate and set new dimensions for temp canvas
-        const width = tempCanvasElement.width;
-        const height = tempCanvasElement.height;
+        const width = this.canvas.width;
+        const height = this.canvas.height;
         const newWidth = Math.ceil( Math.abs(Math.cos(angleRadians)) * width + Math.abs(Math.sin(angleRadians)) * height );
         const newHeight = Math.ceil( Math.abs(Math.sin(angleRadians)) * width + Math.abs(Math.cos(angleRadians)) * height );
         tempCanvasElement.width = newWidth;
