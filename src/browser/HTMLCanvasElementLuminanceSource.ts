@@ -125,7 +125,7 @@ export class HTMLCanvasElementLuminanceSource extends LuminanceSource {
         const newHeight = Math.ceil( Math.abs(Math.sin(angleRadians)) * width + Math.abs(Math.cos(angleRadians)) * height );
         tempCanvasElement.width = newWidth;
         tempCanvasElement.height = newHeight;
-        
+
         // Draw at center of temp canvas to prevent clipping of image data
         tempContext.translate(newWidth / 2, newHeight / 2);
         tempContext.rotate(angleRadians);
