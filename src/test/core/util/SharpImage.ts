@@ -1,11 +1,11 @@
-import sharp, { Sharp} from 'sharp';
+import * as sharp from 'sharp';
 
 import BitMatrix from '../../../core/common/BitMatrix';
 
 export default class SharpImage {
 
     public constructor(
-        private wrapper: Sharp,
+        private wrapper: sharp.Sharp,
         private buffer: Uint8ClampedArray,
         private width: number,
         private height: number
