@@ -6,7 +6,10 @@ env:
 
 language: node_js
 
-node_js: stable
+node_js:
+  - 'node'
+  - '10'
+  - '8'
 
 before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -20,6 +23,11 @@ before_script:
 
 script:
   - yarn cover
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
 
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
