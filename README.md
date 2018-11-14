@@ -28,6 +28,7 @@
 
 [![Build Status](https://travis-ci.org/zxing-js/library.svg?branch=master)](https://travis-ci.org/zxing-js/library)
 ![Dependencies](https://david-dm.org/zxing-js/library.svg)
+[![Greenkeeper badge](https://badges.greenkeeper.io/zxing-js/library.svg)](https://greenkeeper.io/)
 
 [![NPM version](https://img.shields.io/npm/v/@zxing/library.svg?&label=npm)][0]
 [![npm](https://img.shields.io/npm/dm/localeval.svg)][0]
@@ -216,22 +217,21 @@ const codeWriter = new ZXing.BrowserQRCodeSvgWriter('result');
 const svgElement = codeWriter.write(input, 300, 300);
 ```
 
-### Porting Information
+### Contributing
 
 See [Contributing Guide](https://github.com/zxing-js/library/blob/master/CONTRIBUTING.md) for information regarding porting approach and reasoning behind some of the approaches taken.
 
 ### Contributors
 
-Special thanks to all the contributors who have contributed for this project. We heartly thankful to you 
+Special thanks to all the contributors who have contributed for this project. We heartly thankful to you all.
 
-- @aleris (the project itself plus QR code)
-- @rikmms (Code 128)
-- @Tjieco (ITF or i2of5)
-- [*See everyone...*](https://github.com/zxing-js/library/graphs/contributors)
+[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/0)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/0)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/1)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/1)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/2)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/2)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/3)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/3)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/4)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/4)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/5)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/5)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/6)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/6)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/7)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/7)
+
+And a special thanks to @aleris who created the project itself and made the initial QR code port.
 
 ---
 
-[![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/) [![Greenkeeper badge](https://badges.greenkeeper.io/zxing-js/library.svg)](https://greenkeeper.io/)
+[![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/) 
 
 [0]: https://www.npmjs.com/package/@zxing/library
 [1]: https://github.com/zxing/zxing
