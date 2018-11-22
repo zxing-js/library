@@ -53,9 +53,9 @@ const config = (env, argv) => {
             // module format
             libraryTarget: 'umd',
             // library name to be used in browser (e.g. `window.ZXing`).
-            library: 'ZXing',
+            library: '@zxing/library',
             // will name the AMD module of the UMD build. Otherwise an anonymous define is used.
-            umdNamedDefine: true
+            umdNamedDefine: false,
         },
 
         /**
