@@ -82,9 +82,9 @@ export default class RSS14Reader extends AbstractRSSReader {
 
     private static constructResult(leftPair: Pair, rightPair: Pair): Result {
         let symbolValue = 4537077 * leftPair.getValue() + rightPair.getValue();
-        let text = new String(symbolValue).toString(); // TODO: check this is necessary
+        let text = new String(symbolValue).toString();
 
-        let buffer = new StringBuilder(/*14*/); // TODO: check this length was necessary
+        let buffer = new StringBuilder();
         for (let i = 13 - text.length; i > 0; i--) {
             buffer.append('0');
         }
@@ -175,14 +175,12 @@ export default class RSS14Reader extends AbstractRSSReader {
 
         for (let i = 0; i < counters.length; i++) {
             let value = counters[i] / elementWidth;
-            //int count = (int)(value + 0.5); // Round
             let count = Math.floor(value + 0.5);
             if (count < 1) {
                 count = 1;
             } else if (count > 8) {
                 count = 8;
             }
-            //int offset = i / 2;
             let offset = Math.floor(i / 2);
             if ((i & 0x01) == 0) {
                 oddCounts[offset] = count;
