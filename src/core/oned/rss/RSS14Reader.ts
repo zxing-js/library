@@ -1,19 +1,19 @@
-import AbstractRSSReader from "./AbstractRSSReader";
-import Pair from "./Pair";
-import Result from "../../Result";
-import BitArray from "../../common/BitArray";
-import DecodeHintType from "../../DecodeHintType";
-import NotFoundException from "../../NotFoundException";
-import StringBuilder from "../../util/StringBuilder";
-import BarcodeFormat from "../../BarcodeFormat";
-import ResultPointCallback from "../../ResultPointCallback";
-import ResultPoint from "../../ResultPoint";
-import FinderPattern from "./FinderPattern";
-import DataCharacter from "./DataCharacter";
-import MathUtils from "../../common/detector/MathUtils";
-import RSSUtils from "./RSSUtils";
-import System from "../../util/System";
-import OneDReader from "../OneDReader";
+import AbstractRSSReader from './AbstractRSSReader';
+import Pair from './Pair';
+import Result from '../../Result';
+import BitArray from '../../common/BitArray';
+import DecodeHintType from '../../DecodeHintType';
+import NotFoundException from '../../NotFoundException';
+import StringBuilder from '../../util/StringBuilder';
+import BarcodeFormat from '../../BarcodeFormat';
+import ResultPointCallback from '../../ResultPointCallback';
+import ResultPoint from '../../ResultPoint';
+import FinderPattern from './FinderPattern';
+import DataCharacter from './DataCharacter';
+import MathUtils from '../../common/detector/MathUtils';
+import RSSUtils from './RSSUtils';
+import System from '../../util/System';
+import OneDReader from '../OneDReader';
 
 export default class RSS14Reader extends AbstractRSSReader {
 
@@ -38,7 +38,7 @@ export default class RSS14Reader extends AbstractRSSReader {
 
     private readonly possibleLeftPairs: Pair[] = [];
     private readonly possibleRightPairs: Pair[] = [];
-    
+
     public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
         const leftPair = this.decodePair(row, false, rowNumber, hints);
         RSS14Reader.addOrTally(this.possibleLeftPairs, leftPair);
@@ -64,12 +64,12 @@ export default class RSS14Reader extends AbstractRSSReader {
         }
         let found = false;
         for (let other of possiblePairs) {
-            if (other.getValue() == pair.getValue()) {
+            if (other.getValue() === pair.getValue()) {
                 other.incrementCount();
                 found = true;
                 break;
             }
-        };
+        }
         if (!found) {
             possiblePairs.push(pair);
         }
@@ -93,10 +93,10 @@ export default class RSS14Reader extends AbstractRSSReader {
         let checkDigit = 0;
         for (let i = 0; i < 13; i++) {
             let digit = buffer.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
-            checkDigit += ((i & 0x01) == 0) ? 3 * digit : digit;
+            checkDigit += ((i & 0x01) === 0) ? 3 * digit : digit;
         }
         checkDigit = 10 - (checkDigit % 10);
-        if (checkDigit == 10) {
+        if (checkDigit === 10) {
             checkDigit = 0;
         }
         buffer.append(checkDigit.toString());
@@ -116,7 +116,7 @@ export default class RSS14Reader extends AbstractRSSReader {
         if (targetCheckValue > 8) {
             targetCheckValue--;
         }
-        return checkValue == targetCheckValue;
+        return checkValue === targetCheckValue;
     }
 
     private decodePair(row: BitArray, right: boolean, rowNumber: number, hints: Map<DecodeHintType, any>): Pair {
@@ -182,7 +182,7 @@ export default class RSS14Reader extends AbstractRSSReader {
                 count = 8;
             }
             let offset = Math.floor(i / 2);
-            if ((i & 0x01) == 0) {
+            if ((i & 0x01) === 0) {
                 oddCounts[offset] = count;
                 oddRoundingErrors[offset] = value - count;
             } else {
@@ -210,7 +210,7 @@ export default class RSS14Reader extends AbstractRSSReader {
         let checksumPortion = oddChecksumPortion + 3 * evenChecksumPortion;
 
         if (outsideChar) {
-            if ((oddSum & 0x01) != 0 || oddSum > 12 || oddSum < 4) {
+            if ((oddSum & 0x01) !== 0 || oddSum > 12 || oddSum < 4) {
                 throw new NotFoundException();
             }
             let group = (12 - oddSum) / 2;
@@ -222,7 +222,7 @@ export default class RSS14Reader extends AbstractRSSReader {
             let gSum = RSS14Reader.OUTSIDE_GSUM[group];
             return new DataCharacter(vOdd * tEven + vEven + gSum, checksumPortion);
         } else {
-            if ((evenSum & 0x01) != 0 || evenSum > 10 || evenSum < 4) {
+            if ((evenSum & 0x01) !== 0 || evenSum > 10 || evenSum < 4) {
                 throw new NotFoundException();
             }
             let group = (10 - evenSum) / 2;
@@ -250,7 +250,7 @@ export default class RSS14Reader extends AbstractRSSReader {
         let rowOffset = 0;
         while (rowOffset < width) {
             isWhite = !row.get(rowOffset);
-            if (rightFinderPattern == isWhite) {
+            if (rightFinderPattern === isWhite) {
                 // Will encounter white first when searching for right finder pattern
                 break;
             }
@@ -260,10 +260,10 @@ export default class RSS14Reader extends AbstractRSSReader {
         let counterPosition = 0;
         let patternStart = rowOffset;
         for (let x = rowOffset; x < width; x++) {
-            if (row.get(x) != isWhite) {
+            if (row.get(x) !== isWhite) {
                 counters[counterPosition]++;
             } else {
-                if (counterPosition == 3) {
+                if (counterPosition === 3) {
                     if (AbstractRSSReader.isFinderPattern(counters)) {
                         return [patternStart, x ];
                     }
@@ -288,7 +288,7 @@ export default class RSS14Reader extends AbstractRSSReader {
         let firstIsBlack = row.get(startEnd[0]);
         let firstElementStart = startEnd[0] - 1;
         // Locate element 1
-        while (firstElementStart >= 0 && firstIsBlack != row.get(firstElementStart)) {
+        while (firstElementStart >= 0 && firstIsBlack !== row.get(firstElementStart)) {
             firstElementStart--;
         }
         firstElementStart++;
@@ -349,9 +349,9 @@ export default class RSS14Reader extends AbstractRSSReader {
         }
 
         let mismatch = oddSum + evenSum - numModules;
-        let oddParityBad = (oddSum & 0x01) == (outsideChar ? 1 : 0);
-        let evenParityBad = (evenSum & 0x01) == 1;
-        if (mismatch == 1) {
+        let oddParityBad = (oddSum & 0x01) === (outsideChar ? 1 : 0);
+        let evenParityBad = (evenSum & 0x01) === 1;
+        if (mismatch === 1) {
         if (oddParityBad) {
             if (evenParityBad) {
                 throw new NotFoundException();
@@ -363,7 +363,7 @@ export default class RSS14Reader extends AbstractRSSReader {
             }
             decrementEven = true;
         }
-        } else if (mismatch == -1) {
+        } else if (mismatch === -1) {
             if (oddParityBad) {
                 if (evenParityBad) {
                     throw new NotFoundException();
@@ -376,7 +376,7 @@ export default class RSS14Reader extends AbstractRSSReader {
                 incrementEven = true;
             }
         }
-        else if (mismatch == 0) {
+        else if (mismatch === 0) {
             if (oddParityBad) {
                 if (!evenParityBad) {
                     throw new NotFoundException();

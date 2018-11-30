@@ -1,8 +1,8 @@
-import OneDReader from "../OneDReader";
-import NotFoundException from "../../NotFoundException";
-import MathUtils from "../../common/detector/MathUtils";
-import Integer from "../../util/Integer";
-import Float from "../../util/Float";
+import OneDReader from '../OneDReader';
+import NotFoundException from '../../NotFoundException';
+import MathUtils from '../../common/detector/MathUtils';
+import Integer from '../../util/Integer';
+import Float from '../../util/Float';
 
 export default abstract class AbstractRSSReader extends OneDReader {
 

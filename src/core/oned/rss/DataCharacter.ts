@@ -17,7 +17,7 @@ export default class DataCharacter {
     }
 
     public toString(): string {
-        return this.value + "(" + this.checksumPortion + ")";
+        return this.value + '(' + this.checksumPortion + ')';
     }
 
     public equals(o: object): boolean {
@@ -25,7 +25,7 @@ export default class DataCharacter {
             return false;
         }
         const that = <DataCharacter>o;
-        return this.value == that.value && this.checksumPortion == that.checksumPortion;
+        return this.value === that.value && this.checksumPortion === that.checksumPortion;
     }
 
     public hashCode(): number {

@@ -24,15 +24,15 @@ export default class RSSUtils {
                     let lessVal = 0;
                     for (let mxwElement = n - elmWidth - (elements - bar - 2); mxwElement > maxWidth; mxwElement--) {
                         lessVal += RSSUtils.combins(n - elmWidth - mxwElement - 1, elements - bar - 3);
-                    };
+                    }
                     subVal -= lessVal * (elements - 1 - bar);
                 } else if (n - elmWidth > maxWidth) {
                     subVal--;
                 }
                 val += subVal;
-            };
+            }
             n -= elmWidth;
-        };
+        }
         return val;
     }
 
@@ -54,11 +54,11 @@ export default class RSSUtils {
                 val /= j;
                 j++;
             }
-        };
+        }
         while ((j <= minDenom)) {
             val /= j;
             j++;
-        };
+        }
         return val;
     }
 }

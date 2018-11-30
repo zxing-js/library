@@ -30,7 +30,7 @@ export default class FinderPattern {
             return false;
         }
         const that = <FinderPattern>o;
-        return this.value == that.value;
+        return this.value === that.value;
     }
 
     public hashCode(): number {
