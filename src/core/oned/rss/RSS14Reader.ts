@@ -74,7 +74,7 @@ export default class RSS14Reader extends AbstractRSSReader {
             possiblePairs.push(pair);
         }
     }
-    
+
     public reset() {
         this.possibleLeftPairs.length = 0;
         this.possibleRightPairs.length = 0;
@@ -237,7 +237,7 @@ export default class RSS14Reader extends AbstractRSSReader {
 
     }
 
-    private findFinderPattern(row: BitArray, rightFinderPattern: boolean): number[]{
+    private findFinderPattern(row: BitArray, rightFinderPattern: boolean): number[] {
 
         let counters = this.getDecodeFinderCounters();
         counters[0] = 0;
