@@ -105,8 +105,8 @@ export class HTMLCanvasElementLuminanceSource extends LuminanceSource {
     private getTempCanvasElement() {
         if (null === this.tempCanvasElement) {
             const tempCanvasElement = this.canvas.ownerDocument.createElement('canvas');
-            tempCanvasElement.style.width = `${this.canvas.width}px`;
-            tempCanvasElement.style.height = `${this.canvas.height}px`;
+            tempCanvasElement.width = this.canvas.width;
+            tempCanvasElement.height = this.canvas.height;
             this.tempCanvasElement = tempCanvasElement;
         }
 
@@ -116,8 +116,20 @@ export class HTMLCanvasElementLuminanceSource extends LuminanceSource {
     private rotate(angle: number) {
         const tempCanvasElement = this.getTempCanvasElement();
         const tempContext = tempCanvasElement.getContext('2d');
-        tempContext.rotate(angle * HTMLCanvasElementLuminanceSource.DEGREE_TO_RADIANS);
-        tempContext.drawImage(this.canvas, 0, 0);
+        const angleRadians = angle * HTMLCanvasElementLuminanceSource.DEGREE_TO_RADIANS;
+
+        // Calculate and set new dimensions for temp canvas
+        const width = this.canvas.width;
+        const height = this.canvas.height;
+        const newWidth = Math.ceil( Math.abs(Math.cos(angleRadians)) * width + Math.abs(Math.sin(angleRadians)) * height );
+        const newHeight = Math.ceil( Math.abs(Math.sin(angleRadians)) * width + Math.abs(Math.cos(angleRadians)) * height );
+        tempCanvasElement.width = newWidth;
+        tempCanvasElement.height = newHeight;
+
+        // Draw at center of temp canvas to prevent clipping of image data
+        tempContext.translate(newWidth / 2, newHeight / 2);
+        tempContext.rotate(angleRadians);
+        tempContext.drawImage(this.canvas, width / -2, height / -2);
         this.buffer = HTMLCanvasElementLuminanceSource.makeBufferFromCanvasImageData(tempCanvasElement);
         return this;
     }
