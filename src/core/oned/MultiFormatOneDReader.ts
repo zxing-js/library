@@ -20,6 +20,7 @@ import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
 import Code39Reader from './Code39Reader';
 import Code128Reader from './Code128Reader';
+import RSS14Reader from './rss/RSS14Reader';
 import DecodeHintType from '../DecodeHintType';
 import ITFReader from './ITFReader';
 import MultiFormatUPCEANReader from './MultiFormatUPCEANReader';
@@ -65,9 +66,9 @@ export default class MultiFormatOneDReader extends OneDReader {
             // if (possibleFormats.includes(BarcodeFormat.CODABAR)) {
             //    this.readers.push(new CodaBarReader());
             // }
-            // if (possibleFormats.includes(BarcodeFormat.RSS_14)) {
-            //    this.readers.push(new RSS14Reader());
-            // }
+             if (possibleFormats.includes(BarcodeFormat.RSS_14)) {
+                this.readers.push(new RSS14Reader());
+             }
             // if (possibleFormats.includes(BarcodeFormat.RSS_EXPANDED)) {
             //   this.readers.push(new RSSExpandedReader());
             // }
@@ -80,7 +81,7 @@ export default class MultiFormatOneDReader extends OneDReader {
             this.readers.push(new MultiFormatUPCEANReader(hints));
             this.readers.push(new Code128Reader());
             this.readers.push(new ITFReader());
-            // this.readers.push(new RSS14Reader());
+            this.readers.push(new RSS14Reader());
             // this.readers.push(new RSSExpandedReader());
         }
     }
