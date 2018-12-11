@@ -20,7 +20,7 @@
 import Version from './Version';
 import IllegalArgumentException from '../../IllegalArgumentException';
 
-export const enum ModeValues {
+export enum ModeValues {
     TERMINATOR, // Not really a mode...
     NUMERIC,
     ALPHANUMERIC,
