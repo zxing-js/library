@@ -22,7 +22,7 @@ import FormatException from '../FormatException';
 /*import java.util.HashMap;*/
 /*import java.util.Map;*/
 
-export const enum CharacterSetValueIdentifiers {
+export enum CharacterSetValueIdentifiers {
     Cp437,
     ISO8859_1,
     ISO8859_2,
