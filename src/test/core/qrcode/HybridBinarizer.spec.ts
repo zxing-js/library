@@ -6,7 +6,7 @@ import SharpImage from '../util/SharpImage';
 const path = require('path');
 
 describe('HybridBinarizer', () => {
-    it('testHybridBinarizer', (done) => {
+    it('testHybridBinarizer', async done => {
 
         const pathString = path.resolve('src/test/core/resources/blackbox/common/simple.png');
 

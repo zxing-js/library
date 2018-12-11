@@ -16,10 +16,10 @@
 
 /*namespace com.google.zxing.qrcode.encoder {*/
 
-import ErrorCorrectionLevel from './../decoder/ErrorCorrectionLevel';
-import Mode from './../decoder/Mode';
-import Version from './../decoder/Version';
-import StringBuilder from './../../util/StringBuilder';
+import ErrorCorrectionLevel from '../decoder/ErrorCorrectionLevel';
+import Mode from '../decoder/Mode';
+import Version from '../decoder/Version';
+import StringBuilder from '../../util/StringBuilder';
 import ByteMatrix from './ByteMatrix';
 
 /**

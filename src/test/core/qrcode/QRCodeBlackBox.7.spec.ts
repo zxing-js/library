@@ -16,9 +16,9 @@
 
 /*package com.google.zxing.qrcode;*/
 
-import BarcodeFormat from './../../../core/BarcodeFormat';
-import MultiFormatReader from './../../../core/MultiFormatReader';
-import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
+import BarcodeFormat from '../../../core/BarcodeFormat';
+import MultiFormatReader from '../../../core/MultiFormatReader';
+import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 
 /**
  * These tests are supplied by Tim Gernat and test finder pattern detection at small size and under
@@ -37,9 +37,8 @@ export default class QRCodeBlackBox7Spec extends AbstractBlackBoxSpec {
 }
 
 describe('QRCodeBlackBox.7', () => {
-    it('testBlackBox', (done) => {
+    it('testBlackBox', async done => {
         const test = new QRCodeBlackBox7Spec();
-
-        return test.testBlackBox(() => done());
+        return test.testBlackBox(done);
     });
 });

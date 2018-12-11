@@ -16,8 +16,8 @@
 
 /*namespace com.google.zxing.common.detector {*/
 
-import ResultPoint from './../../ResultPoint';
-import BitMatrix from './../BitMatrix';
+import ResultPoint from '../../ResultPoint';
+import BitMatrix from '../BitMatrix';
 
 import MathUtils from './MathUtils';
 import NotFoundException from '../../NotFoundException';

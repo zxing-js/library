@@ -18,8 +18,8 @@
 
 import * as assert from 'assert';
 
-import StringUtils from './../../../core/common/StringUtils';
-import CharacterSetECI from './../../../core/common/CharacterSetECI';
+import StringUtils from '../../../core/common/StringUtils';
+import CharacterSetECI from '../../../core/common/CharacterSetECI';
 
 /*import java.nio.charset.Charset;*/
 

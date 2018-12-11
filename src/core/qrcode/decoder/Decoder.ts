@@ -16,11 +16,11 @@
 
 /*namespace com.google.zxing.qrcode.decoder {*/
 
-import DecodeHintType from './../../DecodeHintType';
-import BitMatrix from './../../common/BitMatrix';
-import DecoderResult from './../../common/DecoderResult';
-import GenericGF from './../../common/reedsolomon/GenericGF';
-import ReedSolomonDecoder from './../../common/reedsolomon/ReedSolomonDecoder';
+import DecodeHintType from '../../DecodeHintType';
+import BitMatrix from '../../common/BitMatrix';
+import DecoderResult from '../../common/DecoderResult';
+import GenericGF from '../../common/reedsolomon/GenericGF';
+import ReedSolomonDecoder from '../../common/reedsolomon/ReedSolomonDecoder';
 import BitMatrixParser from './BitMatrixParser';
 import QRCodeDecoderMetaData from './QRCodeDecoderMetaData';
 import DataBlock from './DataBlock';

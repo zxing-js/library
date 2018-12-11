@@ -17,11 +17,11 @@
 /*package com.google.zxing.qrcode.encoder;*/
 
 import * as assert from 'assert';
-import BitArray from './../../../../core/common/BitArray';
-import ByteMatrix from './../../../../core/qrcode/encoder/ByteMatrix';
-import MatrixUtil from './../../../../core/qrcode/encoder/MatrixUtil';
-import ErrorCorrectionLevel from './../../../../core/qrcode/decoder/ErrorCorrectionLevel';
-import Version from './../../../../core/qrcode/decoder/Version';
+import BitArray from '../../../../core/common/BitArray';
+import ByteMatrix from '../../../../core/qrcode/encoder/ByteMatrix';
+import MatrixUtil from '../../../../core/qrcode/encoder/MatrixUtil';
+import ErrorCorrectionLevel from '../../../../core/qrcode/decoder/ErrorCorrectionLevel';
+import Version from '../../../../core/qrcode/decoder/Version';
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator

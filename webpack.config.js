@@ -53,9 +53,9 @@ const config = (env, argv) => {
             // module format
             libraryTarget: 'umd',
             // library name to be used in browser (e.g. `window.ZXing`).
-            library: 'ZXing',
+            library: '@zxing/library',
             // will name the AMD module of the UMD build. Otherwise an anonymous define is used.
-            umdNamedDefine: true
+            umdNamedDefine: false,
         },
 
         /**
@@ -64,19 +64,6 @@ const config = (env, argv) => {
          */
         resolve: {
             extensions: ['.ts'],
-        },
-
-        /**
-         * Add here all 3rd party libraries that you will use as peerDependncies
-         * https://webpack.js.org/guides/author-libraries/#add-externals
-         */
-        externals: {
-            'text-encoding': {
-                commonjs: 'text-encoding',
-                commonjs2: 'text-encoding',
-                amd: '',
-                root: ''
-            }
         },
 
         /**

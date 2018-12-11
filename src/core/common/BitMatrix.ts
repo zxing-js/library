@@ -19,9 +19,9 @@
 /*import java.util.Arrays;*/
 
 import BitArray from './BitArray';
-import System from './../util/System';
-import Arrays from './../util/Arrays';
-import StringBuilder from './../util/StringBuilder';
+import System from '../util/System';
+import Arrays from '../util/Arrays';
+import StringBuilder from '../util/StringBuilder';
 import IllegalArgumentException from '../IllegalArgumentException';
 
 /**

@@ -17,7 +17,7 @@
 /*namespace com.google.zxing.qrcode.decoder {*/
 
 import ErrorCorrectionLevel from './ErrorCorrectionLevel';
-import Integer from './../../util/Integer';
+import Integer from '../../util/Integer';
 
 /**
  * <p>Encapsulates a QR Code's format information, including the data mask used and

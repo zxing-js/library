@@ -21,6 +21,10 @@
             <h1 class="title">Scan barcode from Video Camera</h1>
 
             <p>
+                <a class="button-small button-outline" href="../../index.html">HOME 🏡</a>
+            </p>
+
+            <p>
                 This example shows how to scan a barcode with ZXing javascript library from the device video camera. If more
                 than one video input devices are available (for example front and back camera) the example shows how to read
                 them and use a select to change the input device.
@@ -58,15 +62,16 @@
 
     </main>
 
-    <script type="text/javascript" src="../../../umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@zxing/library@dev"></script>
     <script type="text/javascript">
         window.addEventListener('load', function () {
+            let selectedDeviceId;
             const codeReader = new ZXing.BrowserBarcodeReader()
             console.log('ZXing code reader initialized')
             codeReader.getVideoInputDevices()
                 .then((videoInputDevices) => {
                     const sourceSelect = document.getElementById('sourceSelect')
-                    const firstDeviceId = videoInputDevices[0].deviceId
+                    selectedDeviceId = videoInputDevices[0].deviceId
                     if (videoInputDevices.length > 1) {
                         videoInputDevices.forEach((element) => {
                             const sourceOption = document.createElement('option')
@@ -75,19 +80,23 @@
                             sourceSelect.appendChild(sourceOption)
                         })
 
+                        sourceSelect.onchange = () => {
+                            selectedDeviceId = sourceSelect.value;
+                        }
+
                         const sourceSelectPanel = document.getElementById('sourceSelectPanel')
                         sourceSelectPanel.style.display = 'block'
                     }
 
                     document.getElementById('startButton').addEventListener('click', () => {
-                        codeReader.decodeFromInputVideoDevice(firstDeviceId, 'video').then((result) => {
+                        codeReader.decodeFromInputVideoDevice(selectedDeviceId, 'video').then((result) => {
                             console.log(result)
                             document.getElementById('result').textContent = result.text
                         }).catch((err) => {
                             console.error(err)
                             document.getElementById('result').textContent = err
                         })
-                        console.log(`Started continous decode from camera with id ${firstDeviceId}`)
+                        console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
                     })
 
                     document.getElementById('resetButton').addEventListener('click', () => {

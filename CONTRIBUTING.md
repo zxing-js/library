@@ -25,10 +25,10 @@ Initial port from 3.3.1-SNAPSHOT on May 2017 by Adrian Toșcă (@aleris).
 
 ### Approach
 
-The java files are transformed using regexps for some obvious syntax transformation (see ./autotransform) and then modified manually.
+The Java files are transformed using regexps for some obvious syntax transformation (see ./autotransform) and then modified manually.
 
 Using http://www.jsweet.org was considered but rejected because of loosing type information early on (for example 
-number versus int is esential for bitwise operations), language style and older typescript version.
+number versus int is essential for bitwise operations), language style and older TypeScript version.
 
 ### Rules
 
@@ -36,12 +36,12 @@ number versus int is esential for bitwise operations), language style and older 
 - Keep detailed type information in comments where applicable (example int will become `number /*int*/`) as the code is extensively using bitwise operations that can overflow.
 - Use TypedArray whenever possible (example `int[]` will become `Int32Array`) - see below for more info.
 - Use constructor property whenever possible.
-- Take care of array initialisation with capacity, especially when using length and push later on. Basically only use when setting with index accesor only .
+- Take care of array initialisation with capacity, especially when using length and push later on. Basically only use when setting with index accessor only .
 - Use utility classes to implement platform dependencies (like `System` or `Arrays`), avoid inline implementation for anything that is not trivial.
 - Use single class|enum|interface per module, export with default. Move internal classes to separate modules if used from other modules.
 - Package level visibility will transform to public to avoid module complexity.
 - Keep enum as similar with the original interface as possible (transform to class and use static fields for enum values).
-- Allways use `===` for `==` to avoid gliches from type transforms.
+- Always use `===` for `==` to avoid glitches from type transforms.
 
 ### Cheat Sheet 💩
 
@@ -56,22 +56,22 @@ number versus int is esential for bitwise operations), language style and older 
 
 https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
 
-- `byte` has 8 bits, signed (eg -127 to 127), so `byte[]` would trasnforms to `Int8Array` however:
+- `byte` has 8 bits, signed (e.g. -127 to 127), so `byte[]` would transforms to `Int8Array` however:
   - `TextEncoder` will use `Uint8Array`.
   - `canvas` image data will use `Uint8ClampedArray`.
 - `int` has 32 bits, signed, so `int[]` transforms to `Int32Array`.
-- `char` has 2 bytes, so `char[]` transfomrs to `Uint16Array`.
+- `char` has 2 bytes, so `char[]` transforms to `Uint16Array`.
 - `long` has 64 bit two's complement `integer`, can be signed or unsigned.
 
-### JavasSript TypedArray
+### JavaScript's TypedArray
 
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
 
 ## Things to look for
 
-- Take care of `int` -> `number` (integer to number) port when doing bitwise transformation expecially `<<`. Do a `& 0xFFFFFFFF` for ints, a &0xFF for bytes.
+- Take care of `int` -> `number` (integer to number) port when doing bitwise transformation especially `<<`. Do a `& 0xFFFFFFFF` for ints, a &0xFF for bytes.
 - Take care of array initialization, in Java `new Array(N)` initializes capacity NOT size/length.
-- Use `Math.floor` for any divison of ints otherwise the `number` type is a floating point and keeps the numbers after the dot.
+- Use `Math.floor` for any division of ints otherwise the `number` type is a floating point and keeps the numbers after the dot.
 
 ## Encoding
 

@@ -16,7 +16,7 @@
 
 /*namespace com.google.zxing.common {*/
 
-import ResultPoint from './../ResultPoint';
+import ResultPoint from '../ResultPoint';
 import BitMatrix from './BitMatrix';
 
 /**

@@ -6,13 +6,15 @@
         "lib": [
             "es5",
             "es6",
+            "es7",
             "dom"
         ],
         "outDir": "./esm5/",
         "alwaysStrict": true,
         "noImplicitAny": false,
         "sourceMap": true,
-        "declaration": true
+        "declaration": true,
+        "preserveConstEnums": true
     },
     "include": [
         "src/**/*.ts"

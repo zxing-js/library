@@ -25,7 +25,7 @@
  * @author dswitkin@google.com (Daniel Switkin)
  * @see Reader#decode(BinaryBitmap,java.util.Map)
  */
-const enum DecodeHintType {
+enum DecodeHintType {
 
     /**
      * Unspecified, application-specific hint. Maps to an unspecified {@link Object}.

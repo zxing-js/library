@@ -21,6 +21,10 @@
             <h1 class="title">Scan QR Code from Image</h1>
 
             <p>
+                <a class="button-small button-outline" href="../../index.html">HOME 🏡</a>
+            </p>
+
+            <p>
                 This example shows how to scan a QR code with ZXing javascript library from an image.
                 The example decodes from the
                 <code>src</code> in
@@ -33,7 +37,7 @@
             </div>
 
             <div>
-                <img id="img" src="qrcode-image-3.png" style="border: 1px solid gray"></img>
+                <img id="img" src="../../resources/blackbox/qrcode-3/01.png" style="border: 1px solid gray"></img>
             </div>
 
             <label>Result:</label>
@@ -53,7 +57,7 @@
 
     </main>
 
-    <script type="text/javascript" src="../zxing.qrcodereader.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@zxing/library@dev"></script>
     <script type="text/javascript">
         window.addEventListener('load', function () {
             const codeReader = new ZXing.BrowserQRCodeReader('video')

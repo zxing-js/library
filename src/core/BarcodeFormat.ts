@@ -25,7 +25,7 @@
  *
  * @author Sean Owen
  */
-const enum BarcodeFormat {
+enum BarcodeFormat {
     /** Aztec 2D barcode format. */
     AZTEC,
 

@@ -17,18 +17,18 @@
 /*package com.google.zxing.common;*/
 
 import * as assert from 'assert';
-import SharpImage from './../util/SharpImage';
-import SharpImageLuminanceSource from './../SharpImageLuminanceSource';
-import BarcodeFormat from './../../../core/BarcodeFormat';
-import BinaryBitmap from './../../../core/BinaryBitmap';
-import DecodeHintType from './../../../core/DecodeHintType';
-import LuminanceSource from './../../../core/LuminanceSource';
-import Reader from './../../../core/Reader';
-import Result from './../../../core/Result';
-import ResultMetadataType from './../../../core/ResultMetadataType';
-import TestResult from './../common/TestResult';
-import HybridBinarizer from './../../../core/common/HybridBinarizer';
-import StringEncoding from './../../../core/util/StringEncoding';
+import SharpImage from '../util/SharpImage';
+import SharpImageLuminanceSource from '../SharpImageLuminanceSource';
+import BarcodeFormat from '../../../core/BarcodeFormat';
+import BinaryBitmap from '../../../core/BinaryBitmap';
+import DecodeHintType from '../../../core/DecodeHintType';
+import LuminanceSource from '../../../core/LuminanceSource';
+import Reader from '../../../core/Reader';
+import Result from '../../../core/Result';
+import ResultMetadataType from '../../../core/ResultMetadataType';
+import TestResult from '../common/TestResult';
+import HybridBinarizer from '../../../core/common/HybridBinarizer';
+import StringEncoding from '../../../core/util/StringEncoding';
 
 import * as fs from 'fs';
 import * as path from 'path';
@@ -157,16 +157,21 @@ abstract class AbstractBlackBoxSpec {
      *
      * @throws IOException
      */
-    public testBlackBox(done: () => any): void {
-        this.testBlackBoxCountingResults(true, done)
-            .then(() => console.log('testBlackBox finished.'))
-            .catch(e => console.error(e));
+    public async testBlackBox(done: (err: any) => any): Promise<void> {
+        try {
+            await this.testBlackBoxCountingResults(true, done);
+            console.log('testBlackBox finished.');
+        } catch (e) {
+            console.log('Test ended with error: ', e);
+            done(e);
+            return;
+        }
     }
 
     /**
      * @throws IOException
      */
-    private async testBlackBoxCountingResults(assertOnFailure: boolean, done: () => any): Promise<void> {
+    private async testBlackBoxCountingResults(assertOnFailure: boolean, done: (err?: any) => any): Promise<void> {
         assert.strictEqual(this.testResults.length > 0, true);
 
         const imageFiles: Array<string> = this.getImageFiles();
@@ -179,7 +184,7 @@ abstract class AbstractBlackBoxSpec {
 
         for (const testImage of imageFiles) {
 
-            console.log(`Starting ${testImage}`);
+            console.log(`    Starting ${testImage}`);
             const fileBaseName: string = path.basename(testImage, path.extname(testImage));
             let expectedTextFile: string = path.resolve(this.testBase, fileBaseName + '.txt');
             let expectedText: string;
@@ -233,13 +238,13 @@ abstract class AbstractBlackBoxSpec {
 
         for (let x: number /*int*/ = 0, length = this.testResults.length; x < length; x++) {
             const testResult: TestResult = this.testResults[x];
-            console.log(`\nRotation ${testResult.getRotation()} degrees:`);
-            console.log(`\t${passedCounts[x]} of ${imageFiles.length} images passed (${testResult.getMustPassCount()} required)`);
+            console.log(`\n      Rotation ${testResult.getRotation()} degrees:`);
+            console.log(`        ${passedCounts[x]} of ${imageFiles.length} images passed (${testResult.getMustPassCount()} required)`);
             let failed: number /*int*/ = imageFiles.length - passedCounts[x];
-            console.log(`\t${misreadCounts[x]} failed due to misreads, ${failed - misreadCounts[x]} not detected`);
-            console.log(`\t${tryHarderCounts[x]} of ${imageFiles.length} images passed with try harder (${testResult.getTryHarderCount()} required)`);
+            console.log(`        ${misreadCounts[x]} failed due to misreads, ${failed - misreadCounts[x]} not detected`);
+            console.log(`        ${tryHarderCounts[x]} of ${imageFiles.length} images passed with try harder (${testResult.getTryHarderCount()} required)`);
             failed = imageFiles.length - tryHarderCounts[x];
-            console.log(`\t${tryHarderMisreadCounts[x]} failed due to misreads, ${failed - tryHarderMisreadCounts[x]} not detected`);
+            console.log(`        ${tryHarderMisreadCounts[x]} failed due to misreads, ${failed - tryHarderMisreadCounts[x]} not detected`);
             totalFound += passedCounts[x] + tryHarderCounts[x];
             totalMustPass += testResult.getMustPassCount() + testResult.getTryHarderCount();
             totalMisread += misreadCounts[x] + tryHarderMisreadCounts[x];
@@ -248,18 +253,18 @@ abstract class AbstractBlackBoxSpec {
 
         const totalTests: number /*int*/ = imageFiles.length * testCount * 2;
 
-        console.log(`Decoded ${totalFound} images out of ${totalTests} (${totalFound * 100 / totalTests}%, ${totalMustPass} required)`);
+        console.log(`    Decoded ${totalFound} images out of ${totalTests} (${totalFound * 100 / totalTests}%, ${totalMustPass} required)`);
 
         if (totalFound > totalMustPass) {
-            console.warn(`+++ Test too lax by ${totalFound - totalMustPass} images`);
+            console.warn(`  +++ Test too lax by ${totalFound - totalMustPass} images`);
         } else if (totalFound < totalMustPass) {
-            console.error(`--- Test failed by ${totalMustPass - totalFound} images`);
+            console.error(`  --- Test failed by ${totalMustPass - totalFound} images`);
         }
 
         if (totalMisread < totalMaxMisread) {
-            console.warn(`+++ Test expects too many misreads by ${totalMaxMisread - totalMisread} images`);
+            console.warn(`  +++ Test expects too many misreads by ${totalMaxMisread - totalMisread} images`);
         } else if (totalMisread > totalMaxMisread) {
-            console.error(`--- Test had too many misreads by ${totalMisread - totalMaxMisread} images`);
+            console.error(`  --- Test had too many misreads by ${totalMisread - totalMaxMisread} images`);
         }
 
         // Then run through again and assert if any failed.
@@ -267,7 +272,7 @@ abstract class AbstractBlackBoxSpec {
             for (let x: number /*int*/ = 0; x < testCount; x++) {
 
                 const testResult = this.testResults[x];
-                const label = '\nRotation ' + testResult.getRotation() + ' degrees: Too many images failed.';
+                const label = '      Rotation ' + testResult.getRotation() + ' degrees: Too many images failed.';
 
                 assert.strictEqual(passedCounts[x] >= testResult.getMustPassCount(), true, label);
                 assert.strictEqual(tryHarderCounts[x] >= testResult.getTryHarderCount(), true, `Try harder, ${label}`);

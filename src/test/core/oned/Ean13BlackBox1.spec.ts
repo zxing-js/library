@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import BarcodeFormat from './../../../core/BarcodeFormat';
-import MultiFormatReader from './../../../core/MultiFormatReader';
-import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
+import BarcodeFormat from '../../../core/BarcodeFormat';
+import MultiFormatReader from '../../../core/MultiFormatReader';
+import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 
 /**
  * @author Sean Owen
@@ -31,8 +31,8 @@ class Ean13BlackBox1Spec extends AbstractBlackBoxSpec {
 }
 
 describe('Ean13BlackBox1Spec.1', () => {
-    it('testBlackBox', (done) => {
+    it('testBlackBox', async done => {
         const test = new Ean13BlackBox1Spec();
-        return test.testBlackBox(() => done());
+        return test.testBlackBox(done);
     });
 });

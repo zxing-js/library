@@ -18,8 +18,8 @@
 
 import * as assert from 'assert';
 import AssertUtils from './util/AssertUtils';
-import PlanarYUVLuminanceSource from './../../core/PlanarYUVLuminanceSource';
-import System from './../../core/util/System';
+import PlanarYUVLuminanceSource from '../../core/PlanarYUVLuminanceSource';
+import System from '../../core/util/System';
 
 describe('PlanarYUVLuminanceSource', () => {
 

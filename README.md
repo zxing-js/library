@@ -14,37 +14,42 @@
 
 > See [Projects](https://github.com/zxing-js/library/projects) and [Milestones](https://github.com/zxing-js/library/milestones) for what is currently done and what's planned next. 👀
 
-| 1D product         | 1D industrial        | 2D
-| ------------------ | -------------------- | --------------
-| ~UPC-A~            | ~Code 39~            | QR Code
-| ~UPC-E~            | ~Code 93~            | Data Matrix (_no docs_)
-| ~EAN-8~            | Code 128 (_no docs_) | ~Aztec (beta)~
-| EAN-13 (_no docs_) | ~Codabar~            | PDF 417 (_in-progress_)
-|                    | ITF (_no docs_)      | ~MaxiCode~
-|                    | ~RSS-14~             |
-|                    | ~RSS-Expanded~       |
+| 1D product | 1D industrial  | 2D
+| ---------- | -------------- | --------------
+| ~UPC-A~    | Code 39        | QR Code
+| ~UPC-E~    | ~Code 93~      | Data Matrix
+| ~EAN-8~    | Code 128       | ~Aztec~
+| EAN-13     | ~Codabar~      | ~PDF 417~
+|            | ITF            | ~MaxiCode~
+|            | RSS-14         |
+|            | ~RSS-Expanded~ |
 
 ## Status
 
 [![Build Status](https://travis-ci.org/zxing-js/library.svg?branch=master)](https://travis-ci.org/zxing-js/library)
+![Dependencies](https://david-dm.org/zxing-js/library.svg)
+[![Greenkeeper badge](https://badges.greenkeeper.io/zxing-js/library.svg)](https://greenkeeper.io/)
 
 [![NPM version](https://img.shields.io/npm/v/@zxing/library.svg?&label=npm)][0]
 [![npm](https://img.shields.io/npm/dm/localeval.svg)][0]
-![Dependencies](https://david-dm.org/zxing-js/library.svg)
+[![Contributors](https://img.shields.io/github/contributors/zxing-js/library.svg)](https://github.com/zxing-js/library/graphs/contributors)
+[![Commits to deploy](https://img.shields.io/github/commits-since/zxing-js/library/master.svg?label=commits%20to%20deploy)](https://github.com/zxing-js/library/compare/master...develop)
+
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/39d86bc5d5f04bc8953cc68d729807b0)](https://www.codacy.com/app/zxing-js/library?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zxing-js/library&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b9c6ae92412ee8e15a9/maintainability)](https://codeclimate.com/github/zxing-js/library/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/2b9c6ae92412ee8e15a9/test_coverage)](https://codeclimate.com/github/zxing-js/library/test_coverage)
+[![BCH compliance](https://bettercodehub.com/edge/badge/zxing-js/library?branch=master)](https://bettercodehub.com/)
 
 ## Demo
 
 See [Live Preview](https://zxing-js.github.io/library/) in browser.
 
-**Note:** All the examples are using ES6, be sure is supported in your browser or modify as needed, Chrome recomended.
+**Note:** All the examples are using ES6, be sure is supported in your browser or modify as needed, Chrome recommended.
 
 ## Usage
 
-### Instalation
+### Installation
 
 `npm i @zxing/library --save`
 
@@ -54,7 +59,7 @@ or
 
 ### Environments
 
-Examples below are for QR barcode, all other supported barcodes work similary.
+Examples below are for QR barcode, all other supported barcodes work similarly.
 
 #### Browser
 
@@ -64,7 +69,7 @@ To use from JS you need to include what you need from `build/umd` folder (for ex
 
 The browser layer is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web API which is not supported by older browsers.
 
-_You can use external polyfills like [WebRTC adapter](https://github.com/webrtc/adapter) to increase browser compatiblity._
+_You can use external polyfills like [WebRTC adapter](https://github.com/webrtc/adapter) to increase browser compatibility._
 
 Also, note that the library is using the [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (`Int32Array`, `Uint8ClampedArray`, etc.) which are not available in older browsers (e.g. Android 4 default browser).
 
@@ -118,7 +123,7 @@ codeReader.decodeFromInputVideoDevice(firstDeviceId, 'video')
 
 If there are more input devices then you will need to chose one for `codeReader.decodeFromInputVideoDevice` device id parameter.
 
-You can also provide `undefined` for the device id parameter in which case the library will automatically choose the camera, prefering the main (environment facing) camera if more are available:
+You can also provide `undefined` for the device id parameter in which case the library will automatically choose the camera, preferring the main (environment facing) camera if more are available:
 
 ```javascript
 codeReader.decodeFromInputVideoDevice(undefined, 'video')
@@ -158,7 +163,7 @@ codeReader.decodeFromVideoSource(videoSrc)
 Similar as above you can use a img element in the HTML page (with src attribute set):
 
 ```html
-<img id="img" src="qrcode-image.png" width="200" height="300" style="border: 1px solid gray"></img>
+<img id="img" src="qrcode-image.png" width="200" height="300" style="border: 1px solid gray">
 ```
 
 And to decode the image:
@@ -185,7 +190,7 @@ codeReader.decodeFromImage(undefined, imgSrc)
 Or decode the image url directly from an url, with an `img` element in page (notice no `src` attribute is set for `img` element):
 
 ```html
-<img id="img" width="200" height="300" style="border: 1px solid gray"></img>
+<img id="img-to-decode" width="200" height="300" style="border: 1px solid gray">
 ```
 
 ```javascript
@@ -212,13 +217,21 @@ const codeWriter = new ZXing.BrowserQRCodeSvgWriter('result');
 const svgElement = codeWriter.write(input, 300, 300);
 ```
 
-### Porting Information
+### Contributing
 
 See [Contributing Guide](https://github.com/zxing-js/library/blob/master/CONTRIBUTING.md) for information regarding porting approach and reasoning behind some of the approaches taken.
 
+### Contributors
+
+Special thanks to all the contributors who have contributed for this project. We heartly thankful to you all.
+
+[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/0)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/0)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/1)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/1)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/2)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/2)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/3)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/3)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/4)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/4)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/5)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/5)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/6)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/6)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/7)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/7)
+
+And a special thanks to @aleris who created the project itself and made the initial QR code port.
+
 ---
 
-[![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/)
+[![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/) 
 
 [0]: https://www.npmjs.com/package/@zxing/library
 [1]: https://github.com/zxing/zxing

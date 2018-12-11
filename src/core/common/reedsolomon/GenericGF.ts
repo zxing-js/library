@@ -18,7 +18,7 @@
 
 import GenericGFPoly from './GenericGFPoly';
 
-import Integer from './../../util/Integer';
+import Integer from '../../util/Integer';
 import IllegalArgumentException from '../../IllegalArgumentException';
 import ArithmeticException from '../../ArithmeticException';
 

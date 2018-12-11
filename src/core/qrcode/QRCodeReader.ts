@@ -16,16 +16,16 @@
 
 /*namespace com.google.zxing.qrcode {*/
 
-import BarcodeFormat from './../BarcodeFormat';
-import BinaryBitmap from './../BinaryBitmap';
-import DecodeHintType from './../DecodeHintType';
-import Reader from './../Reader';
-import Result from './../Result';
-import ResultMetadataType from './../ResultMetadataType';
-import ResultPoint from './../ResultPoint';
-import BitMatrix from './../common/BitMatrix';
-import DecoderResult from './../common/DecoderResult';
-import DetectorResult from './../common/DetectorResult';
+import BarcodeFormat from '../BarcodeFormat';
+import BinaryBitmap from '../BinaryBitmap';
+import DecodeHintType from '../DecodeHintType';
+import Reader from '../Reader';
+import Result from '../Result';
+import ResultMetadataType from '../ResultMetadataType';
+import ResultPoint from '../ResultPoint';
+import BitMatrix from '../common/BitMatrix';
+import DecoderResult from '../common/DecoderResult';
+import DetectorResult from '../common/DetectorResult';
 import Decoder from './decoder/Decoder';
 import QRCodeDecoderMetaData from './decoder/QRCodeDecoderMetaData';
 import Detector from './detector/Detector';

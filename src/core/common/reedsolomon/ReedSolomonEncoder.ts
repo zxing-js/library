@@ -22,7 +22,7 @@
 import GenericGF from './GenericGF';
 import GenericGFPoly from './GenericGFPoly';
 
-import System from './../../util/System';
+import System from '../../util/System';
 import IllegalArgumentException from '../../IllegalArgumentException';
 
 /**

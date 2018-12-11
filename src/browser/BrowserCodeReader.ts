@@ -1,22 +1,21 @@
-import Reader from './../core/Reader';
-import BinaryBitmap from './../core/BinaryBitmap';
-import HybridBinarizer from './../core/common/HybridBinarizer';
-import Result from './../core/Result';
+import { HTMLCanvasElementLuminanceSource } from './HTMLCanvasElementLuminanceSource';
+import { VideoInputDevice } from './VideoInputDevice';
+import Reader from '../core/Reader';
+import BinaryBitmap from '../core/BinaryBitmap';
+import HybridBinarizer from '../core/common/HybridBinarizer';
+import Result from '../core/Result';
 import NotFoundException from '../core/NotFoundException';
 import ArgumentException from '../core/ArgumentException';
-import HTMLCanvasElementLuminanceSource from './HTMLCanvasElementLuminanceSource';
-import VideoInputDevice from './VideoInputDevice';
 import DecodeHintType from '../core/DecodeHintType';
 import ChecksumException from '../core/ChecksumException';
 import FormatException from '../core/FormatException';
 
 /**
- * Base class for browser code reader.
+ * @deprecated Moving to @zxing/browser
  *
- * @export
- * @class BrowserCodeReader
+ * Base class for browser code reader.
  */
-export default class BrowserCodeReader {
+export class BrowserCodeReader {
     private videoElement: HTMLVideoElement;
     private imageElement: HTMLImageElement;
     private canvasElement: HTMLCanvasElement;
@@ -81,7 +80,7 @@ export default class BrowserCodeReader {
         let constraints: MediaStreamConstraints;
         if (undefined === deviceId) {
             constraints = {
-                video: { facingMode: 'environment' }
+                video: { facingMode: { exact: 'environment' } }
             };
         } else {
             constraints = {
@@ -164,7 +163,6 @@ export default class BrowserCodeReader {
             throw new ArgumentException(`element with id '${mediaElementId}' not found`);
         }
         if (mediaElement.nodeName.toLowerCase() !== type.toLowerCase()) {
-            console.log(mediaElement.nodeName);
             throw new ArgumentException(`element with id '${mediaElementId}' must be an ${type} element`);
         }
         return mediaElement;
@@ -242,6 +240,7 @@ export default class BrowserCodeReader {
     }
 
     private decodeOnce(resolve: (result: Result) => any, reject: (error: any) => any, retryIfNotFound: boolean = true, retryIfChecksumOrFormatError: boolean = true): void {
+
         if (undefined === this.canvasElementContext) {
             this.prepareCaptureCanvas();
         }
@@ -250,16 +249,16 @@ export default class BrowserCodeReader {
 
         const luminanceSource = new HTMLCanvasElementLuminanceSource(this.canvasElement);
         const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
+
         try {
             const result = this.readerDecode(binaryBitmap);
             resolve(result);
         } catch (re) {
-            console.log(retryIfChecksumOrFormatError, re);
             if (retryIfNotFound && re instanceof NotFoundException) {
-                console.log('not found, trying again...');
+                // Not found, trying again
                 this.decodeOnceWithDelay(resolve, reject);
             } else if (retryIfChecksumOrFormatError && (re instanceof ChecksumException || re instanceof FormatException)) {
-                console.log('checksum or format error, trying again...', re);
+                // checksum or format error, trying again
                 this.decodeOnceWithDelay(resolve, reject);
             } else {
                 reject(re);

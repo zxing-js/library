@@ -1,6 +1,6 @@
-import DecoderResult from './../../common/DecoderResult';
-import BitSource from './../../common/BitSource';
-import StringBuilder from './../../util/StringBuilder';
+import DecoderResult from '../../common/DecoderResult';
+import BitSource from '../../common/BitSource';
+import StringBuilder from '../../util/StringBuilder';
 
 import StringEncoding from '../../util/StringEncoding';
 import { StringUtils } from '../../..';
@@ -471,7 +471,6 @@ export default class DecodedBitStreamParser {
   private static decodeBase256Segment(bits: BitSource,
                                            result: StringBuilder,
                                            byteSegments: Uint8Array[]): void {
-    debugger;
     // Figure out how long the Base 256 Segment is.
     let codewordPosition = 1 + bits.getByteOffset(); // position is 1-indexed
     const d1 = this.unrandomize255State(bits.readBits(8), codewordPosition++);

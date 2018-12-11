@@ -17,7 +17,7 @@
 /*package com.google.zxing.common;*/
 
 import * as assert from 'assert';
-import PerspectiveTransform from './../../../core/common/PerspectiveTransform';
+import PerspectiveTransform from '../../../core/common/PerspectiveTransform';
 
 /**
  * @author Sean Owen

@@ -1,11 +1,11 @@
 import * as sharp from 'sharp';
 
-import BitMatrix from './../../../core/common/BitMatrix';
+import BitMatrix from '../../../core/common/BitMatrix';
 
 export default class SharpImage {
 
     public constructor(
-        private wrapper: sharp.SharpInstance,
+        private wrapper: sharp.Sharp,
         private buffer: Uint8ClampedArray,
         private width: number,
         private height: number
@@ -32,7 +32,7 @@ export default class SharpImage {
         const metadata = await wrapper.metadata();
 
         if (metadata.channels !== 3 && metadata.space !== 'srgb') {
-            // console.log(`Image ${path} has ${metadata.channels} channels and will be transformed to sRGB`)
+            // Image ${path} has ${metadata.channels} channels and will be transformed to sRGB.
             wrapper.toColorspace('sRGB');
         }
 
@@ -48,7 +48,7 @@ export default class SharpImage {
         const metadata = await wrapper.metadata();
 
         if (metadata.channels !== 3) {
-            // console.log(`Image ${path} has ${metadata.channels} channels and will be transformed to sRGB`)
+            // Image ${path} has ${metadata.channels} channels and will be transformed to sRGB
             wrapper.toColorspace('sRGB');
         }
 
