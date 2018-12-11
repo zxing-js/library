@@ -20,12 +20,12 @@ class BrowserQRCodeSvgWriter {
     /**
      * A HTML container element for the image.
      */
-    private containerElement: HTMLElement;
+    private containerElement?: HTMLElement;
 
     /**
      * Constructs. 😉
      */
-    public constructor(containerElement: string | HTMLElement) {
+    public constructor(containerElement?: string | HTMLElement) {
         if (typeof containerElement === 'string') {
             this.containerElement = document.getElementById(containerElement);
         } else {
@@ -33,6 +33,14 @@ class BrowserQRCodeSvgWriter {
         }
     }
 
+    /**
+     * Writes and renders a QRCode to the DOM.
+     *
+     * @param contents
+     * @param width
+     * @param height
+     * @param hints
+     */
     public write(
         contents: string,
         width: number,
@@ -68,7 +76,20 @@ class BrowserQRCodeSvgWriter {
 
         const code = Encoder.encode(contents, errorCorrectionLevel, hints);
 
-        return this.renderResult(code, width, height, quietZone);
+        return this.renderResultToDOM(code, width, height, quietZone);
+    }
+
+    /**
+     * Renders the result and then appends it to the DOM.
+     */
+    private renderResultToDOM(code: QRCode, width: number /*int*/, height: number /*int*/, quietZone: number /*int*/): SVGSVGElement {
+
+        const svgElement = this.renderResult(code, width, height, quietZone);
+
+        if (this.containerElement)
+            this.containerElement.appendChild(svgElement);
+
+        return svgElement;
     }
 
     /**
@@ -101,8 +122,6 @@ class BrowserQRCodeSvgWriter {
 
         const svgElement = this.createSVGElement(outputWidth, outputHeight);
 
-        this.containerElement.appendChild(svgElement);
-
         for (let inputY = 0, outputY = topPadding; inputY < inputHeight; inputY++ , outputY += multiple) {
             // Write the contents of this row of the barcode
             for (let inputX = 0, outputX = leftPadding; inputX < inputWidth; inputX++ , outputX += multiple) {
@@ -116,6 +135,12 @@ class BrowserQRCodeSvgWriter {
         return svgElement;
     }
 
+    /**
+     * Creates a SVG element.
+     *
+     * @param w SVG's width attribute
+     * @param h SVG's height attribute
+     */
     private createSVGElement(w: number, h: number): SVGSVGElement {
 
         const svgElement = document.createElementNS(BrowserQRCodeSvgWriter.SVG_NS, 'svg');
@@ -126,6 +151,14 @@ class BrowserQRCodeSvgWriter {
         return svgElement;
     }
 
+    /**
+     * Creates a SVG rect element.
+     *
+     * @param x Element's x coordinate
+     * @param y Element's y coordinate
+     * @param w Element's width attribute
+     * @param h Element's height attribute
+     */
     private createSvgRectElement(x: number, y: number, w: number, h: number): SVGRectElement {
 
         const rect = document.createElementNS(BrowserQRCodeSvgWriter.SVG_NS, 'rect');

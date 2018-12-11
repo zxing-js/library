@@ -18,7 +18,7 @@
 
 import BitMatrix from '../../common/BitMatrix';
 
-export const enum DataMaskValues {
+export enum DataMaskValues {
     DATA_MASK_000,
     DATA_MASK_001,
     DATA_MASK_010,

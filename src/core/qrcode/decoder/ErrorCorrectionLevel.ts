@@ -20,7 +20,7 @@
 import ArgumentException from '../../ArgumentException';
 import IllegalArgumentException from '../../IllegalArgumentException';
 
-export const enum ErrorCorrectionLevelValues {
+export enum ErrorCorrectionLevelValues {
     L,
     M,
     Q,
