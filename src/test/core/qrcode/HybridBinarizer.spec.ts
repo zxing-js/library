@@ -8,7 +8,7 @@ const path = require('path');
 describe('HybridBinarizer', () => {
     it('testHybridBinarizer', async done => {
 
-        const pathString = path.resolve('src/test/core/resources/blackbox/common/simple.png');
+        const pathString = path.resolve('src/test/resources/blackbox/common/simple.png');
 
         SharpImage.loadWithRotation(pathString, 0)
             .then(image => {

@@ -30,7 +30,7 @@ import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 export default class QRCodeBlackBox5Spec extends AbstractBlackBoxSpec {
 
     public constructor() {
-        super('src/test/core/resources/blackbox/qrcode-5', new MultiFormatReader(), BarcodeFormat.QR_CODE);
+        super('src/test/resources/blackbox/qrcode-5', new MultiFormatReader(), BarcodeFormat.QR_CODE);
         this.addTest(19, 19, 0.0);
         this.addTest(19, 19, 90.0);
         this.addTest(19, 19, 180.0);
