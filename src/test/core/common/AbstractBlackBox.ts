@@ -157,15 +157,13 @@ abstract class AbstractBlackBoxSpec {
      *
      * @throws IOException
      */
-    public async testBlackBox(done: (err: any) => any): Promise<void> {
-        try {
-            await this.testBlackBoxCountingResults(true, done);
-            console.log('testBlackBox finished.');
-        } catch (e) {
-            console.log('Test ended with error: ', e);
-            done(e);
-            return;
-        }
+    public testBlackBox(done: (err: any) => any): void {
+        this.testBlackBoxCountingResults(true, done)
+            .then(() => console.log('testBlackBox finished.'))
+            .catch ((e) => {
+                console.log('Test ended with error: ', e);
+                done(e);
+            });
     }
 
     /**
