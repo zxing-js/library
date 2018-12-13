@@ -35,7 +35,7 @@ class RSS14BlackBox2Spec extends AbstractBlackBoxSpec {
 }
 
 describe('RSS14BlackBox.2', () => {
-    it('testBlackBox', async done => {
+    it('testBlackBox', done => {
         const test = new RSS14BlackBox2Spec();
         return test.testBlackBox(done);
     });
