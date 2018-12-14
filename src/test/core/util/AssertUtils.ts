@@ -1,3 +1,5 @@
+import * as assert from 'assert';
+
 export default class AssertUtils {
     public static typedArraysAreEqual(left: Int32Array | Uint8ClampedArray, right: Int32Array | Uint8ClampedArray, size?: number): boolean {
         if (undefined === size) {
@@ -11,3 +13,9 @@ export default class AssertUtils {
         return true;
     }
 }
+
+
+export const assertEquals = assert.strictEqual;
+export const assertFalse = x => assert.strictEqual(!!x, false);
+export const assertTrue = x => assert.strictEqual(!!x, true);
+export const assertNull = x => assert.strictEqual(x, null);

@@ -25,16 +25,13 @@ import ReedSolomonEncoder from '../../../../core/common/reedsolomon/ReedSolomonE
 import ReedSolomonDecoder from '../../../../core/common/reedsolomon/ReedSolomonDecoder';
 
 /*import java.util.Arrays;*/
-/*import java.util.BitSet;*/
+import BitSet from '../../util/BitSet';
 /*import java.util.Random;*/
 
 /**
  * @author Rustam Abdullaev
  */
-describe('ReedSolomon', () => {
-
-    const DECODER_RANDOM_TEST_ITERATIONS: number /*int*/ = 3;
-    const DECODER_TEST_ITERATIONS: number /*int*/ = 10;
+describe('ReedSolomonSpec', () => {
 
     it('testDataMatrix 1 - real life test case', () => {
         testEncodeDecode(
@@ -501,139 +498,144 @@ describe('ReedSolomon', () => {
         testEncodeDecodeRandom(GenericGF.AZTEC_DATA_12, 3072, 1023);
     });
 
-    function corrupt(received: Int32Array, howMany: number /*int*/, random: Random, max: number /*int*/): void {
+});
 
-        const corrupted = new Map<number, boolean>(); // (received.length)
+function corrupt(received: Int32Array, howMany: number /*int*/, random: Random, max: number /*int*/): void {
 
-        for (let j: number /*int*/ = 0; j < howMany; j++) {
+    const corrupted = new BitSet(received.length);
 
-            const location: number /*int*/ = random.next(received.length);
-            const value: number /*int*/ = random.next(max);
+    for (let j: number /*int*/ = 0; j < howMany; j++) {
 
-            if (corrupted.get(location) === true || received[location] === value) {
-                j--;
-            } else {
-                corrupted.set(location, true);
-                received[location] = value;
-            }
+        const location: number /*int*/ = random.next(received.length);
+        const value: number /*int*/ = random.next(max);
+
+        if (corrupted.get(location) === true || received[location] === value) {
+            j--;
+        } else {
+            corrupted.set(location);
+            received[location] = value;
         }
     }
+}
 
-    function testEncodeDecodeRandom(field: GenericGF, dataSize: number /*int*/, ecSize: number /*int*/): void {
+const DECODER_RANDOM_TEST_ITERATIONS: number /*int*/ = 3;
+const DECODER_TEST_ITERATIONS: number /*int*/ = 10;
 
-        assert.strictEqual(dataSize > 0 && dataSize <= field.getSize() - 3, true, 'Invalid data size for ' + field);
-        assert.strictEqual(ecSize > 0 && ecSize + dataSize <= field.getSize(), true, 'Invalid ECC size for ' + field);
+function testEncodeDecodeRandom(field: GenericGF, dataSize: number /*int*/, ecSize: number /*int*/): void {
 
-        const encoder = new ReedSolomonEncoder(field);
-        const message = new Int32Array(dataSize + ecSize);
-        const dataWords = new Int32Array(dataSize); /*Int32Array(dataSize)*/
-        const ecWords = new Int32Array(ecSize); /*Int32Array(ecSize)*/
-        const random: Random = getPseudoRandom();
-        const iterations: number /*int*/ = field.getSize() > 256 ? 1 : DECODER_RANDOM_TEST_ITERATIONS;
+    assert.strictEqual(dataSize > 0 && dataSize <= field.getSize() - 3, true, 'Invalid data size for ' + field);
+    assert.strictEqual(ecSize > 0 && ecSize + dataSize <= field.getSize(), true, 'Invalid ECC size for ' + field);
 
-        for (let i: number /*int*/ = 0; i < iterations; i++) {
-            // generate random data
-            for (let k: number /*int*/ = 0; k < dataSize; k++) {
-                dataWords[k] = random.next(field.getSize());
-            }
-            // generate ECC words
-            System.arraycopy(dataWords, 0, message, 0, dataWords.length);
-            encoder.encode(message, ecWords.length);
-            System.arraycopy(message, dataSize, ecWords, 0, ecSize);
-            // check to see if Decoder can fix up to ecWords/2 random errors
-            testDecoder(field, dataWords, ecWords);
+    const encoder = new ReedSolomonEncoder(field);
+    const message = new Int32Array(dataSize + ecSize);
+    const dataWords = new Int32Array(dataSize); /*Int32Array(dataSize)*/
+    const ecWords = new Int32Array(ecSize); /*Int32Array(ecSize)*/
+    const random: Random = getPseudoRandom();
+    const iterations: number /*int*/ = field.getSize() > 256 ? 1 : DECODER_RANDOM_TEST_ITERATIONS;
+
+    for (let i: number /*int*/ = 0; i < iterations; i++) {
+        // generate random data
+        for (let k: number /*int*/ = 0; k < dataSize; k++) {
+            dataWords[k] = random.next(field.getSize());
         }
-    }
-
-    function testEncodeDecode(field: GenericGF, dataWords: Int32Array, ecWords: Int32Array): void {
-        testEncoder(field, dataWords, ecWords);
+        // generate ECC words
+        System.arraycopy(dataWords, 0, message, 0, dataWords.length);
+        encoder.encode(message, ecWords.length);
+        System.arraycopy(message, dataSize, ecWords, 0, ecSize);
+        // check to see if Decoder can fix up to ecWords/2 random errors
         testDecoder(field, dataWords, ecWords);
     }
+}
 
-    function testEncoder(field: GenericGF, dataWords: Int32Array, ecWords: Int32Array): void {
+function testEncodeDecode(field: GenericGF, dataWords: Int32Array, ecWords: Int32Array): void {
+    testEncoder(field, dataWords, ecWords);
+    testDecoder(field, dataWords, ecWords);
+}
 
-        const encoder = new ReedSolomonEncoder(field);
-        const messageExpected = new Int32Array(dataWords.length + ecWords.length);
-        const message = new Int32Array(dataWords.length + ecWords.length);
+function testEncoder(field: GenericGF, dataWords: Int32Array, ecWords: Int32Array): void {
 
-        System.arraycopy(dataWords, 0, messageExpected, 0, dataWords.length);
-        System.arraycopy(ecWords, 0, messageExpected, dataWords.length, ecWords.length);
-        System.arraycopy(dataWords, 0, message, 0, dataWords.length);
+    const encoder = new ReedSolomonEncoder(field);
+    const messageExpected = new Int32Array(dataWords.length + ecWords.length);
+    const message = new Int32Array(dataWords.length + ecWords.length);
 
-        encoder.encode(message, ecWords.length);
+    System.arraycopy(dataWords, 0, messageExpected, 0, dataWords.length);
+    System.arraycopy(ecWords, 0, messageExpected, dataWords.length, ecWords.length);
+    System.arraycopy(dataWords, 0, message, 0, dataWords.length);
 
-        assertDataEquals(message, messageExpected, 'Encode in ' + field + ' (' + dataWords.length + ',' + ecWords.length + ') failed');
-    }
+    encoder.encode(message, ecWords.length);
 
-    function testDecoder(field: GenericGF, dataWords: Int32Array, ecWords: Int32Array): void {
+    assertDataEquals(message, messageExpected, 'Encode in ' + field + ' (' + dataWords.length + ',' + ecWords.length + ') failed');
+}
 
-        const decoder = new ReedSolomonDecoder(field);
-        const message = new Int32Array(dataWords.length + ecWords.length);
-        const maxErrors: number /*int*/ = Math.floor(ecWords.length / 2);
-        const random: Random = getPseudoRandom();
-        const iterations: number /*int*/ = field.getSize() > 256 ? 1 : DECODER_TEST_ITERATIONS;
+function testDecoder(field: GenericGF, dataWords: Int32Array, ecWords: Int32Array): void {
 
-        for (let j: number /*int*/ = 0; j < iterations; j++) {
-            for (let i: number /*int*/ = 0; i < ecWords.length; i++) {
+    const decoder = new ReedSolomonDecoder(field);
+    const message = new Int32Array(dataWords.length + ecWords.length);
+    const maxErrors: number /*int*/ = Math.floor(ecWords.length / 2);
+    const random: Random = getPseudoRandom();
+    const iterations: number /*int*/ = field.getSize() > 256 ? 1 : DECODER_TEST_ITERATIONS;
 
-                if (i > 10 && i < Math.floor(ecWords.length / 2) - 10) {
-                    // performance improvement - skip intermediate cases in long-running tests
-                    i += Math.floor(ecWords.length / 10);
-                }
+    for (let j: number /*int*/ = 0; j < iterations; j++) {
+        for (let i: number /*int*/ = 0; i < ecWords.length; i++) {
 
-                System.arraycopy(dataWords, 0, message, 0, dataWords.length);
-                System.arraycopy(ecWords, 0, message, dataWords.length, ecWords.length);
+            if (i > 10 && i < Math.floor(ecWords.length / 2) - 10) {
+                // performance improvement - skip intermediate cases in long-running tests
+                i += Math.floor(ecWords.length / 10);
+            }
 
-                corrupt(message, i, random, field.getSize());
+            System.arraycopy(dataWords, 0, message, 0, dataWords.length);
+            System.arraycopy(ecWords, 0, message, dataWords.length, ecWords.length);
 
-                try {
-                    decoder.decode(message, ecWords.length);
-                } catch (e/*ReedSolomonException e*/) {
-                    // fail only if maxErrors exceeded
-                    assert.strictEqual(i > maxErrors, true,
-                        'Decode in ' + field + ' (' + dataWords.length + ',' + ecWords.length + ') failed at ' + i + ' errors: ' + e);
-                    // else stop
-                    break;
-                }
+            corrupt(message, i, random, field.getSize());
 
-                if (i < maxErrors) {
-                    assertDataEquals(message,
-                        dataWords,
-                        'Decode in ' + field + ' (' + dataWords.length + ',' + ecWords.length + ') failed at ' + i + ' errors');
-                }
+            try {
+                decoder.decode(message, ecWords.length);
+            } catch (e/*ReedSolomonException e*/) {
+                // fail only if maxErrors exceeded
+                assert.strictEqual(i > maxErrors, true,
+                    'Decode in ' + field + ' (' + dataWords.length + ',' + ecWords.length + ') failed at ' + i + ' errors: ' + e);
+                // else stop
+                break;
+            }
+
+            if (i < maxErrors) {
+                assertDataEquals(message,
+                    dataWords,
+                    'Decode in ' + field + ' (' + dataWords.length + ',' + ecWords.length + ') failed at ' + i + ' errors');
             }
         }
     }
+}
 
-    function assertDataEquals(received: Int32Array, expected: Int32Array, message: string): void {
-        for (let i: number /*int*/ = 0; i < expected.length; i++) {
-            if (expected[i] !== received[i]) {
+function assertDataEquals(received: Int32Array, expected: Int32Array, message: string): void {
+    for (let i: number /*int*/ = 0; i < expected.length; i++) {
+        if (expected[i] !== received[i]) {
 
-                const receivedToString = arrayToString(Int32Array.from(received.subarray(0, expected.length)));
+            const receivedToString = arrayToString(Int32Array.from(received.subarray(0, expected.length)));
 
-                assert.ok(false, `${message}. Mismatch at ${i}. Expected ${arrayToString(expected)}, got ${receivedToString}`);
-            }
+            assert.ok(false, `${message}. Mismatch at ${i}. Expected ${arrayToString(expected)}, got ${receivedToString}`);
         }
     }
+}
 
-    function arrayToString(data: Int32Array): String {
+function arrayToString(data: Int32Array): String {
 
-        const sb = new StringBuilder();
+    const sb = new StringBuilder();
 
-        sb.append('{');
+    sb.append('{');
 
-        for (let i: number /*int*/ = 0; i < data.length; i++) {
-            if (i > 0) {
-                sb.append(',');
-            }
-            sb.append(data[i].toString(16));
+    for (let i: number /*int*/ = 0; i < data.length; i++) {
+        if (i > 0) {
+            sb.append(',');
         }
-
-        return sb.append('}').toString();
+        sb.append(data[i].toString(16));
     }
 
-    function getPseudoRandom(): Random {
-        return new Random('0xDEADBEEF');
-    }
+    return sb.append('}').toString();
+}
 
-});
+function getPseudoRandom(): Random {
+    return new Random('0xDEADBEEF');
+}
+
+export { corrupt };
