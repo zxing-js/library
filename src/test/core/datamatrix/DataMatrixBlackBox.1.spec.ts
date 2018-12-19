@@ -36,7 +36,7 @@ class DataMatrixBlackBox1Spec extends AbstractBlackBoxSpec {
 }
 
 describe('DataMatrixBlackBox.1', () => {
-    it('testBlackBox', async done => {
+    it('testBlackBox', done => {
         const test = new DataMatrixBlackBox1Spec();
         return test.testBlackBox(done);
     });
