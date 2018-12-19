@@ -23,9 +23,11 @@ import ChecksumException from '../../../../../core/ChecksumException';
 // import org.junit.Test;
 
 // import java.util.Random;
-import * as assert from 'assert';
 import Random from '../../../util/Random';
 
+import ErrorCorrection from '../../../../../core/pdf417/decoder/ec/ErrorCorrection';
+
+import * as assert from 'assert';
 import AbstractErrorCorrectionSpec from './AbstractErrorCorrection.spec';
 
 /**

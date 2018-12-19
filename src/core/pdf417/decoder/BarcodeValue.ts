@@ -51,12 +51,18 @@ export default /*final*/ class BarcodeValue {
     let maxConfidence: number /*int*/ = -1;
     let result: /*Collection<Integer>*/number[] = new Array<number>();
     for (const entry of this.values.entries()) {
-      if (entry.getValue() > maxConfidence) {
-        maxConfidence = entry.getValue();
+
+      const entryApi = {
+        getValue: () => entry[1],
+        getKey: () => entry[0],
+      };
+
+      if (entryApi.getValue() > maxConfidence) {
+        maxConfidence = entryApi.getValue();
         result = [];
-        result.push(entry.getKey());
-      } else if (entry.getValue() === maxConfidence) {
-        result.push(entry.getKey());
+        result.push(entryApi.getKey());
+      } else if (entryApi.getValue() === maxConfidence) {
+        result.push(entryApi.getKey());
       }
     }
     return PDF417Common.toIntArray(result);

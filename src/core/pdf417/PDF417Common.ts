@@ -1,24 +1,26 @@
 /*
- * Copyright 2009 ZXing authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright 2009 ZXing authors
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 // package com.google.zxing.pdf417;
 
 // import java.util.Arrays;
+import Arrays from '../util/Arrays';
 // import java.util.Collection;
 
 // import com.google.zxing.common.detector.MathUtils;
+import MathUtils from '../common/detector/MathUtils';
 
 /**
  * @author SITA Lab (kevin.osullivan@sita.aero)
@@ -28,16 +30,16 @@ export default /*public final*/ class PDF417Common {
 
     public static /*final int*/ NUMBER_OF_CODEWORDS = 929;
     // Maximum Codewords (Data + Error).
-    public static /*final int*/ MAX_CODEWORDS_IN_BARCODE = NUMBER_OF_CODEWORDS - 1;
+    public static /*final int*/ MAX_CODEWORDS_IN_BARCODE = PDF417Common.NUMBER_OF_CODEWORDS - 1;
     public static /*final int*/ MIN_ROWS_IN_BARCODE = 3;
     public static /*final int*/ MAX_ROWS_IN_BARCODE = 90;
     // One left row indication column + max 30 data columns + one right row indicator column
-    // public static final int MAX_CODEWORDS_IN_ROW = 32;
+    // public static /*final*/ MAX_CODEWORDS_IN_ROW: /*int*/ number = 32;
     public static /*final int*/ MODULES_IN_CODEWORD = 17;
     public static /*final int*/ MODULES_IN_STOP_PATTERN = 18;
     public static /*final int*/ BARS_IN_MODULE = 8;
 
-    private static /*final int[]*/ EMPTY_INT_ARRAY = {};
+    private static /*final int[]*/ EMPTY_INT_ARRAY: Int32Array = new Int32Array([]);
 
     private PDF417Common() {
     }
@@ -47,16 +49,16 @@ export default /*public final*/ class PDF417Common {
      * @return sum of values
      * @deprecated call {@link MathUtils#sum(int[])}
      */
-    @Deprecated
+    // @Deprecated
     public static getBitCountSum(moduleBitCount: Int32Array): number/*int*/ {
         return MathUtils.sum(moduleBitCount);
     }
 
     public static toIntArray(list: /*Collection<Integer>*/ number[]): Int32Array {
-        if (list == null || list.isEmpty()) {
-            return EMPTY_INT_ARRAY;
+        if (list == null || !!list.length) {
+            return PDF417Common.EMPTY_INT_ARRAY;
         }
-        const result = new Int32Array[list.size()];
+        const result = new Int32Array(list.length);
         let i: number /*int*/ = 0;
         for (const integer of list) {
             result[i++] = integer;
@@ -69,11 +71,11 @@ export default /*public final*/ class PDF417Common {
      * @return the codeword corresponding to the symbol.
      */
     public static getCodeword(symbol: number/*int*/): number/*int*/ {
-        const i = Arrays.binarySearch(SYMBOL_TABLE, symbol & 0x3FFFF);
+        const i = Arrays.binarySearch(PDF417Common.SYMBOL_TABLE, symbol & 0x3FFFF);
         if (i < 0) {
             return -1;
         }
-        return (CODEWORD_TABLE[i] - 1) % NUMBER_OF_CODEWORDS;
+        return (PDF417Common.CODEWORD_TABLE[i] - 1) % PDF417Common.NUMBER_OF_CODEWORDS;
     }
 
     /**

@@ -31,7 +31,7 @@ export default /*public final*/ class PDF417ResultMetadata {
     private fileSize: /*long*/ number = -1;
     private timestamp: /*long*/ number = -1;
     private checksum: /*int*/ number = -1;
-    private optionalData: /*int[]*/ number;
+    private optionalData: Int32Array;
 
     /**
      * The Segment ID represents the segment of the whole file distributed over different symbols.
@@ -39,7 +39,7 @@ export default /*public final*/ class PDF417ResultMetadata {
      * @return File segment index
      */
     public getSegmentIndex(): /*int*/ number {
-        return segmentIndex;
+        return this.segmentIndex;
     }
 
     public setSegmentIndex(segmentIndex: /*int*/ number): void {
@@ -52,7 +52,7 @@ export default /*public final*/ class PDF417ResultMetadata {
      * @return File ID
      */
     public getFileId(): string {
-        return fileId;
+        return this.fileId;
     }
 
     public setFileId(fileId: string): void {
@@ -65,7 +65,7 @@ export default /*public final*/ class PDF417ResultMetadata {
      */
     //   @Deprecated
     public getOptionalData(): Int32Array {
-        return optionalData;
+        return this.optionalData;
     }
 
     /**
@@ -82,7 +82,7 @@ export default /*public final*/ class PDF417ResultMetadata {
      * @return true if it is the last segment
      */
     public isLastSegment(): boolean {
-        return lastSegment;
+        return this.lastSegment;
     }
 
     public setLastSegment(lastSegment: boolean): void {
@@ -93,7 +93,7 @@ export default /*public final*/ class PDF417ResultMetadata {
      * @return count of segments, -1 if not set
      */
     public getSegmentCount(): /*int*/ number {
-        return segmentCount;
+        return this.segmentCount;
     }
 
     public setSegmentCount(segmentCount: number /*int*/): void {
@@ -101,7 +101,7 @@ export default /*public final*/ class PDF417ResultMetadata {
     }
 
     public getSender(): string {
-        return sender;
+        return this.sender;
     }
 
     public setSender(sender: string): void {
@@ -109,7 +109,7 @@ export default /*public final*/ class PDF417ResultMetadata {
     }
 
     public getAddressee(): string {
-        return addressee;
+        return this.addressee;
     }
 
     public setAddressee(addressee: string): void {
@@ -122,7 +122,7 @@ export default /*public final*/ class PDF417ResultMetadata {
      * @return filename
      */
     public getFileName(): string {
-        return fileName;
+        return this.fileName;
     }
 
     public setFileName(fileName: string): void {
@@ -135,7 +135,7 @@ export default /*public final*/ class PDF417ResultMetadata {
      * @return filesize in bytes, -1 if not set
      */
     public getFileSize(): /*long*/ number {
-        return fileSize;
+        return this.fileSize;
     }
 
     public setFileSize(fileSize: number /*long*/): void {
@@ -148,7 +148,7 @@ export default /*public final*/ class PDF417ResultMetadata {
      * @return crc checksum, -1 if not set
      */
     public getChecksum(): /*int*/ number {
-        return checksum;
+        return this.checksum;
     }
 
     public setChecksum(checksum: number/*int*/): void {
@@ -161,7 +161,7 @@ export default /*public final*/ class PDF417ResultMetadata {
      * @return elapsed seconds, -1 if not set
      */
     public getTimestamp(): /*long*/ number {
-        return timestamp;
+        return this.timestamp;
     }
 
     public setTimestamp(timestamp: number /*long*/): void {

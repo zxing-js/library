@@ -1,5 +1,3 @@
-import Codeword from './Codeword';
-
 /*
  * Copyright 2013 ZXing authors
  *
@@ -19,6 +17,10 @@ import Codeword from './Codeword';
 // package com.google.zxing.pdf417.decoder;
 
 // import java.util.Formatter;
+import Formatter from '../../util/Formatter';
+
+import Codeword from './Codeword';
+import BoundingBox from './BoundingBox';
 
 /**
  * @author Guenther Grau

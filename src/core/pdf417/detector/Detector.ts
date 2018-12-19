@@ -74,21 +74,21 @@ export default /*public*/ /*final*/ class Detector {
    * @return {@link PDF417DetectorResult} encapsulating results of detecting a PDF417 code
    * @throws NotFoundException if no PDF417 Code can be found
    */
-//   public static detect( image: BinaryBitmap,  hints: Map<DecodeHintType, any>,  multiple: boolean): PDF417DetectorResult {
-//     // TODO detection improvement, tryHarder could try several different luminance thresholds/blackpoints or even
-//     // different binarizers
-//     // boolean tryHarder = hints != null && hints.containsKey(DecodeHintType.TRY_HARDER);
+  public static detectMultiple( image: BinaryBitmap,  hints: Map<DecodeHintType, any>,  multiple: boolean): PDF417DetectorResult {
+    // TODO detection improvement, tryHarder could try several different luminance thresholds/blackpoints or even
+    // different binarizers
+    // boolean tryHarder = hints != null && hints.containsKey(DecodeHintType.TRY_HARDER);
 
-//     let bitMatrix = image.getBlackMatrix();
+    let bitMatrix = image.getBlackMatrix();
 
-//     let barcodeCoordinates = Detector.detect(multiple, bitMatrix);
-//     if (barcodeCoordinates.isEmpty()) {
-//       bitMatrix = bitMatrix.clone();
-//       bitMatrix.rotate180();
-//       barcodeCoordinates = Detector.detect(multiple, bitMatrix);
-//     }
-//     return new PDF417DetectorResult(bitMatrix, barcodeCoordinates);
-//   }
+    let barcodeCoordinates = Detector.detect(multiple, bitMatrix);
+    if (!barcodeCoordinates.length) {
+      bitMatrix = bitMatrix.clone();
+      bitMatrix.rotate180();
+      barcodeCoordinates = Detector.detect(multiple, bitMatrix);
+    }
+    return new PDF417DetectorResult(bitMatrix, barcodeCoordinates);
+  }
 
   /**
    * Detects PDF417 codes in an image. Only checks 0 degree rotation
@@ -259,7 +259,7 @@ export default /*public*/ /*final*/ class Detector {
                                          whiteFirst: boolean,
                                          pattern: Int32Array,
                                          counters: Int32Array): Int32Array {
-    Arrays.fill(counters, 0, counters.length, 0);
+    Arrays.fillWithin(counters, 0, counters.length, 0);
     let patternStart = column;
     let pixelDrift = 0;
 

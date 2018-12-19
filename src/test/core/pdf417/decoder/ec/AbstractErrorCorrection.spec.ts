@@ -27,7 +27,7 @@ import BitSet from '../../../util/BitSet';
 /**
  * @author Sean Owen
  */
-export default /*abstract*/ class AbstractErrorCorrectionSpec {
+export default abstract class AbstractErrorCorrectionSpec {
 
     static corrupt(received: Int32Array, howMany: /*int*/number, random: Random): void {
         ReedSolomonTestCase.corrupt(received, howMany, random, 929);

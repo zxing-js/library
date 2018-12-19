@@ -38,6 +38,18 @@ export default /*final*/ class BoundingBox {
   private /*final*/ minY: /*int*/ number;
   private /*final*/ maxY: /*int*/ number;
 
+  constructor( image: BitMatrix|BoundingBox,
+               topLeft?: ResultPoint,
+               bottomLeft?: ResultPoint,
+               topRight?: ResultPoint,
+               bottomRight?: ResultPoint)  {
+    if (image instanceof BoundingBox) {
+      this.constructor_2(image);
+    } else {
+      this.constructor_1(image, topLeft, bottomLeft, topRight, bottomRight);
+    }
+  }
+
   /**
    *
    * @param image
@@ -48,7 +60,7 @@ export default /*final*/ class BoundingBox {
    *
    * @throws NotFoundException
    */
-  constructor( image: BitMatrix,
+  private constructor_1( image: BitMatrix,
                topLeft: ResultPoint,
                bottomLeft: ResultPoint,
                topRight: ResultPoint,
@@ -76,17 +88,17 @@ export default /*final*/ class BoundingBox {
     this.maxY = /*(int)*/ Math.max(bottomLeft.getY(), bottomRight.getY());
   }
 
-//   constructor(boundingBox: BoundingBox) {
-//     this.image = boundingBox.image;
-//     this.topLeft = boundingBox.getTopLeft();
-//     this.bottomLeft = boundingBox.getBottomLeft();
-//     this.topRight = boundingBox.getTopRight();
-//     this.bottomRight = boundingBox.getBottomRight();
-//     this.minX = boundingBox.getMinX();
-//     this.maxX = boundingBox.getMaxX();
-//     this.minY = boundingBox.getMinY();
-//     this.maxY = boundingBox.getMaxY();
-//   }
+  private constructor_2(boundingBox: BoundingBox) {
+    this.image = boundingBox.image;
+    this.topLeft = boundingBox.getTopLeft();
+    this.bottomLeft = boundingBox.getBottomLeft();
+    this.topRight = boundingBox.getTopRight();
+    this.bottomRight = boundingBox.getBottomRight();
+    this.minX = boundingBox.getMinX();
+    this.maxX = boundingBox.getMaxX();
+    this.minY = boundingBox.getMinY();
+    this.maxY = boundingBox.getMaxY();
+  }
 
   /**
    * @throws NotFoundException

@@ -49,11 +49,11 @@ export default class Result {
     // }
 
     public constructor(private text: string,
-        private rawBytes: Uint8Array,
-        private numBits: number /*int*/,
-        private resultPoints: Array<ResultPoint>,
-        private format: BarcodeFormat,
-        private timestamp: number /*long*/) {
+      private rawBytes: Uint8Array,
+      private numBits: number /*int*/ = rawBytes == null ? 0 : 8 * rawBytes.length,
+      private resultPoints: ResultPoint[],
+      private format: BarcodeFormat,
+      private timestamp: number /*long*/ = System.currentTimeMillis()) {
         this.text = text;
         this.rawBytes = rawBytes;
         if (undefined === numBits || null === numBits) {
