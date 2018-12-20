@@ -34,7 +34,7 @@ export default abstract class AbstractErrorCorrectionSpec {
     }
 
     static erase(received: Int32Array, howMany: /*int*/number, random: Random): Int32Array {
-        const erased = new BitSet(received.length);
+        const erased: BitSet = new Map<number, boolean>(/*received.length*/);
         const erasures = new Int32Array(howMany);
 
         let erasureOffset = 0;
@@ -44,7 +44,7 @@ export default abstract class AbstractErrorCorrectionSpec {
             if (erased.get(location)) {
                 j--;
             } else {
-                erased.set(location);
+                erased.set(location, true);
                 received[location] = 0;
                 erasures[erasureOffset++] = location;
             }
