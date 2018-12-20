@@ -27,17 +27,17 @@ import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
  */
 class PDF417BlackBox1Spec extends AbstractBlackBoxSpec {
 
-    public constructor() {
-        super('src/test/resources/blackbox/pdf417-1', new MultiFormatReader(), BarcodeFormat.PDF_417);
-        this.addTest(10, 10, 0.0);
-        this.addTest(10, 10, 180.0);
-    }
+  public constructor() {
+    super('src/test/resources/blackbox/pdf417-1', new MultiFormatReader(), BarcodeFormat.PDF_417);
+    this.addTest(10, 10, 0.0);
+    this.addTest(10, 10, 180.0);
+  }
 
 }
 
 describe('PDF417BlackBox.1', () => {
-    it('testBlackBox', async done => {
-        const test = new PDF417BlackBox1Spec();
-        return test.testBlackBox(done);
-    });
+  it('testBlackBox', async done => {
+    const test = new PDF417BlackBox1Spec();
+    return test.testBlackBox(done);
+  });
 });

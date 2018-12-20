@@ -34,8 +34,8 @@ class PDF417BlackBox3Spec extends AbstractBlackBoxSpec {
 }
 
 describe('PDF417BlackBox.3', () => {
-    it('testBlackBox', async done => {
-        const test = new PDF417BlackBox3Spec();
-        return test.testBlackBox(done);
-    });
+  it('testBlackBox', async done => {
+    const test = new PDF417BlackBox3Spec();
+    return test.testBlackBox(done);
+  });
 });
