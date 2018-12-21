@@ -31,7 +31,7 @@ class Ean13BlackBox1Spec extends AbstractBlackBoxSpec {
 }
 
 describe('Ean13BlackBox1Spec.1', () => {
-    it('testBlackBox', async done => {
+    it('testBlackBox', done => {
         const test = new Ean13BlackBox1Spec();
         return test.testBlackBox(done);
     });
