@@ -48,6 +48,22 @@ import StringEncoding from '../../util/StringEncoding';
   PUNCT_SHIFT
 }
 
+function getEXP900() {
+  let EXP900 = new BigInt64Array(16);
+
+  EXP900[0] = BigInt(1);
+
+  let nineHundred = BigInt(900);
+
+  EXP900[1] = nineHundred;
+
+  for (let i /*int*/ = 2; i < EXP900.length; i++) {
+      EXP900[i] = EXP900[i - 1] * nineHundred;
+  }
+
+  return EXP900;
+}
+
 /**
  * <p>This class contains the methods for decoding the PDF417 codewords.</p>
  *
@@ -95,16 +111,7 @@ export default /*final*/ class DecodedBitStreamParser {
    * Table containing values for the exponent of 900.
    * This is used in the numeric compaction decode algorithm.
    */
-  private static /*final*/ EXP900: BigInt64Array = (() => {
-    let EXP900 = new BigInt64Array(16);
-    EXP900[0] = BigInt(1);
-    let nineHundred = BigInt(900);
-    EXP900[1] = nineHundred;
-    for (let i /*int*/ = 2; i < EXP900.length; i++) {
-        EXP900[i] = EXP900[i - 1] * nineHundred;
-    }
-    return EXP900;
-  })();
+  private static /*final*/ EXP900: BigInt64Array = getEXP900();
 
   private static /*final*/ NUMBER_OF_SEQUENCE_CODEWORDS: /*int*/ number = 2;
 
@@ -742,10 +749,10 @@ export default /*final*/ class DecodedBitStreamParser {
      Remove leading 1 =>  Result is 000213298174000
    */
   private static decodeBase900toBase10(codewords: Int32Array, count: /*int*/ number): string /*throws FormatException*/ {
-    let result = new BigInt64Array();
+    let result: BigInt[] = [];
     for (let i /*int*/ = 0; i < count; i++) {
       // result.add(DecodedBitStreamParser.EXP900[count - i - 1].multiply(BigInteger.valueOf(codewords[i])));
-      result.set(DecodedBitStreamParser.EXP900[count - i - 1] * BigInt(codewords[i]));
+      result.push(DecodedBitStreamParser.EXP900[count - i - 1] * BigInt(codewords[i]));
     }
     let resultString: String = result.toString();
     if (resultString.charAt(0) !== '1') {
