@@ -502,7 +502,7 @@ describe('ReedSolomonSpec', () => {
 
 function corrupt(received: Int32Array, howMany: number /*int*/, random: Random, max: number /*int*/): void {
 
-    const corrupted = new BitSet(received.length);
+    const corrupted: BitSet = new Map<number, boolean>(/*received.length*/);
 
     for (let j: number /*int*/ = 0; j < howMany; j++) {
 
@@ -512,7 +512,7 @@ function corrupt(received: Int32Array, howMany: number /*int*/, random: Random, 
         if (corrupted.get(location) === true || received[location] === value) {
             j--;
         } else {
-            corrupted.set(location);
+            corrupted.set(location, true);
             received[location] = value;
         }
     }

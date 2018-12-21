@@ -55,8 +55,8 @@ describe('PDF417DecoderTestCase', () => {
 
     // @SuppressWarnings('deprecation')
     const optionalData = Int32Array.from(resultMetadata.getOptionalData());
-    assertEquals(1, '' + optionalData[0], 'first element of optional array should be the first field identifier');
-    assertEquals(67, '' + optionalData[optionalData.length - 1], 'last element of optional array should be the last codeword of the last field');
+    assertEquals(1, optionalData[0], 'first element of optional array should be the first field identifier');
+    assertEquals(67, optionalData[optionalData.length - 1], 'last element of optional array should be the last codeword of the last field');
   });
   // }
 

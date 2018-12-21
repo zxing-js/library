@@ -4,7 +4,7 @@
 export default class Integer {
 
   static MIN_VALUE_32_BITS = -2147483648;
-  static MAX_VALUE: number = Infinity;
+  static MAX_VALUE: number = Number.MAX_SAFE_INTEGER;
 
   public static numberOfTrailingZeros(i: number): number {
 
