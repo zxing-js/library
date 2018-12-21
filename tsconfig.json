@@ -4,9 +4,7 @@
         "target": "es5",
         "moduleResolution": "node",
         "lib": [
-            "es5",
-            "es6",
-            "es7",
+            "esnext",
             "dom"
         ],
         "outDir": "./esm5/",
