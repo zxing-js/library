@@ -26,7 +26,7 @@ import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 class DataMatrixBlackBox1Spec extends AbstractBlackBoxSpec {
 
     public constructor() {
-        super('src/test/core/resources/blackbox/datamatrix-1', new MultiFormatReader(), BarcodeFormat.DATA_MATRIX);
+        super('src/test/resources/blackbox/datamatrix-1', new MultiFormatReader(), BarcodeFormat.DATA_MATRIX);
         this.addTest(21, 21, 0.0);
         this.addTest(21, 21, 90.0);
         this.addTest(21, 21, 180.0);
@@ -36,7 +36,7 @@ class DataMatrixBlackBox1Spec extends AbstractBlackBoxSpec {
 }
 
 describe('DataMatrixBlackBox.1', () => {
-    it('testBlackBox', async done => {
+    it('testBlackBox', done => {
         const test = new DataMatrixBlackBox1Spec();
         return test.testBlackBox(done);
     });
