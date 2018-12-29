@@ -31,7 +31,7 @@ export default class StringBuilder {
         return this.value;
     }
 
-    //helper method for RSS Expanded
+    // @note helper method for RSS Expanded
     public setLengthToZero(): void {
         this.value = "";
     }
