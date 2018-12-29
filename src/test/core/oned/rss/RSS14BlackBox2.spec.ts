@@ -28,7 +28,7 @@ import AbstractBlackBoxSpec from '../../common/AbstractBlackBox';
 class RSS14BlackBox2Spec extends AbstractBlackBoxSpec {
 
     public constructor() {
-        super('src/test/core/resources/blackbox/rss14-2', new MultiFormatReader(), BarcodeFormat.RSS_14);
+        super('src/test/resources/blackbox/rss14-2', new MultiFormatReader(), BarcodeFormat.RSS_14);
         this.addTestWithMax(4, 8, 1, 1, 0.0);
         this.addTestWithMax(2, 8, 0, 1, 180.0);
     }

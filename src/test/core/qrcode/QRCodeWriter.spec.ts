@@ -43,7 +43,7 @@ const path = require('path');
  */
 describe('QRCodeWriter', () => {
 
-    const BASE_IMAGE_PATH = 'src/test/core/resources/golden/qrcode/';
+    const BASE_IMAGE_PATH = 'src/test/resources/golden/qrcode/';
 
     it('testQRCodeWriter', () => {
         // The QR should be multiplied up to fit, with extra padding if necessary

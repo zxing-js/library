@@ -26,7 +26,7 @@ import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
  */
 class Code39BlackBox1Spec extends AbstractBlackBoxSpec {
     public constructor() {
-        super('src/test/core/resources/blackbox/code39-1', new MultiFormatReader(), BarcodeFormat.CODE_39);
+        super('src/test/resources/blackbox/code39-1', new MultiFormatReader(), BarcodeFormat.CODE_39);
         this.addTest(4, 4, 0.0);
         this.addTest(4, 4, 180.0);
     }
