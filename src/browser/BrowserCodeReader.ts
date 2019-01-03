@@ -16,14 +16,48 @@ import FormatException from '../core/FormatException';
  * Base class for browser code reader.
  */
 export class BrowserCodeReader {
+
+    /**
+     * The HTML video element, used to display the camera stream.
+     */
     private videoElement: HTMLVideoElement;
+
+    /**
+     * The HTML image element, used as a fallback for the video element when decoding.
+     */
     private imageElement: HTMLImageElement;
+
+    /**
+     * The HTML canvas element, used to draw the video or image's frame for decoding.
+     */
     private canvasElement: HTMLCanvasElement;
+    /**
+     * The HTML canvas element context.
+     */
     private canvasElementContext: CanvasRenderingContext2D;
+
     private timeoutHandler: number;
+
+    /**
+     * The stream output from camera.
+     */
     private stream: MediaStream;
+
+    /**
+     * Should contain the current registered listener for video play-ended,
+     * used to unregister that listener when needed.
+     */
     private videoPlayEndedEventListener: EventListener;
+    /**
+     * Should contain the current registered listener for video playing,
+     * used to unregister that listener when needed.
+     */
     private videoPlayingEventListener: EventListener;
+
+    /**
+     * Should contain the current registered listener for image loading,
+     * used to unregister that listener when needed.
+     */
     private imageLoadedEventListener: EventListener;
 
     /**
@@ -33,7 +67,7 @@ export class BrowserCodeReader {
      *
      * @memberOf BrowserCodeReader
      */
-    public constructor(private reader: Reader, private timeBetweenScansMillis: number = 500, private hints?: Map<DecodeHintType, any>) { }
+    public constructor(protected readonly reader: Reader, private timeBetweenScansMillis: number = 500, private hints?: Map<DecodeHintType, any>) { }
 
     /**
      * Obtain the list of available devices with type 'videoinput'.
