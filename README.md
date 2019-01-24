@@ -61,25 +61,10 @@ or
 Use on browser with ES6 modules:
 
 ```javascript
-import { BrowserQRCodeReader } from '@zxing/library';
+<script type="module">
+    import { BrowserQRCodeReader } from '@zxing/library';
 
-const codeReader = new BrowserQRCodeReader();
-const img = document.getElementById('img');
-
-try {
-    const result = await codeReader.decodeFromImage(img);
-} catch (err) {
-    console.error(err);
-}
-
-console.log(result);
-```
-
-Use on browser with AMD:
-
-```javascript
-require(['@zxing/library'], ZXing => {
-    const codeReader = new ZXing.BrowserQRCodeReader();
+    const codeReader = new BrowserQRCodeReader();
     const img = document.getElementById('img');
 
     try {
@@ -89,16 +74,33 @@ require(['@zxing/library'], ZXing => {
     }
 
     console.log(result);
-});
+</script>
+```
+
+Use on browser with AMD:
+
+```javascript
+<script type="text/javascript" src="https://unpkg.com/requirejs"></script>
+<script type="text/javascript">
+    require(['@zxing/library'], ZXing => {
+        const codeReader = new ZXing.BrowserQRCodeReader();
+        const img = document.getElementById('img');
+
+        try {
+            const result = await codeReader.decodeFromImage(img);
+        } catch (err) {
+            console.error(err);
+        }
+
+        console.log(result);
+    });
+</script>
 ```
 
 Use on browser with UMD:
 
 ```html
-<script
-    type="text/javascript"
-    src="https://unpkg.com/@zxing/library@latest"
-></script>
+<script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
 <script type="text/javascript">
     window.addEventListener('load', () => {
         const codeReader = new ZXing.BrowserQRCodeReader();
@@ -115,7 +117,7 @@ Use on browser with UMD:
 </script>
 ```
 
-Use outside the browser with vanilaJS:
+Use outside the browser with CommonJS:
 
 ```javascript
 const { MultiFormatReader, BarcodeFormat } = require('@zxing/library';);
