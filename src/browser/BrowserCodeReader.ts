@@ -225,10 +225,10 @@ export class BrowserCodeReader {
         }
 
         // Needed for iOS 11
-        this.videoElement.setAttribute('autoplay', 'true');
-        this.videoElement.setAttribute('muted', 'true');
-        this.videoElement.setAttribute('playsinline', 'true');
-        this.videoElement.setAttribute('autofocus', 'true');
+        videoElement.setAttribute('autoplay', 'true');
+        videoElement.setAttribute('muted', 'true');
+        videoElement.setAttribute('playsinline', 'true');
+        videoElement.setAttribute('autofocus', 'true');
 
         this.videoElement = videoElement;
     }
