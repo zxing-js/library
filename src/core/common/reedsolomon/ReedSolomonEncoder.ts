@@ -63,11 +63,12 @@ export default class ReedSolomonEncoder {
      * data is stored or transmitted.</p>
      *
      * @param encodingBlock array used for both and output. Caller initializs the array with
-     * the code words (symbols) to be encoded followed by empty elements to be used
-     * to store the error-correction code words.
-     * @param numberOfEcCodeWords the number of elements reserved to store code words
-     * in the array passed as the first parameter. The number of code words (symbols)
-     * to encode is thus encodingBlock.length - numberOfEcCodeWords.
+     * the code words (symbols) to be encoded followed by empty elements allocated to make
+     * space for error-correction code words in the encoded output. The array contains
+     * the encdoded output when encode returns.
+     * @param numberOfEcCodeWords the number of elements reserved in the array (first parameter)
+     * to store error-correction code words. Thus, the number of code words (symbols)
+     * to encode in the first parameter is thus encodingBlock.length - numberOfEcCodeWords.
      * @throws IllegalArgumentException if there are
      */
     public encode(encodingBlock: Int32Array, numberOfEcCodeWords: number /*int*/): void {
