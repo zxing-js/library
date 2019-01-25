@@ -114,6 +114,10 @@ abstract class BrowserSvgCodeWriter {
 
         const svgElement = this.createSVGElement(outputWidth, outputHeight);
 
+        const placeholder = this.createSvgPathPlaceholderElement(width, height);
+
+        svgElement.append(placeholder);
+
         this.containerElement.appendChild(svgElement);
 
         // 2D loop
@@ -135,12 +139,25 @@ abstract class BrowserSvgCodeWriter {
      */
     protected createSVGElement(w: number, h: number): SVGSVGElement {
 
-        const svgElement = document.createElementNS(BrowserSvgCodeWriter.SVG_NS, 'svg');
+        const el = document.createElementNS(BrowserSvgCodeWriter.SVG_NS, 'svg');
 
-        svgElement.setAttributeNS(null, 'height', w.toString());
-        svgElement.setAttributeNS(null, 'width', h.toString());
+        el.setAttributeNS(null, 'width', h.toString());
+        el.setAttributeNS(null, 'height', w.toString());
 
-        return svgElement;
+        return el;
+    }
+
+    /**
+     * Creates a SVG rect.
+     */
+    protected createSvgPathPlaceholderElement(w: number, h: number): SVGPathElement {
+
+        const el = document.createElementNS(BrowserSvgCodeWriter.SVG_NS, 'path');
+
+        el.setAttributeNS(null, 'd', `M0 0h${w}v${h}H0z`);
+        el.setAttributeNS(null, 'fill', 'none');
+
+        return el;
     }
 
     /**
@@ -148,15 +165,15 @@ abstract class BrowserSvgCodeWriter {
      */
     protected createSvgRectElement(x: number, y: number, w: number, h: number): SVGRectElement {
 
-        const rect = document.createElementNS(BrowserSvgCodeWriter.SVG_NS, 'rect');
+        const el = document.createElementNS(BrowserSvgCodeWriter.SVG_NS, 'rect');
 
-        rect.setAttributeNS(null, 'x', x.toString());
-        rect.setAttributeNS(null, 'y', y.toString());
-        rect.setAttributeNS(null, 'height', w.toString());
-        rect.setAttributeNS(null, 'width', h.toString());
-        rect.setAttributeNS(null, 'fill', '#000000');
+        el.setAttributeNS(null, 'x', x.toString());
+        el.setAttributeNS(null, 'y', y.toString());
+        el.setAttributeNS(null, 'height', w.toString());
+        el.setAttributeNS(null, 'width', h.toString());
+        el.setAttributeNS(null, 'fill', '#000000');
 
-        return rect;
+        return el;
     }
 }
 

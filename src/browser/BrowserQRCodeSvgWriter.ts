@@ -18,23 +18,7 @@ class BrowserQRCodeSvgWriter {
     private static readonly SVG_NS = 'http://www.w3.org/2000/svg';
 
     /**
-     * A HTML container element for the image.
-     */
-    private containerElement?: HTMLElement;
-
-    /**
-     * Constructs. 😉
-     */
-    public constructor(containerElement?: string | HTMLElement) {
-        if (typeof containerElement === 'string') {
-            this.containerElement = document.getElementById(containerElement);
-        } else {
-            this.containerElement = containerElement;
-        }
-    }
-
-    /**
-     * Writes and renders a QRCode to the DOM.
+     * Writes and renders a QRCode SVG element.
      *
      * @param contents
      * @param width
@@ -76,20 +60,28 @@ class BrowserQRCodeSvgWriter {
 
         const code = Encoder.encode(contents, errorCorrectionLevel, hints);
 
-        return this.renderResultToDOM(code, width, height, quietZone);
+        return this.renderResult(code, width, height, quietZone);
     }
 
     /**
      * Renders the result and then appends it to the DOM.
      */
-    private renderResultToDOM(code: QRCode, width: number /*int*/, height: number /*int*/, quietZone: number /*int*/): SVGSVGElement {
+    public writeToDom(
+        containerElement: string | HTMLElement,
+        contents: string,
+        width: number,
+        height: number,
+        hints: Map<EncodeHintType, any> = null
+    ): void {
 
-        const svgElement = this.renderResult(code, width, height, quietZone);
+        if (typeof containerElement === 'string') {
+            containerElement = document.querySelector<HTMLElement>(containerElement);
+        }
 
-        if (this.containerElement)
-            this.containerElement.appendChild(svgElement);
+        const svgElement = this.write(contents, width, height, hints);
 
-        return svgElement;
+        if (containerElement)
+            containerElement.appendChild(svgElement);
     }
 
     /**
