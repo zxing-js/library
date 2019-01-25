@@ -57,26 +57,39 @@ export default class ReedSolomonEncoder {
         return cachedGenerators[degree];
     }
 
-    public encode(toEncode: Int32Array, ecBytes: number /*int*/): void {
-        if (ecBytes === 0) {
+    /**
+     * <p>Encode a sequence of code words (symbols) using Reed-Solomon to allow decoders
+     * to detect and correct errors that may have been introduced when the resulting
+     * data is stored or transmitted.</p>
+     *
+     * @param encodingBlock array used for both and output. Caller initializs the array with
+     * the code words (symbols) to be encoded followed by empty elements to be used
+     * to store the error-correction code words.
+     * @param numberOfEcCodeWords the number of elements reserved to store code words
+     * in the array passed as the first parameter. The number of code words (symbols)
+     * to encode is thus encodingBlock.length - numberOfEcCodeWords.
+     * @throws IllegalArgumentException if there are
+     */
+    public encode(encodingBlock: Int32Array, numberOfEcCodeWords: number /*int*/): void {
+        if (numberOfEcCodeWords <= 0) {
             throw new IllegalArgumentException('No error correction bytes');
         }
-        const dataBytes = toEncode.length - ecBytes;
+        const dataBytes = encodingBlock.length - numberOfEcCodeWords;
         if (dataBytes <= 0) {
             throw new IllegalArgumentException('No data bytes provided');
         }
-        const generator = this.buildGenerator(ecBytes);
+        const generator = this.buildGenerator(numberOfEcCodeWords);
         const infoCoefficients: Int32Array = new Int32Array(dataBytes);
-        System.arraycopy(toEncode, 0, infoCoefficients, 0, dataBytes);
+        System.arraycopy(encodingBlock, 0, infoCoefficients, 0, dataBytes);
         let info = new GenericGFPoly(this.field, infoCoefficients);
-        info = info.multiplyByMonomial(ecBytes, 1);
+        info = info.multiplyByMonomial(numberOfEcCodeWords, 1);
         const remainder = info.divide(generator)[1];
         const coefficients = remainder.getCoefficients();
-        const numZeroCoefficients = ecBytes - coefficients.length;
+        const numZeroCoefficients = numberOfEcCodeWords - coefficients.length;
         for (let i = 0; i < numZeroCoefficients; i++) {
-            toEncode[dataBytes + i] = 0;
+            encodingBlock[dataBytes + i] = 0;
         }
-        System.arraycopy(coefficients, 0, toEncode, dataBytes + numZeroCoefficients, coefficients.length);
+        System.arraycopy(coefficients, 0, encodingBlock, dataBytes + numZeroCoefficients, coefficients.length);
     }
 
 }
