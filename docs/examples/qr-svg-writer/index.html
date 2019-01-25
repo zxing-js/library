@@ -58,7 +58,7 @@
     <script type="text/javascript">
         window.addEventListener('load', () => {
 
-            const codeWriter = new ZXing.BrowserQRCodeSvgWriter('result')
+            const codeWriter = new ZXing.BrowserQRCodeSvgWriter()
 
             console.log('ZXing code writer initialized')
 
@@ -66,7 +66,7 @@
 
             document.getElementById('writeButton').addEventListener('click', () => {
                 const input = document.getElementById('textInput').value
-                svgElement = codeWriter.write(input, 300, 300)
+                svgElement = codeWriter.writeToDom('#result', input, 300, 300)
                 document.getElementById('saveButton').removeAttribute('disabled')
             })
 

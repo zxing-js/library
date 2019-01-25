@@ -5,6 +5,7 @@ export * from './browser/BrowserAztecCodeReader';
 export * from './browser/BrowserQRCodeSvgWriter';
 export * from './browser/BrowserBarcodeReader';
 export * from './browser/BrowserCodeReader';
+export * from './browser/BrowserMultiFormatReader';
 export * from './browser/HTMLCanvasElementLuminanceSource';
 export * from './browser/VideoInputDevice';
 
