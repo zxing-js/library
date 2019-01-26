@@ -78,7 +78,7 @@ export default class ReedSolomonEncoder {
      * by the size of the Galois Field passed in the constructor of this object.
      * @param ecBytes the number of elements reserved in the array (first parameter)
      * to store error-correction code words. Thus, the number of code words (symbols)
-     * to encode in the first parameter is thus encodingBlock.length - numberOfEcCodeWords.
+     * to encode in the first parameter is thus toEncode.length - ecBytes.
      * Note, the use of "bytes" in the name of this parameter is misleading, as there may
      * be more or fewer than 256 symbols being encoded, as determined by the number of
      * elements in the Galois Field passed as a constructor to this object.
