@@ -120,7 +120,7 @@ Use on browser with UMD:
 Use outside the browser with CommonJS:
 
 ```javascript
-const { MultiFormatReader, BarcodeFormat } = require('@zxing/library';);
+const { MultiFormatReader, BarcodeFormat } = require('@zxing/library/esm5'); // use this path since v0.5.1
 
 const hints = new Map();
 const formats = [BarcodeFormat.QR_CODE, BarcodeFormat.DATA_MATRIX/*, ...*/];
