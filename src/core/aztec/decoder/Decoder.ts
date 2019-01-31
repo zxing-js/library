@@ -44,40 +44,40 @@ enum Table {
 export default class Decoder {
 
     private UPPER_TABLE: string[] = [
-        "CTRL_PS", " ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
-        "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "CTRL_LL", "CTRL_ML", "CTRL_DL", "CTRL_BS"
+        'CTRL_PS', ' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+        'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'CTRL_LL', 'CTRL_ML', 'CTRL_DL', 'CTRL_BS'
     ];
 
     private LOWER_TABLE: string[] = [
-        "CTRL_PS", " ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
-        "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "CTRL_US", "CTRL_ML", "CTRL_DL", "CTRL_BS"
+        'CTRL_PS', ' ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+        'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'CTRL_US', 'CTRL_ML', 'CTRL_DL', 'CTRL_BS'
     ];
 
     private MIXED_TABLE: string[] = [
-        "CTRL_PS", " ", "\1", "\2", "\3", "\4", "\5", "\6", "\7", "\b", "\t", "\n",
-        "\13", "\f", "\r", "\33", "\34", "\35", "\36", "\37", "@", "\\", "^", "_",
-        "`", "|", "~", "\177", "CTRL_LL", "CTRL_UL", "CTRL_PL", "CTRL_BS"
+        'CTRL_PS', ' ', '\1', '\2', '\3', '\4', '\5', '\6', '\7', '\b', '\t', '\n',
+        '\13', '\f', '\r', '\33', '\34', '\35', '\36', '\37', '@', '\\', '^', '_',
+        '`', '|', '~', '\177', 'CTRL_LL', 'CTRL_UL', 'CTRL_PL', 'CTRL_BS'
     ];
 
     private PUNCT_TABLE: string[] = [
-        "", "\r", "\r\n", ". ", ", ", ": ", "!", "\"", "#", "$", "%", "&", "'", "(", ")",
-        "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "[", "]", "{", "}", "CTRL_UL"
+        '', '\r', '\r\n', '. ', ', ', ': ', '!', '"', '#', '$', '%', '&', '\'', '(', ')',
+        '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '[', ']', '{', '}', 'CTRL_UL'
     ];
 
     private DIGIT_TABLE: string[] = [
-        "CTRL_PS", " ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", ".", "CTRL_UL", "CTRL_US"
+        'CTRL_PS', ' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ',', '.', 'CTRL_UL', 'CTRL_US'
     ];
 
     private ddata: AztecDetectorResult;
 
     public decode(detectorResult: AztecDetectorResult): DecoderResult {
         this.ddata = detectorResult;
-        var matrix = detectorResult.getBits();
-        var rawbits = this.extractBits(matrix);
-        var correctedBits = this.correctBits(rawbits);
-        var rawBytes = this.convertBoolArrayToByteArray(correctedBits);
-        var result = this.getEncodedData(correctedBits);
-        var decoderResult = new DecoderResult(rawBytes, result, null, null);
+        let matrix = detectorResult.getBits();
+        let rawbits = this.extractBits(matrix);
+        let correctedBits = this.correctBits(rawbits);
+        let rawBytes = this.convertBoolArrayToByteArray(correctedBits);
+        let result = this.getEncodedData(correctedBits);
+        let decoderResult = new DecoderResult(rawBytes, result, null, null);
         decoderResult.setNumBits(correctedBits.length);
         return decoderResult;
     }
@@ -93,17 +93,17 @@ export default class Decoder {
      * @return the decoded string
      */
     private getEncodedData(correctedBits: boolean[]): string {
-        var endIndex: number = correctedBits.length;
-        var latchTable = Table.UPPER; // table most recently latched to
-        var shiftTable = Table.UPPER; // table to use for the next read
-        var result: string;
-        var index = 0;
+        let endIndex: number = correctedBits.length;
+        let latchTable = Table.UPPER; // table most recently latched to
+        let shiftTable = Table.UPPER; // table to use for the next read
+        let result: string;
+        let index = 0;
         while (index < endIndex) {
             if (shiftTable == Table.BINARY) {
                 if (endIndex - index < 5) {
                     break;
                 }
-                var length = this.readCode(correctedBits, index, 5);
+                let length = this.readCode(correctedBits, index, 5);
                 index += 5;
                 if (length == 0) {
                     if (endIndex - index < 11) {
@@ -112,26 +112,26 @@ export default class Decoder {
                     length = this.readCode(correctedBits, index, 11) + 31;
                     index += 11;
                 }
-                for (var charCount = 0; charCount < length; charCount++) {
+                for (let charCount = 0; charCount < length; charCount++) {
                     if (endIndex - index < 8) {
                         index = endIndex;  // Force outer loop to exit
                         break;
                     }
-                    var code = this.readCode(correctedBits, index, 8);
+                    let code = this.readCode(correctedBits, index, 8);
                     result += code;
                     index += 8;
                 }
                 // Go back to whatever mode we had been in
                 shiftTable = latchTable;
             } else {
-                var size = shiftTable == Table.DIGIT ? 4 : 5;
+                let size = shiftTable == Table.DIGIT ? 4 : 5;
                 if (endIndex - index < size) {
                     break;
                 }
-                var code = this.readCode(correctedBits, index, size);
+                let code = this.readCode(correctedBits, index, size);
                 index += size;
-                var str = this.getCharacter(shiftTable, code);
-                if (str.startsWith("CTRL_")) {
+                let str = this.getCharacter(shiftTable, code);
+                if (str.startsWith('CTRL_')) {
                     // Table changes
                     // ISO/IEC 24778:2008 prescribes ending a shift sequence in the mode from which it was invoked.
                     // That's including when that mode is a shift.
@@ -192,7 +192,7 @@ export default class Decoder {
                 return this.DIGIT_TABLE[code];
             default:
                 // Should not reach here.
-                throw new IllegalStateException("Bad table");
+                throw new IllegalStateException('Bad table');
         }
     }
 
@@ -203,8 +203,8 @@ export default class Decoder {
      * @throws FormatException if the input contains too many errors
      */
     private correctBits(rawbits: boolean[]): boolean[] {
-        var gf: GenericGF;
-        var codewordSize: number;
+        let gf: GenericGF;
+        let codewordSize: number;
 
         if (this.ddata.getNbLayers() <= 2) {
             codewordSize = 6;
@@ -220,20 +220,20 @@ export default class Decoder {
             gf = GenericGF.AZTEC_DATA_12;
         }
 
-        var numDataCodewords = this.ddata.getNbDatablocks();
-        var numCodewords = rawbits.length / codewordSize;
+        let numDataCodewords = this.ddata.getNbDatablocks();
+        let numCodewords = rawbits.length / codewordSize;
         if (numCodewords < numDataCodewords) {
             throw new FormatException();
         }
-        var offset = rawbits.length % codewordSize;
+        let offset = rawbits.length % codewordSize;
 
-        var dataWords: Int32Array = new Int32Array(numCodewords);
-        for (var i = 0; i < numCodewords; i++ , offset += codewordSize) {
+        let dataWords: Int32Array = new Int32Array(numCodewords);
+        for (let i = 0; i < numCodewords; i++ , offset += codewordSize) {
             dataWords[i] = this.readCode(rawbits, offset, codewordSize);
         }
 
         try {
-            var rsDecoder = new ReedSolomonDecoder(gf);
+            let rsDecoder = new ReedSolomonDecoder(gf);
             rsDecoder.decode(dataWords, numCodewords - numDataCodewords);
         } catch (ex) {
             throw new FormatException(ex);
@@ -241,10 +241,10 @@ export default class Decoder {
 
         // Now perform the unstuffing operation.
         // First, count how many bits are going to be thrown out as stuffing
-        var mask = (1 << codewordSize) - 1;
-        var stuffedBits = 0;
-        for (var i = 0; i < numDataCodewords; i++) {
-            var dataWord = dataWords[i];
+        let mask = (1 << codewordSize) - 1;
+        let stuffedBits = 0;
+        for (let i = 0; i < numDataCodewords; i++) {
+            let dataWord = dataWords[i];
             if (dataWord == 0 || dataWord == mask) {
                 throw new FormatException;
             } else if (dataWord == 1 || dataWord == mask - 1) {
@@ -252,17 +252,17 @@ export default class Decoder {
             }
         }
         // Now, actually unpack the bits and remove the stuffing
-        var correctedBits: boolean[] = new Array(numDataCodewords * codewordSize - stuffedBits);
-        var index = 0;
-        for (var i = 0; i < numDataCodewords; i++) {
-            var dataWord = dataWords[i];
+        let correctedBits: boolean[] = new Array(numDataCodewords * codewordSize - stuffedBits);
+        let index = 0;
+        for (let i = 0; i < numDataCodewords; i++) {
+            let dataWord = dataWords[i];
             if (dataWord == 1 || dataWord == mask - 1) {
                 // next codewordSize-1 bits are all zeros or all ones
                 correctedBits.fill(dataWord > 1, index, index + codewordSize - 1);
                 //Arrays.fill(correctedBits, index, index + codewordSize - 1, dataWord > 1);
                 index += codewordSize - 1;
             } else {
-                for (var bit = codewordSize - 1; bit >= 0; --bit) {
+                for (let bit = codewordSize - 1; bit >= 0; --bit) {
                     correctedBits[index++] = (dataWord & (1 << bit)) != 0;
                 }
             }
@@ -276,36 +276,36 @@ export default class Decoder {
      * @return the array of bits
      */
     private extractBits(matrix: BitMatrix): boolean[] {
-        var compact = this.ddata.isCompact();
-        var layers = this.ddata.getNbLayers();
-        var baseMatrixSize = (compact ? 11 : 14) + layers * 4; // not including alignment lines
-        var alignmentMap = new Int32Array(baseMatrixSize);
-        var rawbits: boolean[] = new Array(this.totalBitsInLayer(layers, compact));
+        let compact = this.ddata.isCompact();
+        let layers = this.ddata.getNbLayers();
+        let baseMatrixSize = (compact ? 11 : 14) + layers * 4; // not including alignment lines
+        let alignmentMap = new Int32Array(baseMatrixSize);
+        let rawbits: boolean[] = new Array(this.totalBitsInLayer(layers, compact));
 
         if (compact) {
-            for (var i = 0; i < alignmentMap.length; i++) {
+            for (let i = 0; i < alignmentMap.length; i++) {
                 alignmentMap[i] = i;
             }
         } else {
-            var matrixSize = baseMatrixSize + 1 + 2 * ((baseMatrixSize / 2 - 1) / 15);
-            var origCenter = baseMatrixSize / 2;
-            var center = matrixSize / 2;
-            for (var i = 0; i < origCenter; i++) {
-                var newOffset = i + i / 15;
+            let matrixSize = baseMatrixSize + 1 + 2 * ((baseMatrixSize / 2 - 1) / 15);
+            let origCenter = baseMatrixSize / 2;
+            let center = matrixSize / 2;
+            for (let i = 0; i < origCenter; i++) {
+                let newOffset = i + i / 15;
                 alignmentMap[origCenter - i - 1] = center - newOffset - 1;
                 alignmentMap[origCenter + i] = center + newOffset + 1;
             }
         }
-        for (var i = 0, rowOffset = 0; i < layers; i++) {
-            var rowSize = (layers - i) * 4 + (compact ? 9 : 12);
+        for (let i = 0, rowOffset = 0; i < layers; i++) {
+            let rowSize = (layers - i) * 4 + (compact ? 9 : 12);
             // The top-left most point of this layer is <low, low> (not including alignment lines)
-            var low = i * 2;
+            let low = i * 2;
             // The bottom-right most point of this layer is <high, high> (not including alignment lines)
-            var high = baseMatrixSize - 1 - low;
+            let high = baseMatrixSize - 1 - low;
             // We pull bits from the two 2 x rowSize columns and two rowSize x 2 rows
-            for (var j = 0; j < rowSize; j++) {
-                var columnOffset = j * 2;
-                for (var k = 0; k < 2; k++) {
+            for (let j = 0; j < rowSize; j++) {
+                let columnOffset = j * 2;
+                for (let k = 0; k < 2; k++) {
                     // left column
                     rawbits[rowOffset + columnOffset + k] =
                         matrix.get(alignmentMap[low + k], alignmentMap[low + j]);
@@ -329,8 +329,8 @@ export default class Decoder {
      * Reads a code of given length and at given index in an array of bits
      */
     private readCode(rawbits: boolean[], startIndex: number, length: number): number {
-        var res = 0;
-        for (var i = startIndex; i < startIndex + length; i++) {
+        let res = 0;
+        for (let i = startIndex; i < startIndex + length; i++) {
             res <<= 1;
             if (rawbits[i]) {
                 res |= 0x01;
@@ -343,7 +343,7 @@ export default class Decoder {
      * Reads a code of length 8 in an array of bits, padding with zeros
      */
     private readByte(rawbits: boolean[], startIndex: number): number {
-        var n = rawbits.length - startIndex;
+        let n = rawbits.length - startIndex;
         if (n >= 8) {
             return this.readCode(rawbits, startIndex, 8);
         }
@@ -354,8 +354,8 @@ export default class Decoder {
      * Packs a bit array into bytes, most significant bit first
      */
     private convertBoolArrayToByteArray(boolArr: boolean[]): Uint8Array {
-        var byteArr = new Uint8Array((boolArr.length + 7) / 8);
-        for (var i = 0; i < byteArr.length; i++) {
+        let byteArr = new Uint8Array((boolArr.length + 7) / 8);
+        for (let i = 0; i < byteArr.length; i++) {
             byteArr[i] = this.readByte(boolArr, 8 * i);
         }
         return byteArr;
