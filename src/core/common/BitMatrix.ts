@@ -87,6 +87,7 @@ export default class BitMatrix /*implements Cloneable*/ {
     /**
      * Interprets a 2D array of booleans as a {@link BitMatrix}, where "true" means an "on" bit.
      *
+     * @function parse
      * @param image bits of the image, as a row-major 2D array. Elements are arrays representing rows
      * @return {@link BitMatrix} representation of image
      */
@@ -105,6 +106,13 @@ export default class BitMatrix /*implements Cloneable*/ {
         return bits;
     }
 
+    /**
+     *
+     * @function parse
+     * @param stringRepresentation
+     * @param setString
+     * @param unsetString
+     */
     public static parseFromString(stringRepresentation: string, setString: string, unsetString: string): BitMatrix {
         if (stringRepresentation === null) {
             throw new IllegalArgumentException('stringRepresentation cannot be null');
@@ -454,7 +462,7 @@ export default class BitMatrix /*implements Cloneable*/ {
     }
 
     /*@Override*/
-    public hashCode(): number /*int*/ {
+    public hashCode(): int {
         let hash = this.width;
         hash = 31 * hash + this.width;
         hash = 31 * hash + this.height;

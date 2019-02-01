@@ -16,22 +16,17 @@
 
 import Reader from '../Reader';
 import ResultPoint from '../ResultPoint';
-import ResultPointCallback from '../ResultPointCallback';
 import Result from '../Result';
 import BarcodeFormat from '../BarcodeFormat';
 import BinaryBitmap from '../BinaryBitmap';
 import DecodeHintType from '../DecodeHintType';
 import ResultMetadataType from '../ResultMetadataType';
 import DecoderResult from '../common/DecoderResult';
-import NotFoundException from '../NotFoundException';
-import FormatException from '../FormatException';
 import System from '../util/System';
 
-import BitMatrix from '../common/BitMatrix';
-import DetectorResult from '../common/DetectorResult';
 import Decoder from './decoder/Decoder';
 import Detector from './detector/Detector';
-import { Exception } from '../..';
+import Exception from '../../core/Exception';
 
 
 
@@ -54,13 +49,13 @@ export default class AztecReader implements Reader {
      */
     public decode(image: BinaryBitmap, hints: Map<DecodeHintType, any> | null = null): Result {
 
-        var exception: Exception = null;
-        var detector = new Detector(image.getBlackMatrix());
-        var points: ResultPoint[] = null;
-        var decoderResult: DecoderResult = null;
+        let exception: Exception = null;
+        let detector = new Detector(image.getBlackMatrix());
+        let points: ResultPoint[] = null;
+        let decoderResult: DecoderResult = null;
 
         try {
-            var detectorResult = detector.detectMirror(false);
+            let detectorResult = detector.detectMirror(false);
             points = detectorResult.getPoints();
             this.reportFoundResultPoints(hints, points);
             decoderResult = new Decoder().decode(detectorResult);
@@ -69,7 +64,7 @@ export default class AztecReader implements Reader {
         }
         if (decoderResult == null) {
             try {
-                var detectorResult = detector.detectMirror(true);
+                let detectorResult = detector.detectMirror(true);
                 points = detectorResult.getPoints();
                 this.reportFoundResultPoints(hints, points);
                 decoderResult = new Decoder().decode(detectorResult);
@@ -81,18 +76,18 @@ export default class AztecReader implements Reader {
             }
         }
 
-        var result = new Result(decoderResult.getText(),
+        let result = new Result(decoderResult.getText(),
             decoderResult.getRawBytes(),
             decoderResult.getNumBits(),
             points,
             BarcodeFormat.AZTEC,
             System.currentTimeMillis());
 
-        var byteSegments = decoderResult.getByteSegments();
+        let byteSegments = decoderResult.getByteSegments();
         if (byteSegments != null) {
             result.putMetadata(ResultMetadataType.BYTE_SEGMENTS, byteSegments);
         }
-        var ecLevel = decoderResult.getECLevel();
+        let ecLevel = decoderResult.getECLevel();
         if (ecLevel != null) {
             result.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, ecLevel);
         }
@@ -102,7 +97,7 @@ export default class AztecReader implements Reader {
 
     private reportFoundResultPoints(hints: Map<DecodeHintType, any>, points: ResultPoint[]): void {
         if (hints != null) {
-            var rpcb = hints.get(DecodeHintType.NEED_RESULT_POINT_CALLBACK);
+            let rpcb = hints.get(DecodeHintType.NEED_RESULT_POINT_CALLBACK);
             if (rpcb != null) {
                 points.forEach((point, idx, arr) => {
                     rpcb.foundPossibleResultPoint(point);

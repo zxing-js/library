@@ -1,6 +1,11 @@
 import System from './System';
 
 export default class Arrays {
+
+    public static asList<T = any>(...args: T[]): T[] {
+        return args;
+    }
+
     public static equals(first: any, second: any): boolean {
         if (!first) {
             return false;

@@ -21,10 +21,9 @@ import DecoderResult from '../../common/DecoderResult';
 import GenericGF from '../../common/reedsolomon/GenericGF';
 import ReedSolomonDecoder from '../../common/reedsolomon/ReedSolomonDecoder';
 import IllegalStateException from '../../IllegalStateException';
-import ReedSolomonException from '../../ReedSolomonException';
 import FormatException from '../../FormatException';
 
-//import java.util.Arrays;
+// import java.util.Arrays;
 
 enum Table {
     UPPER,
@@ -54,9 +53,11 @@ export default class Decoder {
     ];
 
     private MIXED_TABLE: string[] = [
-        'CTRL_PS', ' ', '\1', '\2', '\3', '\4', '\5', '\6', '\7', '\b', '\t', '\n',
-        '\13', '\f', '\r', '\33', '\34', '\35', '\36', '\37', '@', '\\', '^', '_',
-        '`', '|', '~', '\177', 'CTRL_LL', 'CTRL_UL', 'CTRL_PL', 'CTRL_BS'
+        // Module parse failed: Octal literal in strict mode (50:29)
+        // so number string were scaped
+        'CTRL_PS', ' ', '\\1', '\\2', '\\3', '\\4', '\\5', '\\6', '\\7', '\b', '\t', '\n',
+        '\\13', '\f', '\r', '\\33', '\\34', '\\35', '\\36', '\\37', '@', '\\', '^', '_',
+        '`', '|', '~', '\\177', 'CTRL_LL', 'CTRL_UL', 'CTRL_PL', 'CTRL_BS'
     ];
 
     private PUNCT_TABLE: string[] = [
@@ -75,7 +76,7 @@ export default class Decoder {
         let matrix = detectorResult.getBits();
         let rawbits = this.extractBits(matrix);
         let correctedBits = this.correctBits(rawbits);
-        let rawBytes = this.convertBoolArrayToByteArray(correctedBits);
+        let rawBytes = Decoder.convertBoolArrayToByteArray(correctedBits);
         let result = this.getEncodedData(correctedBits);
         let decoderResult = new DecoderResult(rawBytes, result, null, null);
         decoderResult.setNumBits(correctedBits.length);
@@ -99,17 +100,17 @@ export default class Decoder {
         let result: string;
         let index = 0;
         while (index < endIndex) {
-            if (shiftTable == Table.BINARY) {
+            if (shiftTable === Table.BINARY) {
                 if (endIndex - index < 5) {
                     break;
                 }
-                let length = this.readCode(correctedBits, index, 5);
+                let length = Decoder.readCode(correctedBits, index, 5);
                 index += 5;
-                if (length == 0) {
+                if (length === 0) {
                     if (endIndex - index < 11) {
                         break;
                     }
-                    length = this.readCode(correctedBits, index, 11) + 31;
+                    length = Decoder.readCode(correctedBits, index, 11) + 31;
                     index += 11;
                 }
                 for (let charCount = 0; charCount < length; charCount++) {
@@ -117,18 +118,18 @@ export default class Decoder {
                         index = endIndex;  // Force outer loop to exit
                         break;
                     }
-                    let code = this.readCode(correctedBits, index, 8);
+                    let code = Decoder.readCode(correctedBits, index, 8);
                     result += code;
                     index += 8;
                 }
                 // Go back to whatever mode we had been in
                 shiftTable = latchTable;
             } else {
-                let size = shiftTable == Table.DIGIT ? 4 : 5;
+                let size = shiftTable === Table.DIGIT ? 4 : 5;
                 if (endIndex - index < size) {
                     break;
                 }
-                let code = this.readCode(correctedBits, index, size);
+                let code = Decoder.readCode(correctedBits, index, size);
                 index += size;
                 let str = this.getCharacter(shiftTable, code);
                 if (str.startsWith('CTRL_')) {
@@ -138,7 +139,7 @@ export default class Decoder {
                     // Our test case dlusbs.png for issue #642 exercises that.
                     latchTable = shiftTable;  // Latch the current mode, so as to return to Upper after U/S B/S
                     shiftTable = this.getTable(str.charAt(5));
-                    if (str.charAt(6) == 'L') {
+                    if (str.charAt(6) === 'L') {
                         latchTable = shiftTable;
                     }
                 } else {
@@ -229,7 +230,7 @@ export default class Decoder {
 
         let dataWords: Int32Array = new Int32Array(numCodewords);
         for (let i = 0; i < numCodewords; i++ , offset += codewordSize) {
-            dataWords[i] = this.readCode(rawbits, offset, codewordSize);
+            dataWords[i] = Decoder.readCode(rawbits, offset, codewordSize);
         }
 
         try {
@@ -245,9 +246,9 @@ export default class Decoder {
         let stuffedBits = 0;
         for (let i = 0; i < numDataCodewords; i++) {
             let dataWord = dataWords[i];
-            if (dataWord == 0 || dataWord == mask) {
+            if (dataWord === 0 || dataWord === mask) {
                 throw new FormatException;
-            } else if (dataWord == 1 || dataWord == mask - 1) {
+            } else if (dataWord === 1 || dataWord === mask - 1) {
                 stuffedBits++;
             }
         }
@@ -256,14 +257,14 @@ export default class Decoder {
         let index = 0;
         for (let i = 0; i < numDataCodewords; i++) {
             let dataWord = dataWords[i];
-            if (dataWord == 1 || dataWord == mask - 1) {
+            if (dataWord === 1 || dataWord === mask - 1) {
                 // next codewordSize-1 bits are all zeros or all ones
                 correctedBits.fill(dataWord > 1, index, index + codewordSize - 1);
-                //Arrays.fill(correctedBits, index, index + codewordSize - 1, dataWord > 1);
+                // Arrays.fill(correctedBits, index, index + codewordSize - 1, dataWord > 1);
                 index += codewordSize - 1;
             } else {
                 for (let bit = codewordSize - 1; bit >= 0; --bit) {
-                    correctedBits[index++] = (dataWord & (1 << bit)) != 0;
+                    correctedBits[index++] = (dataWord & (1 << bit)) !== 0;
                 }
             }
         }
@@ -328,7 +329,7 @@ export default class Decoder {
     /**
      * Reads a code of given length and at given index in an array of bits
      */
-    private readCode(rawbits: boolean[], startIndex: number, length: number): number {
+    private static readCode(rawbits: boolean[], startIndex: number, length: number): number {
         let res = 0;
         for (let i = startIndex; i < startIndex + length; i++) {
             res <<= 1;
@@ -342,21 +343,21 @@ export default class Decoder {
     /**
      * Reads a code of length 8 in an array of bits, padding with zeros
      */
-    private readByte(rawbits: boolean[], startIndex: number): number {
+    private static readByte(rawbits: boolean[], startIndex: number): number {
         let n = rawbits.length - startIndex;
         if (n >= 8) {
-            return this.readCode(rawbits, startIndex, 8);
+            return Decoder.readCode(rawbits, startIndex, 8);
         }
-        return this.readCode(rawbits, startIndex, n) << (8 - n);
+        return Decoder.readCode(rawbits, startIndex, n) << (8 - n);
     }
 
     /**
      * Packs a bit array into bytes, most significant bit first
      */
-    private convertBoolArrayToByteArray(boolArr: boolean[]): Uint8Array {
+    public static convertBoolArrayToByteArray(boolArr: boolean[]): Uint8Array {
         let byteArr = new Uint8Array((boolArr.length + 7) / 8);
         for (let i = 0; i < byteArr.length; i++) {
-            byteArr[i] = this.readByte(boolArr, 8 * i);
+            byteArr[i] = Decoder.readByte(boolArr, 8 * i);
         }
         return byteArr;
     }
