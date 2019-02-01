@@ -9,4 +9,8 @@ export default class Random {
     public next(max: number): number {
         return Math.floor(this.r() * max);
     }
+
+    public nextInt(max: int): int {
+        return this.next(max);
+    }
 }
