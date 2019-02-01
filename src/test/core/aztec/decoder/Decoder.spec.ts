@@ -23,7 +23,7 @@ import BitMatrix from '../../../../core/common/BitMatrix';
 // import com.google.zxing.common.DecoderResult;
 // import org.junit.Test;
 // import org.junit.Assert;
-import { assertEquals, assertFalse, assertTrue, assertNull } from '../../util/AssertUtils';
+import { assertEquals, assertArrayEquals} from '../../util/AssertUtils';
 
 import ResultPoint from '../../../../core/ResultPoint';
 import Decoder from '../../../../core/aztec/decoder/Decoder';
@@ -41,7 +41,7 @@ describe('DecoderTest', () => {
      * @throws FormatException
      */
     it('testAztecResult', () => {
-        const matrix = BitMatrix.parse(
+        const matrix = BitMatrix.parseFromString(
             'X X X X X     X X X       X X X     X X X     \n' +
             'X X X     X X X     X X X X     X X X     X X \n' +
             '  X   X X       X   X   X X X X     X     X X \n' +
@@ -82,7 +82,7 @@ describe('DecoderTest', () => {
      * throws FormatException
     */
     it('testDecodeTooManyErrors', () => {
-        const matrix = BitMatrix.parse(''
+        const matrix = BitMatrix.parseFromString(''
             + 'X X . X . . . X X . . . X . . X X X . X . X X X X X . \n'
             + 'X X . . X X . . . . . X X . . . X X . . . X . X . . X \n'
             + 'X . . . X X . . X X X . X X . X X X X . X X . . X . . \n'
@@ -121,7 +121,7 @@ describe('DecoderTest', () => {
      * @throws FormatException
      */
     it('testDecodeTooManyErrors2', () => {
-        const matrix = BitMatrix.parse(''
+        const matrix = BitMatrix.parseFromString(''
             + '. X X . . X . X X . . . X . . X X X . . . X X . X X . \n'
             + 'X X . X X . . X . . . X X . . . X X . X X X . X . X X \n'
             + '. . . . X . . . X X X . X X . X X X X . X X . . X . . \n'
