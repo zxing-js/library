@@ -75,6 +75,10 @@ export default class Integer {
         return n;
     }
 
+    public static toBinaryString(n: number): string {
+      return n.toString(2);
+    }
+
     public static toHexString(i: number) {
         return i.toString(16);
     }
