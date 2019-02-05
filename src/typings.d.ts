@@ -12,8 +12,9 @@ declare type short = number;
 declare type int = number;
 declare type float = number;
 
-declare type char = string;
+declare type char = number;
 // declare type String = string;
 
 declare type List<T> = Array<T>;
 declare type Collection<T> = Array<T>;
+declare type Deque<T> = Array<T>;
