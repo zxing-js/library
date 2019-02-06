@@ -7,7 +7,7 @@
  * and annoying things.
  */
 
-// declare type byte = number;
+declare type byte = number;
 declare type short = number;
 declare type int = number;
 declare type float = number;
