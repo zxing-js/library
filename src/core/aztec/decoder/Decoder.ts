@@ -42,17 +42,17 @@ enum Table {
  */
 export default class Decoder {
 
-    private UPPER_TABLE: string[] = [
+    private static UPPER_TABLE: string[] = [
         'CTRL_PS', ' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
         'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'CTRL_LL', 'CTRL_ML', 'CTRL_DL', 'CTRL_BS'
     ];
 
-    private LOWER_TABLE: string[] = [
+    private static LOWER_TABLE: string[] = [
         'CTRL_PS', ' ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
         'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'CTRL_US', 'CTRL_ML', 'CTRL_DL', 'CTRL_BS'
     ];
 
-    private MIXED_TABLE: string[] = [
+    private static MIXED_TABLE: string[] = [
         // Module parse failed: Octal literal in strict mode (50:29)
         // so number string were scaped
         'CTRL_PS', ' ', '\\1', '\\2', '\\3', '\\4', '\\5', '\\6', '\\7', '\b', '\t', '\n',
@@ -60,12 +60,12 @@ export default class Decoder {
         '`', '|', '~', '\\177', 'CTRL_LL', 'CTRL_UL', 'CTRL_PL', 'CTRL_BS'
     ];
 
-    private PUNCT_TABLE: string[] = [
+    private static PUNCT_TABLE: string[] = [
         '', '\r', '\r\n', '. ', ', ', ': ', '!', '"', '#', '$', '%', '&', '\'', '(', ')',
         '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '[', ']', '{', '}', 'CTRL_UL'
     ];
 
-    private DIGIT_TABLE: string[] = [
+    private static DIGIT_TABLE: string[] = [
         'CTRL_PS', ' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ',', '.', 'CTRL_UL', 'CTRL_US'
     ];
 
@@ -77,14 +77,14 @@ export default class Decoder {
         let rawbits = this.extractBits(matrix);
         let correctedBits = this.correctBits(rawbits);
         let rawBytes = Decoder.convertBoolArrayToByteArray(correctedBits);
-        let result = this.getEncodedData(correctedBits);
+        let result = Decoder.getEncodedData(correctedBits);
         let decoderResult = new DecoderResult(rawBytes, result, null, null);
         decoderResult.setNumBits(correctedBits.length);
         return decoderResult;
     }
 
     // This method is used for testing the high-level encoder
-    public highLevelDecode(correctedBits: boolean[]): string {
+    public static highLevelDecode(correctedBits: boolean[]): string {
         return this.getEncodedData(correctedBits);
     }
 
@@ -93,7 +93,7 @@ export default class Decoder {
      *
      * @return the decoded string
      */
-    private getEncodedData(correctedBits: boolean[]): string {
+    private static getEncodedData(correctedBits: boolean[]): string {
         let endIndex: number = correctedBits.length;
         let latchTable = Table.UPPER; // table most recently latched to
         let shiftTable = Table.UPPER; // table to use for the next read
@@ -131,14 +131,14 @@ export default class Decoder {
                 }
                 let code = Decoder.readCode(correctedBits, index, size);
                 index += size;
-                let str = this.getCharacter(shiftTable, code);
+                let str = Decoder.getCharacter(shiftTable, code);
                 if (str.startsWith('CTRL_')) {
                     // Table changes
                     // ISO/IEC 24778:2008 prescribes ending a shift sequence in the mode from which it was invoked.
                     // That's including when that mode is a shift.
                     // Our test case dlusbs.png for issue #642 exercises that.
                     latchTable = shiftTable;  // Latch the current mode, so as to return to Upper after U/S B/S
-                    shiftTable = this.getTable(str.charAt(5));
+                    shiftTable = Decoder.getTable(str.charAt(5));
                     if (str.charAt(6) === 'L') {
                         latchTable = shiftTable;
                     }
@@ -155,7 +155,7 @@ export default class Decoder {
     /**
      * gets the table corresponding to the char passed
      */
-    private getTable(t: string): Table {
+    private static getTable(t: string): Table {
         switch (t) {
             case 'L':
                 return Table.LOWER;
@@ -179,18 +179,18 @@ export default class Decoder {
      * @param table the table used
      * @param code the code of the character
      */
-    private getCharacter(table: Table, code: number): string {
+    private static getCharacter(table: Table, code: number): string {
         switch (table) {
             case Table.UPPER:
-                return this.UPPER_TABLE[code];
+                return Decoder.UPPER_TABLE[code];
             case Table.LOWER:
-                return this.LOWER_TABLE[code];
+                return Decoder.LOWER_TABLE[code];
             case Table.MIXED:
-                return this.MIXED_TABLE[code];
+                return Decoder.MIXED_TABLE[code];
             case Table.PUNCT:
-                return this.PUNCT_TABLE[code];
+                return Decoder.PUNCT_TABLE[code];
             case Table.DIGIT:
-                return this.DIGIT_TABLE[code];
+                return Decoder.DIGIT_TABLE[code];
             default:
                 // Should not reach here.
                 throw new IllegalStateException('Bad table');
