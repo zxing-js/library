@@ -35,7 +35,7 @@ import HighLevelEncoder from './HighLevelEncoder';
  *
  * @author Rustam Abdullaev
  */
-export /*public final*/ class Encoder {
+export default /*public final*/ class Encoder {
 
   public static /*final*/ DEFAULT_EC_PERCENT: int = 33; // default minimal percentage of error check words
   public static /*final*/ DEFAULT_AZTEC_LAYERS: int = 0;
