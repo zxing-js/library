@@ -21,6 +21,7 @@
 
 import DecodeHintType from '../DecodeHintType';
 import CharacterSetECI from './CharacterSetECI';
+import StringEncoding from '../util/StringEncoding';
 
 /**
  * Common string-related functions.
@@ -252,9 +253,16 @@ export default class StringUtils {
   }
 
   /**
+   *
+   */
+  public static getBytes(str: string, encoding: CharacterSetECI): Uint8Array {
+    return StringEncoding.encode(str, encoding);
+  }
+
+  /**
    * Returns the charcode at the specified index or at index zero.
    */
-  static getCharCode(str: string, index = 0): int {
+  public static getCharCode(str: string, index = 0): int {
     return str.charCodeAt(index);
   }
 
