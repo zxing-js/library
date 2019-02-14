@@ -104,7 +104,7 @@ abstract class LuminanceSource {
      * @return a wrapper of this {@code LuminanceSource} which inverts the luminances it returns -- black becomes
      *  white and vice versa, and each value becomes (255-value).
      */
-    public abstract invert(): LuminanceSource;
+    public abstract invert(): InvertedLuminanceSource;
 
     /**
      * Returns a new object with rotated image data by 90 degrees counterclockwise.
