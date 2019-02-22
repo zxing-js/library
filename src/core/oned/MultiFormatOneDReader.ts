@@ -42,7 +42,8 @@ export default class MultiFormatOneDReader extends OneDReader {
         const useCode39CheckDigit = hints && hints.get(DecodeHintType.ASSUME_CODE_39_CHECK_DIGIT) !== undefined;
 
         if (possibleFormats) {
-            if (possibleFormats.includes(BarcodeFormat.EAN_13)) {
+            if (possibleFormats.includes(BarcodeFormat.EAN_13) ||
+                possibleFormats.includes(BarcodeFormat.EAN_8)) {
                 this.readers.push(new MultiFormatUPCEANReader(hints));
             }
             // if (possibleFormats.includes(BarcodeFormat.EAN_13) ||

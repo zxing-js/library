@@ -1,6 +1,6 @@
 {
     "name": "@zxing/library",
-    "version": "0.11.0",
+    "version": "0.12.1",
     "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
     "keywords": [
         "reader",
@@ -27,13 +27,6 @@
         {
             "name": "Luiz Barni",
             "email": "machado@odahcam.com"
-        },
-        {
-            "name": "Ricardo Sousa",
-            "email": "sousa.ricardo10@gmail.com"
-        },
-        {
-            "name": "Tjieco"
         }
     ],
     "engines": {
