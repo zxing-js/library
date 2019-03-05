@@ -438,7 +438,7 @@ export class BrowserCodeReader {
      */
     public reset() {
 
-        clearTimeout(this.timeoutHandler);
+        window.clearTimeout(this.timeoutHandler);
         
         // stops the camera, preview and scan 🔴
         this.stopStreams();
