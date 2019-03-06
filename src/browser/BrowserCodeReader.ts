@@ -416,7 +416,7 @@ export class BrowserCodeReader {
         canvasElement.height = height;
 
         this.canvasElement = canvasElement;
-        this.canvasElementContext = canvasElement.getContext('2d');
+        this.canvasElementContext = canvasElement.getContext('2d', { alpha: false });
     }
 
     /**
