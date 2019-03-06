@@ -42,7 +42,7 @@
     "main": "./umd/index.min.js",
     "module": "./esm5/index.js",
     "typings": "./esm5/index.d.ts",
-    "files": ["esm5/*", "umd/*"],
+    "files": ["./esm5/*", "./umd/*"],
     "nyc": {
         "include": [
             "src/**/*.ts"
