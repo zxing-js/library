@@ -7,9 +7,8 @@ env:
 language: node_js
 
 node_js:
-  - 'node'
+  - '11'
   - '10'
-  - '8'
 
 before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
