@@ -27,6 +27,13 @@ export default class StringBuilder {
     this.value = this.value.substr(0, n) + c + this.value.substr(n + 1);
   }
 
+  /**
+   * @note helper method for RSS Expanded
+   */
+  public setLengthToZero(): void {
+      this.value = "";
+  }
+
   public toString(): string {
     return this.value;
   }
