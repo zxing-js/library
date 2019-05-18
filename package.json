@@ -38,6 +38,7 @@
         "type": "git",
         "url": "https://github.com/zxing-js/library"
     },
+    "homepage": "https://zxing-js.github.io/library/",
     "private": false,
     "main": "./umd/index.min.js",
     "module": "./esm5/index.js",
