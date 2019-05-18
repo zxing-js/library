@@ -63,7 +63,7 @@
         "webpack": "./node_modules/.bin/webpack-cli"
     },
     "dependencies": {
-        "ts-custom-error": "^2.2.2"
+        "ts-custom-error": "^3.0.0"
     },
     "optionalDependencies": {
         "text-encoding": "^0.7.0"

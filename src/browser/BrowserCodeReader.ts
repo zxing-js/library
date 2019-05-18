@@ -153,6 +153,9 @@ export class BrowserCodeReader {
      */
     protected startDecodeFromStream(stream: MediaStream, callbackFn?: (...args: any[]) => any): void {
         this.stream = stream;
+        if (!this.videoElement && this.stream.active) {
+            return this.reset();
+        }
         this.bindVideoSrc(this.videoElement, stream);
         this.bindEvents(this.videoElement, callbackFn);
     }
