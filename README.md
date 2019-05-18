@@ -18,7 +18,7 @@
 | ---------- | ------------------- | -------------- |
 | ~~UPC-A~~  | Code 39             | QR Code        |
 | ~~UPC-E~~  | ~~Code 93~~         | Data Matrix    |
-| ~~EAN-8~~  | Code 128            | ~~Aztec~~ \*   |
+| EAN-8      | Code 128            | ~~Aztec~~ \*   |
 | EAN-13     | ~~Codabar~~         | ~~PDF 417~~ \* |
 |            | ITF                 | ~~MaxiCode~~   |
 |            | RSS-14              |
@@ -58,7 +58,7 @@ or
 
 ## Usage
 
-Use on browser with ES6 modules:
+### Use on browser with ES6 modules:
 
 ```javascript
 <script type="module">
@@ -77,7 +77,7 @@ Use on browser with ES6 modules:
 </script>
 ```
 
-Use on browser with AMD:
+### Use on browser with AMD:
 
 ```javascript
 <script type="text/javascript" src="https://unpkg.com/requirejs"></script>
@@ -97,7 +97,7 @@ Use on browser with AMD:
 </script>
 ```
 
-Use on browser with UMD:
+### Use on browser with UMD:
 
 ```html
 <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
@@ -117,10 +117,10 @@ Use on browser with UMD:
 </script>
 ```
 
-Use outside the browser with CommonJS:
+### Use outside the browser with CommonJS:
 
 ```javascript
-const { MultiFormatReader, BarcodeFormat } = require('@zxing/library';);
+const { MultiFormatReader, BarcodeFormat } = require('@zxing/library/esm5'); // use this path since v0.5.1
 
 const hints = new Map();
 const formats = [BarcodeFormat.QR_CODE, BarcodeFormat.DATA_MATRIX/*, ...*/];
@@ -137,7 +137,7 @@ const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
 reader.decode(binaryBitmap);
 ```
 
-#### Browser Support
+## Browser Support
 
 The browser layer is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web API which is not supported by older browsers.
 
@@ -289,7 +289,7 @@ codeReader
     .catch(err => console.error(err));
 ```
 
-### Barcode generation
+## Barcode generation
 
 To generate a QR Code SVG image include 'zxing.qrcodewriter.min.js' from `build/vanillajs`. You will need to include an element where the SVG element will be appended:
 
@@ -307,11 +307,11 @@ const svgElement = codeWriter.write(input, 300, 300);
 codeWriter.writeToDom('#result', input, 300, 300);
 ```
 
-### Contributing
+## Contributing
 
 See [Contributing Guide](https://github.com/zxing-js/library/blob/master/CONTRIBUTING.md) for information regarding porting approach and reasoning behind some of the approaches taken.
 
-### Contributors
+## Contributors
 
 Special thanks to all the contributors who have contributed for this project. We heartly thankful to you all.
 
