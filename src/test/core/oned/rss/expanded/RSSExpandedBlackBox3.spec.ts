@@ -24,21 +24,27 @@
  *   http://www.piramidepse.com/
  */
 
-package com.google.zxing.oned.rss.expanded;
+// package com.google.zxing.oned;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatReader;
-import com.google.zxing.common.AbstractBlackBoxTestCase;
+import BarcodeFormat from '../../../../../core/BarcodeFormat';
+import MultiFormatReader from '../../../../../core/MultiFormatReader';
+import AbstractBlackBoxSpec from '../../../common/AbstractBlackBox';
 
 /**
  * A test of {@link RSSExpandedReader} against a fixed test set of images.
  */
-public final class RSSExpandedBlackBox3TestCase extends AbstractBlackBoxTestCase {
-    
-    public RSSExpandedBlackBox3TestCase() {
-        super("src/test/resources/blackbox/rssexpanded-3", new MultiFormatReader(), BarcodeFormat.RSS_EXPANDED);
-        addTest(117, 117, 0.0f);
-        addTest(117, 117, 180.0f);
-    }
+class RSSExpandedBlackBox3TestCase extends AbstractBlackBoxSpec {
+
+  public constructor() {
+    super('src/test/resources/blackbox/rssexpanded-3', new MultiFormatReader(), BarcodeFormat.RSS_EXPANDED);
+    this.addTest(117, 117, 0.0);
+    this.addTest(117, 117, 180.0);
+  }
 }
-    
+
+describe('RSSExpandedBlackBox3TestCase', () => {
+  it('testBlackBox', done => {
+    const test = new RSSExpandedBlackBox3TestCase();
+    return test.testBlackBox(done);
+  });
+});

@@ -1,3 +1,6 @@
+import { BarcodeFormat, MultiFormatReader } from '../../../../..';
+import AbstractBlackBoxSpec from '../../../common/AbstractBlackBox';
+
 /*
  * Copyright (C) 2012 ZXing authors
  *
@@ -24,23 +27,30 @@
  *   http://www.piramidepse.com/
  */
 
-package com.google.zxing.oned.rss.expanded;
+// package com.google.zxing.oned.rss.expanded;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatReader;
-import com.google.zxing.common.AbstractBlackBoxTestCase;
+// import com.google.zxing.BarcodeFormat;
+// import com.google.zxing.MultiFormatReader;
+// import com.google.zxing.common.AbstractBlackBoxTestCase;
 
 /**
  * A test of {@link RSSExpandedReader} against a fixed test set of images including
  * stacked RSS barcodes.
  */
-public final class RSSExpandedStackedBlackBox2TestCase extends AbstractBlackBoxTestCase {
-    
-  public RSSExpandedStackedBlackBox2TestCase() {
-    super("src/test/resources/blackbox/rssexpandedstacked-2", new MultiFormatReader(), BarcodeFormat.RSS_EXPANDED);
-    addTest(2, 7, 0.0f);
-    addTest(2, 7, 180.0f);
+class RSSExpandedStackedBlackBox1TestCase extends AbstractBlackBoxSpec {
+
+  public constructor() {
+    super('src/test/resources/blackbox/rssexpandedstacked-1', new MultiFormatReader(), BarcodeFormat.RSS_EXPANDED);
+    this.addTest(59, 64, 0.0);
+    this.addTest(59, 64, 180.0);
   }
 
 }
-    
+
+describe('RSSExpandedStackedBlackBox1TestCase', () => {
+  it('testBlackBox', done => {
+    const test = new RSSExpandedStackedBlackBox1TestCase();
+    return test.testBlackBox(done);
+  });
+});
+
