@@ -48,8 +48,9 @@ import StringEncoding from '../../util/StringEncoding';
   PUNCT_SHIFT
 }
 
-function getEXP900() {
-  let EXP900 = new BigInt64Array(16);
+function getEXP900(): BigInt[] {
+
+  let EXP900 = [];
 
   EXP900[0] = BigInt(1);
 
@@ -58,7 +59,7 @@ function getEXP900() {
   EXP900[1] = nineHundred;
 
   for (let i /*int*/ = 2; i < EXP900.length; i++) {
-      EXP900[i] = EXP900[i - 1] * nineHundred;
+    EXP900[i] = EXP900[i - 1] * nineHundred;
   }
 
   return EXP900;
@@ -111,7 +112,7 @@ export default /*final*/ class DecodedBitStreamParser {
    * Table containing values for the exponent of 900.
    * This is used in the numeric compaction decode algorithm.
    */
-  private static /*final*/ EXP900: BigInt64Array = getEXP900();
+  private static /*final*/ EXP900: BigInt[] = getEXP900();
 
   private static /*final*/ NUMBER_OF_SEQUENCE_CODEWORDS: /*int*/ number = 2;
 
@@ -711,48 +712,48 @@ export default /*final*/ class DecodedBitStreamParser {
    * @param codewords The array of codewords
    * @param count     The number of codewords
    * @return The decoded string representing the Numeric data.
+   *
+   * EXAMPLE
+   * Encode the fifteen digit numeric string 000213298174000
+   * Prefix the numeric string with a 1 and set the initial value of
+   * t = 1 000 213 298 174 000
+   * Calculate codeword 0
+   * d0 = 1 000 213 298 174 000 mod 900 = 200
+   *
+   * t = 1 000 213 298 174 000 div 900 = 1 111 348 109 082
+   * Calculate codeword 1
+   * d1 = 1 111 348 109 082 mod 900 = 282
+   *
+   * t = 1 111 348 109 082 div 900 = 1 234 831 232
+   * Calculate codeword 2
+   * d2 = 1 234 831 232 mod 900 = 632
+   *
+   * t = 1 234 831 232 div 900 = 1 372 034
+   * Calculate codeword 3
+   * d3 = 1 372 034 mod 900 = 434
+   *
+   * t = 1 372 034 div 900 = 1 524
+   * Calculate codeword 4
+   * d4 = 1 524 mod 900 = 624
+   *
+   * t = 1 524 div 900 = 1
+   * Calculate codeword 5
+   * d5 = 1 mod 900 = 1
+   * t = 1 div 900 = 0
+   * Codeword sequence is: 1, 624, 434, 632, 282, 200
+   *
+   * Decode the above codewords involves
+   *   1 x 900 power of 5 + 624 x 900 power of 4 + 434 x 900 power of 3 +
+   * 632 x 900 power of 2 + 282 x 900 power of 1 + 200 x 900 power of 0 = 1000213298174000
+   *
+   * Remove leading 1 =>  Result is 000213298174000
+   *
+   * @throws FormatException
    */
-  /*
-     EXAMPLE
-     Encode the fifteen digit numeric string 000213298174000
-     Prefix the numeric string with a 1 and set the initial value of
-     t = 1 000 213 298 174 000
-     Calculate codeword 0
-     d0 = 1 000 213 298 174 000 mod 900 = 200
-
-     t = 1 000 213 298 174 000 div 900 = 1 111 348 109 082
-     Calculate codeword 1
-     d1 = 1 111 348 109 082 mod 900 = 282
-
-     t = 1 111 348 109 082 div 900 = 1 234 831 232
-     Calculate codeword 2
-     d2 = 1 234 831 232 mod 900 = 632
-
-     t = 1 234 831 232 div 900 = 1 372 034
-     Calculate codeword 3
-     d3 = 1 372 034 mod 900 = 434
-
-     t = 1 372 034 div 900 = 1 524
-     Calculate codeword 4
-     d4 = 1 524 mod 900 = 624
-
-     t = 1 524 div 900 = 1
-     Calculate codeword 5
-     d5 = 1 mod 900 = 1
-     t = 1 div 900 = 0
-     Codeword sequence is: 1, 624, 434, 632, 282, 200
-
-     Decode the above codewords involves
-       1 x 900 power of 5 + 624 x 900 power of 4 + 434 x 900 power of 3 +
-     632 x 900 power of 2 + 282 x 900 power of 1 + 200 x 900 power of 0 = 1000213298174000
-
-     Remove leading 1 =>  Result is 000213298174000
-   */
-  private static decodeBase900toBase10(codewords: Int32Array, count: /*int*/ number): string /*throws FormatException*/ {
-    let result: BigInt[] = [];
+  private static decodeBase900toBase10(codewords: Int32Array, count: /*int*/ number): string {
+    let result: bigint = BigInt(0);
     for (let i /*int*/ = 0; i < count; i++) {
-      // result.add(DecodedBitStreamParser.EXP900[count - i - 1].multiply(BigInteger.valueOf(codewords[i])));
-      result.push(DecodedBitStreamParser.EXP900[count - i - 1] * BigInt(codewords[i]));
+      result += BigInt(DecodedBitStreamParser.EXP900[count - i - 1]) * BigInt(codewords[i]);
     }
     let resultString: String = result.toString();
     if (resultString.charAt(0) !== '1') {
