@@ -1,12 +1,12 @@
-import ReedSolomonDecoder from '../../common/reedsolomon/ReedSolomonDecoder';
-import GenericGF from '../../common/reedsolomon/GenericGF';
-import DecoderResult from '../../common/DecoderResult';
+import ChecksumException from '../../ChecksumException';
 import BitMatrix from '../../common/BitMatrix';
+import DecoderResult from '../../common/DecoderResult';
+import GenericGF from '../../common/reedsolomon/GenericGF';
+import ReedSolomonDecoder from '../../common/reedsolomon/ReedSolomonDecoder';
 import BitMatrixParser from './BitMatrixParser';
 import DataBlock from './DataBlock';
-import { Exception } from '../../..';
+// import { Exception } from '../../..';
 import DecodedBitStreamParser from './DecodedBitStreamParser';
-import ChecksumException from '../../ChecksumException';
 
 /*
  * Copyright 2007 ZXing authors
@@ -90,7 +90,7 @@ export default class Decoder {
    * @throws ChecksumException if error correction fails
    */
   private correctErrors(codewordBytes: Uint8Array, numDataCodewords: number): void {
-    const numCodewords = codewordBytes.length;
+    // const numCodewords = codewordBytes.length;
     // First read into an array of ints
     const codewordsInts = new Int32Array(codewordBytes);
     // for (let i = 0; i < numCodewords; i++) {

@@ -1,3 +1,7 @@
+import BitArray from '../../../../../core/common/BitArray';
+import { assertEquals } from '../../../util/AssertUtils';
+import BinaryUtil from './BinaryUtil';
+
 /*
  * Copyright (C) 2010 ZXing authors
  *
@@ -24,67 +28,65 @@
  *   http://www.piramidepse.com/
  */
 
-package com.google.zxing.oned.rss.expanded;
+// package com.google.zxing.oned.rss.expanded;
 
-import com.google.zxing.common.BitArray;
+// import com.google.zxing.common.BitArray;
 
-import org.junit.Assert;
-import org.junit.Test;
+// import org.junit.Assert;
+// import org.junit.Test;
 
-import java.util.regex.Pattern;
+// import java.util.regex.Pattern;
 
 /**
  * @author Pablo Orduña, University of Deusto (pablo.orduna@deusto.es)
  */
-public final class BinaryUtilTest extends Assert {
+it('BinaryUtilTest', () => {
 
-   private static final Pattern SPACE = Pattern.compile(" ");
+  it('testBuildBitArrayFromString', () => {
 
-  @Test
-  public void testBuildBitArrayFromString() {
-
-    CharSequence data = " ..X..X.. ..XXX... XXXXXXXX ........";
+    let data = ' ..X..X.. ..XXX... XXXXXXXX ........';
     check(data);
 
-    data = " XXX..X..";
+    data = ' XXX..X..';
     check(data);
 
-    data = " XX";
+    data = ' XX';
     check(data);
 
-    data = " ....XX.. ..XX";
+    data = ' ....XX.. ..XX';
     check(data);
 
-    data = " ....XX.. ..XX..XX ....X.X. ........";
+    data = ' ....XX.. ..XX..XX ....X.X. ........';
     check(data);
-  }
+  });
 
-  private static void check(CharSequence data) {
-    BitArray binary = BinaryUtil.buildBitArrayFromString(data);
-    assertEquals(data, binary.toString());
-  }
-
-  @Test
-  public void testBuildBitArrayFromStringWithoutSpaces() {
-    CharSequence data = " ..X..X.. ..XXX... XXXXXXXX ........";
+  it('testBuildBitArrayFromStringWithoutSpaces', () => {
+    let data = ' ..X..X.. ..XXX... XXXXXXXX ........';
     checkWithoutSpaces(data);
 
-    data = " XXX..X..";
+    data = ' XXX..X..';
     checkWithoutSpaces(data);
 
-    data = " XX";
+    data = ' XX';
     checkWithoutSpaces(data);
 
-    data = " ....XX.. ..XX";
+    data = ' ....XX.. ..XX';
     checkWithoutSpaces(data);
 
-    data = " ....XX.. ..XX..XX ....X.X. ........";
+    data = ' ....XX.. ..XX..XX ....X.X. ........';
     checkWithoutSpaces(data);
-  }
+  });
+});
 
-  private static void checkWithoutSpaces(CharSequence data) {
-    CharSequence dataWithoutSpaces = SPACE.matcher(data).replaceAll("");
-    BitArray binary = BinaryUtil.buildBitArrayFromStringWithoutSpaces(dataWithoutSpaces);
-    assertEquals(data, binary.toString());
-  }
+const SPACE: RegExp = /\s/;
+
+function check(data: string): void {
+  const binary: BitArray = BinaryUtil.buildBitArrayFromString(data);
+  assertEquals(data, binary.toString());
+}
+
+function checkWithoutSpaces(data: string): void {
+  const dataWithoutSpaces: string = data.replace(SPACE, '');
+  const binary: BitArray = BinaryUtil.buildBitArrayFromStringWithoutSpaces(dataWithoutSpaces);
+  assertEquals(data, binary.toString());
 }

@@ -1,13 +1,12 @@
-
-export default abstract class DecodedObject{
+export default abstract class DecodedObject {
 
   private readonly newPosition: number;
 
   constructor(newPosition: number) {
-    this.newPosition = newPosition
+    this.newPosition = newPosition;
   }
 
-  getNewPosition(): number{
+  getNewPosition(): number {
     return this.newPosition;
   }
 

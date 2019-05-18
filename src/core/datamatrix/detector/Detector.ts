@@ -1,16 +1,11 @@
-import DecodeHintType from '../../DecodeHintType';
-import ResultPoint from '../../ResultPoint';
-import ResultPointCallback from '../../ResultPointCallback';
 import BitMatrix from '../../common/BitMatrix';
-import DetectorResult from '../../common/DetectorResult';
-import GridSampler from '../../common/GridSampler';
-import GridSamplerInstance from '../../common/GridSamplerInstance';
-import PerspectiveTransform from '../../common/PerspectiveTransform';
 import MathUtils from '../../common/detector/MathUtils';
-import Version from '../decoder/Version';
 import WhiteRectangleDetector from '../../common/detector/WhiteRectangleDetector';
-
+import DetectorResult from '../../common/DetectorResult';
+import GridSamplerInstance from '../../common/GridSamplerInstance';
 import NotFoundException from '../../NotFoundException';
+import ResultPoint from '../../ResultPoint';
+
 
 /*
  * Copyright 2008 ZXing authors
@@ -82,7 +77,7 @@ export default class Detector {
     Detector.increment(pointCount, lSideTwo.getTo());
 
     let maybeTopLeft: ResultPoint | null = null;
-    let bottomLeft: ResultPoint | null  = null;
+    let bottomLeft: ResultPoint | null = null;
     let maybeBottomRight: ResultPoint | null = null;
     for (let [point, value] of Array.from(pointCount.entries())) {
       if (value === 2) {
@@ -102,7 +97,7 @@ export default class Detector {
     }
 
     // Bottom left is correct but top left and bottom right might be switched
-    const corners = [ maybeTopLeft, bottomLeft, maybeBottomRight ];
+    const corners = [maybeTopLeft, bottomLeft, maybeBottomRight];
     // Use the dot product trick to sort them out
     ResultPoint.orderBestPatterns(corners);
 
@@ -157,7 +152,7 @@ export default class Detector {
       // The matrix is rectangular
 
       correctedTopRight =
-          this.correctTopRightRectangular(bottomLeft, bottomRight, topLeft, topRight, dimensionTop, dimensionRight);
+        this.correctTopRightRectangular(bottomLeft, bottomRight, topLeft, topRight, dimensionTop, dimensionRight);
       if (correctedTopRight == null) {
         correctedTopRight = topRight;
       }
@@ -189,19 +184,19 @@ export default class Detector {
 
       // Redetermine the dimension using the corrected top right point
       let dimensionCorrected = Math.max(this.transitionsBetween(topLeft, correctedTopRight).getTransitions(),
-                                        this.transitionsBetween(bottomRight, correctedTopRight).getTransitions());
+        this.transitionsBetween(bottomRight, correctedTopRight).getTransitions());
       dimensionCorrected++;
       if ((dimensionCorrected & 0x01) === 1) {
         dimensionCorrected++;
       }
 
       bits = Detector.sampleGrid(this.image,
-                        topLeft,
-                        bottomLeft,
-                        bottomRight,
-                        correctedTopRight,
-                        dimensionCorrected,
-                        dimensionCorrected);
+        topLeft,
+        bottomLeft,
+        bottomRight,
+        correctedTopRight,
+        dimensionCorrected,
+        dimensionCorrected);
     }
     return new DetectorResult(bits, [topLeft, bottomLeft, bottomRight, correctedTopRight]);
   }
@@ -211,11 +206,11 @@ export default class Detector {
    * for a rectangular matrix
    */
   private correctTopRightRectangular(bottomLeft: ResultPoint,
-                                                 bottomRight: ResultPoint,
-                                                 topLeft: ResultPoint,
-                                                 topRight: ResultPoint,
-                                                 dimensionTop: number,
-                                                 dimensionRight: number): ResultPoint {
+    bottomRight: ResultPoint,
+    topLeft: ResultPoint,
+    topRight: ResultPoint,
+    dimensionTop: number,
+    dimensionRight: number): ResultPoint {
 
     let corr = Detector.distance(bottomLeft, bottomRight) / dimensionTop;
     let norm = Detector.distance(topLeft, topRight);
@@ -242,9 +237,9 @@ export default class Detector {
     }
 
     const l1 = Math.abs(dimensionTop - this.transitionsBetween(topLeft, c1).getTransitions()) +
-          Math.abs(dimensionRight - this.transitionsBetween(bottomRight, c1).getTransitions());
+      Math.abs(dimensionRight - this.transitionsBetween(bottomRight, c1).getTransitions());
     const l2 = Math.abs(dimensionTop - this.transitionsBetween(topLeft, c2).getTransitions()) +
-    Math.abs(dimensionRight - this.transitionsBetween(bottomRight, c2).getTransitions());
+      Math.abs(dimensionRight - this.transitionsBetween(bottomRight, c2).getTransitions());
 
     if (l1 <= l2) {
       return c1;
@@ -258,10 +253,10 @@ export default class Detector {
    * for a square matrix
    */
   private correctTopRight(bottomLeft: ResultPoint,
-                                      bottomRight: ResultPoint,
-                                      topLeft: ResultPoint,
-                                      topRight: ResultPoint,
-                                      dimension: number): ResultPoint {
+    bottomRight: ResultPoint,
+    topLeft: ResultPoint,
+    topRight: ResultPoint,
+    dimension: number): ResultPoint {
 
     let corr = Detector.distance(bottomLeft, bottomRight) / dimension;
     let norm = Detector.distance(topLeft, topRight);
@@ -288,9 +283,9 @@ export default class Detector {
     }
 
     const l1 = Math.abs(this.transitionsBetween(topLeft, c1).getTransitions() -
-                      this.transitionsBetween(bottomRight, c1).getTransitions());
+      this.transitionsBetween(bottomRight, c1).getTransitions());
     const l2 = Math.abs(this.transitionsBetween(topLeft, c2).getTransitions() -
-                      this.transitionsBetween(bottomRight, c2).getTransitions());
+      this.transitionsBetween(bottomRight, c2).getTransitions());
 
     return l1 <= l2 ? c1 : c2;
   }
@@ -311,36 +306,36 @@ export default class Detector {
     table.set(key, value == null ? 1 : value + 1);
   }
 
-  private static sampleGrid(image: BitMatrix ,
-                                      topLeft: ResultPoint,
-                                      bottomLeft: ResultPoint,
-                                      bottomRight: ResultPoint,
-                                      topRight: ResultPoint,
-                                      dimensionX: number,
-                                      dimensionY: number): BitMatrix {
+  private static sampleGrid(image: BitMatrix,
+    topLeft: ResultPoint,
+    bottomLeft: ResultPoint,
+    bottomRight: ResultPoint,
+    topRight: ResultPoint,
+    dimensionX: number,
+    dimensionY: number): BitMatrix {
 
     const sampler = GridSamplerInstance.getInstance();
 
     return sampler.sampleGrid(image,
-                              dimensionX,
-                              dimensionY,
-                              0.5,
-                              0.5,
-                              dimensionX - 0.5,
-                              0.5,
-                              dimensionX - 0.5,
-                              dimensionY - 0.5,
-                              0.5,
-                              dimensionY - 0.5,
-                              topLeft.getX(),
-                              topLeft.getY(),
-                              topRight.getX(),
-                              topRight.getY(),
-                              bottomRight.getX(),
-                              bottomRight.getY(),
-                              bottomLeft.getX(),
-                              bottomLeft.getY()
-                            );
+      dimensionX,
+      dimensionY,
+      0.5,
+      0.5,
+      dimensionX - 0.5,
+      0.5,
+      dimensionX - 0.5,
+      dimensionY - 0.5,
+      0.5,
+      dimensionY - 0.5,
+      topLeft.getX(),
+      topLeft.getY(),
+      topRight.getX(),
+      topRight.getY(),
+      bottomRight.getX(),
+      bottomRight.getY(),
+      bottomLeft.getX(),
+      bottomLeft.getY()
+    );
   }
 
   /**
@@ -426,6 +421,6 @@ class ResultPointsAndTransitions {
   }
 
   public static resultPointsAndTransitionsComparator(o1: ResultPointsAndTransitions, o2: ResultPointsAndTransitions): number {
-      return o1.getTransitions() - o2.getTransitions();
+    return o1.getTransitions() - o2.getTransitions();
   }
 }

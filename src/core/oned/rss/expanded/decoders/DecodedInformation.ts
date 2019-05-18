@@ -1,11 +1,12 @@
-import DecodedObject from './DecodedObject'
-export default class DecodedInformation extends DecodedObject{
+import DecodedObject from './DecodedObject';
+
+export default class DecodedInformation extends DecodedObject {
 
   private readonly newString: string;
   private readonly remainingValue: number;
   private readonly remaining: boolean;
 
-  constructor(newPosition: number, newString: string,remainingValue?:number) {
+  constructor(newPosition: number, newString: string, remainingValue?: number) {
     super(newPosition);
     if (remainingValue) {
       this.remaining = true;
@@ -17,11 +18,11 @@ export default class DecodedInformation extends DecodedObject{
     this.newString = newString;
   }
 
-  getNewString(): string{
+  getNewString(): string {
     return this.newString;
   }
 
-  isRemaining(): boolean{
+  isRemaining(): boolean {
     return this.remaining;
   }
   getRemainingValue() {

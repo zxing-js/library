@@ -1,3 +1,10 @@
+import { BitArray } from '../../../../..';
+import AbstractExpandedDecoder from '../../../../../core/oned/rss/expanded/decoders/AbstractExpandedDecoder';
+import { assertEquals } from '../../../util/AssertUtils';
+import BinaryUtil from './BinaryUtil';
+
+
+
 /*
  * Copyright (C) 2010 ZXing authors
  *
@@ -24,27 +31,26 @@
  *   http://www.piramidepse.com/
  */
 
-package com.google.zxing.oned.rss.expanded;
+// package com.google.zxing.oned.rss.expanded;
 
-import com.google.zxing.common.BitArray;
-import com.google.zxing.oned.rss.expanded.decoders.AbstractExpandedDecoder;
+// import com.google.zxing.common.BitArray;
+// import com.google.zxing.oned.rss.expanded.decoders.AbstractExpandedDecoder;
 
-import org.junit.Assert;
-import org.junit.Test;
+// import org.junit.Assert;
+// import org.junit.Test;
 
 /**
  * @author Pablo Orduña, University of Deusto (pablo.orduna@deusto.es)
  * @author Eduardo Castillejo, University of Deusto (eduardo.castillejo@deusto.es)
  */
-public final class ExpandedInformationDecoderTest extends Assert {
+it('ExpandedInformationDecoderTest', () => {
 
-  @Test
-  public void testNoAi() throws Exception {
-    BitArray information = BinaryUtil.buildBitArrayFromString(" .......X ..XX..X. X.X....X .......X ....");
+  it('testNoAi', () => {
+    let information: BitArray = BinaryUtil.buildBitArrayFromString(' .......X ..XX..X. X.X....X .......X ....');
 
-    AbstractExpandedDecoder decoder = AbstractExpandedDecoder.createDecoder(information);
-    String decoded = decoder.parseInformation();
-    assertEquals("(10)12A", decoded);
-  }
+    let decoder: AbstractExpandedDecoder = AbstractExpandedDecoder.createDecoder(information);
+    let decoded: String = decoder.parseInformation();
+    assertEquals('(10)12A', decoded);
+  });
 
-}
+});

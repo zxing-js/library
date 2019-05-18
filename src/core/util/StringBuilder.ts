@@ -33,7 +33,7 @@ export default class StringBuilder {
 
     // @note helper method for RSS Expanded
     public setLengthToZero(): void {
-        this.value = "";
+        this.value = '';
     }
 
     public insert(n: number, c: string) {
