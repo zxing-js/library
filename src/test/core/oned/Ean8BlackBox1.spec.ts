@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2008 ZXing authors
  *
@@ -15,29 +14,25 @@
  * limitations under the License.
  */
 
-// package com.google.zxing.oned;
-
-import BarcodeFormat from '../../../../core/BarcodeFormat';
-import MultiFormatReader from '../../../../core/MultiFormatReader';
-import AbstractBlackBoxSpec from '../../common/AbstractBlackBox';
+import BarcodeFormat from '../../../core/BarcodeFormat';
+import MultiFormatReader from '../../../core/MultiFormatReader';
+import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 
 /**
  * @author Sean Owen
  */
-
-class RSS14BlackBox1Spec extends AbstractBlackBoxSpec {
+class Ean8BlackBox1Spec extends AbstractBlackBoxSpec {
 
     public constructor() {
-        super('src/test/resources/blackbox/rss14-1', new MultiFormatReader(), BarcodeFormat.RSS_14);
-        this.addTest(6, 6, 0.0);
-        this.addTest(6, 6, 180.0);
+        super('src/test/resources/blackbox/ean8-1', new MultiFormatReader(), BarcodeFormat.EAN_8);
+        this.addTest(8, 8, 0.0);
+        this.addTest(8, 8, 180.0);
     }
 }
 
-describe('RSS14BlackBox.1', () => {
+describe('Ean8BlackBox1Spec.1', () => {
     it('testBlackBox', done => {
-        const test = new RSS14BlackBox1Spec();
+        const test = new Ean8BlackBox1Spec();
         return test.testBlackBox(done);
     });
 });
-

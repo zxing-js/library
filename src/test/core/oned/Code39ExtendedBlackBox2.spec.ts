@@ -26,14 +26,14 @@ import Code39Reader from '../../../core/oned/Code39Reader';
  */
 class Code39ExtendedBlackBox2Spec extends AbstractBlackBoxSpec {
     public constructor() {
-        super('src/test/core/resources/blackbox/code39-2', new Code39Reader(false, true), BarcodeFormat.CODE_39);
+        super('src/test/resources/blackbox/code39-2', new Code39Reader(false, true), BarcodeFormat.CODE_39);
         this.addTest(2, 2, 0.0);
         this.addTest(2, 2, 180.0);
     }
 }
 
 describe('Code39ExtendedBlackBox.2', () => {
-    it('testBlackBox', async done => {
+    it('testBlackBox', done => {
         const test = new Code39ExtendedBlackBox2Spec();
         return test.testBlackBox(done);
     });

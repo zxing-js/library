@@ -26,14 +26,14 @@ import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
  */
 class Code128BlackBox1Spec extends AbstractBlackBoxSpec {
     public constructor() {
-        super('src/test/core/resources/blackbox/code128-1', new MultiFormatReader(), BarcodeFormat.CODE_128);
+        super('src/test/resources/blackbox/code128-1', new MultiFormatReader(), BarcodeFormat.CODE_128);
         this.addTest(6, 6, 0.0);
         this.addTest(6, 6, 180.0);
     }
 }
 
 describe('Code128BlackBox.1', () => {
-    it('testBlackBox', async done => {
+    it('testBlackBox', done => {
         const test = new Code128BlackBox1Spec();
         return test.testBlackBox(done);
     });

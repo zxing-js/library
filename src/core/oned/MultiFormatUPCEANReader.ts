@@ -22,6 +22,7 @@ import Result from '../Result';
 import OneDReader from './OneDReader';
 import UPCEANReader from './UPCEANReader';
 import EAN13Reader from './EAN13Reader';
+import EAN8Reader from './EAN8Reader';
 import NotFoundException from '../NotFoundException';
 
 /**
@@ -42,12 +43,17 @@ export default class MultiFormatUPCEANReader extends OneDReader {
             if (possibleFormats.indexOf(BarcodeFormat.EAN_13) > -1) {
                 readers.push(new EAN13Reader());
             }
-            // todo add UPC_A, EAN_8, UPC_E
+
+            if (possibleFormats.indexOf(BarcodeFormat.EAN_8) > -1) {
+                readers.push(new EAN8Reader());
+            }
+            // todo add UPC_A, UPC_E
         }
 
         if (readers.length === 0) {
             readers.push(new EAN13Reader());
-            // todo add UPC_A, EAN_8, UPC_E
+            readers.push(new EAN8Reader());
+            // todo add UPC_A, UPC_E
         }
 
         this.readers = readers;
