@@ -1,42 +1,44 @@
 export default class StringBuilder {
-    public constructor(private value: string = '') {
 
-    }
-    public append(s: string | number): StringBuilder {
-        if (typeof s === 'string') {
-            this.value += s.toString();
-        } else {
-            this.value += String.fromCharCode(s);
-        }
-        return this;
-    }
+  public constructor(private value: string = '') {}
 
-    public length(): number {
-        return this.value.length;
+  public append(s: string | number): StringBuilder {
+    if (typeof s === 'string') {
+      this.value += s.toString();
+    } else {
+      this.value += String.fromCharCode(s);
     }
+    return this;
+  }
 
-    public charAt(n: number): string {
-        return this.value.charAt(n);
-    }
+  public length(): number {
+    return this.value.length;
+  }
 
-    public deleteCharAt(n: number) {
-        this.value = this.value.substr(0, n) + this.value.substring(n + 1);
-    }
+  public charAt(n: number): string {
+    return this.value.charAt(n);
+  }
 
-    public setCharAt(n: number, c: string) {
-        this.value = this.value.substr(0, n) + c + this.value.substr(n + 1);
-    }
+  public deleteCharAt(n: number) {
+    this.value = this.value.substr(0, n) + this.value.substring(n + 1);
+  }
 
-    public toString(): string {
-        return this.value;
-    }
+  public setCharAt(n: number, c: string) {
+    this.value = this.value.substr(0, n) + c + this.value.substr(n + 1);
+  }
 
-    // @note helper method for RSS Expanded
-    public setLengthToZero(): void {
-        this.value = "";
-    }
+  /**
+   * @note helper method for RSS Expanded
+   */
+  public setLengthToZero(): void {
+      this.value = "";
+  }
 
-    public insert(n: number, c: string) {
-        this.value = this.value.substr(0, n) + c + this.value.substr(n + c.length);
-    }
+  public toString(): string {
+    return this.value;
+  }
+
+  public insert(n: number, c: string) {
+    this.value = this.value.substr(0, n) + c + this.value.substr(n + c.length);
+  }
 }

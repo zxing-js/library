@@ -213,7 +213,7 @@ abstract class AbstractBlackBoxSpec {
                         misreadCounts[x]++;
                     }
                 } catch (e) {
-                    console.log(`could not read at rotation ${rotation} failed with ${e.constructor.name}. Message: ${e.message}`);
+                    console.log(`      could not read at rotation ${rotation} failed with ${e.constructor.name}. Message: ${e.message}`);
                 }
                 try {
                     if (this.decode(bitmap, rotation, expectedText, expectedMetadata, true)) {
@@ -222,7 +222,7 @@ abstract class AbstractBlackBoxSpec {
                         tryHarderMisreadCounts[x]++;
                     }
                 } catch (e) {
-                    console.log(`could not read at rotation ${rotation} w/TH failed with ${e.constructor.name}.`);
+                    console.log(`        could not read at rotation ${rotation} w/TH failed with ${e.constructor.name}.`);
                 }
             }
         }

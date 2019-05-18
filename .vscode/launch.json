@@ -49,5 +49,21 @@
                 "webpack.config.test.js"
             ]
         },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "PDF417 Tests",
+            "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
+            "args": [
+                "./src/**/PDF417*.spec.ts",
+                "--colors",
+                "--timeout",
+                "999999",
+                "--webpack-env",
+                "dbg",
+                "--webpack-config",
+                "webpack.config.test.js"
+            ]
+        },
     ]
 }
