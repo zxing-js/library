@@ -153,6 +153,9 @@ export class BrowserCodeReader {
      */
     protected startDecodeFromStream(stream: MediaStream, callbackFn?: (...args: any[]) => any): void {
         this.stream = stream;
+        if (!this.videoElement && this.stream.active) {
+            return this.reset();
+        }
         this.bindVideoSrc(this.videoElement, stream);
         this.bindEvents(this.videoElement, callbackFn);
     }
@@ -438,8 +441,9 @@ export class BrowserCodeReader {
      */
     public reset() {
 
-        // stops the camera, preview and scan 🔴
+        window.clearTimeout(this.timeoutHandler);
 
+        // stops the camera, preview and scan 🔴
         this.stopStreams();
 
         if (undefined !== this.videoPlayEndedEventListener && undefined !== this.videoElement) {
