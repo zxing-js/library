@@ -236,10 +236,14 @@ export class BrowserCodeReader {
         this.videoElement = videoElement;
     }
 
-    protected getMediaElement(mediaElementId: string, type: string) {
+    /**
+     * Searches and validates a media element.
+     */
+    protected getMediaElement(mediaElementId: string, type: string): HTMLVisualMediaElement {
+
         const mediaElement = document.getElementById(mediaElementId);
 
-        if (null === mediaElement) {
+        if (!mediaElement) {
             throw new ArgumentException(`element with id '${mediaElementId}' not found`);
         }
 
@@ -247,7 +251,7 @@ export class BrowserCodeReader {
             throw new ArgumentException(`element with id '${mediaElementId}' must be an ${type} element`);
         }
 
-        return mediaElement;
+        return <HTMLVisualMediaElement>mediaElement;
     }
 
     /**
@@ -260,28 +264,77 @@ export class BrowserCodeReader {
      * @memberOf BrowserCodeReader
      */
     public decodeFromImage(imageElement?: string | HTMLImageElement, imageUrl?: string): Promise<Result> {
-        this.reset();
 
         if (undefined === imageElement && undefined === imageUrl) {
             throw new ArgumentException('either imageElement with a src set or an url must be provided');
         }
 
-        this.prepareImageElement(imageElement);
+        if (imageUrl && !imageElement) {
+            return this.decodeFromImageUrl(imageUrl);
+        }
 
-        return new Promise<Result>((resolve, reject) => {
-            if (undefined !== imageUrl) {
-                this.imageLoadedEventListener = () => {
-                    this.decodeOnce(resolve, reject, false, true);
-                };
-                this.imageElement.addEventListener('load', this.imageLoadedEventListener);
+        return this.decodeFromImageElement(imageElement, imageUrl);
+    }
 
-                this.imageElement.src = imageUrl;
-            } else if (this.isImageLoaded(this.imageElement)) {
-                this.decodeOnce(resolve, reject, false, true);
-            } else {
-                throw new ArgumentException(`either src or a loaded img should be provided`);
-            }
-        });
+    /**
+     * Decodes something from an image HTML element.
+     */
+    public decodeFromImageElement(imageElement: string | HTMLImageElement, imageUrl: string) {
+        return new Promise<Result>((resolve, reject) => this._decodeFromImageElement(imageElement, resolve, reject));
+    }
+
+    /**
+     * Promise constructor.
+     */
+    private _decodeFromImageElement(imageElement: string | HTMLImageElement, resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) {
+
+        if (!imageElement) {
+            throw new ArgumentException('An image element must be provided.');
+        }
+
+        this.reset();
+
+        const image = this.prepareImageElement(imageElement);
+
+        if (this.isImageLoaded(image)) {
+            this.decodeOnce(resolve, reject, false, true);
+        } else {
+            this._decodeOnLoadImage(image, resolve, reject);
+        }
+
+        this.imageElement = image;
+    }
+
+    /**
+     * Decodes an image from a URL.
+     */
+    public decodeFromImageUrl(imageUrl?: string): Promise<Result> {
+        return new Promise<Result>((resolve, reject) => this._decodeFromImageUrl(imageUrl, resolve, reject));
+    }
+
+    /**
+     * Promise constructor.
+     */
+    private _decodeFromImageUrl(imageUrl: string, resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) {
+
+        if (!imageUrl) {
+            throw new ArgumentException('An URL must be provided.');
+        }
+
+        this.reset();
+
+        const image = this.prepareImageElement();
+
+        this._decodeOnLoadImage(image, resolve, reject);
+
+        image.src = imageUrl;
+
+        this.imageElement = image;
+    }
+
+    private _decodeOnLoadImage(imageElement: HTMLImageElement, resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) {
+        this.imageLoadedEventListener = () => this.decodeOnce(resolve, reject, false, true);
+        imageElement.addEventListener('load', this.imageLoadedEventListener);
     }
 
     protected isImageLoaded(img: HTMLImageElement) {
@@ -304,7 +357,7 @@ export class BrowserCodeReader {
         return true;
     }
 
-    protected prepareImageElement(imageElement?: string | HTMLImageElement) {
+    protected prepareImageElement(imageElement?: string | HTMLImageElement): HTMLImageElement {
 
         if (typeof imageElement === 'undefined') {
             imageElement = document.createElement('img');
@@ -316,7 +369,7 @@ export class BrowserCodeReader {
             imageElement = <HTMLImageElement>this.getMediaElement(imageElement, 'img');
         }
 
-        this.imageElement = imageElement;
+        return imageElement;
     }
 
     protected decodeOnceWithDelay(resolve: (result: Result) => any, reject: (error: any) => any): void {
@@ -344,12 +397,14 @@ export class BrowserCodeReader {
     /**
      * Gets the BinaryBitmap for ya! (and decodes it)
      */
-    protected decode(): Result {
+    protected decode(element?: HTMLVisualMediaElement): Result {
 
-      // get binary bitmap for decode function
-      const binaryBitmap = this.createBinaryBitmap(this.videoElement || this.imageElement);
+        const mediaElement = element || this.videoElement || this.imageElement;
 
-      return this.decodeBitmap(binaryBitmap);
+        // get binary bitmap for decode function
+        const binaryBitmap = this.createBinaryBitmap(mediaElement);
+
+        return this.decodeBitmap(binaryBitmap);
     }
 
     /**
@@ -359,16 +414,16 @@ export class BrowserCodeReader {
      */
     protected createBinaryBitmap(mediaElement: HTMLVisualMediaElement): BinaryBitmap {
 
-      if (undefined === this.canvasElementContext) {
-        this.prepareCaptureCanvas();
-      }
+        if (undefined === this.canvasElementContext) {
+            this.prepareCaptureCanvas();
+        }
 
-      this.drawImageOnCanvas(this.canvasElementContext, mediaElement);
+        this.drawImageOnCanvas(this.canvasElementContext, mediaElement);
 
-      const luminanceSource = new HTMLCanvasElementLuminanceSource(this.canvasElement);
-      const hybridBinarizer = new HybridBinarizer(luminanceSource);
+        const luminanceSource = new HTMLCanvasElementLuminanceSource(this.canvasElement);
+        const hybridBinarizer = new HybridBinarizer(luminanceSource);
 
-      return new BinaryBitmap(hybridBinarizer);
+        return new BinaryBitmap(hybridBinarizer);
     }
 
     /**
@@ -382,7 +437,7 @@ export class BrowserCodeReader {
      * Call the encapsulated readers decode
      */
     protected decodeBitmap(binaryBitmap: BinaryBitmap): Result {
-      return this.reader.decode(binaryBitmap, this.hints);
+        return this.reader.decode(binaryBitmap, this.hints);
     }
 
     /**
@@ -426,12 +481,10 @@ export class BrowserCodeReader {
      * Stops the continuous scan and cleans the stream.
      */
     protected stopStreams(): void {
-
-    if (this.stream) {
-        this.stream.getVideoTracks().forEach(t => t.stop());
-        this.stream = undefined;
-      }
-
+        if (this.stream) {
+            this.stream.getVideoTracks().forEach(t => t.stop());
+            this.stream = undefined;
+        }
     }
 
     /**
@@ -444,26 +497,70 @@ export class BrowserCodeReader {
         window.clearTimeout(this.timeoutHandler);
 
         // stops the camera, preview and scan 🔴
+
         this.stopStreams();
 
-        if (undefined !== this.videoPlayEndedEventListener && undefined !== this.videoElement) {
+        // clean and forget about HTML elements
+
+        this._destroyVideoElement();
+        this._destroyImageElement();
+        this._destroyCanvasElement();
+    }
+
+    private _destroyVideoElement(): void {
+
+        if (!this.videoElement) {
+            return;
+        }
+
+        // first gives freedon to the element 🕊
+
+        if (typeof this.videoPlayEndedEventListener !== 'undefined') {
             this.videoElement.removeEventListener('ended', this.videoPlayEndedEventListener);
         }
-        if (undefined !== this.videoPlayingEventListener && undefined !== this.videoElement) {
+
+        if (typeof this.videoPlayingEventListener !== 'undefined') {
             this.videoElement.removeEventListener('playing', this.videoPlayingEventListener);
         }
-        if (undefined !== this.videoElement) {
-            this.unbindVideoSrc(this.videoElement);
-            this.videoElement = undefined;
+
+        if (typeof this.videoLoadedMetadataEventListener !== 'undefined') {
+            this.videoElement.removeEventListener('loadedmetadata', this.videoLoadedMetadataEventListener);
         }
-        if (undefined !== this.videoPlayEndedEventListener && undefined !== this.imageElement) {
+
+        // then forgets about that element 😢
+
+        this.unbindVideoSrc(this.videoElement);
+
+        this.videoElement.removeAttribute('src');
+        this.videoElement = undefined;
+    }
+
+    private _destroyImageElement(): void {
+
+        if (!this.imageElement) {
+            return;
+        }
+
+        // first gives freedon to the element 🕊
+
+        if (undefined !== this.imageLoadedEventListener) {
             this.imageElement.removeEventListener('load', this.imageLoadedEventListener);
         }
-        if (undefined !== this.imageElement) {
-            this.imageElement.src = undefined;
-            this.imageElement.removeAttribute('src');
-            this.imageElement = undefined;
-        }
+
+        // then forget about that element 😢
+
+        this.imageElement.src = undefined;
+        this.imageElement.removeAttribute('src');
+        this.imageElement = undefined;
+    }
+
+    /**
+     * Cleans canvas references 🖌
+     */
+    private _destroyCanvasElement(): void {
+
+        // then forget about that element 😢
+
         this.canvasElementContext = undefined;
         this.canvasElement = undefined;
     }
@@ -475,14 +572,14 @@ export class BrowserCodeReader {
      * @param stream
      */
     public bindVideoSrc(videoElement: HTMLVideoElement, stream: MediaStream): void {
-      // Older browsers may not have `srcObject`
-      try {
-        // @NOTE Throws Exception if interrupted by a new loaded request
-        videoElement.srcObject = stream;
-      } catch (err) {
-        // @NOTE Avoid using this in new browsers, as it is going away.
-        videoElement.src = window.URL.createObjectURL(stream);
-      }
+        // Older browsers may not have `srcObject`
+        try {
+            // @NOTE Throws Exception if interrupted by a new loaded request
+            videoElement.srcObject = stream;
+        } catch (err) {
+            // @NOTE Avoid using this in new browsers, as it is going away.
+            videoElement.src = window.URL.createObjectURL(stream);
+        }
     }
 
     /**
@@ -491,10 +588,10 @@ export class BrowserCodeReader {
      * @param videoElement
      */
     public unbindVideoSrc(videoElement: HTMLVideoElement): void {
-      try {
-        videoElement.srcObject = null;
-      } catch (err) {
-        videoElement.src = '';
-      }
+        try {
+            videoElement.srcObject = null;
+        } catch (err) {
+            videoElement.src = '';
+        }
     }
 }
