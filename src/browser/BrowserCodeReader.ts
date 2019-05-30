@@ -97,13 +97,9 @@ export class BrowserCodeReader {
     public constructor(protected readonly reader: Reader, protected timeBetweenScansMillis: number = 500, protected hints?: Map<DecodeHintType, any>) { }
 
     /**
-     * Obtain the list of available devices with type 'videoinput'.
-     *
-     * @returns {Promise<VideoInputDevice[]>} an array of available video input devices
-     *
-     * @memberOf BrowserCodeReader
+     * Lists all the available video input devices.
      */
-    public async getVideoInputDevices(): Promise<VideoInputDevice[]> {
+    public async listVideoInputDevices(): Promise<MediaDeviceInfo[]> {
 
         if (!this.hasNavigator) {
             throw new Error('Can\'t enumerate devices, navigator is not present.');
@@ -115,59 +111,71 @@ export class BrowserCodeReader {
 
         const devices = await navigator.mediaDevices.enumerateDevices();
 
-        const sources: VideoInputDevice[] = [];
+        const videoDevices: MediaDeviceInfo[] = [];
 
         for (const device of devices) {
 
-            let deviceKind = device.kind;
-            let deviceId = device.deviceId || (<any>device).id;
+            const kind = <string>device.kind === 'video' ? 'videoinput' : device.kind;
 
-            if (<string>deviceKind === 'video') {
-                deviceKind = 'videoinput';
+            if (kind !== 'videoinput') {
+                continue;
             }
 
-            if (deviceKind === 'videoinput') {
-                const label = device.label || `Video source ${sources.length + 1}`;
-                const videoIn = new VideoInputDevice(deviceId, label);
-                sources.push(videoIn);
-            }
+            const deviceId = device.deviceId || (<any>device).id;
+            const label = device.label || `Video device ${videoDevices.length + 1}`;
+            const groupId = device.groupId;
+
+            const videoDevice: MediaDeviceInfo = { deviceId, label, kind, groupId };
+
+            videoDevices.push(videoDevice);
         }
 
-        return sources;
+        return videoDevices;
+    }
+
+
+    /**
+     * Obtain the list of available devices with type 'videoinput'.
+     *
+     * @returns {Promise<VideoInputDevice[]>} an array of available video input devices
+     *
+     * @memberOf BrowserCodeReader
+     *
+     * @deprecated Use `discoverVideoInputDevices` instead.
+     */
+    public async getVideoInputDevices(): Promise<VideoInputDevice[]> {
+
+        const devices = await this.listVideoInputDevices();
+
+        return devices.map(d => new VideoInputDevice(d.deviceId, d.label));
     }
 
     /**
      * Decodes the barcode from the device specified by deviceId while showing the video in the specified video element.
      *
      * @param {string} [deviceId] the id of one of the devices obtained after calling getVideoInputDevices. Can be undefined, in this case it will decode from one of the available devices, preffering the main camera (environment facing) if available.
-     * @param {string|HTMLVideoElement} [videoElement] the video element in page where to show the video while decoding. Can be either an element id or directly an HTMLVideoElement. Can be undefined, in which case no video will be shown.
+     * @param {string|HTMLVideoElement} [video] the video element in page where to show the video while decoding. Can be either an element id or directly an HTMLVideoElement. Can be undefined, in which case no video will be shown.
      * @returns {Promise<Result>} The decoding result.
      *
      * @memberOf BrowserCodeReader
      */
-    public decodeFromInputVideoDevice(deviceId?: string, videoElement?: string | HTMLVideoElement): Promise<Result> {
+    public decodeFromInputVideoDevice(deviceId?: string, videoSource?: string | HTMLVideoElement): Promise<Result> {
 
         this.reset();
 
-        this.prepareVideoElement(videoElement);
+        let videoConstraints: MediaTrackConstraints;
 
-        let constraints: MediaStreamConstraints;
-        if (undefined === deviceId) {
-            constraints = {
-                video: { facingMode: 'environment' }
-            };
+        if (!deviceId) {
+            videoConstraints = { facingMode: 'environment' };
         } else {
-            constraints = {
-                video: { deviceId: { exact: deviceId } }
-            };
+            videoConstraints = { deviceId: { exact: deviceId } };
         }
 
+        const constraints: MediaStreamConstraints = { video: videoConstraints };
+
         return new Promise<Result>((resolve, reject) => {
-
-            const callback = () => this.decodeOnceWithDelay(resolve, reject);
-
             navigator.mediaDevices.getUserMedia(constraints)
-                .then(stream => this.startDecodeFromStream(stream, callback))
+                .then(stream => this.startDecodeFromStream(stream, videoSource, resolve, reject))
                 .catch(error => reject(error));
         });
     }
@@ -176,17 +184,23 @@ export class BrowserCodeReader {
      * Sets the new stream and request a new decoding-with-delay.
      *
      * @param stream The stream to be shown in the video element.
-     * @param callbackFn A callback for the decode method.
+     * @param decodeFn A callback for the decode method.
      *
      * @todo Return Promise<Result>
      */
-    protected startDecodeFromStream(stream: MediaStream, callbackFn?: (...args: any[]) => any): void {
+    protected startDecodeFromStream(stream: MediaStream, videoSource: string | HTMLVideoElement, resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void): void {
+
+        this.reset();
+
+        const videoElement = this.prepareVideoElement(videoSource);
+
+        const decodeFn = () => this.decodeWithRetryAndDelay(videoElement, resolve, reject);
+
+        this.bindVideoSrc(videoElement, stream);
+        this.bindEvents(videoElement, decodeFn);
+
+        this.videoElement = videoElement;
         this.stream = stream;
-        if (!this.videoElement && this.stream.active) {
-            return this.reset();
-        }
-        this.bindVideoSrc(this.videoElement, stream);
-        this.bindEvents(this.videoElement, callbackFn);
     }
 
     /**
@@ -216,27 +230,32 @@ export class BrowserCodeReader {
      * @memberOf BrowserCodeReader
      */
     public decodeFromVideoSource(videoUrl: string, videoElement?: string | HTMLVideoElement): Promise<Result> {
+        return new Promise<Result>((resolve, reject) => this._decodeFromVideoSource(videoElement, reject, resolve, videoUrl));
+    }
+
+    /**
+     *
+     */
+    private _decodeFromVideoSource(videoSource: string | HTMLVideoElement, reject: (reason?: any) => void, resolve: (value?: Result | PromiseLike<Result>) => void, videoUrl: string) {
+
         this.reset();
 
-        this.prepareVideoElement(videoElement);
+        const videoElement = this.prepareVideoElement(videoSource);
 
-        return new Promise<Result>((resolve, reject) => {
+        this.videoPlayEndedEventListener = () => {
+            this.stopStreams();
+            reject(new NotFoundException('Video stream has ended before any code could be detected.'));
+        };
 
-            this.videoPlayEndedEventListener = () => {
-                this.stopStreams();
-                reject(new NotFoundException());
-            };
+        videoElement.addEventListener('ended', this.videoPlayEndedEventListener);
 
-            this.videoElement.addEventListener('ended', this.videoPlayEndedEventListener);
+        this.videoPlayingEventListener = () => this.decodeWithRetryAndDelay(videoElement, resolve, reject);
 
-            this.videoPlayingEventListener = () => {
-                this.decodeOnceWithDelay(resolve, reject);
-            };
-            this.videoElement.addEventListener('playing', this.videoPlayingEventListener);
+        videoElement.addEventListener('playing', this.videoPlayingEventListener);
 
-            this.videoElement.setAttribute('autoplay', 'true');
-            this.videoElement.setAttribute('src', videoUrl);
-        });
+        videoElement.setAttribute('src', videoUrl);
+
+        this.videoElement = videoElement;
     }
 
     /**
@@ -244,7 +263,7 @@ export class BrowserCodeReader {
      *
      * @param videoElement The HTMLVideoElement to be set.
      */
-    protected prepareVideoElement(videoElement?: HTMLVideoElement | string): void {
+    protected prepareVideoElement(videoElement?: HTMLVideoElement | string): HTMLVideoElement {
 
         if (!videoElement && typeof document !== 'undefined') {
             videoElement = document.createElement('video');
@@ -260,9 +279,8 @@ export class BrowserCodeReader {
         videoElement.setAttribute('autoplay', 'true');
         videoElement.setAttribute('muted', 'true');
         videoElement.setAttribute('playsinline', 'true');
-        videoElement.setAttribute('autofocus', 'true');
 
-        this.videoElement = videoElement;
+        return videoElement;
     }
 
     /**
@@ -326,7 +344,7 @@ export class BrowserCodeReader {
         const image = this.prepareImageElement(imageElement);
 
         if (this.isImageLoaded(image)) {
-            this.decodeOnce(resolve, reject, false, true);
+            this.decodeWithRetry(image, resolve, reject, false, true);
         } else {
             this._decodeOnLoadImage(image, resolve, reject);
         }
@@ -362,7 +380,7 @@ export class BrowserCodeReader {
     }
 
     private _decodeOnLoadImage(imageElement: HTMLImageElement, resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) {
-        this.imageLoadedEventListener = () => this.decodeOnce(resolve, reject, false, true);
+        this.imageLoadedEventListener = () => this.decodeWithRetry(imageElement, resolve, reject, false, true);
         imageElement.addEventListener('load', this.imageLoadedEventListener);
     }
 
@@ -401,24 +419,26 @@ export class BrowserCodeReader {
         return imageElement;
     }
 
-    protected decodeOnceWithDelay(resolve: (result: Result) => any, reject: (error: any) => any): void {
-        this.timeoutHandler = window.setTimeout(this.decodeOnce.bind(this, resolve, reject), this.timeBetweenScansMillis);
+    private decodeWithRetryAndDelay(element: HTMLVisualMediaElement, resolve: (result: Result) => any, reject: (error: any) => any): void {
+        this.timeoutHandler = window.setTimeout(() => this.decodeWithRetry(element, resolve, reject), this.timeBetweenScansMillis);
     }
 
-    protected decodeOnce(resolve: (result: Result) => any, reject: (error: any) => any, retryIfNotFound: boolean = true, retryIfChecksumOrFormatError: boolean = true): void {
+    private decodeWithRetry(element: HTMLVisualMediaElement, resolve: (result: Result) => any, reject: (error: any) => any, retryIfNotFound = true, retryIfChecksumOrFormatError = true): void {
 
         try {
-            const result = this.decode();
+            const result = this.decode(element);
             resolve(result);
-        } catch (re) {
-            if (retryIfNotFound && re instanceof NotFoundException) {
-                // Not found, trying again
-                this.decodeOnceWithDelay(resolve, reject);
-            } else if (retryIfChecksumOrFormatError && (re instanceof ChecksumException || re instanceof FormatException)) {
-                // checksum or format error, trying again
-                this.decodeOnceWithDelay(resolve, reject);
+        } catch (e) {
+
+            const ifNotFound = retryIfNotFound && e instanceof NotFoundException;
+            const isChecksumOrFormatError = e instanceof ChecksumException || e instanceof FormatException;
+            const ifChecksumOrFormat = isChecksumOrFormatError && retryIfChecksumOrFormatError;
+
+            if (ifNotFound || ifChecksumOrFormat) {
+                // trying again
+                this.decodeWithRetryAndDelay(element, resolve, reject);
             } else {
-                reject(re);
+                reject(e);
             }
         }
     }
@@ -426,12 +446,10 @@ export class BrowserCodeReader {
     /**
      * Gets the BinaryBitmap for ya! (and decodes it)
      */
-    protected decode(element?: HTMLVisualMediaElement): Result {
-
-        const mediaElement = element || this.videoElement || this.imageElement;
+    protected decode(element: HTMLVisualMediaElement): Result {
 
         // get binary bitmap for decode function
-        const binaryBitmap = this.createBinaryBitmap(mediaElement);
+        const binaryBitmap = this.createBinaryBitmap(element);
 
         return this.decodeBitmap(binaryBitmap);
     }
