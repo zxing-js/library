@@ -19,17 +19,7 @@ type HTMLVisualMediaElement = HTMLVideoElement | HTMLImageElement;
  */
 export class BrowserCodeReader {
 
-    /**
-     * The HTML video element, used to display the camera stream.
-     */
-    protected videoElement: HTMLVideoElement;
-
-    /**
-     * The HTML image element, used as a fallback for the video element when decoding.
-     */
-    protected imageElement: HTMLImageElement;
-
-    /**
+  /**
      * The HTML canvas element, used to draw the video or image's frame for decoding.
      */
     protected canvasElement: HTMLCanvasElement;
@@ -38,12 +28,31 @@ export class BrowserCodeReader {
      */
     protected canvasElementContext: CanvasRenderingContext2D;
 
-    protected timeoutHandler: number;
+    /**
+     * The HTML image element, used as a fallback for the video element when decoding.
+     */
+    protected imageElement: HTMLImageElement;
+
+    /**
+     * Should contain the current registered listener for image loading,
+     * used to unregister that listener when needed.
+     */
+    protected imageLoadedEventListener: EventListener;
 
     /**
      * The stream output from camera.
      */
     protected stream: MediaStream;
+
+    /**
+     * Some timeout's Id.
+     */
+    protected timeoutHandler: number;
+
+    /**
+     * The HTML video element, used to display the camera stream.
+     */
+    protected videoElement: HTMLVideoElement;
 
     /**
      * Should contain the current registered listener for video loaded-metadata,
@@ -62,12 +71,6 @@ export class BrowserCodeReader {
      * used to unregister that listener when needed.
      */
     protected videoPlayingEventListener: EventListener;
-
-    /**
-     * Should contain the current registered listener for image loading,
-     * used to unregister that listener when needed.
-     */
-    protected imageLoadedEventListener: EventListener;
 
     /**
      * Creates an instance of BrowserCodeReader.
