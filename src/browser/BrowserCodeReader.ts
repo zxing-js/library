@@ -19,7 +19,22 @@ type HTMLVisualMediaElement = HTMLVideoElement | HTMLImageElement;
  */
 export class BrowserCodeReader {
 
-  /**
+    /**
+     * If navigator is present.
+     */
+    public get hasNavigator() {
+        return typeof navigator !== 'undefined';
+    }
+
+    public get isMediaDevicesSuported() {
+        return this.hasNavigator && !!navigator.mediaDevices;
+    }
+
+    public get canEnumerateDevices() {
+        return !!(this.isMediaDevicesSuported && navigator.mediaDevices.enumerateDevices);
+    }
+
+    /**
      * The HTML canvas element, used to draw the video or image's frame for decoding.
      */
     protected canvasElement: HTMLCanvasElement;
@@ -88,37 +103,50 @@ export class BrowserCodeReader {
      *
      * @memberOf BrowserCodeReader
      */
-    public getVideoInputDevices(): Promise<VideoInputDevice[]> {
-        return new Promise<VideoInputDevice[]>((resolve, reject) => {
-            navigator.mediaDevices.enumerateDevices()
-                .then((devices: MediaDeviceInfo[]) => {
-                    const sources = new Array<VideoInputDevice>();
-                    let c = 0;
-                    for (let i = 0, length = devices.length; i !== length; i++) {
-                        const device = devices[i];
-                        if (device.kind === 'videoinput') {
-                            sources.push(new VideoInputDevice(device.deviceId, device.label || `Video source ${c}`));
-                            c++;
-                        }
-                    }
-                    resolve(sources);
-                })
-                .catch((err: any) => {
-                    reject(err);
-                });
-        });
+    public async getVideoInputDevices(): Promise<VideoInputDevice[]> {
+
+        if (!this.hasNavigator) {
+            throw new Error('Can\'t enumerate devices, navigator is not present.');
+        }
+
+        if (!this.canEnumerateDevices) {
+            throw new Error('Can\'t enumerate devices, method not supported.');
+        }
+
+        const devices = await navigator.mediaDevices.enumerateDevices();
+
+        const sources: VideoInputDevice[] = [];
+
+        for (const device of devices) {
+
+            let deviceKind = device.kind;
+            let deviceId = device.deviceId || (<any>device).id;
+
+            if (<string>deviceKind === 'video') {
+                deviceKind = 'videoinput';
+            }
+
+            if (deviceKind === 'videoinput') {
+                const label = device.label || `Video source ${sources.length + 1}`;
+                const videoIn = new VideoInputDevice(deviceId, label);
+                sources.push(videoIn);
+            }
+        }
+
+        return sources;
     }
 
     /**
      * Decodes the barcode from the device specified by deviceId while showing the video in the specified video element.
      *
      * @param {string} [deviceId] the id of one of the devices obtained after calling getVideoInputDevices. Can be undefined, in this case it will decode from one of the available devices, preffering the main camera (environment facing) if available.
-     * @param {(string|HTMLVideoElement)} [videoElement] the video element in page where to show the video while decoding. Can be either an element id or directly an HTMLVideoElement. Can be undefined, in which case no video will be shown.
+     * @param {string|HTMLVideoElement} [videoElement] the video element in page where to show the video while decoding. Can be either an element id or directly an HTMLVideoElement. Can be undefined, in which case no video will be shown.
      * @returns {Promise<Result>} The decoding result.
      *
      * @memberOf BrowserCodeReader
      */
     public decodeFromInputVideoDevice(deviceId?: string, videoElement?: string | HTMLVideoElement): Promise<Result> {
+
         this.reset();
 
         this.prepareVideoElement(videoElement);
