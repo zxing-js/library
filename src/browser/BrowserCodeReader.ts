@@ -37,11 +37,11 @@ export class BrowserCodeReader {
     /**
      * The HTML canvas element, used to draw the video or image's frame for decoding.
      */
-    protected canvasElement: HTMLCanvasElement;
+    protected captureCanvas: HTMLCanvasElement;
     /**
      * The HTML canvas element context.
      */
-    protected canvasElementContext: CanvasRenderingContext2D;
+    protected captureCanvasContext: CanvasRenderingContext2D;
 
     /**
      * The HTML image element, used as a fallback for the video element when decoding.
@@ -164,13 +164,11 @@ export class BrowserCodeReader {
 
         return new Promise<Result>((resolve, reject) => {
 
-            const callback = () => {
-                this.decodeOnceWithDelay(resolve, reject);
-            };
+            const callback = () => this.decodeOnceWithDelay(resolve, reject);
 
             navigator.mediaDevices.getUserMedia(constraints)
-                .then((stream: MediaStream) => this.startDecodeFromStream(stream, callback))
-                .catch((error) => reject(error));
+                .then(stream => this.startDecodeFromStream(stream, callback))
+                .catch(error => reject(error));
         });
     }
 
@@ -445,16 +443,41 @@ export class BrowserCodeReader {
      */
     protected createBinaryBitmap(mediaElement: HTMLVisualMediaElement): BinaryBitmap {
 
-        if (undefined === this.canvasElementContext) {
-            this.prepareCaptureCanvas();
-        }
+        const ctx = this.getCaptureCanvasContext();
 
-        this.drawImageOnCanvas(this.canvasElementContext, mediaElement);
+        this.drawImageOnCanvas(ctx, mediaElement);
 
-        const luminanceSource = new HTMLCanvasElementLuminanceSource(this.canvasElement);
+        const luminanceSource = new HTMLCanvasElementLuminanceSource(ctx.canvas);
         const hybridBinarizer = new HybridBinarizer(luminanceSource);
 
         return new BinaryBitmap(hybridBinarizer);
+    }
+
+    /**
+     *
+     */
+    protected getCaptureCanvasContext() {
+
+        if (!this.captureCanvasContext) {
+            const elem = this.getCaptureCanvas();
+            const ctx = elem.getContext('2d');
+            this.captureCanvasContext = ctx;
+        }
+
+        return this.captureCanvasContext;
+    }
+
+    /**
+     *
+     */
+    protected getCaptureCanvas(): HTMLCanvasElement {
+
+        if (!this.captureCanvas) {
+            const elem = this.createCaptureCanvas();
+            this.captureCanvas = elem;
+        }
+
+        return this.captureCanvas;
     }
 
     /**
@@ -474,14 +497,11 @@ export class BrowserCodeReader {
     /**
      * 🖌 Prepares the canvas for capture and scan frames.
      */
-    protected prepareCaptureCanvas(): void {
+    protected createCaptureCanvas(): HTMLCanvasElement {
 
         if (typeof document === 'undefined') {
-
-            this.canvasElement = undefined;
-            this.canvasElementContext = undefined;
-
-            return;
+            this._destroyCaptureCanvas();
+            return null;
         }
 
         const canvasElement = document.createElement('canvas');
@@ -504,8 +524,7 @@ export class BrowserCodeReader {
         canvasElement.width = width;
         canvasElement.height = height;
 
-        this.canvasElement = canvasElement;
-        this.canvasElementContext = canvasElement.getContext('2d');
+        return canvasElement;
     }
 
     /**
@@ -535,7 +554,7 @@ export class BrowserCodeReader {
 
         this._destroyVideoElement();
         this._destroyImageElement();
-        this._destroyCanvasElement();
+        this._destroyCaptureCanvas();
     }
 
     private _destroyVideoElement(): void {
@@ -562,7 +581,6 @@ export class BrowserCodeReader {
 
         this.unbindVideoSrc(this.videoElement);
 
-        this.videoElement.removeAttribute('src');
         this.videoElement = undefined;
     }
 
@@ -588,12 +606,12 @@ export class BrowserCodeReader {
     /**
      * Cleans canvas references 🖌
      */
-    private _destroyCanvasElement(): void {
+    private _destroyCaptureCanvas(): void {
 
         // then forget about that element 😢
 
-        this.canvasElementContext = undefined;
-        this.canvasElement = undefined;
+        this.captureCanvasContext = undefined;
+        this.captureCanvas = undefined;
     }
 
     /**
@@ -619,10 +637,13 @@ export class BrowserCodeReader {
      * @param videoElement
      */
     public unbindVideoSrc(videoElement: HTMLVideoElement): void {
+
         try {
             videoElement.srcObject = null;
         } catch (err) {
             videoElement.src = '';
         }
+
+        this.videoElement.removeAttribute('src');
     }
 }
