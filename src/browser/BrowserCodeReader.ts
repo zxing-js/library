@@ -159,7 +159,7 @@ export class BrowserCodeReader {
      *
      * @memberOf BrowserCodeReader
      */
-    public decodeFromInputVideoDevice(deviceId?: string, videoSource?: string | HTMLVideoElement): Promise<Result> {
+    public async decodeFromInputVideoDevice(deviceId?: string, videoSource?: string | HTMLVideoElement): Promise<Result> {
 
         this.reset();
 
@@ -173,11 +173,10 @@ export class BrowserCodeReader {
 
         const constraints: MediaStreamConstraints = { video: videoConstraints };
 
-        return new Promise<Result>((resolve, reject) => {
-            navigator.mediaDevices.getUserMedia(constraints)
-                .then(stream => this.startDecodeFromStream(stream, videoSource, resolve, reject))
-                .catch(error => reject(error));
-        });
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        const video = await this.attachStreamToVideo(stream, videoSource);
+
+        return new Promise((resolve, reject) => this.decodeWithRetryAndDelay(video, resolve, reject));
     }
 
     /**
@@ -188,19 +187,28 @@ export class BrowserCodeReader {
      *
      * @todo Return Promise<Result>
      */
-    protected startDecodeFromStream(stream: MediaStream, videoSource: string | HTMLVideoElement, resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void): void {
+    protected async attachStreamToVideo(stream: MediaStream, videoSource: string | HTMLVideoElement): Promise<HTMLVideoElement> {
 
         this.reset();
 
         const videoElement = this.prepareVideoElement(videoSource);
 
-        const decodeFn = () => this.decodeWithRetryAndDelay(videoElement, resolve, reject);
-
-        this.bindVideoSrc(videoElement, stream);
-        this.bindEvents(videoElement, decodeFn);
+        this.addVideoSource(videoElement, stream);
 
         this.videoElement = videoElement;
         this.stream = stream;
+
+        await this.playVideoAsync(videoElement);
+
+        return videoElement;
+    }
+
+    /**
+     *
+     * @param videoElement
+     */
+    playVideoAsync(videoElement: HTMLVideoElement): Promise<void> {
+        return new Promise((resolve, reject) => this.playVideo(videoElement, () => resolve()));
     }
 
     /**
@@ -209,11 +217,9 @@ export class BrowserCodeReader {
      * @param videoElement
      * @param callbackFn
      */
-    protected bindEvents(videoElement: HTMLVideoElement, listener: EventListener): void {
+    protected playVideo(videoElement: HTMLVideoElement, playCallback: EventListener): void {
 
-        this.videoPlayingEventListener = listener;
-
-        videoElement.addEventListener('playing', this.videoPlayingEventListener);
+        videoElement.addEventListener('playing', playCallback);
 
         this.videoLoadedMetadataEventListener = () => videoElement.play();
 
@@ -261,18 +267,20 @@ export class BrowserCodeReader {
     /**
      * Sets a HTMLVideoElement for scanning or creates a new one.
      *
-     * @param videoElement The HTMLVideoElement to be set.
+     * @param videoSrc The HTMLVideoElement to be set.
      */
-    protected prepareVideoElement(videoElement?: HTMLVideoElement | string): HTMLVideoElement {
+    protected prepareVideoElement(videoSrc?: HTMLVideoElement | string): HTMLVideoElement {
 
-        if (!videoElement && typeof document !== 'undefined') {
+        let videoElement: HTMLVideoElement;
+
+        if (!videoSrc && typeof document !== 'undefined') {
             videoElement = document.createElement('video');
             videoElement.width = 200;
             videoElement.height = 200;
         }
 
-        if (typeof videoElement === 'string') {
-            videoElement = <HTMLVideoElement>this.getMediaElement(videoElement, 'video');
+        if (typeof videoSrc === 'string') {
+            videoElement = <HTMLVideoElement>this.getMediaElement(videoSrc, 'video');
         }
 
         // Needed for iOS 11
@@ -404,16 +412,18 @@ export class BrowserCodeReader {
         return true;
     }
 
-    protected prepareImageElement(imageElement?: string | HTMLImageElement): HTMLImageElement {
+    protected prepareImageElement(imageSrc?: HTMLImageElement | string): HTMLImageElement {
 
-        if (typeof imageElement === 'undefined') {
+        let imageElement: HTMLImageElement;
+
+        if (typeof imageSrc === 'undefined') {
             imageElement = document.createElement('img');
             imageElement.width = 200;
             imageElement.height = 200;
         }
 
-        if (typeof imageElement === 'string') {
-            imageElement = <HTMLImageElement>this.getMediaElement(imageElement, 'img');
+        if (typeof imageSrc === 'string') {
+            imageElement = <HTMLImageElement>this.getMediaElement(imageSrc, 'img');
         }
 
         return imageElement;
@@ -597,7 +607,7 @@ export class BrowserCodeReader {
 
         // then forgets about that element 😢
 
-        this.unbindVideoSrc(this.videoElement);
+        this.cleanVideoSource(this.videoElement);
 
         this.videoElement = undefined;
     }
@@ -638,7 +648,7 @@ export class BrowserCodeReader {
      * @param videoElement
      * @param stream
      */
-    public bindVideoSrc(videoElement: HTMLVideoElement, stream: MediaStream): void {
+    public addVideoSource(videoElement: HTMLVideoElement, stream: MediaStream): void {
         // Older browsers may not have `srcObject`
         try {
             // @NOTE Throws Exception if interrupted by a new loaded request
@@ -654,7 +664,7 @@ export class BrowserCodeReader {
      *
      * @param videoElement
      */
-    public unbindVideoSrc(videoElement: HTMLVideoElement): void {
+    public cleanVideoSource(videoElement: HTMLVideoElement): void {
 
         try {
             videoElement.srcObject = null;
