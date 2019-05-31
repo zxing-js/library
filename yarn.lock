@@ -5989,10 +5989,10 @@ trim-right@^1.0.1:
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
   integrity sha1-yy4SAwZ+DI3h9hQJS5/kVwTqYAM=
 
-ts-custom-error@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/ts-custom-error/-/ts-custom-error-2.2.2.tgz#ee769cd6a9cf35dc2e9fedefbb3842f3a2fbceae"
-  integrity sha512-I0FEdfdatDjeigRqh1JFj67bcIKyRNm12UVGheBjs2pXgyELg2xeiQLVaWu1pVmNGXZVnz/fvycSU41moBIpOg==
+ts-custom-error@^3.0.0:
+  version "3.1.0"
+  resolved "https://registry.npmjs.org/ts-custom-error/-/ts-custom-error-3.1.0.tgz#2abcd25b253ca209036a51870318da9b1de93107"
+  integrity sha512-EIL1r8RKfa006lLhSSVsAlvu6/BgRdSLSxibP27zq66ydh6Kbsjv1pV7VAD7TxQfdQ9begiQW0QVjsnr9KvVrw==
 
 ts-loader@^5.3.3:
   version "5.3.3"
