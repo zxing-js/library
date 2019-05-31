@@ -5991,7 +5991,7 @@ trim-right@^1.0.1:
 
 ts-custom-error@^3.0.0:
   version "3.1.0"
-  resolved "http://srvdocker01:4873/ts-custom-error/-/ts-custom-error-3.1.0.tgz#2abcd25b253ca209036a51870318da9b1de93107"
+  resolved "https://registry.npmjs.org/ts-custom-error/-/ts-custom-error-3.1.0.tgz#2abcd25b253ca209036a51870318da9b1de93107"
   integrity sha512-EIL1r8RKfa006lLhSSVsAlvu6/BgRdSLSxibP27zq66ydh6Kbsjv1pV7VAD7TxQfdQ9begiQW0QVjsnr9KvVrw==
 
 ts-loader@^5.3.3:
