@@ -151,6 +151,20 @@ export class BrowserCodeReader {
     }
 
     /**
+     * Let's you find a device using it's Id.
+     */
+    public async findDeviceById(deviceId: string): Promise<MediaDeviceInfo> {
+
+      const devices = await this.listVideoInputDevices();
+
+      if (!devices) {
+        return null;
+      }
+
+      return devices.find(x => x.deviceId === deviceId);
+    }
+
+    /**
      * Decodes the barcode from the device specified by deviceId while showing the video in the specified video element.
      *
      * @param {string} [deviceId] the id of one of the devices obtained after calling getVideoInputDevices. Can be undefined, in this case it will decode from one of the available devices, preffering the main camera (environment facing) if available.
