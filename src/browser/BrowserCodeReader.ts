@@ -283,6 +283,10 @@ export class BrowserCodeReader {
             videoElement = <HTMLVideoElement>this.getMediaElement(videoSrc, 'video');
         }
 
+        if (videoSrc instanceof HTMLVideoElement) {
+            videoElement = videoSrc;
+        }
+
         // Needed for iOS 11
         videoElement.setAttribute('autoplay', 'true');
         videoElement.setAttribute('muted', 'true');
@@ -426,6 +430,10 @@ export class BrowserCodeReader {
             imageElement = <HTMLImageElement>this.getMediaElement(imageSrc, 'img');
         }
 
+        if (imageSrc instanceof HTMLImageElement) {
+            imageElement = imageSrc;
+        }
+
         return imageElement;
     }
 
@@ -475,7 +483,9 @@ export class BrowserCodeReader {
 
         this.drawImageOnCanvas(ctx, mediaElement);
 
-        const luminanceSource = new HTMLCanvasElementLuminanceSource(ctx.canvas);
+        const canvas = this.getCaptureCanvas();
+
+        const luminanceSource = new HTMLCanvasElementLuminanceSource(canvas);
         const hybridBinarizer = new HybridBinarizer(luminanceSource);
 
         return new BinaryBitmap(hybridBinarizer);
