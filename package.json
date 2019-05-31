@@ -102,7 +102,7 @@
         "sinon": "^7.2.7",
         "ts-loader": "^5.3.3",
         "tslint": "^5.13.1",
-        "typescript": "^3.3.3333",
+        "typescript": "~3.3.3333",
         "uglify-js": "^3.4.9",
         "uglifyjs-webpack-plugin": "^2.1.2",
         "webpack": "^4.29.6",
