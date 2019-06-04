@@ -35,6 +35,11 @@ export class BrowserCodeReader {
   }
 
   /**
+   * This will break the loop.
+   */
+  private _stopContinousDecode = false;
+
+  /**
    * The HTML canvas element, used to draw the video or image's frame for decoding.
    */
   protected captureCanvas: HTMLCanvasElement;
@@ -229,7 +234,14 @@ export class BrowserCodeReader {
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
     const video = await this.attachStreamToVideo(stream, videoSource);
 
-    this.decodeContinuous(video, callbackFn);
+    this.decodeContinuously(video, callbackFn);
+  }
+
+  /**
+   * Breaks the decoding loop.
+   */
+  public stopContinousDecode() {
+    this._stopContinousDecode = true;
   }
 
   /**
@@ -518,15 +530,18 @@ export class BrowserCodeReader {
   /**
    * Continuously decodes from video input.
    */
-  private decodeContinuous(element: HTMLVideoElement, callbackFn: ContinuousDecodeCallback): void {
+  private decodeContinuously(element: HTMLVideoElement, callbackFn: ContinuousDecodeCallback): void {
 
     const loop = () => {
 
-      // @todo stop loop when component is destroyed.
+      if (this._stopContinousDecode) {
+        this._stopContinousDecode = false;
+        return;
+      }
 
       try {
         const result = this.decode(element);
-        callbackFn(result);
+        callbackFn(result, null);
         setTimeout(() => loop(), this.timeBetweenScansMillis);
       } catch (e) {
 
