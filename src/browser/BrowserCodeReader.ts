@@ -203,7 +203,7 @@ export class BrowserCodeReader {
 
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
     const video = await this.attachStreamToVideo(stream, videoSource);
-    const result = await this.decodeWithRetry(video);
+    const result = await this.decodeAsync(video);
 
     return result;
   }
@@ -282,7 +282,7 @@ export class BrowserCodeReader {
       reject(new NotFoundException('Video stream has ended before any code could be detected.'));
     };
 
-    this.videoPlayingEventListener = () => this.decodeWithRetry(videoElement).then(resolve, reject);
+    this.videoPlayingEventListener = () => this.decodeAsync(videoElement).then(resolve, reject);
 
     // defines the video element before starts decoding
     this.videoElement = videoElement;
@@ -383,7 +383,7 @@ export class BrowserCodeReader {
     let task: Promise<Result>;
 
     if (this.isImageLoaded(image)) {
-      task = this.decodeWithRetry(image, false, true);
+      task = this.decodeAsync(image, false, true);
     } else {
       task = this._decodeOnLoadImage(image);
     }
@@ -415,7 +415,7 @@ export class BrowserCodeReader {
 
   private _decodeOnLoadImage(imageElement: HTMLImageElement): Promise<Result> {
     return new Promise((resolve, reject) => {
-      this.imageLoadedEventListener = () => this.decodeWithRetry(imageElement, false, true).then(resolve, reject);
+      this.imageLoadedEventListener = () => this.decodeAsync(imageElement, false, true).then(resolve, reject);
       imageElement.addEventListener('load', this.imageLoadedEventListener);
     });
   }
@@ -464,27 +464,29 @@ export class BrowserCodeReader {
   /**
    * Continuously decodes from video input.
    */
-  private async decodeWithRetry(element: HTMLVisualMediaElement, retryIfNotFound = true, retryIfChecksumOrFormatError = true): Promise<Result> {
+  private decodeAsync(element: HTMLVisualMediaElement, retryIfNotFound = true, retryIfChecksumOrFormatError = true): Promise<Result> {
 
-    let result: Result;
+    const loop = (resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) => {
 
-    try {
-      result = this.decode(element);
-    } catch (e) {
+      try {
+        const result = this.decode(element);
+        resolve(result);
+      } catch (e) {
 
-      const ifNotFound = retryIfNotFound && e instanceof NotFoundException;
-      const isChecksumOrFormatError = e instanceof ChecksumException || e instanceof FormatException;
-      const ifChecksumOrFormat = isChecksumOrFormatError && retryIfChecksumOrFormatError;
+        const ifNotFound = retryIfNotFound && e instanceof NotFoundException;
+        const isChecksumOrFormatError = e instanceof ChecksumException || e instanceof FormatException;
+        const ifChecksumOrFormat = isChecksumOrFormatError && retryIfChecksumOrFormatError;
 
-      if (ifNotFound || ifChecksumOrFormat) {
-        // trying again
-        result = await this.decodeWithRetry(element, retryIfNotFound, retryIfChecksumOrFormatError);
-      } else {
-        throw e;
+        if (ifNotFound || ifChecksumOrFormat) {
+          // trying again
+          return setTimeout(() => loop(resolve, reject), 0);
+        } else {
+          reject(e);
+        }
       }
-    }
+    };
 
-    return result;
+    return new Promise((resolve, reject) => loop(resolve, reject));
   }
 
   /**
