@@ -264,21 +264,22 @@ export class BrowserCodeReader {
 
         this.videoPlayEndedEventListener = () => {
             this.stopStreams();
-            reject(new NotFoundException('Video stream has ended before any code could be detected.'));
-        };
+      reject(new NotFoundException('Video stream has ended before any code could be detected.'));
+    };
 
-        videoElement.addEventListener('ended', this.videoPlayEndedEventListener);
+    this.videoPlayingEventListener = () => this.decodeWithRetryAndDelay(videoElement, resolve, reject);
 
-        this.videoPlayingEventListener = () => this.decodeWithRetryAndDelay(videoElement, resolve, reject);
+    // defines the video element before starts decoding
+    this.videoElement = videoElement;
 
-        videoElement.addEventListener('playing', this.videoPlayingEventListener);
+    videoElement.addEventListener('ended', this.videoPlayEndedEventListener);
 
-        videoElement.setAttribute('src', videoUrl);
+    videoElement.addEventListener('playing', this.videoPlayingEventListener);
 
-        this.videoElement = videoElement;
-    }
+    videoElement.setAttribute('src', videoUrl);
+  }
 
-    /**
+  /**
      * Sets a HTMLVideoElement for scanning or creates a new one.
      *
      * @param videoSrc The HTMLVideoElement to be set.
@@ -367,18 +368,18 @@ export class BrowserCodeReader {
 
         this.reset();
 
-        const image = this.prepareImageElement(imageElement);
+    const image = this.prepareImageElement(imageElement);
 
-        if (this.isImageLoaded(image)) {
-            this.decodeWithRetry(image, resolve, reject, false, true);
-        } else {
-            this._decodeOnLoadImage(image, resolve, reject);
-        }
+    this.imageElement = image;
 
-        this.imageElement = image;
+    if (this.isImageLoaded(image)) {
+      this.decodeWithRetry(image, resolve, reject, false, true);
+    } else {
+      this._decodeOnLoadImage(image, resolve, reject);
     }
+  }
 
-    /**
+  /**
      * Decodes an image from a URL.
      */
     public decodeFromImageUrl(imageUrl?: string): Promise<Result> {
@@ -396,16 +397,16 @@ export class BrowserCodeReader {
 
         this.reset();
 
-        const image = this.prepareImageElement();
+    const image = this.prepareImageElement();
 
-        this._decodeOnLoadImage(image, resolve, reject);
+    this.imageElement = image;
 
-        image.src = imageUrl;
+    this._decodeOnLoadImage(image, resolve, reject);
 
-        this.imageElement = image;
-    }
+    image.src = imageUrl;
+  }
 
-    private _decodeOnLoadImage(imageElement: HTMLImageElement, resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) {
+  private _decodeOnLoadImage(imageElement: HTMLImageElement, resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) {
         this.imageLoadedEventListener = () => this.decodeWithRetry(imageElement, resolve, reject, false, true);
         imageElement.addEventListener('load', this.imageLoadedEventListener);
     }
@@ -490,44 +491,44 @@ export class BrowserCodeReader {
      * Creates a binaryBitmap based in some image source.
      *
      * @param mediaElement HTML element containing drawable image source.
-     */
-    protected createBinaryBitmap(mediaElement: HTMLVisualMediaElement): BinaryBitmap {
+   */
+  protected createBinaryBitmap(mediaElement: HTMLVisualMediaElement): BinaryBitmap {
 
-        const ctx = this.getCaptureCanvasContext();
+    const ctx = this.getCaptureCanvasContext(mediaElement);
 
-        this.drawImageOnCanvas(ctx, mediaElement);
+    this.drawImageOnCanvas(ctx, mediaElement);
 
-        const canvas = this.getCaptureCanvas();
+    const canvas = this.getCaptureCanvas(mediaElement);
 
-        const luminanceSource = new HTMLCanvasElementLuminanceSource(canvas);
-        const hybridBinarizer = new HybridBinarizer(luminanceSource);
+    const luminanceSource = new HTMLCanvasElementLuminanceSource(canvas);
+    const hybridBinarizer = new HybridBinarizer(luminanceSource);
 
         return new BinaryBitmap(hybridBinarizer);
     }
 
-    /**
-     *
-     */
-    protected getCaptureCanvasContext() {
+  /**
+   *
+   */
+  protected getCaptureCanvasContext(mediaElement?: HTMLMediaElement) {
 
-        if (!this.captureCanvasContext) {
-            const elem = this.getCaptureCanvas();
-            const ctx = elem.getContext('2d');
-            this.captureCanvasContext = ctx;
-        }
+    if (!this.captureCanvasContext) {
+      const elem = this.getCaptureCanvas(mediaElement);
+      const ctx = elem.getContext('2d');
+      this.captureCanvasContext = ctx;
+    }
 
         return this.captureCanvasContext;
     }
 
-    /**
-     *
-     */
-    protected getCaptureCanvas(): HTMLCanvasElement {
+  /**
+   *
+   */
+  protected getCaptureCanvas(mediaElement?: HTMLMediaElement): HTMLCanvasElement {
 
-        if (!this.captureCanvas) {
-            const elem = this.createCaptureCanvas();
-            this.captureCanvas = elem;
-        }
+    if (!this.captureCanvas) {
+      const elem = this.createCaptureCanvas(mediaElement);
+      this.captureCanvas = elem;
+    }
 
         return this.captureCanvas;
     }
@@ -549,7 +550,7 @@ export class BrowserCodeReader {
     /**
      * 🖌 Prepares the canvas for capture and scan frames.
      */
-    protected createCaptureCanvas(): HTMLCanvasElement {
+  protected createCaptureCanvas(mediaElement?: HTMLMediaElement): HTMLCanvasElement {
 
         if (typeof document === 'undefined') {
             this._destroyCaptureCanvas();
@@ -558,20 +559,20 @@ export class BrowserCodeReader {
 
         const canvasElement = document.createElement('canvas');
 
-        let width: number;
-        let height: number;
+    let width: number;
+    let height: number;
 
-        if (typeof this.videoElement !== 'undefined') {
-            width = this.videoElement.videoWidth;
-            height = this.videoElement.videoHeight;
-        }
+    if (typeof mediaElement !== 'undefined') {
+      if (mediaElement instanceof HTMLVideoElement) {
+        width = mediaElement.videoWidth;
+        height = mediaElement.videoHeight;
+      } else if (mediaElement instanceof HTMLImageElement) {
+        width = mediaElement.naturalWidth || mediaElement.width;
+        height = mediaElement.naturalHeight || mediaElement.height;
+      }
+    }
 
-        if (!width && !height && typeof this.imageElement !== 'undefined') {
-            width = this.imageElement.naturalWidth || this.imageElement.width;
-            height = this.imageElement.naturalHeight || this.imageElement.height;
-        }
-
-        canvasElement.style.width = width + 'px';
+    canvasElement.style.width = width + 'px';
         canvasElement.style.height = height + 'px';
         canvasElement.width = width;
         canvasElement.height = height;
