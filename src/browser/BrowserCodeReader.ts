@@ -362,20 +362,13 @@ export class BrowserCodeReader {
       return this.decodeFromImageUrl(imageUrl);
     }
 
-    return this.decodeFromImageElement(imageElement, imageUrl);
+    return this.decodeFromImageElement(imageElement);
   }
 
   /**
    * Decodes something from an image HTML element.
    */
-  public decodeFromImageElement(imageElement: string | HTMLImageElement, imageUrl: string) {
-    return new Promise<Result>((resolve, reject) => this._decodeFromImageElement(imageElement, resolve, reject));
-  }
-
-  /**
-   * Promise constructor.
-   */
-  private _decodeFromImageElement(imageElement: string | HTMLImageElement, resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) {
+  public decodeFromImageElement(imageElement: string | HTMLImageElement): Promise<Result> {
 
     if (!imageElement) {
       throw new ArgumentException('An image element must be provided.');
@@ -387,24 +380,21 @@ export class BrowserCodeReader {
 
     this.imageElement = image;
 
+    let task: Promise<Result>;
+
     if (this.isImageLoaded(image)) {
-      this.decodeWithRetry(image, false, true).then(resolve, reject);
+      task = this.decodeWithRetry(image, false, true);
     } else {
-      this._decodeOnLoadImage(image, resolve, reject);
+      task = this._decodeOnLoadImage(image);
     }
+
+    return task;
   }
 
   /**
    * Decodes an image from a URL.
    */
   public decodeFromImageUrl(imageUrl?: string): Promise<Result> {
-    return new Promise<Result>((resolve, reject) => this._decodeFromImageUrl(imageUrl, resolve, reject));
-  }
-
-  /**
-   * Promise constructor.
-   */
-  private _decodeFromImageUrl(imageUrl: string, resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) {
 
     if (!imageUrl) {
       throw new ArgumentException('An URL must be provided.');
@@ -416,14 +406,18 @@ export class BrowserCodeReader {
 
     this.imageElement = image;
 
-    this._decodeOnLoadImage(image, resolve, reject);
+    const decodeTask = this._decodeOnLoadImage(image);
 
     image.src = imageUrl;
+
+    return decodeTask;
   }
 
-  private _decodeOnLoadImage(imageElement: HTMLImageElement, resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) {
-    this.imageLoadedEventListener = () => this.decodeWithRetry(imageElement, false, true).then(resolve, reject);
-    imageElement.addEventListener('load', this.imageLoadedEventListener);
+  private _decodeOnLoadImage(imageElement: HTMLImageElement): Promise<Result> {
+    return new Promise((resolve, reject) => {
+      this.imageLoadedEventListener = () => this.decodeWithRetry(imageElement, false, true).then(resolve, reject);
+      imageElement.addEventListener('load', this.imageLoadedEventListener);
+    });
   }
 
   protected isImageLoaded(img: HTMLImageElement) {
