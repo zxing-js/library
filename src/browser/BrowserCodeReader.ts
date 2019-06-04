@@ -292,37 +292,6 @@ export class BrowserCodeReader {
   }
 
   /**
-   * Sets a HTMLVideoElement for scanning or creates a new one.
-   *
-   * @param videoSrc The HTMLVideoElement to be set.
-   */
-  protected prepareVideoElement(videoSrc?: HTMLVideoElement | string): HTMLVideoElement {
-
-    let videoElement: HTMLVideoElement;
-
-    if (!videoSrc && typeof document !== 'undefined') {
-      videoElement = document.createElement('video');
-      videoElement.width = 200;
-      videoElement.height = 200;
-    }
-
-    if (typeof videoSrc === 'string') {
-      videoElement = <HTMLVideoElement>this.getMediaElement(videoSrc, 'video');
-    }
-
-    if (videoSrc instanceof HTMLVideoElement) {
-      videoElement = videoSrc;
-    }
-
-    // Needed for iOS 11
-    videoElement.setAttribute('autoplay', 'true');
-    videoElement.setAttribute('muted', 'true');
-    videoElement.setAttribute('playsinline', 'true');
-
-    return videoElement;
-  }
-
-  /**
    * Searches and validates a media element.
    */
   protected getMediaElement(mediaElementId: string, type: string): HTMLVisualMediaElement {
@@ -513,25 +482,56 @@ export class BrowserCodeReader {
     return true;
   }
 
-  protected prepareImageElement(imageSrc?: HTMLImageElement | string): HTMLImageElement {
+  protected prepareImageElement(imageSource?: HTMLImageElement | string): HTMLImageElement {
 
     let imageElement: HTMLImageElement;
 
-    if (typeof imageSrc === 'undefined') {
+    if (typeof imageSource === 'undefined') {
       imageElement = document.createElement('img');
       imageElement.width = 200;
       imageElement.height = 200;
     }
 
-    if (typeof imageSrc === 'string') {
-      imageElement = <HTMLImageElement>this.getMediaElement(imageSrc, 'img');
+    if (typeof imageSource === 'string') {
+      imageElement = <HTMLImageElement>this.getMediaElement(imageSource, 'img');
     }
 
-    if (imageSrc instanceof HTMLImageElement) {
-      imageElement = imageSrc;
+    if (imageSource instanceof HTMLImageElement) {
+      imageElement = imageSource;
     }
 
     return imageElement;
+  }
+
+  /**
+   * Sets a HTMLVideoElement for scanning or creates a new one.
+   *
+   * @param videoSource The HTMLVideoElement to be set.
+   */
+  protected prepareVideoElement(videoSource?: HTMLVideoElement | string): HTMLVideoElement {
+
+    let videoElement: HTMLVideoElement;
+
+    if (!videoSource && typeof document !== 'undefined') {
+      videoElement = document.createElement('video');
+      videoElement.width = 200;
+      videoElement.height = 200;
+    }
+
+    if (typeof videoSource === 'string') {
+      videoElement = <HTMLVideoElement>this.getMediaElement(videoSource, 'video');
+    }
+
+    if (videoSource instanceof HTMLVideoElement) {
+      videoElement = videoSource;
+    }
+
+    // Needed for iOS 11
+    videoElement.setAttribute('autoplay', 'true');
+    videoElement.setAttribute('muted', 'true');
+    videoElement.setAttribute('playsinline', 'true');
+
+    return videoElement;
   }
 
   /**
