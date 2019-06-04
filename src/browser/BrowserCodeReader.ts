@@ -332,7 +332,7 @@ export class BrowserCodeReader {
   }
 
   /**
-   * Decodes the barcode from an image.
+   * Decodes the barcode from a video.
    *
    * @param {(string|HTMLImageElement)} [source] The image element that can be either an element id or the element itself. Can be undefined in which case the decoding will be done from the imageUrl parameter.
    * @param {string} [url]
@@ -351,6 +351,30 @@ export class BrowserCodeReader {
     }
 
     return this.decodeFromVideoElement(source);
+  }
+
+  /**
+   * Decodes continuously the barcode from a video.
+   *
+   * @param {(string|HTMLImageElement)} [source] The image element that can be either an element id or the element itself. Can be undefined in which case the decoding will be done from the imageUrl parameter.
+   * @param {string} [url]
+   * @returns {Promise<Result>} The decoding result.
+   *
+   * @memberOf BrowserCodeReader
+   *
+   * @experimental
+   */
+  public decodeFromVideoContinuously(source: string | HTMLVideoElement | null, url: string | null, callbackFn: DecodeContinuouslyCallback): Promise<void> {
+
+    if (undefined === source && undefined === url) {
+      throw new ArgumentException('Either an element with a src set or an URL must be provided');
+    }
+
+    if (url && !source) {
+      return this.decodeFromVideoUrlContinuously(url, callbackFn);
+    }
+
+    return this.decodeFromVideoElementContinuously(source, callbackFn);
   }
 
   /**
@@ -384,25 +408,40 @@ export class BrowserCodeReader {
    */
   public decodeFromVideoElement(source: string | HTMLVideoElement): Promise<Result> {
 
+    const element = this._decodeFromVideoElementSetup(source);
+
+    return this._decodeOnLoadVideo(element);
+  }
+
+  /**
+   * Decodes something from an image HTML element.
+   */
+  public decodeFromVideoElementContinuously(source: string | HTMLVideoElement, callbackFn: DecodeContinuouslyCallback): Promise<void> {
+
+    const element = this._decodeFromVideoElementSetup(source);
+
+    return this._decodeOnLoadVideoContinuously(element, callbackFn);
+  }
+
+  /**
+   * Sets up the video source so it can be decoded when loaded.
+   *
+   * @param source The video source element.
+   */
+  private _decodeFromVideoElementSetup(source: string | HTMLVideoElement) {
     if (!source) {
       throw new ArgumentException('An image element must be provided.');
     }
-
     this.reset();
-
     const element = this.prepareVideoElement(source);
-
     this.videoPlayEndedEventListener = () => {
       this.stopStreams();
       throw new NotFoundException('Video stream has ended before any code could be detected.');
     };
-
     // defines the video element before starts decoding
     this.videoElement = element;
-
     element.addEventListener('ended', this.videoPlayEndedEventListener);
-
-    return this._decodeOnLoadVideo(element);
+    return element;
   }
 
   /**
@@ -430,7 +469,7 @@ export class BrowserCodeReader {
   /**
    * Decodes an image from a URL.
    */
-  public decodeFromVideoUrl(url?: string): Promise<Result> {
+  public decodeFromVideoUrl(url: string): Promise<Result> {
 
     if (!url) {
       throw new ArgumentException('An URL must be provided.');
@@ -442,6 +481,29 @@ export class BrowserCodeReader {
     const element = this.prepareVideoElement();
 
     const decodeTask = this.decodeFromVideoElement(element);
+
+    element.src = url;
+
+    return decodeTask;
+  }
+
+  /**
+   * Decodes an image from a URL.
+   *
+   * @experimental
+   */
+  public decodeFromVideoUrlContinuously(url: string, callbackFn: DecodeContinuouslyCallback): Promise<void> {
+
+    if (!url) {
+      throw new ArgumentException('An URL must be provided.');
+    }
+
+    this.reset();
+
+    // creates a new element
+    const element = this.prepareVideoElement();
+
+    const decodeTask = this.decodeFromVideoElementContinuously(element, callbackFn);
 
     element.src = url;
 
@@ -460,6 +522,13 @@ export class BrowserCodeReader {
     await this.playVideoOnLoadAsync(videoElement);
     // starts decoding after played the video
     return await this.decodeAsync(videoElement);
+  }
+
+  private async _decodeOnLoadVideoContinuously(videoElement: HTMLVideoElement, callbackFn: DecodeContinuouslyCallback): Promise<void> {
+    // plays the video
+    await this.playVideoOnLoadAsync(videoElement);
+    // starts decoding after played the video
+    this.decodeContinuously(videoElement, callbackFn);
   }
 
   protected isImageLoaded(img: HTMLImageElement) {
