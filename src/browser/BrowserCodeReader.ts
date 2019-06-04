@@ -3,16 +3,14 @@ import BinaryBitmap from '../core/BinaryBitmap';
 import ChecksumException from '../core/ChecksumException';
 import HybridBinarizer from '../core/common/HybridBinarizer';
 import DecodeHintType from '../core/DecodeHintType';
-import Exception from '../core/Exception';
 import FormatException from '../core/FormatException';
 import NotFoundException from '../core/NotFoundException';
 import Reader from '../core/Reader';
 import Result from '../core/Result';
+import { ContinuousDecodeCallback } from './ContinuousDecodeCallback';
 import { HTMLCanvasElementLuminanceSource } from './HTMLCanvasElementLuminanceSource';
+import { HTMLVisualMediaElement } from './HTMLVisualMediaElement';
 import { VideoInputDevice } from './VideoInputDevice';
-
-type HTMLVisualMediaElement = HTMLVideoElement | HTMLImageElement;
-type ContinuousDecodeCallback = (result: Result, error?: Exception) => any;
 
 /**
  * @deprecated Moving to @zxing/browser
