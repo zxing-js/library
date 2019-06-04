@@ -1,16 +1,18 @@
+import ArgumentException from '../core/ArgumentException';
+import BinaryBitmap from '../core/BinaryBitmap';
+import ChecksumException from '../core/ChecksumException';
+import HybridBinarizer from '../core/common/HybridBinarizer';
+import DecodeHintType from '../core/DecodeHintType';
+import Exception from '../core/Exception';
+import FormatException from '../core/FormatException';
+import NotFoundException from '../core/NotFoundException';
+import Reader from '../core/Reader';
+import Result from '../core/Result';
 import { HTMLCanvasElementLuminanceSource } from './HTMLCanvasElementLuminanceSource';
 import { VideoInputDevice } from './VideoInputDevice';
-import Reader from '../core/Reader';
-import BinaryBitmap from '../core/BinaryBitmap';
-import HybridBinarizer from '../core/common/HybridBinarizer';
-import Result from '../core/Result';
-import NotFoundException from '../core/NotFoundException';
-import ArgumentException from '../core/ArgumentException';
-import DecodeHintType from '../core/DecodeHintType';
-import ChecksumException from '../core/ChecksumException';
-import FormatException from '../core/FormatException';
 
 type HTMLVisualMediaElement = HTMLVideoElement | HTMLImageElement;
+type ContinuousDecodeCallback = (result: Result, error?: Exception) => any;
 
 /**
  * @deprecated Moving to @zxing/browser
@@ -58,11 +60,6 @@ export class BrowserCodeReader {
    * The stream output from camera.
    */
   protected stream: MediaStream;
-
-  /**
-   * Some timeout's Id.
-   */
-  protected timeoutHandler: number;
 
   /**
    * The HTML video element, used to display the camera stream.
@@ -206,6 +203,35 @@ export class BrowserCodeReader {
     const result = await this.decodeAsync(video);
 
     return result;
+  }
+
+  /**
+   * Continuously decodes the barcode from the device specified by device while showing the video in the specified video element.
+   *
+   * @param {string|null} [deviceId] the id of one of the devices obtained after calling getVideoInputDevices. Can be undefined, in this case it will decode from one of the available devices, preffering the main camera (environment facing) if available.
+   * @param {string|HTMLVideoElement|null} [video] the video element in page where to show the video while decoding. Can be either an element id or directly an HTMLVideoElement. Can be undefined, in which case no video will be shown.
+   * @returns {Promise<void>}
+   *
+   * @memberOf BrowserCodeReader
+   */
+  public async decodeFromInputVideoDeviceContinuously(deviceId: string | null, videoSource: string | HTMLVideoElement | null, callbackFn: ContinuousDecodeCallback): Promise<void> {
+
+    this.reset();
+
+    let videoConstraints: MediaTrackConstraints;
+
+    if (!deviceId) {
+      videoConstraints = { facingMode: 'environment' };
+    } else {
+      videoConstraints = { deviceId: { exact: deviceId } };
+    }
+
+    const constraints: MediaStreamConstraints = { video: videoConstraints };
+
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    const video = await this.attachStreamToVideo(stream, videoSource);
+
+    this.decodeContinuous(video, callbackFn);
   }
 
   /**
@@ -462,11 +488,13 @@ export class BrowserCodeReader {
   }
 
   /**
-   * Continuously decodes from video input.
+   * Continuously decodes from video input until it finds some value.
    */
   private decodeAsync(element: HTMLVisualMediaElement, retryIfNotFound = true, retryIfChecksumOrFormatError = true): Promise<Result> {
 
     const loop = (resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) => {
+
+      // @todo stop loop when component is destroyed.
 
       try {
         const result = this.decode(element);
@@ -480,13 +508,45 @@ export class BrowserCodeReader {
         if (ifNotFound || ifChecksumOrFormat) {
           // trying again
           return setTimeout(() => loop(resolve, reject), 0);
-        } else {
-          reject(e);
         }
+
+        reject(e);
       }
     };
 
     return new Promise((resolve, reject) => loop(resolve, reject));
+  }
+
+  /**
+   * Continuously decodes from video input.
+   */
+  private decodeContinuous(element: HTMLVideoElement, callbackFn: ContinuousDecodeCallback): void {
+
+    const loop = () => {
+
+      // @todo stop loop when component is destroyed.
+
+      try {
+        const result = this.decode(element);
+        callbackFn(result);
+        setTimeout(() => loop(), this.timeBetweenScansMillis);
+      } catch (e) {
+
+        const isChecksumOrFormatError = e instanceof ChecksumException || e instanceof FormatException;
+        const isNotFound = e instanceof NotFoundException;
+
+        if (!isChecksumOrFormatError && !isNotFound) {
+          // not expected
+          throw e;
+        }
+
+        // trying again
+        callbackFn(null, e);
+        setTimeout(() => loop(), 0);
+      }
+    };
+
+    loop();
   }
 
   /**
@@ -609,8 +669,6 @@ export class BrowserCodeReader {
    * @memberOf BrowserCodeReader
    */
   public reset() {
-
-    window.clearTimeout(this.timeoutHandler);
 
     // stops the camera, preview and scan 🔴
 

@@ -86,12 +86,15 @@
                     }
 
                     document.getElementById('startButton').addEventListener('click', () => {
-                        codeReader.decodeFromInputVideoDevice(selectedDeviceId, 'video').then((result) => {
+                        codeReader.decodeFromInputVideoDeviceContinuously(selectedDeviceId, 'video', (result, err) => {
+                          if (result) {
                             console.log(result)
                             document.getElementById('result').textContent = result.text
-                        }).catch((err) => {
+                          }
+                          if (err && !(err instanceof ZXing.NotFoundException)) {
                             console.error(err)
                             document.getElementById('result').textContent = err
+                          }
                         })
                         console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
                     })
