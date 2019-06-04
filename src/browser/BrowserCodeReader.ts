@@ -84,20 +84,34 @@ export class BrowserCodeReader {
     /**
      * Should contain the current registered listener for video playing,
      * used to unregister that listener when needed.
-     */
-    protected videoPlayingEventListener: EventListener;
+   */
+  protected videoPlayingEventListener: EventListener;
 
-    /**
-     * Creates an instance of BrowserCodeReader.
-     * @param {Reader} reader The reader instance to decode the barcode
+  /**
+   * Sets the hints.
+   */
+  set hints(hints: Map<DecodeHintType, any>) {
+    this._hints = hints || null;
+  }
+
+  /**
+   * Sets the hints.
+   */
+  get hints(): Map<DecodeHintType, any> {
+    return this._hints;
+  }
+
+  /**
+   * Creates an instance of BrowserCodeReader.
+   * @param {Reader} reader The reader instance to decode the barcode
      * @param {number} [timeBetweenScansMillis=500] the time delay between subsequent decode tries
-     *
-     * @memberOf BrowserCodeReader
-     */
-    public constructor(protected readonly reader: Reader, protected timeBetweenScansMillis: number = 500, protected hints?: Map<DecodeHintType, any>) { }
+   *
+   * @memberOf BrowserCodeReader
+   */
+  public constructor(protected readonly reader: Reader, protected timeBetweenScansMillis: number = 500, protected _hints?: Map<DecodeHintType, any>) { }
 
-    /**
-     * Lists all the available video input devices.
+  /**
+   * Lists all the available video input devices.
      */
     public async listVideoInputDevices(): Promise<MediaDeviceInfo[]> {
 
@@ -541,13 +555,13 @@ export class BrowserCodeReader {
     }
 
     /**
-     * Call the encapsulated readers decode
-     */
-    protected decodeBitmap(binaryBitmap: BinaryBitmap): Result {
-        return this.reader.decode(binaryBitmap, this.hints);
-    }
+   * Call the encapsulated readers decode
+   */
+  protected decodeBitmap(binaryBitmap: BinaryBitmap): Result {
+    return this.reader.decode(binaryBitmap, this._hints);
+  }
 
-    /**
+  /**
      * 🖌 Prepares the canvas for capture and scan frames.
      */
   protected createCaptureCanvas(mediaElement?: HTMLMediaElement): HTMLCanvasElement {
