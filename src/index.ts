@@ -5,7 +5,7 @@ export * from './browser/BrowserDatamatrixCodeReader';
 export * from './browser/BrowserMultiFormatReader';
 export * from './browser/BrowserQRCodeReader';
 export * from './browser/BrowserQRCodeSvgWriter';
-export * from './browser/ContinuousDecodeCallback';
+export * from './browser/DecodeContinuouslyCallback';
 export * from './browser/HTMLCanvasElementLuminanceSource';
 export * from './browser/HTMLVisualMediaElement';
 export * from './browser/VideoInputDevice';

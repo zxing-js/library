@@ -7,7 +7,7 @@ import FormatException from '../core/FormatException';
 import NotFoundException from '../core/NotFoundException';
 import Reader from '../core/Reader';
 import Result from '../core/Result';
-import { ContinuousDecodeCallback } from './ContinuousDecodeCallback';
+import { DecodeContinuouslyCallback } from './DecodeContinuouslyCallback';
 import { HTMLCanvasElementLuminanceSource } from './HTMLCanvasElementLuminanceSource';
 import { HTMLVisualMediaElement } from './HTMLVisualMediaElement';
 import { VideoInputDevice } from './VideoInputDevice';
@@ -217,7 +217,7 @@ export class BrowserCodeReader {
    *
    * @memberOf BrowserCodeReader
    */
-  public async decodeFromInputVideoDeviceContinuously(deviceId: string | null, videoSource: string | HTMLVideoElement | null, callbackFn: ContinuousDecodeCallback): Promise<void> {
+  public async decodeFromInputVideoDeviceContinuously(deviceId: string | null, videoSource: string | HTMLVideoElement | null, callbackFn: DecodeContinuouslyCallback): Promise<void> {
 
     this.reset();
 
@@ -567,7 +567,7 @@ export class BrowserCodeReader {
   /**
    * Continuously decodes from video input.
    */
-  private decodeContinuously(element: HTMLVideoElement, callbackFn: ContinuousDecodeCallback): void {
+  private decodeContinuously(element: HTMLVideoElement, callbackFn: DecodeContinuouslyCallback): void {
 
     const loop = () => {
 
