@@ -688,7 +688,7 @@ export class BrowserCodeReader {
      *
      * @param videoElement
      */
-    public cleanVideoSource(videoElement: HTMLVideoElement): void {
+    private cleanVideoSource(videoElement: HTMLVideoElement): void {
 
         try {
             videoElement.srcObject = null;
