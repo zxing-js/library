@@ -523,7 +523,7 @@ export class BrowserCodeReader {
   /**
    *
    */
-  protected getCaptureCanvasContext(mediaElement?: HTMLMediaElement) {
+  protected getCaptureCanvasContext(mediaElement?: HTMLVisualMediaElement) {
 
     if (!this.captureCanvasContext) {
       const elem = this.getCaptureCanvas(mediaElement);
@@ -537,7 +537,7 @@ export class BrowserCodeReader {
   /**
    *
    */
-  protected getCaptureCanvas(mediaElement?: HTMLMediaElement): HTMLCanvasElement {
+  protected getCaptureCanvas(mediaElement?: HTMLVisualMediaElement): HTMLCanvasElement {
 
     if (!this.captureCanvas) {
       const elem = this.createCaptureCanvas(mediaElement);
@@ -562,12 +562,12 @@ export class BrowserCodeReader {
   }
 
   /**
-     * 🖌 Prepares the canvas for capture and scan frames.
-     */
-  protected createCaptureCanvas(mediaElement?: HTMLMediaElement): HTMLCanvasElement {
+   * 🖌 Prepares the canvas for capture and scan frames.
+   */
+  protected createCaptureCanvas(mediaElement?: HTMLVisualMediaElement): HTMLCanvasElement {
 
-        if (typeof document === 'undefined') {
-            this._destroyCaptureCanvas();
+    if (typeof document === 'undefined') {
+      this._destroyCaptureCanvas();
             return null;
         }
 
