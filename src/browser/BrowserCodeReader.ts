@@ -297,15 +297,32 @@ export class BrowserCodeReader {
   protected playVideoOnLoad(element: HTMLVideoElement, callbackFn: EventListener): void {
 
     this.videoEndedListener = () => this.stopStreams();
-    this.videoCanPlayListener = () => element.play();
+    this.videoCanPlayListener = () => this.tryPlayVideo(element);
 
     element.addEventListener('ended', this.videoEndedListener);
     element.addEventListener('canplay', this.videoCanPlayListener);
     element.addEventListener('playing', callbackFn);
 
+    // if canplay was already fired, we won't know when to play, so just give it a try
+    this.tryPlayVideo(element);
+  }
+
+  /**
+   * Checks if the given video element is currently playing.
+   */
+  isVideoPLaying(video: HTMLVideoElement): boolean {
+    return !!(video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2);
+  }
+
+  /**
+   * Just tries to play the video and logs any errors.
+   * The play call is only made is the video is not already playing.
+   */
+  tryPlayVideo(videoElement: HTMLVideoElement): void {
     try {
-      // if canplay was already fired, we won't know when to play, so just give it a try
-      element.play();
+      if (!this.isVideoPLaying(videoElement)) {
+        videoElement.play();
+      }
     } catch {
       console.warn('It was not possible to play the video.');
     }
@@ -623,9 +640,9 @@ export class BrowserCodeReader {
    */
   private decodeAsync(element: HTMLVisualMediaElement, retryIfNotFound = true, retryIfChecksumOrFormatError = true): Promise<Result> {
 
-        this._stopAsyncDecode = false;
+    this._stopAsyncDecode = false;
 
-        const loop = (resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) => {
+    const loop = (resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) => {
 
       if (this._stopAsyncDecode) {
         reject(new NotFoundException('Video stream has ended before any code could be detected.'));
