@@ -37,7 +37,12 @@ export class BrowserCodeReader {
   /**
    * This will break the loop.
    */
-  private _stopContinousDecode = false;
+  private _stopContinuousDecode = false;
+
+  /**
+   * This will break the loop.
+   */
+  private _stopAsyncDecode = false;
 
   /**
    * The HTML canvas element, used to draw the video or image's frame for decoding.
@@ -57,7 +62,7 @@ export class BrowserCodeReader {
    * Should contain the current registered listener for image loading,
    * used to unregister that listener when needed.
    */
-  protected imageLoadedEventListener: EventListener;
+  protected imageLoadedListener: EventListener;
 
   /**
    * The stream output from camera.
@@ -73,13 +78,13 @@ export class BrowserCodeReader {
    * Should contain the current registered listener for video loaded-metadata,
    * used to unregister that listener when needed.
    */
-  protected videoLoadedMetadataEventListener: EventListener;
+  protected videoCanPlayListener: EventListener;
 
   /**
    * Should contain the current registered listener for video play-ended,
    * used to unregister that listener when needed.
    */
-  protected videoPlayEndedEventListener: EventListener;
+  protected videoEndedListener: EventListener;
 
   /**
    * Should contain the current registered listener for video playing,
@@ -240,8 +245,15 @@ export class BrowserCodeReader {
   /**
    * Breaks the decoding loop.
    */
-  public stopContinousDecode() {
-    this._stopContinousDecode = true;
+  public stopAsyncDecode() {
+    this._stopAsyncDecode = true;
+  }
+
+  /**
+   * Breaks the decoding loop.
+   */
+  public stopContinuousDecode() {
+    this._stopContinuousDecode = true;
   }
 
   /**
@@ -279,16 +291,20 @@ export class BrowserCodeReader {
   /**
    * Binds listeners and callbacks to the videoElement.
    *
-   * @param videoElement
+   * @param element
    * @param callbackFn
    */
-  protected playVideoOnLoad(videoElement: HTMLVideoElement, playCallback: EventListener): void {
+  protected playVideoOnLoad(element: HTMLVideoElement, callbackFn: EventListener): void {
 
-    videoElement.addEventListener('playing', playCallback);
+    this.videoEndedListener = () => this.stopStreams();
+    this.videoCanPlayListener = () => element.play();
 
-    this.videoLoadedMetadataEventListener = () => videoElement.play();
+    element.addEventListener('ended', this.videoEndedListener);
+    element.addEventListener('canplay', this.videoCanPlayListener);
+    element.addEventListener('playing', callbackFn);
 
-    videoElement.addEventListener('loadedmetadata', this.videoLoadedMetadataEventListener);
+    // if canplay was already fired, we won't know when to play, so just give it a try
+    element.play();
   }
 
   /**
@@ -320,7 +336,7 @@ export class BrowserCodeReader {
    */
   public decodeFromImage(source?: string | HTMLImageElement, url?: string): Promise<Result> {
 
-    if (undefined === source && undefined === url) {
+    if (!source && !url) {
       throw new ArgumentException('either imageElement with a src set or an url must be provided');
     }
 
@@ -342,7 +358,7 @@ export class BrowserCodeReader {
    */
   public decodeFromVideo(source?: string | HTMLVideoElement, url?: string): Promise<Result> {
 
-    if (undefined === source && undefined === url) {
+    if (!source && !url) {
       throw new ArgumentException('Either an element with a src set or an URL must be provided');
     }
 
@@ -434,13 +450,8 @@ export class BrowserCodeReader {
     }
     this.reset();
     const element = this.prepareVideoElement(source);
-    this.videoPlayEndedEventListener = () => {
-      this.stopStreams();
-      throw new NotFoundException('Video stream has ended before any code could be detected.');
-    };
     // defines the video element before starts decoding
     this.videoElement = element;
-    element.addEventListener('ended', this.videoPlayEndedEventListener);
     return element;
   }
 
@@ -512,8 +523,8 @@ export class BrowserCodeReader {
 
   private _decodeOnLoadImage(element: HTMLImageElement): Promise<Result> {
     return new Promise((resolve, reject) => {
-      this.imageLoadedEventListener = () => this.decodeAsync(element, false, true).then(resolve, reject);
-      element.addEventListener('load', this.imageLoadedEventListener);
+      this.imageLoadedListener = () => this.decodeAsync(element, false, true).then(resolve, reject);
+      element.addEventListener('load', this.imageLoadedListener);
     });
   }
 
@@ -608,9 +619,15 @@ export class BrowserCodeReader {
    */
   private decodeAsync(element: HTMLVisualMediaElement, retryIfNotFound = true, retryIfChecksumOrFormatError = true): Promise<Result> {
 
-    const loop = (resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) => {
+        this._stopAsyncDecode = false;
 
-      // @todo stop loop when component is destroyed.
+        const loop = (resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) => {
+
+      if (this._stopAsyncDecode) {
+        reject(new NotFoundException('Video stream has ended before any code could be detected.'));
+        this._stopAsyncDecode = undefined;
+        return;
+      }
 
       try {
         const result = this.decode(element);
@@ -638,10 +655,12 @@ export class BrowserCodeReader {
    */
   private decodeContinuously(element: HTMLVideoElement, callbackFn: DecodeContinuouslyCallback): void {
 
+    this._stopContinuousDecode = false;
+
     const loop = () => {
 
-      if (this._stopContinousDecode) {
-        this._stopContinousDecode = false;
+      if (this._stopContinuousDecode) {
+        this._stopContinuousDecode = undefined;
         return;
       }
 
@@ -780,6 +799,12 @@ export class BrowserCodeReader {
       this.stream.getVideoTracks().forEach(t => t.stop());
       this.stream = undefined;
     }
+    if (this._stopAsyncDecode === false) {
+      this.stopAsyncDecode();
+    }
+    if (this._stopContinuousDecode === false) {
+      this.stopContinuousDecode();
+    }
   }
 
   /**
@@ -808,16 +833,16 @@ export class BrowserCodeReader {
 
     // first gives freedon to the element 🕊
 
-    if (typeof this.videoPlayEndedEventListener !== 'undefined') {
-      this.videoElement.removeEventListener('ended', this.videoPlayEndedEventListener);
+    if (typeof this.videoEndedListener !== 'undefined') {
+      this.videoElement.removeEventListener('ended', this.videoEndedListener);
     }
 
     if (typeof this.videoPlayingEventListener !== 'undefined') {
       this.videoElement.removeEventListener('playing', this.videoPlayingEventListener);
     }
 
-    if (typeof this.videoLoadedMetadataEventListener !== 'undefined') {
-      this.videoElement.removeEventListener('loadedmetadata', this.videoLoadedMetadataEventListener);
+    if (typeof this.videoCanPlayListener !== 'undefined') {
+      this.videoElement.removeEventListener('loadedmetadata', this.videoCanPlayListener);
     }
 
     // then forgets about that element 😢
@@ -835,8 +860,8 @@ export class BrowserCodeReader {
 
     // first gives freedon to the element 🕊
 
-    if (undefined !== this.imageLoadedEventListener) {
-      this.imageElement.removeEventListener('load', this.imageLoadedEventListener);
+    if (undefined !== this.imageLoadedListener) {
+      this.imageElement.removeEventListener('load', this.imageLoadedListener);
     }
 
     // then forget about that element 😢
