@@ -303,8 +303,12 @@ export class BrowserCodeReader {
     element.addEventListener('canplay', this.videoCanPlayListener);
     element.addEventListener('playing', callbackFn);
 
-    // if canplay was already fired, we won't know when to play, so just give it a try
-    element.play();
+    try {
+      // if canplay was already fired, we won't know when to play, so just give it a try
+      element.play();
+    } catch {
+      console.warn('It was not possible to play the video.');
+    }
   }
 
   /**
