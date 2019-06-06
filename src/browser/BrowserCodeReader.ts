@@ -26,10 +26,16 @@ export class BrowserCodeReader {
     return typeof navigator !== 'undefined';
   }
 
+  /**
+   * If mediaDevices under navigator is supported.
+   */
   public get isMediaDevicesSuported() {
     return this.hasNavigator && !!navigator.mediaDevices;
   }
 
+  /**
+   * If enumerateDevices under navigator is supported.
+   */
   public get canEnumerateDevices() {
     return !!(this.isMediaDevicesSuported && navigator.mediaDevices.enumerateDevices);
   }
@@ -144,7 +150,7 @@ export class BrowserCodeReader {
       const label = device.label || `Video device ${videoDevices.length + 1}`;
       const groupId = device.groupId;
 
-      const videoDevice: MediaDeviceInfo = { deviceId, label, kind, groupId };
+      const videoDevice = <MediaDeviceInfo>{ deviceId, label, kind, groupId };
 
       videoDevices.push(videoDevice);
     }
@@ -261,8 +267,6 @@ export class BrowserCodeReader {
    *
    * @param stream The stream to be shown in the video element.
    * @param decodeFn A callback for the decode method.
-   *
-   * @todo Return Promise<Result>
    */
   protected async attachStreamToVideo(stream: MediaStream, videoSource: string | HTMLVideoElement): Promise<HTMLVideoElement> {
 
@@ -916,11 +920,11 @@ export class BrowserCodeReader {
   public addVideoSource(videoElement: HTMLVideoElement, stream: MediaStream): void {
     // Older browsers may not have `srcObject`
     try {
-      // @NOTE Throws Exception if interrupted by a new loaded request
+      // @note Throws Exception if interrupted by a new loaded request
       videoElement.srcObject = stream;
     } catch (err) {
-      // @NOTE Avoid using this in new browsers, as it is going away.
-      videoElement.src = window.URL.createObjectURL(stream);
+      // @note Avoid using this in new browsers, as it is going away.
+      videoElement.src = URL.createObjectURL(stream);
     }
   }
 
