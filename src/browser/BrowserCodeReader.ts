@@ -318,13 +318,15 @@ export class BrowserCodeReader {
    * Just tries to play the video and logs any errors.
    * The play call is only made is the video is not already playing.
    */
-  tryPlayVideo(videoElement: HTMLVideoElement): void {
+  async tryPlayVideo(videoElement: HTMLVideoElement): Promise<void> {
+
+    if (!this.isVideoPLaying(videoElement)) {
+      console.warn('Trying yo play video that is already playing.');
+      return;
+    }
+
     try {
-      if (!this.isVideoPLaying(videoElement)) {
-        videoElement.play();
-      } else {
-        console.warn('Trying yo play video that is already playing.')
-      }
+      await videoElement.play();
     } catch {
       console.warn('It was not possible to play the video.');
     }
