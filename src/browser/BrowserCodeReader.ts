@@ -160,7 +160,7 @@ export class BrowserCodeReader {
    *
    * @memberOf BrowserCodeReader
    *
-   * @deprecated Use `discoverVideoInputDevices` instead.
+   * @deprecated Use `listVideoInputDevices` instead.
    */
   public async getVideoInputDevices(): Promise<VideoInputDevice[]> {
 
@@ -322,6 +322,8 @@ export class BrowserCodeReader {
     try {
       if (!this.isVideoPLaying(videoElement)) {
         videoElement.play();
+      } else {
+        console.warn('Trying yo play video that is already playing.')
       }
     } catch {
       console.warn('It was not possible to play the video.');
