@@ -270,8 +270,6 @@ export class BrowserCodeReader {
    */
   protected async attachStreamToVideo(stream: MediaStream, videoSource: string | HTMLVideoElement): Promise<HTMLVideoElement> {
 
-    this.reset();
-
     const videoElement = this.prepareVideoElement(videoSource);
 
     this.addVideoSource(videoElement, stream);
@@ -325,7 +323,7 @@ export class BrowserCodeReader {
   async tryPlayVideo(videoElement: HTMLVideoElement): Promise<void> {
 
     if (!this.isVideoPLaying(videoElement)) {
-      console.warn('Trying yo play video that is already playing.');
+      console.warn('Trying to play video that is already playing.');
       return;
     }
 
@@ -474,13 +472,18 @@ export class BrowserCodeReader {
    * @param source The video source element.
    */
   private _decodeFromVideoElementSetup(source: string | HTMLVideoElement) {
+
     if (!source) {
-      throw new ArgumentException('An image element must be provided.');
+      throw new ArgumentException('A video element must be provided.');
     }
+
     this.reset();
+
     const element = this.prepareVideoElement(source);
+
     // defines the video element before starts decoding
     this.videoElement = element;
+
     return element;
   }
 
