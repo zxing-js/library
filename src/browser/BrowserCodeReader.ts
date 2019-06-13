@@ -699,17 +699,15 @@ export class BrowserCodeReader {
         setTimeout(() => loop(), this.timeBetweenScansMillis);
       } catch (e) {
 
+        callbackFn(null, e);
+
         const isChecksumOrFormatError = e instanceof ChecksumException || e instanceof FormatException;
         const isNotFound = e instanceof NotFoundException;
 
-        if (!isChecksumOrFormatError && !isNotFound) {
-          // not expected
-          throw e;
+        if (isChecksumOrFormatError || isNotFound) {
+          // trying again
+          setTimeout(() => loop(), 0);
         }
-
-        // trying again
-        callbackFn(null, e);
-        setTimeout(() => loop(), 0);
       }
     };
 
