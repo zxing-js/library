@@ -324,7 +324,7 @@ export class BrowserCodeReader {
    */
   async tryPlayVideo(videoElement: HTMLVideoElement): Promise<void> {
 
-    if (!this.isVideoPLaying(videoElement)) {
+    if (this.isVideoPLaying(videoElement)) {
       console.warn('Trying yo play video that is already playing.');
       return;
     }
