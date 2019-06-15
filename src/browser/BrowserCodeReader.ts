@@ -314,8 +314,8 @@ export class BrowserCodeReader {
   /**
    * Checks if the given video element is currently playing.
    */
-  isVideoPLaying(video: HTMLVideoElement): boolean {
-    return !!(video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2);
+  isVideoPlaying(video: HTMLVideoElement): boolean {
+    return video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2;
   }
 
   /**
@@ -324,8 +324,8 @@ export class BrowserCodeReader {
    */
   async tryPlayVideo(videoElement: HTMLVideoElement): Promise<void> {
 
-    if (this.isVideoPLaying(videoElement)) {
-      console.warn('Trying yo play video that is already playing.');
+    if (this.isVideoPlaying(videoElement)) {
+      console.warn('Trying to play video that is already playing.');
       return;
     }
 
