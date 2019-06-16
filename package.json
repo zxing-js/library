@@ -1,6 +1,6 @@
 {
     "name": "@zxing/library",
-    "version": "0.12.2",
+    "version": "0.14.2",
     "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
     "keywords": [
         "reader",
@@ -38,6 +38,7 @@
         "type": "git",
         "url": "https://github.com/zxing-js/library"
     },
+    "homepage": "https://zxing-js.github.io/library/",
     "private": false,
     "main": "./umd/index.min.js",
     "module": "./esm5/index.js",
@@ -63,7 +64,7 @@
         "webpack": "./node_modules/.bin/webpack-cli"
     },
     "dependencies": {
-        "ts-custom-error": "^2.2.2"
+        "ts-custom-error": "^3.0.0"
     },
     "optionalDependencies": {
         "text-encoding": "^0.7.0"
@@ -101,7 +102,7 @@
         "sinon": "^7.2.7",
         "ts-loader": "^5.3.3",
         "tslint": "^5.13.1",
-        "typescript": "^3.3.3333",
+        "typescript": "~3.3.3333",
         "uglify-js": "^3.4.9",
         "uglifyjs-webpack-plugin": "^2.1.2",
         "webpack": "^4.29.6",

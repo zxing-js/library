@@ -7,7 +7,8 @@
     ],
     "indent": [
       true,
-      "spaces"
+      "spaces",
+      2
     ],
     "no-duplicate-variable": true,
     "no-eval": true,
@@ -55,6 +56,8 @@
       "check-type"
     ],
     "no-bitwise": false /* we use a lot of these */,
-    "member-ordering": [false] /* to keep the same as with the java version */
+    "member-ordering": [
+      false
+    ] /* to keep the same as with the java version */
   }
 }

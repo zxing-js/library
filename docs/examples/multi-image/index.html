@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="ZXing for JS">
 
-    <title>ZXing TypeScript | Decoding QR Code from image file</title>
+    <title>ZXing TypeScript | Decoding from image file</title>
 
     <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
     <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/normalize.css@8.0.0/normalize.css">
@@ -18,14 +18,14 @@
     <main class="wrapper" style="padding-top:2em">
 
         <section class="container" id="demo-content">
-            <h1 class="title">Scan QR Code from Image</h1>
+            <h1 class="title">Scan 1D/2D Code from Image</h1>
 
             <p>
                 <a class="button-small button-outline" href="../../index.html">HOME 🏡</a>
             </p>
 
             <p>
-                This example shows how to scan a QR code with ZXing javascript library from an image.
+                This example shows how to scan any supported 1D/2D code with ZXing javascript library from an image.
                 The example decodes from the
                 <code>src</code> in
                 <code>img</code> tag, however is also possible to decode directly from an url without an
@@ -45,7 +45,7 @@
                 <p id="result"></p>
             </blockquote>
 
-            <p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/qr-image/">source code</a> for this example.</p>
+            <p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/multi-image/">source code</a> for this example.</p>
 
         </section>
 
@@ -60,7 +60,7 @@
     <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
     <script type="text/javascript">
         window.addEventListener('load', function () {
-            const codeReader = new ZXing.BrowserQRCodeReader()
+            const codeReader = new ZXing.BrowserMultiFormatReader()
             console.log('ZXing code reader initialized')
 
             document.getElementById('decodeButton').addEventListener('click', () => {

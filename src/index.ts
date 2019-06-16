@@ -1,19 +1,21 @@
 // browser
-export * from './browser/BrowserQRCodeReader';
-export * from './browser/BrowserDatamatrixCodeReader';
 export * from './browser/BrowserAztecCodeReader';
-export * from './browser/BrowserQRCodeSvgWriter';
 export * from './browser/BrowserBarcodeReader';
 export * from './browser/BrowserCodeReader';
+export * from './browser/BrowserDatamatrixCodeReader';
 export * from './browser/BrowserMultiFormatReader';
+export * from './browser/BrowserQRCodeReader';
+export * from './browser/BrowserQRCodeSvgWriter';
+export * from './browser/DecodeContinuouslyCallback';
 export * from './browser/HTMLCanvasElementLuminanceSource';
+export * from './browser/HTMLVisualMediaElement';
 export * from './browser/VideoInputDevice';
 
 // Exceptions
-export { default as Exception } from './core/Exception';
 export { default as ArgumentException } from './core/ArgumentException';
 export { default as ArithmeticException } from './core/ArithmeticException';
 export { default as ChecksumException } from './core/ChecksumException';
+export { default as Exception } from './core/Exception';
 export { default as FormatException } from './core/FormatException';
 export { default as IllegalArgumentException } from './core/IllegalArgumentException';
 export { default as IllegalStateException } from './core/IllegalStateException';

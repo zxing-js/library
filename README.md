@@ -60,9 +60,28 @@ or
 
 ### Use on browser with ES6 modules:
 
-```javascript
+```html
 <script type="module">
-    import { BrowserQRCodeReader } from '@zxing/library';
+  import { BrowserQRCodeReader } from '@zxing/library';
+
+  const codeReader = new BrowserQRCodeReader();
+  const img = document.getElementById('img');
+
+  try {
+      const result = await codeReader.decodeFromImage(img);
+  } catch (err) {
+      console.error(err);
+  }
+
+  console.log(result);
+</script>
+```
+
+#### Or asynchronously:
+
+```html
+<script type="module">
+  import('@zxing/library').then({ BrowserQRCodeReader } => {
 
     const codeReader = new BrowserQRCodeReader();
     const img = document.getElementById('img');
@@ -74,26 +93,28 @@ or
     }
 
     console.log(result);
+
+  });
 </script>
 ```
 
 ### Use on browser with AMD:
 
-```javascript
+```html
 <script type="text/javascript" src="https://unpkg.com/requirejs"></script>
 <script type="text/javascript">
-    require(['@zxing/library'], ZXing => {
-        const codeReader = new ZXing.BrowserQRCodeReader();
-        const img = document.getElementById('img');
+  require(['@zxing/library'], ZXing => {
+    const codeReader = new ZXing.BrowserQRCodeReader();
+    const img = document.getElementById('img');
 
-        try {
-            const result = await codeReader.decodeFromImage(img);
-        } catch (err) {
-            console.error(err);
-        }
+    try {
+        const result = await codeReader.decodeFromImage(img);
+    } catch (err) {
+        console.error(err);
+    }
 
-        console.log(result);
-    });
+    console.log(result);
+  });
 </script>
 ```
 
@@ -102,18 +123,18 @@ or
 ```html
 <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
 <script type="text/javascript">
-    window.addEventListener('load', () => {
-        const codeReader = new ZXing.BrowserQRCodeReader();
-        const img = document.getElementById('img');
+  window.addEventListener('load', () => {
+    const codeReader = new ZXing.BrowserQRCodeReader();
+    const img = document.getElementById('img');
 
-        try {
-            const result = await codeReader.decodeFromImage(img);
-        } catch (err) {
-            console.error(err);
-        }
+    try {
+        const result = await codeReader.decodeFromImage(img);
+    } catch (err) {
+        console.error(err);
+    }
 
-        console.log(result);
-    });
+    console.log(result);
+  });
 </script>
 ```
 
@@ -153,10 +174,10 @@ To display the input from the video camera you will need to add a video element 
 
 ```html
 <video
-    id="video"
-    width="300"
-    height="200"
-    style="border: 1px solid gray"
+  id="video"
+  width="300"
+  height="200"
+  style="border: 1px solid gray"
 ></video>
 ```
 
@@ -166,24 +187,24 @@ To start decoding, first obtain a list of video input devices with:
 const codeReader = new ZXing.BrowserQRCodeReader();
 
 codeReader
-    .getVideoInputDevices()
-    .then(videoInputDevices => {
-        videoInputDevices.forEach(device =>
-            console.log(`${device.label}, ${device.deviceId}`)
-        );
-    })
-    .catch(err => console.error(err));
+  .listVideoInputDevices()
+  .then(videoInputDevices => {
+    videoInputDevices.forEach(device =>
+      console.log(`${device.label}, ${device.deviceId}`)
+    );
+  })
+  .catch(err => console.error(err));
 ```
 
-If there is just one input device you can use the first deviceId and the video element id (in the example below is also 'video') to decode:
+If there is just one input device you can use the first `deviceId` and the video element id (in the example below is also 'video') to decode:
 
 ```javascript
 const firstDeviceId = videoInputDevices[0].deviceId;
 
 codeReader
-    .decodeFromInputVideoDevice(firstDeviceId, 'video')
-    .then(result => console.log(result.text))
-    .catch(err => console.error(err));
+  .decodeFromInputVideoDevice(firstDeviceId, 'video')
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
 ```
 
 If there are more input devices then you will need to chose one for `codeReader.decodeFromInputVideoDevice` device id parameter.
@@ -192,9 +213,9 @@ You can also provide `undefined` for the device id parameter in which case the l
 
 ```javascript
 codeReader
-    .decodeFromInputVideoDevice(undefined, 'video')
-    .then(result => console.log(result.text))
-    .catch(err => console.error(err));
+  .decodeFromInputVideoDevice(undefined, 'video')
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
 ```
 
 ### Scanning from Video File
@@ -203,10 +224,10 @@ Similar as above you can use a video element in the HTML page:
 
 ```html
 <video
-    id="video"
-    width="300"
-    height="200"
-    style="border: 1px solid gray"
+  id="video"
+  width="300"
+  height="200"
+  style="border: 1px solid gray"
 ></video>
 ```
 
@@ -217,18 +238,25 @@ const codeReader = new ZXing.BrowserQRCodeReader();
 const videoSrc = 'your url to a video';
 
 codeReader
-    .decodeFromVideoSource(videoSrc, 'video')
-    .then(result => console.log(result.text))
-    .catch(err => console.error(err));
+  .decodeFromVideo('video', videoSrc)
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
 ```
 
 You can also decode the video url without showing it in the page, in this case no `video` element is needed in HTML.
 
 ```javascript
 codeReader
-    .decodeFromVideoSource(videoSrc)
-    .then(result => console.log(result.text))
-    .catch(err => console.error(err));
+  .decodeFromVideoUrl(videoUrl)
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
+
+// or alternatively
+
+codeReader
+  .decodeFromVideo(null, videoUrl)
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
 ```
 
 ### Scanning from Image
@@ -237,11 +265,11 @@ Similar as above you can use a img element in the HTML page (with src attribute 
 
 ```html
 <img
-    id="img"
-    src="qrcode-image.png"
-    width="200"
-    height="300"
-    style="border: 1px solid gray"
+  id="img"
+  src="qrcode-image.png"
+  width="200"
+  height="300"
+  style="border: 1px solid gray"
 />
 ```
 
@@ -252,9 +280,9 @@ const codeReader = new ZXing.BrowserQRCodeReader();
 const img = document.getElementById('img');
 
 codeReader
-    .decodeFromImage(img)
-    .then(result => console.log(result.text))
-    .catch(err => console.error(err));
+  .decodeFromImage(img)
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
 ```
 
 You can also decode the image url without showing it in the page, in this case no `img` element is needed in HTML:
@@ -263,19 +291,19 @@ You can also decode the image url without showing it in the page, in this case n
 const imgSrc = 'url to image';
 
 codeReader
-    .decodeFromImage(undefined, imgSrc)
-    .then(result => console.log(result.text))
-    .catch(err => console.error(err));
+  .decodeFromImage(undefined, imgSrc)
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
 ```
 
 Or decode the image url directly from an url, with an `img` element in page (notice no `src` attribute is set for `img` element):
 
 ```html
 <img
-    id="img-to-decode"
-    width="200"
-    height="300"
-    style="border: 1px solid gray"
+  id="img-to-decode"
+  width="200"
+  height="300"
+  style="border: 1px solid gray"
 />
 ```
 
@@ -284,9 +312,9 @@ const imgSrc = 'url to image';
 const imgDomId = 'img-to-decode';
 
 codeReader
-    .decodeFromImage(imgDomId, imgSrc)
-    .then(result => console.log(result.text))
-    .catch(err => console.error(err));
+  .decodeFromImage(imgDomId, imgSrc)
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
 ```
 
 ## Barcode generation
