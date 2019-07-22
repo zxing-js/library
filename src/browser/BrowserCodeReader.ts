@@ -260,7 +260,7 @@ export class BrowserCodeReader {
     this.reset();
 
     const video = await this.attachStreamToVideo(stream, videoSource);
-    const result = await this.decodeAsync(video);
+    const result = await this.decodeOnce(video);
 
     return result;
   }
@@ -486,7 +486,7 @@ export class BrowserCodeReader {
     let task: Promise<Result>;
 
     if (this.isImageLoaded(element)) {
-      task = this.decodeAsync(element, false, true);
+      task = this.decodeOnce(element, false, true);
     } else {
       task = this._decodeOnLoadImage(element);
     }
@@ -598,7 +598,7 @@ export class BrowserCodeReader {
 
   private _decodeOnLoadImage(element: HTMLImageElement): Promise<Result> {
     return new Promise((resolve, reject) => {
-      this.imageLoadedListener = () => this.decodeAsync(element, false, true).then(resolve, reject);
+      this.imageLoadedListener = () => this.decodeOnce(element, false, true).then(resolve, reject);
       element.addEventListener('load', this.imageLoadedListener);
     });
   }
@@ -607,7 +607,7 @@ export class BrowserCodeReader {
     // plays the video
     await this.playVideoOnLoadAsync(videoElement);
     // starts decoding after played the video
-    return await this.decodeAsync(videoElement);
+    return await this.decodeOnce(videoElement);
   }
 
   private async _decodeOnLoadVideoContinuously(videoElement: HTMLVideoElement, callbackFn: DecodeContinuouslyCallback): Promise<void> {
@@ -690,9 +690,9 @@ export class BrowserCodeReader {
   }
 
   /**
-   * Continuously decodes from video input until it finds some value.
+   * Tries to decode from the video input until it finds some value.
    */
-  private decodeAsync(element: HTMLVisualMediaElement, retryIfNotFound = true, retryIfChecksumOrFormatError = true): Promise<Result> {
+  private decodeOnce(element: HTMLVisualMediaElement, retryIfNotFound = true, retryIfChecksumOrFormatError = true): Promise<Result> {
 
     this._stopAsyncDecode = false;
 
