@@ -446,7 +446,7 @@ export class BrowserCodeReader {
   /**
    * Searches and validates a media element.
    */
-  protected getMediaElement(mediaElementId: string, type: string): HTMLVisualMediaElement {
+  public getMediaElement(mediaElementId: string, type: string): HTMLVisualMediaElement {
 
     const mediaElement = document.getElementById(mediaElementId);
 
@@ -683,7 +683,7 @@ export class BrowserCodeReader {
     this.decodeContinuously(videoElement, callbackFn);
   }
 
-  protected isImageLoaded(img: HTMLImageElement) {
+  public isImageLoaded(img: HTMLImageElement) {
     // During the onload event, IE correctly identifies any images that
     // weren’t downloaded as not complete. Others should too. Gecko-based
     // browsers act like NS4 in that they report this incorrectly.
@@ -703,7 +703,7 @@ export class BrowserCodeReader {
     return true;
   }
 
-  protected prepareImageElement(imageSource?: HTMLImageElement | string): HTMLImageElement {
+  public prepareImageElement(imageSource?: HTMLImageElement | string): HTMLImageElement {
 
     let imageElement: HTMLImageElement;
 
@@ -729,7 +729,7 @@ export class BrowserCodeReader {
    *
    * @param videoSource The HTMLVideoElement to be set.
    */
-  protected prepareVideoElement(videoSource?: HTMLVideoElement | string): HTMLVideoElement {
+  public prepareVideoElement(videoSource?: HTMLVideoElement | string): HTMLVideoElement {
 
     let videoElement: HTMLVideoElement;
 
@@ -758,7 +758,7 @@ export class BrowserCodeReader {
   /**
    * Tries to decode from the video input until it finds some value.
    */
-  private decodeOnce(element: HTMLVisualMediaElement, retryIfNotFound = true, retryIfChecksumOrFormatError = true): Promise<Result> {
+  public decodeOnce(element: HTMLVisualMediaElement, retryIfNotFound = true, retryIfChecksumOrFormatError = true): Promise<Result> {
 
     this._stopAsyncDecode = false;
 
@@ -794,7 +794,7 @@ export class BrowserCodeReader {
   /**
    * Continuously decodes from video input.
    */
-  private decodeContinuously(element: HTMLVideoElement, callbackFn: DecodeContinuouslyCallback): void {
+  public decodeContinuously(element: HTMLVideoElement, callbackFn: DecodeContinuouslyCallback): void {
 
     this._stopContinuousDecode = false;
 
@@ -830,7 +830,7 @@ export class BrowserCodeReader {
   /**
    * Gets the BinaryBitmap for ya! (and decodes it)
    */
-  protected decode(element: HTMLVisualMediaElement): Result {
+  public decode(element: HTMLVisualMediaElement): Result {
 
     // get binary bitmap for decode function
     const binaryBitmap = this.createBinaryBitmap(element);
@@ -843,7 +843,7 @@ export class BrowserCodeReader {
    *
    * @param mediaElement HTML element containing drawable image source.
    */
-  protected createBinaryBitmap(mediaElement: HTMLVisualMediaElement): BinaryBitmap {
+  public createBinaryBitmap(mediaElement: HTMLVisualMediaElement): BinaryBitmap {
 
     const ctx = this.getCaptureCanvasContext(mediaElement);
 
@@ -887,21 +887,21 @@ export class BrowserCodeReader {
   /**
    * Ovewriting this allows you to manipulate the snapshot image in anyway you want before decode.
    */
-  protected drawImageOnCanvas(canvasElementContext: CanvasRenderingContext2D, srcElement: HTMLVisualMediaElement) {
+  public drawImageOnCanvas(canvasElementContext: CanvasRenderingContext2D, srcElement: HTMLVisualMediaElement) {
     canvasElementContext.drawImage(srcElement, 0, 0);
   }
 
   /**
    * Call the encapsulated readers decode
    */
-  protected decodeBitmap(binaryBitmap: BinaryBitmap): Result {
+  public decodeBitmap(binaryBitmap: BinaryBitmap): Result {
     return this.reader.decode(binaryBitmap, this._hints);
   }
 
   /**
    * 🖌 Prepares the canvas for capture and scan frames.
    */
-  protected createCaptureCanvas(mediaElement?: HTMLVisualMediaElement): HTMLCanvasElement {
+  public createCaptureCanvas(mediaElement?: HTMLVisualMediaElement): HTMLCanvasElement {
 
     if (typeof document === 'undefined') {
       this._destroyCaptureCanvas();
