@@ -43,9 +43,17 @@
         </select>
       </div>
 
+      <div style = "display: table">
+        <label for = "decoding_style"> Decoding Style:</label>
+        <select id = "decoding_style" size="1">
+          <option value = "once">Decode once</option>
+          <option value = "continuously">Decode continuously</option>
+        </select>
+      </div>
+
       <label>Result:</label>
       <blockquote>
-        <p id="result"></p>
+        <pre id="result"></pre>
       </blockquote>
 
       <p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/qr-camera/">source code</a> for
@@ -63,10 +71,56 @@
 
   <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
   <script type="text/javascript">
+    function decode_once(codeReader, selectedDeviceId) {
+      codeReader.decodeFromInputVideoDevice(selectedDeviceId, 'video').then((result) => {
+        console.log(result)
+        document.getElementById('result').textContent = result.text
+      }).catch((err) => {
+        console.error(err)
+        document.getElementById('result').textContent = err
+      })
+    }
+
+    function decode_continuously(codeReader, selectedDeviceId) {
+      codeReader.decodeFromInputVideoDeviceContinuously(selectedDeviceId, 'video', (result, err) => {
+        if (result) {
+          // properly decoded qr code
+          console.log(result)
+          document.getElementById('result').textContent += 'Found QR Code: ' + result.text + '\n\n'
+        }
+
+        if (err) {
+          // As long as this error belongs into one of the following categories
+          // the code reader is going to continue as excepted. Any other error
+          // will stop the decoding loop.
+          //
+          // Excepted Exceptions:
+          //
+          //  - NotFoundException
+          //  - ChecksumException
+          //  - FormatException
+
+          // Normally you should try to log or handle the error in here but in
+          // the current state of `decodeFromInputVideoDeviceContinuously` it's
+          // not worth tryin from pure JS.
+          //
+          // Main Reasons are:
+          //  1) There is no timeout after a decoding attemp failed so this path
+          //     of the callback will be called quite often. This might change in
+          //     the near future if zxing-js/library#187 will be merged.
+          //  2) Most of the errors don't contain a useful error message as they
+          //     are just handled by type inside typescript. This results in
+          //     a situation where you will only receive almost useless empty
+          //     objects if you call the method from pure js.
+        }
+      })
+    }
+
     window.addEventListener('load', function () {
       let selectedDeviceId;
       const codeReader = new ZXing.BrowserQRCodeReader()
       console.log('ZXing code reader initialized')
+
       codeReader.getVideoInputDevices()
         .then((videoInputDevices) => {
           const sourceSelect = document.getElementById('sourceSelect')
@@ -88,14 +142,14 @@
           }
 
           document.getElementById('startButton').addEventListener('click', () => {
-            codeReader.decodeFromInputVideoDevice(selectedDeviceId, 'video').then((result) => {
-              console.log(result)
-              document.getElementById('result').textContent = result.text
-            }).catch((err) => {
-              console.error(err)
-              document.getElementById('result').textContent = err
-            })
-            console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
+            const decoding_style = document.getElementById("decoding_style").value;
+            if (decoding_style == "once") {
+              decode_once(codeReader, selectedDeviceId);
+            } else {
+              decode_continuously(codeReader, selectedDeviceId);
+            }
+
+            console.log(`Started decode from camera with id ${selectedDeviceId}`)
           })
 
           document.getElementById('resetButton').addEventListener('click', () => {
