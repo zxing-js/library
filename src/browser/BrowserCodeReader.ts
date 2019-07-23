@@ -51,6 +51,25 @@ export class BrowserCodeReader {
   private _stopAsyncDecode = false;
 
   /**
+   * Delay time between decode attempts made by the scanner.
+   */
+  protected _timeBetweenDecodingAttempts: number = 0;
+
+  /** Time between two decoding tries in milli seconds. */
+  get timeBetweenDecodingAttempts(): number {
+    return this._timeBetweenDecodingAttempts;
+  }
+
+  /**
+   * Change the time span the decoder waits between two decoding tries.
+   *
+   * @param {number} millis Time between two decoding tries in milli seconds.
+   */
+  set timeBetweenDecodingAttempts(millis: number) {
+    this._timeBetweenDecodingAttempts = millis < 0 ? 0 : millis;
+  }
+
+  /**
    * The HTML canvas element, used to draw the video or image's frame for decoding.
    */
   protected captureCanvas: HTMLCanvasElement;
@@ -115,7 +134,7 @@ export class BrowserCodeReader {
   /**
    * Creates an instance of BrowserCodeReader.
    * @param {Reader} reader The reader instance to decode the barcode
-   * @param {number} [timeBetweenScansMillis=500] the time delay between subsequent decode tries
+   * @param {number} [timeBetweenScansMillis=500] the time delay between subsequent successful decode tries
    *
    * @memberOf BrowserCodeReader
    */
@@ -669,7 +688,7 @@ export class BrowserCodeReader {
 
         if (ifNotFound || ifChecksumOrFormat) {
           // trying again
-          return setTimeout(() => loop(resolve, reject), 0);
+          return setTimeout(() => loop(resolve, reject), this._timeBetweenDecodingAttempts);
         }
 
         reject(e);
@@ -706,8 +725,9 @@ export class BrowserCodeReader {
 
         if (isChecksumOrFormatError || isNotFound) {
           // trying again
-          setTimeout(() => loop(), 0);
+          setTimeout(() => loop(), this._timeBetweenDecodingAttempts);
         }
+
       }
     };
 
