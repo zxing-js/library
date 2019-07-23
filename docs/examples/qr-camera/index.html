@@ -100,18 +100,17 @@
           //  - ChecksumException
           //  - FormatException
 
-          // Normally you should try to log or handle the error in here but in
-          // the current state of `decodeFromInputVideoDeviceContinuously` it's
-          // not worth tryin from pure JS.
-          //
-          // Main Reasons are:
-          //  1) There is no timeout after a decoding attemp failed so this path
-          //     of the callback will be called quite often. This might change in
-          //     the near future if zxing-js/library#187 will be merged.
-          //  2) Most of the errors don't contain a useful error message as they
-          //     are just handled by type inside typescript. This results in
-          //     a situation where you will only receive almost useless empty
-          //     objects if you call the method from pure js.
+          if (err instanceof NotFoundException) {
+            console.log('No QR code found.')
+          }
+
+          if (err instanceof ChecksumException) {
+            console.log('A code was found, but it\'s read value was not valid.')
+          }
+
+          if (err instanceof FormatException) {
+            console.log('A code was found, but it was in a invalid format.')
+          }
         }
       })
     }
