@@ -92,7 +92,7 @@
           }
 
           document.getElementById('startButton').addEventListener('click', () => {
-            codeReader.decodeFromInputVideoDeviceContinuously(selectedDeviceId, 'video', (result, err) => {
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
               if (result) {
                 console.log(result)
                 document.getElementById('result').textContent = result.text

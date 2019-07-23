@@ -89,7 +89,7 @@
                     }
 
                     document.getElementById('startButton').addEventListener('click', () => {
-                        codeReader.decodeFromInputVideoDevice(selectedDeviceId, 'video').then((result) => {
+                        codeReader.decodeOnceFromVideoDevice(selectedDeviceId, 'video').then((result) => {
                             console.log(result)
                             document.getElementById('result').textContent = result.text
                         }).catch((err) => {
