@@ -51,6 +51,25 @@ export class BrowserCodeReader {
   private _stopAsyncDecode = false;
 
   /**
+   * Delay time between decode attempts made by the scanner.
+   */
+  protected _timeBetweenDecodingAttempts: number = 0;
+
+  /** Time between two decoding tries in milli seconds. */
+  get timeBetweenDecodingAttempts(): number {
+    return this._timeBetweenDecodingAttempts;
+  }
+
+  /**
+   * Change the time span the decoder waits between two decoding tries.
+   *
+   * @param {number} millis Time between two decoding tries in milli seconds.
+   */
+  set timeBetweenDecodingAttempts(millis: number) {
+    this._timeBetweenDecodingAttempts = millis < 0 ? 0 : millis;
+  }
+
+  /**
    * The HTML canvas element, used to draw the video or image's frame for decoding.
    */
   protected captureCanvas: HTMLCanvasElement;
@@ -115,7 +134,7 @@ export class BrowserCodeReader {
   /**
    * Creates an instance of BrowserCodeReader.
    * @param {Reader} reader The reader instance to decode the barcode
-   * @param {number} [timeBetweenScansMillis=500] the time delay between subsequent decode tries
+   * @param {number} [timeBetweenScansMillis=500] the time delay between subsequent successful decode tries
    *
    * @memberOf BrowserCodeReader
    */
@@ -192,13 +211,28 @@ export class BrowserCodeReader {
   /**
    * Decodes the barcode from the device specified by deviceId while showing the video in the specified video element.
    *
-   * @param {string} [deviceId] the id of one of the devices obtained after calling getVideoInputDevices. Can be undefined, in this case it will decode from one of the available devices, preffering the main camera (environment facing) if available.
-   * @param {string|HTMLVideoElement} [video] the video element in page where to show the video while decoding. Can be either an element id or directly an HTMLVideoElement. Can be undefined, in which case no video will be shown.
-   * @returns {Promise<Result>} The decoding result.
+   * @param deviceId the id of one of the devices obtained after calling getVideoInputDevices. Can be undefined, in this case it will decode from one of the available devices, preffering the main camera (environment facing) if available.
+   * @param video the video element in page where to show the video while decoding. Can be either an element id or directly an HTMLVideoElement. Can be undefined, in which case no video will be shown.
+   * @returns The decoding result.
+   *
+   * @memberOf BrowserCodeReader
+   *
+   * @deprecated Use `decodeOnceFromVideoDevice` instead.
+   */
+  public async decodeFromInputVideoDevice(deviceId?: string, videoSource?: string | HTMLVideoElement): Promise<Result> {
+    return await this.decodeOnceFromVideoDevice(deviceId, videoSource);
+  }
+
+  /**
+   * In one attempt, tries to decode the barcode from the device specified by deviceId while showing the video in the specified video element.
+   *
+   * @param deviceId the id of one of the devices obtained after calling getVideoInputDevices. Can be undefined, in this case it will decode from one of the available devices, preffering the main camera (environment facing) if available.
+   * @param video the video element in page where to show the video while decoding. Can be either an element id or directly an HTMLVideoElement. Can be undefined, in which case no video will be shown.
+   * @returns The decoding result.
    *
    * @memberOf BrowserCodeReader
    */
-  public async decodeFromInputVideoDevice(deviceId?: string, videoSource?: string | HTMLVideoElement): Promise<Result> {
+  public async decodeOnceFromVideoDevice(deviceId?: string, videoSource?: string | HTMLVideoElement): Promise<Result> {
 
     this.reset();
 
@@ -212,9 +246,40 @@ export class BrowserCodeReader {
 
     const constraints: MediaStreamConstraints = { video: videoConstraints };
 
+    return await this.decodeOnceFromConstraints(constraints, videoSource);
+  }
+
+  /**
+   * In one attempt, tries to decode the barcode from a stream obtained from the given constraints while showing the video in the specified video element.
+   *
+   * @param constraints the media stream constraints to get s valid media stream to decode from
+   * @param video the video element in page where to show the video while decoding. Can be either an element id or directly an HTMLVideoElement. Can be undefined, in which case no video will be shown.
+   * @returns The decoding result.
+   *
+   * @memberOf BrowserCodeReader
+   */
+  public async decodeOnceFromConstraints(constraints: MediaStreamConstraints, videoSource?: string | HTMLVideoElement): Promise<Result> {
+
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+    return await this.decodeOnceFromStream(stream, videoSource);
+  }
+
+  /**
+   * In one attempt, tries to decode the barcode from a stream obtained from the given constraints while showing the video in the specified video element.
+   *
+   * @param {MediaStream} [constraints] the media stream constraints to get s valid media stream to decode from
+   * @param {string|HTMLVideoElement} [video] the video element in page where to show the video while decoding. Can be either an element id or directly an HTMLVideoElement. Can be undefined, in which case no video will be shown.
+   * @returns {Promise<Result>} The decoding result.
+   *
+   * @memberOf BrowserCodeReader
+   */
+  public async decodeOnceFromStream(stream: MediaStream, videoSource?: string | HTMLVideoElement): Promise<Result> {
+
+    this.reset();
+
     const video = await this.attachStreamToVideo(stream, videoSource);
-    const result = await this.decodeAsync(video);
+    const result = await this.decodeOnce(video);
 
     return result;
   }
@@ -227,10 +292,23 @@ export class BrowserCodeReader {
    * @returns {Promise<void>}
    *
    * @memberOf BrowserCodeReader
+   *
+   * @deprecated Use `decodeFromVideoDevice` instead.
    */
   public async decodeFromInputVideoDeviceContinuously(deviceId: string | null, videoSource: string | HTMLVideoElement | null, callbackFn: DecodeContinuouslyCallback): Promise<void> {
+    return await this.decodeFromVideoDevice(deviceId, videoSource, callbackFn);
+  }
 
-    this.reset();
+  /**
+   * Continuously tries to decode the barcode from the device specified by device while showing the video in the specified video element.
+   *
+   * @param {string|null} [deviceId] the id of one of the devices obtained after calling getVideoInputDevices. Can be undefined, in this case it will decode from one of the available devices, preffering the main camera (environment facing) if available.
+   * @param {string|HTMLVideoElement|null} [video] the video element in page where to show the video while decoding. Can be either an element id or directly an HTMLVideoElement. Can be undefined, in which case no video will be shown.
+   * @returns {Promise<void>}
+   *
+   * @memberOf BrowserCodeReader
+   */
+  public async decodeFromVideoDevice(deviceId: string | null, videoSource: string | HTMLVideoElement | null, callbackFn: DecodeContinuouslyCallback): Promise<void> {
 
     let videoConstraints: MediaTrackConstraints;
 
@@ -242,10 +320,41 @@ export class BrowserCodeReader {
 
     const constraints: MediaStreamConstraints = { video: videoConstraints };
 
+    return await this.decodeFromConstraints(constraints, videoSource, callbackFn);
+  }
+
+  /**
+   * Continuously tries to decode the barcode from a stream obtained from the given constraints while showing the video in the specified video element.
+   *
+   * @param {MediaStream} [constraints] the media stream constraints to get s valid media stream to decode from
+   * @param {string|HTMLVideoElement} [video] the video element in page where to show the video while decoding. Can be either an element id or directly an HTMLVideoElement. Can be undefined, in which case no video will be shown.
+   * @returns {Promise<Result>} The decoding result.
+   *
+   * @memberOf BrowserCodeReader
+   */
+  private async decodeFromConstraints(constraints: MediaStreamConstraints, videoSource: string | HTMLVideoElement, callbackFn: DecodeContinuouslyCallback): Promise<void> {
+
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+    return await this.decodeFromStream(stream, videoSource, callbackFn);
+  }
+
+  /**
+   * In one attempt, tries to decode the barcode from a stream obtained from the given constraints while showing the video in the specified video element.
+   *
+   * @param {MediaStream} [constraints] the media stream constraints to get s valid media stream to decode from
+   * @param {string|HTMLVideoElement} [video] the video element in page where to show the video while decoding. Can be either an element id or directly an HTMLVideoElement. Can be undefined, in which case no video will be shown.
+   * @returns {Promise<Result>} The decoding result.
+   *
+   * @memberOf BrowserCodeReader
+   */
+  private async decodeFromStream(stream: MediaStream, videoSource: string | HTMLVideoElement, callbackFn: DecodeContinuouslyCallback) {
+
+    this.reset();
+
     const video = await this.attachStreamToVideo(stream, videoSource);
 
-    this.decodeContinuously(video, callbackFn);
+    return await this.decodeContinuously(video, callbackFn);
   }
 
   /**
@@ -269,8 +378,6 @@ export class BrowserCodeReader {
    * @param decodeFn A callback for the decode method.
    */
   protected async attachStreamToVideo(stream: MediaStream, videoSource: string | HTMLVideoElement): Promise<HTMLVideoElement> {
-
-    this.reset();
 
     const videoElement = this.prepareVideoElement(videoSource);
 
@@ -314,8 +421,8 @@ export class BrowserCodeReader {
   /**
    * Checks if the given video element is currently playing.
    */
-  isVideoPLaying(video: HTMLVideoElement): boolean {
-    return !!(video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2);
+  isVideoPlaying(video: HTMLVideoElement): boolean {
+    return video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2;
   }
 
   /**
@@ -324,8 +431,8 @@ export class BrowserCodeReader {
    */
   async tryPlayVideo(videoElement: HTMLVideoElement): Promise<void> {
 
-    if (!this.isVideoPLaying(videoElement)) {
-      console.warn('Trying yo play video that is already playing.');
+    if (this.isVideoPlaying(videoElement)) {
+      console.warn('Trying to play video that is already playing.');
       return;
     }
 
@@ -440,7 +547,7 @@ export class BrowserCodeReader {
     let task: Promise<Result>;
 
     if (this.isImageLoaded(element)) {
-      task = this.decodeAsync(element, false, true);
+      task = this.decodeOnce(element, false, true);
     } else {
       task = this._decodeOnLoadImage(element);
     }
@@ -474,13 +581,18 @@ export class BrowserCodeReader {
    * @param source The video source element.
    */
   private _decodeFromVideoElementSetup(source: string | HTMLVideoElement) {
+
     if (!source) {
-      throw new ArgumentException('An image element must be provided.');
+      throw new ArgumentException('A video element must be provided.');
     }
+
     this.reset();
+
     const element = this.prepareVideoElement(source);
+
     // defines the video element before starts decoding
     this.videoElement = element;
+
     return element;
   }
 
@@ -552,7 +664,7 @@ export class BrowserCodeReader {
 
   private _decodeOnLoadImage(element: HTMLImageElement): Promise<Result> {
     return new Promise((resolve, reject) => {
-      this.imageLoadedListener = () => this.decodeAsync(element, false, true).then(resolve, reject);
+      this.imageLoadedListener = () => this.decodeOnce(element, false, true).then(resolve, reject);
       element.addEventListener('load', this.imageLoadedListener);
     });
   }
@@ -561,7 +673,7 @@ export class BrowserCodeReader {
     // plays the video
     await this.playVideoOnLoadAsync(videoElement);
     // starts decoding after played the video
-    return await this.decodeAsync(videoElement);
+    return await this.decodeOnce(videoElement);
   }
 
   private async _decodeOnLoadVideoContinuously(videoElement: HTMLVideoElement, callbackFn: DecodeContinuouslyCallback): Promise<void> {
@@ -644,9 +756,9 @@ export class BrowserCodeReader {
   }
 
   /**
-   * Continuously decodes from video input until it finds some value.
+   * Tries to decode from the video input until it finds some value.
    */
-  private decodeAsync(element: HTMLVisualMediaElement, retryIfNotFound = true, retryIfChecksumOrFormatError = true): Promise<Result> {
+  private decodeOnce(element: HTMLVisualMediaElement, retryIfNotFound = true, retryIfChecksumOrFormatError = true): Promise<Result> {
 
     this._stopAsyncDecode = false;
 
@@ -669,7 +781,7 @@ export class BrowserCodeReader {
 
         if (ifNotFound || ifChecksumOrFormat) {
           // trying again
-          return setTimeout(() => loop(resolve, reject), 0);
+          return setTimeout(() => loop(resolve, reject), this._timeBetweenDecodingAttempts);
         }
 
         reject(e);
@@ -699,17 +811,16 @@ export class BrowserCodeReader {
         setTimeout(() => loop(), this.timeBetweenScansMillis);
       } catch (e) {
 
+        callbackFn(null, e);
+
         const isChecksumOrFormatError = e instanceof ChecksumException || e instanceof FormatException;
         const isNotFound = e instanceof NotFoundException;
 
-        if (!isChecksumOrFormatError && !isNotFound) {
-          // not expected
-          throw e;
+        if (isChecksumOrFormatError || isNotFound) {
+          // trying again
+          setTimeout(() => loop(), this._timeBetweenDecodingAttempts);
         }
 
-        // trying again
-        callbackFn(null, e);
-        setTimeout(() => loop(), 0);
       }
     };
 

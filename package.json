@@ -1,6 +1,6 @@
 {
     "name": "@zxing/library",
-    "version": "0.14.1",
+    "version": "0.15.0",
     "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
     "keywords": [
         "reader",
@@ -74,7 +74,7 @@
         "@types/mocha": "^5.2.6",
         "@types/node": "^10.12.29",
         "@types/seedrandom": "^2.4.27",
-        "@types/sharp": "^0.21.2",
+        "@types/sharp": "^0.22.2",
         "@types/text-encoding": "0.0.35",
         "awesome-typescript-loader": "^5.2.1",
         "chai": "^4.2.0",
@@ -97,7 +97,7 @@
         "mocha-webpack": "^2.0.0-beta.0",
         "nyc": "^13.3.0",
         "seedrandom": "^2.4.4",
-        "sharp": "^0.21.3",
+        "sharp": "^0.22.1",
         "shx": "0.3.2",
         "sinon": "^7.2.7",
         "ts-loader": "^5.3.3",
