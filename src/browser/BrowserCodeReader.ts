@@ -332,7 +332,7 @@ export class BrowserCodeReader {
    *
    * @memberOf BrowserCodeReader
    */
-  private async decodeFromConstraints(constraints: MediaStreamConstraints, videoSource: string | HTMLVideoElement, callbackFn: DecodeContinuouslyCallback): Promise<void> {
+  public async decodeFromConstraints(constraints: MediaStreamConstraints, videoSource: string | HTMLVideoElement, callbackFn: DecodeContinuouslyCallback): Promise<void> {
 
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
@@ -348,7 +348,7 @@ export class BrowserCodeReader {
    *
    * @memberOf BrowserCodeReader
    */
-  private async decodeFromStream(stream: MediaStream, videoSource: string | HTMLVideoElement, callbackFn: DecodeContinuouslyCallback) {
+  public async decodeFromStream(stream: MediaStream, videoSource: string | HTMLVideoElement, callbackFn: DecodeContinuouslyCallback) {
 
     this.reset();
 
