@@ -289,8 +289,6 @@ export class BrowserCodeReader {
    */
   protected async attachStreamToVideo(stream: MediaStream, videoSource: string | HTMLVideoElement): Promise<HTMLVideoElement> {
 
-    this.reset();
-
     const videoElement = this.prepareVideoElement(videoSource);
 
     this.addVideoSource(videoElement, stream);
@@ -493,13 +491,18 @@ export class BrowserCodeReader {
    * @param source The video source element.
    */
   private _decodeFromVideoElementSetup(source: string | HTMLVideoElement) {
+
     if (!source) {
-      throw new ArgumentException('An image element must be provided.');
+      throw new ArgumentException('A video element must be provided.');
     }
+
     this.reset();
+
     const element = this.prepareVideoElement(source);
+
     // defines the video element before starts decoding
     this.videoElement = element;
+
     return element;
   }
 
