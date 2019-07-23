@@ -52,9 +52,7 @@
       </div>
 
       <label>Result:</label>
-      <blockquote>
-        <pre id="result"></pre>
-      </blockquote>
+      <pre><code id="result"></code></pre>
 
       <p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/qr-camera/">source code</a> for
         this example.</p>
@@ -69,7 +67,8 @@
 
   </main>
 
-  <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
+  <script src="./index.min.js"></script>
+  <!-- <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script> -->
   <script type="text/javascript">
     function decodeOnce(codeReader, selectedDeviceId) {
       codeReader.decodeFromInputVideoDevice(selectedDeviceId, 'video').then((result) => {
@@ -85,8 +84,8 @@
       codeReader.decodeFromInputVideoDeviceContinuously(selectedDeviceId, 'video', (result, err) => {
         if (result) {
           // properly decoded qr code
-          console.log(result)
-          document.getElementById('result').textContent += 'Found QR Code: ' + result.text + '\n\n'
+          console.log('Found QR code!', result)
+          document.getElementById('result').textContent = result.text
         }
 
         if (err) {
@@ -100,15 +99,15 @@
           //  - ChecksumException
           //  - FormatException
 
-          if (err instanceof NotFoundException) {
+          if (err instanceof ZXing.NotFoundException) {
             console.log('No QR code found.')
           }
 
-          if (err instanceof ChecksumException) {
+          if (err instanceof ZXing.ChecksumException) {
             console.log('A code was found, but it\'s read value was not valid.')
           }
 
-          if (err instanceof FormatException) {
+          if (err instanceof ZXing.FormatException) {
             console.log('A code was found, but it was in a invalid format.')
           }
         }
@@ -143,7 +142,7 @@
           document.getElementById('startButton').addEventListener('click', () => {
 
             const decodingStyle = document.getElementById('decoding-style').value;
-            
+
             if (decodingStyle == "once") {
               decodeOnce(codeReader, selectedDeviceId);
             } else {
