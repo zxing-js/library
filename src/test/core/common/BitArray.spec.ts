@@ -230,7 +230,7 @@ describe('BitArray', () => {
         assert.strictEqual(a.hashCode(), b.hashCode());
     });
 
-    
+
     it('testToArray', () => {
         const array = new BitArray(20);
         for (let i = 0; i < 10; i++) {

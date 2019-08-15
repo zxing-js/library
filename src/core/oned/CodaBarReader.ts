@@ -52,8 +52,8 @@ export default class CodaBarReader extends OneDReader {
         nnwwnwn: 'A',
         nnnwnww: 'B',
         nwnwnnw: 'C',
-        nnnwwwn: 'D',
-    }
+        nnnwwwn: 'D'
+    };
 
     public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
         let validRowData = this.getValidRowData(row);
@@ -77,7 +77,7 @@ export default class CodaBarReader extends OneDReader {
     private getValidRowData(row: BitArray): any {
         let booleanArr = row.toArray();
         let startIndex = booleanArr.indexOf(true);
-        if (startIndex == -1) return null;
+        if (startIndex === -1) return null;
         let lastIndex = booleanArr.lastIndexOf(true);
         if (lastIndex <= startIndex) return null;
         booleanArr = booleanArr.slice(startIndex, lastIndex + 1);
@@ -95,8 +95,8 @@ export default class CodaBarReader extends OneDReader {
             }
         }
         result.push(bitLength);
-        //CodaBar code data valid
-        if (result.length < 23 && (result.length + 1) % 8 != 0)
+        // CodaBar code data valid
+        if (result.length < 23 && (result.length + 1) % 8 !== 0)
             return null;
         return { row: result, left: startIndex, right: lastIndex };
     }
@@ -116,7 +116,7 @@ export default class CodaBarReader extends OneDReader {
             const key = seg.map(len => (len < barThreshold ? 'n' : 'w')).join('');
             if (this.CODA_BAR_CHAR_SET[key] === undefined) return null;
             code.push(this.CODA_BAR_CHAR_SET[key]);
-        };
+        }
         let strCode = code.join('');
         if (this.validCodaBarString(strCode)) return strCode;
         return null;
