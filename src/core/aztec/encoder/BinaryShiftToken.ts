@@ -20,8 +20,9 @@
 import BitArray from '../../common/BitArray';
 
 import Token from './Token';
+import SimpleToken from './SimpleToken';
 
-export default /*final*/ class BinaryShiftToken extends Token {
+export default /*final*/ class BinaryShiftToken extends SimpleToken {
 
   private /*final*/  binaryShiftStart: short;
   private /*final*/  binaryShiftByteCount: short;
@@ -31,7 +32,7 @@ export default /*final*/ class BinaryShiftToken extends Token {
     binaryShiftStart: int,
     binaryShiftByteCount: int
   ) {
-    super(previous);
+    super(previous, 0, 0);
     this.binaryShiftStart = <short>binaryShiftStart;
     this.binaryShiftByteCount = <short>binaryShiftByteCount;
   }
@@ -57,6 +58,11 @@ export default /*final*/ class BinaryShiftToken extends Token {
       }
       bitArray.appendBits(text[this.binaryShiftStart + i], 8);
     }
+  }
+
+  public /*final*/ addBinaryShift(start: int, byteCount: int): Token {
+    // int bitCount = (byteCount * 8) + (byteCount <= 31 ? 10 : byteCount <= 62 ? 20 : 21);
+    return new BinaryShiftToken(this, start, byteCount);
   }
 
   /**

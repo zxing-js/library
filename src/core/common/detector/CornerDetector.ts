@@ -40,7 +40,7 @@ export default class CornerDetector {
         this.image = image;
         this.height = image.getHeight();
         this.width = image.getWidth();
-        var halfsize = initSize / 2;
+        const halfsize = initSize / 2;
         this.leftInit = x - halfsize;
         this.rightInit = x + halfsize;
         this.upInit = y - halfsize;
@@ -56,18 +56,18 @@ export default class CornerDetector {
      */
     public detect(): ResultPoint[] {
 
-        var left = this.leftInit;
-        var right = this.rightInit;
-        var up = this.upInit;
-        var down = this.downInit;
-        var sizeExceeded = false;
-        var aBlackPointFoundOnBorder = true;
-        var atLeastOneBlackPointFoundOnBorder = false;
+        let left = this.leftInit;
+        let right = this.rightInit;
+        let up = this.upInit;
+        let down = this.downInit;
+        let sizeExceeded = false;
+        let aBlackPointFoundOnBorder = true;
+        let atLeastOneBlackPointFoundOnBorder = false;
 
-        var atLeastOneBlackPointFoundOnRight = false;
-        var atLeastOneBlackPointFoundOnBottom = false;
-        var atLeastOneBlackPointFoundOnLeft = false;
-        var atLeastOneBlackPointFoundOnTop = false;
+        let atLeastOneBlackPointFoundOnRight = false;
+        let atLeastOneBlackPointFoundOnBottom = false;
+        let atLeastOneBlackPointFoundOnLeft = false;
+        let atLeastOneBlackPointFoundOnTop = false;
 
         while (aBlackPointFoundOnBorder) {
 
@@ -76,7 +76,7 @@ export default class CornerDetector {
             // .....
             // . |
             // .....
-            var rightBorderNotWhite = true;
+            let rightBorderNotWhite = true;
             while ((rightBorderNotWhite || !atLeastOneBlackPointFoundOnRight) && right < this.width) {
                 rightBorderNotWhite = this.containsBlackPoint(up, down, right, false);
                 if (rightBorderNotWhite) {
@@ -96,7 +96,7 @@ export default class CornerDetector {
             // .....
             // . .
             // .___.
-            var bottomBorderNotWhite = true;
+            let bottomBorderNotWhite = true;
             while ((bottomBorderNotWhite || !atLeastOneBlackPointFoundOnBottom) && down < this.height) {
                 bottomBorderNotWhite = this.containsBlackPoint(left, right, down, true);
                 if (bottomBorderNotWhite) {
@@ -116,7 +116,7 @@ export default class CornerDetector {
             // .....
             // | .
             // .....
-            var leftBorderNotWhite = true;
+            let leftBorderNotWhite = true;
             while ((leftBorderNotWhite || !atLeastOneBlackPointFoundOnLeft) && left >= 0) {
                 leftBorderNotWhite = this.containsBlackPoint(up, down, left, false);
                 if (leftBorderNotWhite) {
@@ -136,7 +136,7 @@ export default class CornerDetector {
             // .___.
             // . .
             // .....
-            var topBorderNotWhite = true;
+            let topBorderNotWhite = true;
             while ((topBorderNotWhite || !atLeastOneBlackPointFoundOnTop) && up >= 0) {
                 topBorderNotWhite = this.containsBlackPoint(left, right, up, true);
                 if (topBorderNotWhite) {
@@ -187,47 +187,47 @@ export default class CornerDetector {
         //
 
 
-        var width = right - left;
-        var height = down - up;
-        var sampler = 16 / this.targetMatrixSize;
-        var sampler2 = 4 / this.targetMatrixSize;
-        var deltaX = width * sampler2;
-        var deltaY = height * sampler2;
-        var areaWidth = deltaX + (right - left) * sampler;
-        var areaHeight = deltaY + (down - up) * sampler;
+        const width = right - left;
+        const height = down - up;
+        const sampler = 16 / this.targetMatrixSize;
+        const sampler2 = 4 / this.targetMatrixSize;
+        const deltaX = width * sampler2;
+        const deltaY = height * sampler2;
+        const areaWidth = deltaX + (right - left) * sampler;
+        const areaHeight = deltaY + (down - up) * sampler;
 
-        var a = new ResultPoint(left - deltaX, up - deltaY);
-        var b = new ResultPoint(right + deltaX, up - deltaY);
-        var c = new ResultPoint(right + deltaX, down + deltaY);
-        var d = new ResultPoint(left - deltaX, down + deltaY);
+        const a = new ResultPoint(left - deltaX, up - deltaY);
+        const b = new ResultPoint(right + deltaX, up - deltaY);
+        const c = new ResultPoint(right + deltaX, down + deltaY);
+        const d = new ResultPoint(left - deltaX, down + deltaY);
 
-        var ap = new ResultPoint(a.getX() + areaWidth, a.getY() + areaHeight);
-        var bp = new ResultPoint(b.getX() - areaWidth, b.getY() + areaHeight);
-        var cp = new ResultPoint(c.getX() - areaWidth, c.getY() - areaHeight);
-        var dp = new ResultPoint(d.getX() + areaWidth, d.getY() - areaHeight);
+        const ap = new ResultPoint(a.getX() + areaWidth, a.getY() + areaHeight);
+        const bp = new ResultPoint(b.getX() - areaWidth, b.getY() + areaHeight);
+        const cp = new ResultPoint(c.getX() - areaWidth, c.getY() - areaHeight);
+        const dp = new ResultPoint(d.getX() + areaWidth, d.getY() - areaHeight);
 
-        var topLeftCorner = this.getCornerFromArea(a.getX(), ap.getX(), a.getY(), ap.getY(), false, false);
-        var topRightCorner = this.getCornerFromArea(bp.getX(), b.getX(), b.getY(), bp.getY(), true, false);
-        var bottomRightCorner = this.getCornerFromArea(cp.getX(), c.getX(), cp.getY(), c.getY(), true, true);
-        var bottomLeftCorner = this.getCornerFromArea(d.getX(), dp.getX(), dp.getY(), d.getY(), false, true);
+        const topLeftCorner = this.getCornerFromArea(a.getX(), ap.getX(), a.getY(), ap.getY(), false, false);
+        const topRightCorner = this.getCornerFromArea(bp.getX(), b.getX(), b.getY(), bp.getY(), true, false);
+        const bottomRightCorner = this.getCornerFromArea(cp.getX(), c.getX(), cp.getY(), c.getY(), true, true);
+        const bottomLeftCorner = this.getCornerFromArea(d.getX(), dp.getX(), dp.getY(), d.getY(), false, true);
 
-        var xCorrection = (topRightCorner.getX() - topLeftCorner.getX()) / this.targetMatrixSize;
-        var yCorrection = (bottomRightCorner.getY() - topRightCorner.getY()) / this.targetMatrixSize;
+        const xCorrection = (topRightCorner.getX() - topLeftCorner.getX()) / this.targetMatrixSize;
+        const yCorrection = (bottomRightCorner.getY() - topRightCorner.getY()) / this.targetMatrixSize;
 
-        var topLeftCornerCenter = new ResultPoint(topLeftCorner.getX() + xCorrection, topLeftCorner.getY() + yCorrection);
-        var topRightCornerCenter = new ResultPoint(topRightCorner.getX() - xCorrection, topRightCorner.getY() + yCorrection);
-        var bottomRightCornerCenter = new ResultPoint(bottomRightCorner.getX() - xCorrection, bottomRightCorner.getY() - yCorrection);
-        var bottomLeftCornerCenter = new ResultPoint(bottomLeftCorner.getX() + xCorrection, bottomLeftCorner.getY() - yCorrection);
+        const topLeftCornerCenter = new ResultPoint(topLeftCorner.getX() + xCorrection, topLeftCorner.getY() + yCorrection);
+        const topRightCornerCenter = new ResultPoint(topRightCorner.getX() - xCorrection, topRightCorner.getY() + yCorrection);
+        const bottomRightCornerCenter = new ResultPoint(bottomRightCorner.getX() - xCorrection, bottomRightCorner.getY() - yCorrection);
+        const bottomLeftCornerCenter = new ResultPoint(bottomLeftCorner.getX() + xCorrection, bottomLeftCorner.getY() - yCorrection);
 
-        var result: ResultPoint[] = [topLeftCornerCenter, topRightCornerCenter, bottomRightCornerCenter, bottomLeftCornerCenter];
+        const result: ResultPoint[] = [topLeftCornerCenter, topRightCornerCenter, bottomRightCornerCenter, bottomLeftCornerCenter];
         return result;
     }
 
     private getCornerFromArea(left: number, right: number, top: number, bottom: number, maximizeX: boolean, maximizeY: boolean): ResultPoint {
-        var resX = maximizeX ? 0 : Number.MAX_VALUE;
-        var resY = maximizeY ? 0 : Number.MAX_VALUE;
-        for (var x = left; x < right; x++) {
-            for (var y = top; y < bottom; y++) {
+        let resX = maximizeX ? 0 : Number.MAX_VALUE;
+        let resY = maximizeY ? 0 : Number.MAX_VALUE;
+        for (let x = left; x < right; x++) {
+            for (let y = top; y < bottom; y++) {
                 if (x > 0 && y > 0 && x < this.image.getWidth() && y < this.image.getHeight()) {
                     if (this.image.get(x, y)) {
                         if (maximizeX) {
@@ -252,7 +252,7 @@ export default class CornerDetector {
                 }
             }
         }
-        if (resX == 0 || resY == 0) {
+        if (resX === 0 || resY === 0) {
             throw new NotFoundException();
         } else {
             return new ResultPoint(resX, resY);
@@ -272,13 +272,13 @@ export default class CornerDetector {
     private containsBlackPoint(a: number, b: number, fixed: number, horizontal: boolean): boolean {
 
         if (horizontal) {
-            for (var x = a; x <= b; x++) {
+            for (let x = a; x <= b; x++) {
                 if (this.image.get(x, fixed)) {
                     return true;
                 }
             }
         } else {
-            for (var y = a; y <= b; y++) {
+            for (let y = a; y <= b; y++) {
                 if (this.image.get(fixed, y)) {
                     return true;
                 }

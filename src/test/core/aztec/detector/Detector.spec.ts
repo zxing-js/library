@@ -94,7 +94,7 @@ describe('DetectorTest', () => {
     // Test that we can tolerate errors in the parameter locator bits
     function testErrorInParameterLocator(data: string): void {
         let aztec: AztecCode = Encoder.encode(StringUtils.getBytes(data, StandardCharsets.ISO_8859_1), 25, Encoder.DEFAULT_AZTEC_LAYERS);
-        let random: Random = new Random(<string>aztec.getMatrix().hashCode());   // pseudo-random, but deterministic
+        let random: Random = new Random(aztec.getMatrix().hashCode().toString());   // pseudo-random, but deterministic
         let layers: /*int*/ number = aztec.getLayers();
         let compact: boolean = aztec.isCompact();
         let orientationPoints: Point[] = getOrientationPoints(aztec);
@@ -145,10 +145,10 @@ describe('DetectorTest', () => {
 
     // Zooms a bit matrix so that each bit is factor x factor
     function makeLarger(input: BitMatrix, factor: /*int*/ number): BitMatrix {
-        let width: int = input.getWidth();
+        let width: number = input.getWidth();
         let output: BitMatrix = new BitMatrix(width * factor);
-        for (let inputY: int = 0; inputY < width; inputY++) {
-            for (let inputX: int = 0; inputX < width; inputX++) {
+        for (let inputY: number = 0; inputY < width; inputY++) {
+            for (let inputX: number = 0; inputX < width; inputX++) {
                 if (input.get(inputX, inputY)) {
                     output.setRegion(inputX * factor, inputY * factor, factor, factor);
                 }
@@ -167,7 +167,7 @@ describe('DetectorTest', () => {
 
     // Rotates a square BitMatrix to the right by 90 degrees
     function rotateRight(input: BitMatrix): BitMatrix {
-        let width: int = input.getWidth();
+        let width: number = input.getWidth();
         let result: BitMatrix = new BitMatrix(width);
         for (let x /*int*/ = 0; x < width; x++) {
             for (let y /*int*/ = 0; y < width; y++) {
@@ -182,10 +182,10 @@ describe('DetectorTest', () => {
     // Returns the transpose of a bit matrix, which is equivalent to rotating the
     // matrix to the right, and then flipping it left-to-right
     function transpose(input: BitMatrix): BitMatrix {
-        let width: int = input.getWidth();
+        let width: number = input.getWidth();
         let result: BitMatrix = new BitMatrix(width);
-        for (let x: int = 0; x < width; x++) {
-            for (let y: int = 0; y < width; y++) {
+        for (let x: number = 0; x < width; x++) {
+            for (let y: number = 0; y < width; y++) {
                 if (input.get(x, y)) {
                     result.set(y, x);
                 }
@@ -195,10 +195,10 @@ describe('DetectorTest', () => {
     }
 
     function clone(input: BitMatrix): BitMatrix {
-        let width: int = input.getWidth();
+        let width: number = input.getWidth();
         let result: BitMatrix = new BitMatrix(width);
-        for (let x: int = 0; x < width; x++) {
-            for (let y: int = 0; y < width; y++) {
+        for (let x: number = 0; x < width; x++) {
+            for (let y: number = 0; y < width; y++) {
                 if (input.get(x, y)) {
                     result.set(x, y);
                 }
@@ -208,11 +208,11 @@ describe('DetectorTest', () => {
     }
 
     function getOrientationPoints(code: AztecCode): Point[] {
-        let center: int = code.getMatrix().getWidth() / 2;
-        let offset: int = code.isCompact() ? 5 : 7;
+        let center: number = code.getMatrix().getWidth() / 2;
+        let offset: number = code.isCompact() ? 5 : 7;
         let result: Point[] = [];
-        for (let xSign: int = -1; xSign <= 1; xSign += 2) {
-            for (let ySign: int = -1; ySign <= 1; ySign += 2) {
+        for (let xSign: number = -1; xSign <= 1; xSign += 2) {
+            for (let ySign: number = -1; ySign <= 1; ySign += 2) {
                 result.push(new Point(center + xSign * offset, center + ySign * offset));
                 result.push(new Point(center + xSign * (offset - 1), center + ySign * offset));
                 result.push(new Point(center + xSign * offset, center + ySign * (offset - 1)));

@@ -41,6 +41,16 @@ export default /*final*/ class SimpleToken extends Token {
     bitArray.appendBits(this.value, this.bitCount);
   }
 
+  public /*final*/ add(value: int, bitCount: int): Token {
+    return new SimpleToken(this, value, bitCount);
+  }
+
+  public /*final*/ addBinaryShift(start: int, byteCount: int): Token {
+    // no-op can't binary shift a simple token
+    console.warn('addBinaryShift on SimpleToken, this simply returns a copy of this token');
+    return new SimpleToken(this, start, byteCount);
+  }
+
   /**
    * @Override
    */

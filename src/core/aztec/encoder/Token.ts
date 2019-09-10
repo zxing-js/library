@@ -19,12 +19,7 @@
 // import com.google.zxing.common.BitArray;
 import BitArray from '../../common/BitArray';
 
-import SimpleToken from './SimpleToken';
-import BinaryShiftToken from './BinaryShiftToken';
-
 export default abstract class Token {
-
-  static /*final*/ EMPTY: Token = new SimpleToken(null, 0, 0);
 
   private /*final*/ previous: Token;
 
@@ -36,14 +31,9 @@ export default abstract class Token {
     return this.previous;
   }
 
-  public /*final*/ add(value: int, bitCount: int): Token {
-    return new SimpleToken(this, value, bitCount);
-  }
+  public /*final*/ abstract add(value: int, bitCount: int): Token;
 
-  public /*final*/ addBinaryShift(start: int, byteCount: int): Token {
-    // int bitCount = (byteCount * 8) + (byteCount <= 31 ? 10 : byteCount <= 62 ? 20 : 21);
-    return new BinaryShiftToken(this, start, byteCount);
-  }
+  public /*final*/ abstract addBinaryShift(start: int, byteCount: int): Token;
 
   public abstract appendTo(bitArray: BitArray, text: /*byte[]*/Uint8Array): void;
 

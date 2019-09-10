@@ -17,15 +17,13 @@
 import ResultPoint from '../../ResultPoint';
 import AztecDetectorResult from '../AztecDetectorResult';
 import BitMatrix from '../../common/BitMatrix';
-import GridSampler from '../../common/GridSampler';
 import CornerDetector from '../../common/detector/CornerDetector';
 import MathUtils from '../../common/detector/MathUtils';
 import WhiteRectangleDetector from '../../common/detector/WhiteRectangleDetector';
 import GenericGF from '../../common/reedsolomon/GenericGF';
 import ReedSolomonDecoder from '../../common/reedsolomon/ReedSolomonDecoder';
-import ReedSolomonException from '../../ReedSolomonException';
 import NotFoundException from '../../NotFoundException';
-import { GridSamplerInstance } from '../../..';
+import GridSamplerInstance from '../../common/GridSamplerInstance';
 import Integer from '../../util/Integer';
 
 
