@@ -42,7 +42,8 @@
     "private": false,
     "main": "./umd/index.min.js",
     "module": "./esm5/index.js",
-    "typings": "./esm5/index.d.ts",
+    "typings": "./esm/index.d.ts",
+    "esnext": "./esm/index.js",
     "nyc": {
         "include": [
             "src/**/*.ts"
@@ -52,10 +53,13 @@
     },
     "scripts": {
         "lint": "yarn tslint src/**/*.ts",
-        "clean": "yarn shx rm -rf umd esm5",
+        "clean": "yarn shx rm -rf umd esm esm5",
         "test": "yarn mocha-webpack \"./src/**/*.spec.ts\" --timeout 200000 --webpack-config webpack.config.test.js",
         "cover": "yarn nyc --reporter=lcov --reporter=text yarn test",
-        "build": "yarn clean && yarn tsc && yarn webpack --mode production",
+        "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:umd",
+        "build:es5": "yarn tsc",
+        "build:es6": "yarn tsc --target es6 --outdir esm --module esnext",
+        "build:umd": "yarn webpack --mode production",
         "shx": "./node_modules/.bin/shx",
         "tsc": "./node_modules/.bin/tsc",
         "tslint": "./node_modules/.bin/tslint",
