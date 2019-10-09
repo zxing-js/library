@@ -11,7 +11,7 @@ export default class Arrays {
    * @param a the array to be filled
    * @param val the value to be stored in all elements of the array
    */
-  public static fill(a: Int32Array, val: /*int*/ number): void {
+  public static fill(a: Int32Array | Uint8Array, val: int): void {
     for (let i = 0, len = a.length; i < len; i++)
       a[i] = val;
   }
@@ -33,7 +33,7 @@ export default class Arrays {
    * @throws ArrayIndexOutOfBoundsException if {@code fromIndex < 0} or
    *         {@code toIndex > a.length}
    */
-  public static fillWithin(a: Int32Array, fromIndex: /*int*/ number, toIndex: /*int*/ number, val: /*int*/ number): void {
+  public static fillWithin(a: Int32Array, fromIndex: int, toIndex: int, val: int): void {
     Arrays.rangeCheck(a.length, fromIndex, toIndex);
     for (let i = fromIndex; i < toIndex; i++)
       a[i] = val;
@@ -43,7 +43,7 @@ export default class Arrays {
    * Checks that {@code fromIndex} and {@code toIndex} are in
    * the range and throws an exception if they aren't.
    */
-  static rangeCheck(arrayLength: /*int*/ number, fromIndex: /*int*/ number, toIndex: /*int*/ number): void {
+  static rangeCheck(arrayLength: int, fromIndex: int, toIndex: int): void {
     if (fromIndex > toIndex) {
       throw new IllegalArgumentException(
         'fromIndex(' + fromIndex + ') > toIndex(' + toIndex + ')');
