@@ -1,5 +1,4 @@
 // browser
-export * from './browser/BrowserAztecCodeReader';
 export * from './browser/BrowserBarcodeReader';
 export * from './browser/BrowserCodeReader';
 export * from './browser/BrowserDatamatrixCodeReader';
@@ -78,8 +77,6 @@ export { default as QRCodeWriter } from './core/qrcode/QRCodeWriter';
 export { default as QRCodeDecoderErrorCorrectionLevel } from './core/qrcode/decoder/ErrorCorrectionLevel';
 export { default as QRCodeEncoder } from './core/qrcode/encoder/Encoder';
 export { default as QRCodeEncoderQRCode } from './core/qrcode/encoder/QRCode';
-
-export { default as AztecCodeReader } from './core/aztec/AztecReader';
 
 // core/oned
 export { default as OneDReader } from './core/oned/OneDReader';
