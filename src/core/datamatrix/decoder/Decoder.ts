@@ -4,7 +4,6 @@ import DecoderResult from '../../common/DecoderResult';
 import BitMatrix from '../../common/BitMatrix';
 import BitMatrixParser from './BitMatrixParser';
 import DataBlock from './DataBlock';
-import { Exception } from '../../..';
 import DecodedBitStreamParser from './DecodedBitStreamParser';
 import ChecksumException from '../../ChecksumException';
 

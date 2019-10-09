@@ -3,7 +3,7 @@ import BitSource from '../../common/BitSource';
 import StringBuilder from '../../util/StringBuilder';
 
 import StringEncoding from '../../util/StringEncoding';
-import { StringUtils } from '../../..';
+import StringUtils from '../../common/StringUtils';
 import FormatException from '../../FormatException';
 import IllegalStateException from '../../IllegalStateException';
 

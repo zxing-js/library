@@ -17,7 +17,8 @@
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
 
-import UPCEANReader from './UPCEANReader';
+// import UPCEANReader from './UPCEANReader';
+import AbstractUPCEANReader from './AbstractUPCEANReader';
 import Result from '../Result';
 import ResultPoint from '../ResultPoint';
 import ResultMetadataType from '../ResultMetadataType';
@@ -65,7 +66,7 @@ export default class UPCEANExtension5Support {
         let lgPatternFound = 0;
 
         for (let x = 0; x < 5 && rowOffset < end; x++) {
-            let bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_AND_G_PATTERNS);
+            let bestMatch = AbstractUPCEANReader.decodeDigit(row, counters, rowOffset, AbstractUPCEANReader.L_AND_G_PATTERNS);
             resultString += String.fromCharCode(('0'.charCodeAt(0) + bestMatch % 10));
             for (let counter of counters) {
                 rowOffset += counter;
