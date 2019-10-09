@@ -6042,6 +6042,11 @@ tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
 
+tslint-no-circular-imports@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/tslint-no-circular-imports/-/tslint-no-circular-imports-0.7.0.tgz#9df0a15654d66b172e0b7843eed073fa5ae99b5f"
+  integrity sha512-k3wxpeMC4ef40UbpfBVHEHIzKfNZq5/SCtAO1YjGsaNTklo+K53/TWLrym+poA65RJFDiYgYNWvkeIIkJNA0Vw==
+
 tslint@^5.13.1:
   version "5.18.0"
   resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.18.0.tgz#f61a6ddcf372344ac5e41708095bbf043a147ac6"
@@ -6626,6 +6631,11 @@ yargs@^12.0.5:
     which-module "^2.0.0"
     y18n "^3.2.1 || ^4.0.0"
     yargs-parser "^11.1.1"
+
+yarn@^1.17.3:
+  version "1.19.1"
+  resolved "https://registry.yarnpkg.com/yarn/-/yarn-1.19.1.tgz#14b92410dd1ba5bab87a12b4a3d807f4569bea97"
+  integrity sha512-gBnfbL9rYY05Gt0cjJhs/siqQXHYlZalTjK3nXn2QO20xbkIFPob+LlH44ML47GcR4VU9/2dYck1BWFM0Javxw==
 
 yeast@0.1.2:
   version "0.1.2"
