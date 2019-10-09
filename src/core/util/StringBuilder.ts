@@ -27,6 +27,10 @@ export default class StringBuilder {
     this.value = this.value.substr(0, n) + c + this.value.substr(n + 1);
   }
 
+  public substring(start: int, end: int): string {
+    return this.value.substring(start, end);
+  }
+
   /**
    * @note helper method for RSS Expanded
    */

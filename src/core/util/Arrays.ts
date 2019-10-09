@@ -56,6 +56,24 @@ export default class Arrays {
     }
   }
 
+  public static asList<T = any>(...args: T[]): T[] {
+    return args;
+  }
+
+  public static create<T = any>(rows: int, cols: int, value?: T): T[][] {
+
+    let arr = Array.from({ length: rows });
+
+    return arr.map(x => Array.from<T>({ length: cols }).fill(value));
+  }
+
+  public static createInt32Array(rows: int, cols: int, value?: int): Int32Array[] {
+
+    let arr = Array.from({ length: rows });
+
+    return arr.map(x => Int32Array.from({ length: cols }).fill(value));
+  }
+
   public static equals(first: any, second: any): boolean {
     if (!first) {
       return false;
@@ -98,7 +116,7 @@ export default class Arrays {
   }
 
   public static copyOf(original: Int32Array, newLength: number) {
-    const copy = new Array(newLength);
+    const copy = new Int32Array(newLength);
     System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));
     return copy;
   }

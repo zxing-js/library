@@ -1,24 +1,23 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
-        "moduleResolution": "node",
-        "lib": [
-            "esnext",
-            "dom"
-        ],
-        "outDir": "./esm5/",
-        "alwaysStrict": true,
-        "noImplicitAny": false,
-        "sourceMap": true,
-        "declaration": true,
-        "preserveConstEnums": true,
-        "downlevelIteration": true
-    },
-    "include": [
-        "src/**/*.ts"
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "moduleResolution": "node",
+    "lib": [
+      "es7",
+      "dom"
     ],
-    "exclude": [
-        "src/test"
-    ]
+    "outDir": "./esm5/",
+    "alwaysStrict": true,
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "declaration": true,
+    "preserveConstEnums": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/test"
+  ]
 }

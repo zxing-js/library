@@ -73,7 +73,7 @@ export default class ByteMatrix {
 
     public clear(value: number/*byte*/): void {
         for (const aByte of this.bytes) {
-            Arrays.fillUint8Array(aByte, value);
+            Arrays.fill(aByte, value);
         }
     }
 
