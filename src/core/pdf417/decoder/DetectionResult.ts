@@ -44,7 +44,8 @@ export default /*final*/ class DetectionResult {
     this.barcodeMetadata = barcodeMetadata;
     this.barcodeColumnCount = barcodeMetadata.getColumnCount();
     this.boundingBox = boundingBox;
-    this.detectionResultColumns = new DetectionResultColumn[this.barcodeColumnCount + 2];
+    // this.detectionResultColumns = new DetectionResultColumn[this.barcodeColumnCount + 2];
+    this.detectionResultColumns = new Array<DetectionResultColumn>(this.barcodeColumnCount + 2);
   }
 
   getDetectionResultColumns(): DetectionResultColumn[] {
@@ -199,7 +200,8 @@ export default /*final*/ class DetectionResult {
       nextColumnCodewords = this.detectionResultColumns[barcodeColumn + 1].getCodewords();
     }
 
-    let otherCodewords: Codeword[] = new Codeword[14];
+    // let otherCodewords: Codeword[] = new Codeword[14];
+    let otherCodewords: Codeword[] = new Array<Codeword>(14);
 
     otherCodewords[2] = previousColumnCodewords[codewordsRow];
     otherCodewords[3] = nextColumnCodewords[codewordsRow];

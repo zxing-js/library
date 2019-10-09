@@ -11,7 +11,7 @@ export default class Arrays {
    * @param a the array to be filled
    * @param val the value to be stored in all elements of the array
    */
-  public static fill(a: Int32Array | Uint8Array, val: int): void {
+  public static fill(a: Int32Array | Uint8Array | any[], val: int): void {
     for (let i = 0, len = a.length; i < len; i++)
       a[i] = val;
   }

@@ -162,13 +162,14 @@ export default /*public*/ /*final*/ class Detector {
     const height = matrix.getHeight();
     const width = matrix.getWidth();
 
-    const result = new ResultPoint[8];
+    // const result = new ResultPoint[8];
+    const result = new Array<ResultPoint>(8);
     Detector.copyToResult(result, Detector.findRowsWithPattern(matrix, height, width, startRow, startColumn, Detector.START_PATTERN),
         Detector.INDEXES_START_PATTERN);
 
     if (result[4] != null) {
-      startColumn = /*(int)*/ result[4].getX();
-      startRow = /*(int)*/ result[4].getY();
+      startColumn = <int>result[4].getX();
+      startRow = <int>result[4].getY();
     }
     Detector.copyToResult(result, Detector.findRowsWithPattern(matrix, height, width, startRow, startColumn, Detector.STOP_PATTERN),
         Detector.INDEXES_STOP_PATTERN);
@@ -187,7 +188,8 @@ export default /*public*/ /*final*/ class Detector {
                                                     startRow: /*int*/ number,
                                                     startColumn: /*int*/ number,
                                                     pattern: Int32Array): ResultPoint[] {
-    const result = new ResultPoint[4];
+    // const result = new ResultPoint[4];
+    const result = new Array<ResultPoint>(4);
     let found = false;
     const counters = new Int32Array(pattern.length);
     for (; startRow < height; startRow += Detector.ROW_STEP) {

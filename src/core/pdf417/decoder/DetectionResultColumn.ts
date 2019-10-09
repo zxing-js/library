@@ -34,7 +34,8 @@ export default class DetectionResultColumn {
 
     constructor(boundingBox: BoundingBox) {
         this.boundingBox = new BoundingBox(boundingBox);
-        this.codewords = new Codeword[boundingBox.getMaxY() - boundingBox.getMinY() + 1];
+        // this.codewords = new Codeword[boundingBox.getMaxY() - boundingBox.getMinY() + 1];
+        this.codewords = new Array<Codeword>(boundingBox.getMaxY() - boundingBox.getMinY() + 1);
     }
 
     /*final*/  getCodewordNearby(imageRow: /*int*/ number): Codeword {
