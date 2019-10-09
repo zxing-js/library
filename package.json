@@ -52,7 +52,7 @@
         "instrument": false
     },
     "scripts": {
-        "lint": "yarn tslint src/**/*.ts",
+        "lint": "yarn tslint --project .",
         "clean": "yarn shx rm -rf umd esm esm5",
         "test": "yarn mocha-webpack \"./src/**/*.spec.ts\" --timeout 200000 --webpack-config webpack.config.test.js",
         "cover": "yarn nyc --reporter=lcov --reporter=text yarn test",
@@ -106,6 +106,7 @@
         "sinon": "^7.2.7",
         "ts-loader": "^5.3.3",
         "tslint": "^5.13.1",
+        "tslint-no-circular-imports": "^0.7.0",
         "typescript": "~3.3.3333",
         "uglify-js": "^3.4.9",
         "uglifyjs-webpack-plugin": "^2.1.2",
