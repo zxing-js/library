@@ -15,7 +15,6 @@
  */
 
 
-import InvertedLuminanceSource from './InvertedLuminanceSource';
 import StringBuilder from './util/StringBuilder';
 import UnsupportedOperationException from './UnsupportedOperationException';
 

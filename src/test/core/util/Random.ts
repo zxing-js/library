@@ -1,12 +1,20 @@
 import * as seedrandom from 'seedrandom';
 
 export default class Random {
-    private r: seedrandom.prng;
-    public constructor(seed: string) {
-        this.r = seedrandom(seed);
-    }
+  private r: seedrandom.prng;
+  public constructor(seed: string | number) {
+    this.r = seedrandom('' + seed);
+  }
 
-    public next(max: number): number {
-        return Math.floor(this.r() * max);
-    }
+  public next(max: int): int {
+    return Math.floor(this.r() * max);
+  }
+
+  public nextInt(max: int): int {
+    return this.next(max);
+  }
+
+  public nextBoolean(): boolean {
+    return !Math.round(this.r()); // 0 or 1
+  }
 }
