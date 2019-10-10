@@ -59,10 +59,10 @@ import Formatter from '../../util/Formatter';
  */
 export default /*public final*/ class PDF417ScanningDecoder {
 
-  /*final*/ static CODEWORD_SKEW_SIZE: /*int*/ number = 2;
+  /*final*/ static CODEWORD_SKEW_SIZE: int = 2;
 
-  /*final*/ static MAX_ERRORS: /*int*/ number = 3;
-  /*final*/ static MAX_EC_CODEWORDS: /*int*/ number = 512;
+  /*final*/ static MAX_ERRORS: int = 3;
+  /*final*/ static MAX_EC_CODEWORDS: int = 512;
   /*final*/ static errorCorrection: ErrorCorrection = new ErrorCorrection();
 
   private constructor() {}
@@ -98,8 +98,8 @@ export default /*public final*/ class PDF417ScanningDecoder {
     imageBottomLeft: ResultPoint,
     imageTopRight: ResultPoint,
     imageBottomRight: ResultPoint,
-    minCodewordWidth: /*int*/ number,
-    maxCodewordWidth: /*int*/ number): DecoderResult {
+    minCodewordWidth: int,
+    maxCodewordWidth: int): DecoderResult {
     let boundingBox: BoundingBox = new BoundingBox(image, imageTopLeft, imageBottomLeft, imageTopRight, imageBottomRight);
     let leftRowIndicatorColumn: DetectionResultRowIndicatorColumn = null;
     let rightRowIndicatorColumn: DetectionResultRowIndicatorColumn = null;
@@ -126,13 +126,13 @@ export default /*public final*/ class PDF417ScanningDecoder {
       }
     }
     detectionResult.setBoundingBox(boundingBox);
-    let maxBarcodeColumn: /*int*/ number = detectionResult.getBarcodeColumnCount() + 1;
+    let maxBarcodeColumn: int = detectionResult.getBarcodeColumnCount() + 1;
     detectionResult.setDetectionResultColumn(0, leftRowIndicatorColumn);
     detectionResult.setDetectionResultColumn(maxBarcodeColumn, rightRowIndicatorColumn);
 
     let leftToRight: boolean = leftRowIndicatorColumn !== null;
     for (let barcodeColumnCount /*int*/ = 1; barcodeColumnCount <= maxBarcodeColumn; barcodeColumnCount++) {
-      let barcodeColumn: /*int*/ number = leftToRight ? barcodeColumnCount : maxBarcodeColumn - barcodeColumnCount;
+      let barcodeColumn: int = leftToRight ? barcodeColumnCount : maxBarcodeColumn - barcodeColumnCount;
       if (detectionResult.getDetectionResultColumn(barcodeColumn) !== null) {
         // This will be the case for the opposite row indicator column, which doesn't need to be decoded again.
         continue;
@@ -144,8 +144,8 @@ export default /*public final*/ class PDF417ScanningDecoder {
         detectionResultColumn = new DetectionResultColumn(boundingBox);
       }
       detectionResult.setDetectionResultColumn(barcodeColumn, detectionResultColumn);
-      let startColumn: /*int*/ number = -1;
-      let previousStartColumn: /*int*/ number = startColumn;
+      let startColumn: int = -1;
+      let previousStartColumn: int = startColumn;
       // TODO start at a row for which we know the start position, then detect upwards and downwards from there.
       for (let imageRow /*int*/ = boundingBox.getMinY(); imageRow <= boundingBox.getMaxY(); imageRow++) {
         startColumn = PDF417ScanningDecoder.getStartColumn(detectionResult, barcodeColumn, imageRow, leftToRight);
@@ -203,8 +203,8 @@ export default /*public final*/ class PDF417ScanningDecoder {
     if (rowHeights === null) {
       return null;
     }
-    let maxRowHeight: /*int*/ number = PDF417ScanningDecoder.getMax(rowHeights);
-    let missingStartRows: /*int*/ number = 0;
+    let maxRowHeight: int = PDF417ScanningDecoder.getMax(rowHeights);
+    let missingStartRows: int = 0;
     for (let rowHeight /*int*/ of rowHeights) {
       missingStartRows += maxRowHeight - rowHeight;
       if (rowHeight > 0) {
@@ -215,7 +215,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
     for (let row /*int*/ = 0; missingStartRows > 0 && codewords[row] === null; row++) {
       missingStartRows--;
     }
-    let missingEndRows: /*int*/ number = 0;
+    let missingEndRows: int = 0;
     for (let row /*int*/ = rowHeights.length - 1; row >= 0; row--) {
       missingEndRows += maxRowHeight - rowHeights[row];
       if (rowHeights[row] > 0) {
@@ -229,8 +229,8 @@ export default /*public final*/ class PDF417ScanningDecoder {
       rowIndicatorColumn.isLeft());
   }
 
-  private static getMax(values: Int32Array): /*int*/ number {
-    let maxValue: /*int*/ number = -1;
+  private static getMax(values: Int32Array): int {
+    let maxValue: int = -1;
     for (let value /*int*/ of values) {
       maxValue = Math.max(maxValue, value);
     }
@@ -262,13 +262,13 @@ export default /*public final*/ class PDF417ScanningDecoder {
     boundingBox: BoundingBox,
     startPoint: ResultPoint,
     leftToRight: boolean,
-    minCodewordWidth: /*int*/ number,
-    maxCodewordWidth: /*int*/ number): DetectionResultRowIndicatorColumn {
+    minCodewordWidth: int,
+    maxCodewordWidth: int): DetectionResultRowIndicatorColumn {
     let rowIndicatorColumn: DetectionResultRowIndicatorColumn = new DetectionResultRowIndicatorColumn(boundingBox,
       leftToRight);
     for (let i /*int*/ = 0; i < 2; i++) {
-      let increment: /*int*/ number = i === 0 ? 1 : -1;
-      let startColumn: /*int*/ number = /*(int)*/ startPoint.getX();
+      let increment: int = i === 0 ? 1 : -1;
+      let startColumn: int = /*(int)*/ startPoint.getX();
       for (let imageRow /*int*/ = /*(int)*/ startPoint.getY(); imageRow <= boundingBox.getMaxY() &&
         imageRow >= boundingBox.getMinY(); imageRow += increment) {
         let codeword: Codeword = PDF417ScanningDecoder.detectCodeword(image, 0, image.getWidth(), leftToRight, startColumn, imageRow,
@@ -299,7 +299,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
   private static adjustCodewordCount(detectionResult: DetectionResult, barcodeMatrix: BarcodeValue[][]): void {
     let barcodeMatrix01: BarcodeValue = barcodeMatrix[0][1];
     let numberOfCodewords: Int32Array = barcodeMatrix01.getValue();
-    let calculatedNumberOfCodewords: /*int*/ number = detectionResult.getBarcodeColumnCount() *
+    let calculatedNumberOfCodewords: int = detectionResult.getBarcodeColumnCount() *
       detectionResult.getBarcodeRowCount() -
       PDF417ScanningDecoder.getNumberOfECCodeWords(detectionResult.getBarcodeECLevel());
     if (numberOfCodewords.length === 0) {
@@ -331,7 +331,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
     for (let row /*int*/ = 0; row < detectionResult.getBarcodeRowCount(); row++) {
       for (let column /*int*/ = 0; column < detectionResult.getBarcodeColumnCount(); column++) {
         let values: Int32Array = barcodeMatrix[row][column + 1].getValue();
-        let codewordIndex: /*int*/ number = row * detectionResult.getBarcodeColumnCount() + column;
+        let codewordIndex: int = row * detectionResult.getBarcodeColumnCount() + column;
         if (values.length === 0) {
           erasures.push(codewordIndex);
         } else if (values.length === 1) {
@@ -366,14 +366,14 @@ export default /*public final*/ class PDF417ScanningDecoder {
    * @throws FormatException
    * @throws ChecksumException
    */
-  private static createDecoderResultFromAmbiguousValues(ecLevel: /*int*/ number,
+  private static createDecoderResultFromAmbiguousValues(ecLevel: int,
     codewords: Int32Array,
     erasureArray: Int32Array,
     ambiguousIndexes: Int32Array,
     ambiguousIndexValues: Int32Array[]): DecoderResult {
     let ambiguousIndexCount: Int32Array = new Int32Array(ambiguousIndexes.length);
 
-    let tries: /*int*/ number = 100;
+    let tries: int = 100;
     while (tries-- > 0) {
       for (let i /*int*/ = 0; i < ambiguousIndexCount.length; i++) {
         codewords[ambiguousIndexes[i]] = ambiguousIndexValues[i][ambiguousIndexCount[i]];
@@ -415,12 +415,12 @@ export default /*public final*/ class PDF417ScanningDecoder {
       }
     }
 
-    let column: /*int*/ number = 0;
+    let column: int = 0;
     for (let detectionResultColumn /*DetectionResultColumn*/ of detectionResult.getDetectionResultColumns()) {
       if (detectionResultColumn !== null) {
         for (let codeword /*Codeword*/ of detectionResultColumn.getCodewords()) {
           if (codeword !== null) {
-            let rowNumber: /*int*/ number = codeword.getRowNumber();
+            let rowNumber: int = codeword.getRowNumber();
             if (rowNumber >= 0) {
               if (rowNumber >= barcodeMatrix.length) {
                 // We have more rows than the barcode metadata allows for, ignore them.
@@ -436,15 +436,15 @@ export default /*public final*/ class PDF417ScanningDecoder {
     return barcodeMatrix;
   }
 
-  private static isValidBarcodeColumn(detectionResult: DetectionResult, barcodeColumn: /*int*/ number): boolean {
+  private static isValidBarcodeColumn(detectionResult: DetectionResult, barcodeColumn: int): boolean {
     return barcodeColumn >= 0 && barcodeColumn <= detectionResult.getBarcodeColumnCount() + 1;
   }
 
   private static getStartColumn(detectionResult: DetectionResult,
-    barcodeColumn: /*int*/ number,
-    imageRow: /*int*/ number,
-    leftToRight: boolean): /*int*/ number {
-    let offset: /*int*/ number = leftToRight ? 1 : -1;
+    barcodeColumn: int,
+    imageRow: int,
+    leftToRight: boolean): int {
+    let offset: int = leftToRight ? 1 : -1;
     let codeword: Codeword = null;
     if (PDF417ScanningDecoder.isValidBarcodeColumn(detectionResult, barcodeColumn - offset)) {
       codeword = detectionResult.getDetectionResultColumn(barcodeColumn - offset).getCodeword(imageRow);
@@ -462,7 +462,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
     if (codeword !== null) {
       return leftToRight ? codeword.getEndX() : codeword.getStartX();
     }
-    let skippedColumns: /*int*/ number = 0;
+    let skippedColumns: int = 0;
 
     while (PDF417ScanningDecoder.isValidBarcodeColumn(detectionResult, barcodeColumn - offset)) {
       barcodeColumn -= offset;
@@ -480,13 +480,13 @@ export default /*public final*/ class PDF417ScanningDecoder {
   }
 
   private static detectCodeword(image: BitMatrix,
-    minColumn: /*int*/ number,
-    maxColumn: /*int*/ number,
+    minColumn: int,
+    maxColumn: int,
     leftToRight: boolean,
-    startColumn: /*int*/ number,
-    imageRow: /*int*/ number,
-    minCodewordWidth: /*int*/ number,
-    maxCodewordWidth: /*int*/ number): Codeword {
+    startColumn: int,
+    imageRow: int,
+    minCodewordWidth: int,
+    maxCodewordWidth: int): Codeword {
     startColumn = PDF417ScanningDecoder.adjustCodewordStartColumn(image, minColumn, maxColumn, leftToRight, startColumn, imageRow);
     // we usually know fairly exact now how long a codeword is. We should provide minimum and maximum expected length
     // and try to adjust the read pixels, e.g. remove single pixel errors or try to cut off exceeding pixels.
@@ -496,13 +496,13 @@ export default /*public final*/ class PDF417ScanningDecoder {
     if (moduleBitCount === null) {
       return null;
     }
-    let endColumn: /*int*/ number;
-    let codewordBitCount: /*int*/ number = MathUtils.sum(moduleBitCount);
+    let endColumn: int;
+    let codewordBitCount: int = MathUtils.sum(moduleBitCount);
     if (leftToRight) {
       endColumn = startColumn + codewordBitCount;
     } else {
       for (let i /*int*/ = 0; i < moduleBitCount.length / 2; i++) {
-        let tmpCount: /*int*/ number = moduleBitCount[i];
+        let tmpCount: int = moduleBitCount[i];
         moduleBitCount[i] = moduleBitCount[moduleBitCount.length - 1 - i];
         moduleBitCount[moduleBitCount.length - 1 - i] = tmpCount;
       }
@@ -529,8 +529,8 @@ export default /*public final*/ class PDF417ScanningDecoder {
       return null;
     }
 
-    let decodedValue: /*int*/ number = PDF417CodewordDecoder.getDecodedValue(moduleBitCount);
-    let codeword: /*int*/ number = PDF417Common.getCodeword(decodedValue);
+    let decodedValue: int = PDF417CodewordDecoder.getDecodedValue(moduleBitCount);
+    let codeword: int = PDF417Common.getCodeword(decodedValue);
     if (codeword === -1) {
       return null;
     }
@@ -538,15 +538,15 @@ export default /*public final*/ class PDF417ScanningDecoder {
   }
 
   private static getModuleBitCount(image: BitMatrix,
-    minColumn: /*int*/ number,
-    maxColumn: /*int*/ number,
+    minColumn: int,
+    maxColumn: int,
     leftToRight: boolean,
-    startColumn: /*int*/ number,
-    imageRow: /*int*/ number): Int32Array {
-    let imageColumn: /*int*/ number = startColumn;
+    startColumn: int,
+    imageRow: int): Int32Array {
+    let imageColumn: int = startColumn;
     let moduleBitCount: Int32Array = new Int32Array(8);
-    let moduleNumber: /*int*/ number = 0;
-    let increment: /*int*/ number = leftToRight ? 1 : -1;
+    let moduleNumber: int = 0;
+    let increment: int = leftToRight ? 1 : -1;
     let previousPixelValue: boolean = leftToRight;
     while ((leftToRight ? imageColumn < maxColumn : imageColumn >= minColumn) &&
       moduleNumber < moduleBitCount.length) {
@@ -566,18 +566,18 @@ export default /*public final*/ class PDF417ScanningDecoder {
     return null;
   }
 
-  private static getNumberOfECCodeWords(barcodeECLevel: /*int*/ number): /*int*/ number {
+  private static getNumberOfECCodeWords(barcodeECLevel: int): int {
     return 2 << barcodeECLevel;
   }
 
   private static adjustCodewordStartColumn(image: BitMatrix,
-    minColumn: /*int*/ number,
-    maxColumn: /*int*/ number,
+    minColumn: int,
+    maxColumn: int,
     leftToRight: boolean,
-    codewordStartColumn: /*int*/ number,
-    imageRow: /*int*/ number): /*int*/ number {
-    let correctedStartColumn: /*int*/ number = codewordStartColumn;
-    let increment: /*int*/ number = leftToRight ? -1 : 1;
+    codewordStartColumn: int,
+    imageRow: int): int {
+    let correctedStartColumn: int = codewordStartColumn;
+    let increment: int = leftToRight ? -1 : 1;
     // there should be no black pixels before the start column. If there are, then we need to start earlier.
     for (let i /*int*/ = 0; i < 2; i++) {
       while ((leftToRight ? correctedStartColumn >= minColumn : correctedStartColumn < maxColumn) &&
@@ -593,7 +593,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
     return correctedStartColumn;
   }
 
-  private static checkCodewordSkew(codewordSize: /*int*/ number, minCodewordWidth: /*int*/ number, maxCodewordWidth: /*int*/ number): boolean {
+  private static checkCodewordSkew(codewordSize: int, minCodewordWidth: int, maxCodewordWidth: int): boolean {
     return minCodewordWidth - PDF417ScanningDecoder.CODEWORD_SKEW_SIZE <= codewordSize &&
       codewordSize <= maxCodewordWidth + PDF417ScanningDecoder.CODEWORD_SKEW_SIZE;
   }
@@ -602,13 +602,13 @@ export default /*public final*/ class PDF417ScanningDecoder {
    * @throws FormatException,
    * @throws ChecksumException
    */
-  private static decodeCodewords(codewords: Int32Array, ecLevel: /*int*/ number, erasures: Int32Array): DecoderResult {
+  private static decodeCodewords(codewords: Int32Array, ecLevel: int, erasures: Int32Array): DecoderResult {
     if (codewords.length === 0) {
       throw FormatException.getFormatInstance();
     }
 
-    let numECCodewords: /*int*/ number = 1 << (ecLevel + 1);
-    let correctedErrorsCount: /*int*/ number = PDF417ScanningDecoder.correctErrors(codewords, erasures, numECCodewords);
+    let numECCodewords: int = 1 << (ecLevel + 1);
+    let correctedErrorsCount: int = PDF417ScanningDecoder.correctErrors(codewords, erasures, numECCodewords);
     PDF417ScanningDecoder.verifyCodewordCount(codewords, numECCodewords);
 
     // Decode the codewords
@@ -627,7 +627,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
    * @param numECCodewords number of error correction codewords that are available in codewords
    * @throws ChecksumException if error correction fails
    */
-  private static correctErrors(codewords: Int32Array, erasures: Int32Array, numECCodewords: /*int*/ number): /*int*/ number {
+  private static correctErrors(codewords: Int32Array, erasures: Int32Array, numECCodewords: int): int {
     if (erasures !== null &&
       erasures.length > numECCodewords / 2 + PDF417ScanningDecoder.MAX_ERRORS ||
       numECCodewords < 0 ||
@@ -642,7 +642,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
    * Verify that all is OK with the codeword array.
    * @throws FormatException
    */
-  private static verifyCodewordCount(codewords: Int32Array, numECCodewords: /*int*/ number): void {
+  private static verifyCodewordCount(codewords: Int32Array, numECCodewords: int): void {
     if (codewords.length < 4) {
       // Codeword array size should be at least 4 allowing for
       // Count CW, At least one Data CW, Error Correction CW, Error Correction CW
@@ -651,7 +651,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
     // The first codeword, the Symbol Length Descriptor, shall always encode the total number of data
     // codewords in the symbol, including the Symbol Length Descriptor itself, data codewords and pad
     // codewords, but excluding the number of error correction codewords.
-    let numberOfCodewords: /*int*/ number = codewords[0];
+    let numberOfCodewords: int = codewords[0];
     if (numberOfCodewords > codewords.length) {
       throw FormatException.getFormatInstance();
     }
@@ -665,10 +665,10 @@ export default /*public final*/ class PDF417ScanningDecoder {
     }
   }
 
-  private static getBitCountForCodeword(codeword: /*int*/ number): Int32Array {
+  private static getBitCountForCodeword(codeword: int): Int32Array {
     let result: Int32Array = new Int32Array(8);
-    let previousValue: /*int*/ number = 0;
-    let i: /*int*/ number = result.length - 1;
+    let previousValue: int = 0;
+    let i: int = result.length - 1;
     while (true) {
       if ((codeword & 0x1) !== previousValue) {
         previousValue = codeword & 0x1;
@@ -683,18 +683,18 @@ export default /*public final*/ class PDF417ScanningDecoder {
     return result;
   }
 
-  private static getCodewordBucketNumber(codeword: /*int*/ number | Int32Array): /*int*/ number {
+  private static getCodewordBucketNumber(codeword: int | Int32Array): int {
     if (codeword instanceof Int32Array) {
       return this.getCodewordBucketNumber_Int32Array(codeword);
     }
     return this.getCodewordBucketNumber_number(codeword);
   }
 
-  private static getCodewordBucketNumber_number(codeword: /*int*/ number): /*int*/ number {
+  private static getCodewordBucketNumber_number(codeword: int): int {
     return PDF417ScanningDecoder.getCodewordBucketNumber(PDF417ScanningDecoder.getBitCountForCodeword(codeword));
   }
 
-  private static getCodewordBucketNumber_Int32Array(moduleBitCount: Int32Array): /*int*/ number {
+  private static getCodewordBucketNumber_Int32Array(moduleBitCount: Int32Array): int {
     return (moduleBitCount[0] - moduleBitCount[2] + moduleBitCount[4] - moduleBitCount[6] + 9) % 9;
   }
 

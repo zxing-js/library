@@ -27,10 +27,10 @@ import BoundingBox from './BoundingBox';
  */
 export default class DetectionResultColumn {
 
-    private static /*final int*/ MAX_NEARBY_DISTANCE = 5;
+    private static /*final*/ MAX_NEARBY_DISTANCE: int = 5;
 
-    private /*final BoundingBox*/ boundingBox: BoundingBox;
-    private /*final Codeword[]*/ codewords: Codeword[];
+    private /*final*/ boundingBox: BoundingBox;
+    private /*final*/ codewords: Codeword[];
 
     constructor(boundingBox: BoundingBox) {
         this.boundingBox = new BoundingBox(boundingBox);
