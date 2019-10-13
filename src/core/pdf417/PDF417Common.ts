@@ -50,16 +50,16 @@ export default /*public final*/ class PDF417Common {
      * @deprecated call {@link MathUtils#sum(int[])}
      */
     // @Deprecated
-    public static getBitCountSum(moduleBitCount: Int32Array): number/*int*/ {
+    public static getBitCountSum(moduleBitCount: Int32Array): int {
         return MathUtils.sum(moduleBitCount);
     }
 
-    public static toIntArray(list: /*Collection<Integer>*/ number[]): Int32Array {
+    public static toIntArray(list: /*Collection<Integer>*/ int[]): Int32Array {
         if (list == null || !list.length) {
             return PDF417Common.EMPTY_INT_ARRAY;
         }
         const result = new Int32Array(list.length);
-        let i: number /*int*/ = 0;
+        let i: int = 0;
         for (const integer of list) {
             result[i++] = integer;
         }

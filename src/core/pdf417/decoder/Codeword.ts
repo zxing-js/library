@@ -21,15 +21,15 @@
  */
 export default /*final*/ class Codeword {
 
-  private static /*final*/ BARCODE_ROW_UNKNOWN: /*int*/ number = -1;
+  private static /*final*/ BARCODE_ROW_UNKNOWN: int = -1;
 
-  private /*final*/ startX: /*int*/ number;
-  private /*final*/ endX: /*int*/ number;
-  private /*final*/ bucket: /*int*/ number;
-  private /*final*/ value: /*int*/ number;
-  private rowNumber: /*int*/ number = Codeword.BARCODE_ROW_UNKNOWN;
+  private /*final*/ startX: int;
+  private /*final*/ endX: int;
+  private /*final*/ bucket: int;
+  private /*final*/ value: int;
+  private rowNumber: int = Codeword.BARCODE_ROW_UNKNOWN;
 
-  constructor(startX: /*int*/ number, endX: /*int*/ number, bucket: /*int*/ number, value: /*int*/ number) {
+  constructor(startX: int, endX: int, bucket: int, value: int) {
     this.startX = startX;
     this.endX = endX;
     this.bucket = bucket;
@@ -40,7 +40,7 @@ export default /*final*/ class Codeword {
     return this.isValidRowNumber(this.rowNumber);
   }
 
-  isValidRowNumber(rowNumber: /*int*/ number): boolean {
+  isValidRowNumber(rowNumber: int): boolean {
     return rowNumber !== Codeword.BARCODE_ROW_UNKNOWN && this.bucket === (rowNumber % 3) * 3;
   }
 
@@ -48,31 +48,31 @@ export default /*final*/ class Codeword {
     this.rowNumber = Math.floor((this.value / 30) * 3 + this.bucket / 3);
   }
 
-  getWidth(): /*int*/ number {
+  getWidth(): int {
     return this.endX - this.startX;
   }
 
-  getStartX(): /*int*/ number {
+  getStartX(): int {
     return this.startX;
   }
 
-  getEndX(): /*int*/ number {
+  getEndX(): int {
     return this.endX;
   }
 
-  getBucket(): /*int*/ number {
+  getBucket(): int {
     return this.bucket;
   }
 
-  getValue(): /*int*/ number {
+  getValue(): int {
     return this.value;
   }
 
-  getRowNumber(): /*int*/ number {
+  getRowNumber(): int {
     return this.rowNumber;
   }
 
-  setRowNumber(rowNumber: /*int*/ number ): void {
+  setRowNumber(rowNumber: int ): void {
     this.rowNumber = rowNumber;
   }
 

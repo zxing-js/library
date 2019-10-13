@@ -34,8 +34,8 @@ export default /*final*/ class BarcodeValue {
   /**
    * Add an occurrence of a value
    */
-   setValue(value: /*int*/number): void {
-    let confidence: number /*Integer*/ = this.values.get(value);
+   setValue(value: int): void {
+    let confidence: int = this.values.get(value);
     if (confidence == null) {
       confidence = 0;
     }
@@ -48,8 +48,8 @@ export default /*final*/ class BarcodeValue {
    * @return an array of int, containing the values with the highest occurrence, or null, if no value was set
    */
    getValue(): Int32Array {
-    let maxConfidence: number /*int*/ = -1;
-    let result: /*Collection<Integer>*/number[] = new Array<number>();
+    let maxConfidence: int /*int*/ = -1;
+    let result: /*Collection<Integer>*/int[] = new Array<int>();
     for (const entry of this.values.entries()) {
 
       const entryApi = {
@@ -68,7 +68,7 @@ export default /*final*/ class BarcodeValue {
     return PDF417Common.toIntArray(result);
   }
 
-   getConfidence(value: /*int*/number): number/*Integer*/ {
+   getConfidence(value: int): number/*Integer*/ {
     return this.values.get(value);
   }
 
