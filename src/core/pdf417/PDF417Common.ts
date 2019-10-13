@@ -55,7 +55,7 @@ export default /*public final*/ class PDF417Common {
     }
 
     public static toIntArray(list: /*Collection<Integer>*/ number[]): Int32Array {
-        if (list == null || !!list.length) {
+        if (list == null || !list.length) {
             return PDF417Common.EMPTY_INT_ARRAY;
         }
         const result = new Int32Array(list.length);
