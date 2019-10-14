@@ -268,8 +268,8 @@ export default /*public final*/ class PDF417ScanningDecoder {
       leftToRight);
     for (let i /*int*/ = 0; i < 2; i++) {
       let increment: int = i === 0 ? 1 : -1;
-      let startColumn: int = /*(int)*/ startPoint.getX();
-      for (let imageRow /*int*/ = /*(int)*/ startPoint.getY(); imageRow <= boundingBox.getMaxY() &&
+      let startColumn: int = Math.floor(<int>startPoint.getX());
+      for (let imageRow /*int*/ = Math.floor(<int>startPoint.getY()); imageRow <= boundingBox.getMaxY() &&
         imageRow >= boundingBox.getMinY(); imageRow += increment) {
         let codeword: Codeword = PDF417ScanningDecoder.detectCodeword(image, 0, image.getWidth(), leftToRight, startColumn, imageRow,
           minCodewordWidth, maxCodewordWidth);

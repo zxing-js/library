@@ -83,14 +83,14 @@ export default /*final*/ class PDF417CodewordDecoder {
     return PDF417Common.getCodeword(decodedValue) === -1 ? -1 : decodedValue;
   }
 
-  private static getBitValue(moduleBitCount: Int32Array): /*int*/ number {
+  private static getBitValue(moduleBitCount: Int32Array): int {
     let result: /*long*/ number = 0;
     for (let /*int*/ i = 0; i < moduleBitCount.length; i++) {
       for (/*int*/ let bit = 0; bit < moduleBitCount[i]; bit++) {
         result = (result << 1) | (i % 2 === 0 ? 1 : 0);
       }
     }
-    return /*(int)*/ result;
+    return Math.floor(<int>result);
   }
 
   private static getClosestDecodedValue(moduleBitCount: Int32Array): /*int*/ number {
