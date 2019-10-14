@@ -38,7 +38,7 @@ export default class DetectionResultColumn {
         this.codewords = new Array<Codeword>(boundingBox.getMaxY() - boundingBox.getMinY() + 1);
     }
 
-    /*final*/  getCodewordNearby(imageRow: /*int*/ number): Codeword {
+    /*final*/  getCodewordNearby(imageRow: int): Codeword {
         let codeword = this.getCodeword(imageRow);
         if (codeword != null) {
             return codeword;
@@ -62,15 +62,15 @@ export default class DetectionResultColumn {
         return null;
     }
 
-    /*final int*/ imageRowToCodewordIndex(imageRow: /*int*/ number): /*int*/ number {
+    /*final int*/ imageRowToCodewordIndex(imageRow: int): int {
         return imageRow - this.boundingBox.getMinY();
     }
 
-    /*final void*/ setCodeword(imageRow: /*int*/ number, codeword: Codeword): void {
+    /*final void*/ setCodeword(imageRow: int, codeword: Codeword): void {
         this.codewords[this.imageRowToCodewordIndex(imageRow)] = codeword;
     }
 
-/*final*/ getCodeword(imageRow: /*int*/ number): Codeword {
+/*final*/ getCodeword(imageRow: int): Codeword {
         return this.codewords[this.imageRowToCodewordIndex(imageRow)];
     }
 
