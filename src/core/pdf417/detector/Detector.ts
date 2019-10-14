@@ -46,8 +46,8 @@ export default /*public*/ /*final*/ class Detector {
 
   private static /*final*/ INDEXES_START_PATTERN = Int32Array.from([0, 4, 1, 5]);
   private static /*final*/ INDEXES_STOP_PATTERN = Int32Array.from([6, 2, 7, 3]);
-  private static /*final*/ MAX_AVG_VARIANCE: /*float*/ number = /*0.42f*/ 0.42;
-  private static /*final*/ MAX_INDIVIDUAL_VARIANCE: /*float*/ number = /*0.8f*/ 0.8;
+  private static /*final*/ MAX_AVG_VARIANCE: float = /*0.42f*/ 0.42;
+  private static /*final*/ MAX_INDIVIDUAL_VARIANCE: float = /*0.8f*/ 0.8;
 
   // B S B S B S B S Bar/Space pattern
   // 11111111 0 1 0 1 0 1 000
@@ -116,10 +116,10 @@ export default /*public*/ /*final*/ class Detector {
         column = 0;
         for (const barcodeCoordinate of barcodeCoordinates) {
           if (barcodeCoordinate[1] != null) {
-            row = /*(int)*/ Math.max(row, barcodeCoordinate[1].getY());
+            row = <int> Math.max(row, barcodeCoordinate[1].getY());
           }
           if (barcodeCoordinate[3] != null) {
-            row = Math.max(row, /*(int)*/ barcodeCoordinate[3].getY());
+            row = Math.max(row, <int> barcodeCoordinate[3].getY());
           }
         }
         row += Detector.ROW_STEP;
@@ -133,11 +133,11 @@ export default /*public*/ /*final*/ class Detector {
       // if we didn't find a right row indicator column, then continue the search for the next barcode after the
       // start pattern of the barcode just found.
       if (vertices[2] != null) {
-        column = /*(int)*/ vertices[2].getX();
-        row = /*(int)*/ vertices[2].getY();
+        column = <int> vertices[2].getX();
+        row = <int> vertices[2].getY();
       } else {
-        column = /*(int)*/ vertices[4].getX();
-        row = /*(int)*/ vertices[4].getY();
+        column = <int> vertices[4].getX();
+        row = <int> vertices[4].getY();
       }
     }
     return barcodeCoordinates;
@@ -214,7 +214,7 @@ export default /*public*/ /*final*/ class Detector {
     // Last row of the current symbol that contains pattern
     if (found) {
       let skippedRowCount = 0;
-      let previousRowLoc = Int32Array.from([/*(int)*/ result[0].getX(), /*(int)*/ result[1].getX()]);
+      let previousRowLoc = Int32Array.from([<int> result[0].getX(), <int> result[1].getX()]);
       for (; stopRow < height; stopRow++) {
         const loc = Detector.findGuardPattern(matrix, previousRowLoc[0], stopRow, width, false, pattern, counters);
         // a found pattern is only considered to belong to the same barcode if the start and end positions
@@ -311,7 +311,7 @@ export default /*public*/ /*final*/ class Detector {
    * @param maxIndividualVariance The most any counter can differ before we give up
    * @return ratio of total variance between counters and pattern compared to total pattern size
    */
-  private static patternMatchVariance( counters: Int32Array,  pattern: Int32Array,  maxIndividualVariance: /*float*/ number): /*float*/ number {
+  private static patternMatchVariance( counters: Int32Array,  pattern: Int32Array,  maxIndividualVariance: float): float {
     let numCounters = counters.length;
     let total = 0;
     let patternLength = 0;
@@ -327,7 +327,7 @@ export default /*public*/ /*final*/ class Detector {
     // We're going to fake floating-point math in integers. We just need to use more bits.
     // Scale up patternLength so that intermediate values below like scaledCounter will have
     // more "significant digits".
-    let unitBarWidth = /*(float)*/ total / patternLength;
+    let unitBarWidth = <float> total / patternLength;
     maxIndividualVariance *= unitBarWidth;
 
     let totalVariance = 0.0;

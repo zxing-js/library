@@ -58,8 +58,8 @@ export default /*final*/ class DetectionResultRowIndicatorColumn extends Detecti
     let boundingBox: BoundingBox = this.getBoundingBox();
     let top: ResultPoint = this._isLeft ? boundingBox.getTopLeft() : boundingBox.getTopRight();
     let bottom: ResultPoint = this._isLeft ? boundingBox.getBottomLeft() : boundingBox.getBottomRight();
-    let firstRow: int = this.imageRowToCodewordIndex(/*(int)*/ top.getY());
-    let lastRow: int = this.imageRowToCodewordIndex(/*(int)*/ bottom.getY());
+    let firstRow: int = this.imageRowToCodewordIndex(<int> top.getY());
+    let lastRow: int = this.imageRowToCodewordIndex(<int> bottom.getY());
     // We need to be careful using the average row height. Barcode could be skewed so that we have smaller and
     // taller rows
     // float averageRowHeight = (lastRow - firstRow) / /*(float)*/ barcodeMetadata.getRowCount();
@@ -145,8 +145,8 @@ export default /*final*/ class DetectionResultRowIndicatorColumn extends Detecti
     let boundingBox: BoundingBox = this.getBoundingBox();
     let top: ResultPoint = this._isLeft ? boundingBox.getTopLeft() : boundingBox.getTopRight();
     let bottom: ResultPoint = this._isLeft ? boundingBox.getBottomLeft() : boundingBox.getBottomRight();
-    let firstRow: int = this.imageRowToCodewordIndex(/*(int)*/ top.getY());
-    let lastRow: int = this.imageRowToCodewordIndex(/*(int)*/ bottom.getY());
+    let firstRow: int = this.imageRowToCodewordIndex(<int> top.getY());
+    let lastRow: int = this.imageRowToCodewordIndex(<int> bottom.getY());
     // float averageRowHeight = (lastRow - firstRow) / /*(float)*/ barcodeMetadata.getRowCount();
     let codewords: Codeword[] = this.getCodewords();
     let barcodeRow: int = -1;
