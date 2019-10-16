@@ -108,7 +108,7 @@ export default /*public final*/ class ErrorCorrection {
    * @param R
    * @throws ChecksumException
    */
-  private runEuclideanAlgorithm(a: ModulusPoly, b: ModulusPoly, R: number /*int*/): ModulusPoly[] {
+  private runEuclideanAlgorithm(a: ModulusPoly, b: ModulusPoly, R: int): ModulusPoly[] {
     // Assume a's degree is >= b's
     if (a.getDegree() < b.getDegree()) {
       let temp: ModulusPoly = a;
@@ -122,7 +122,7 @@ export default /*public final*/ class ErrorCorrection {
     let t: ModulusPoly = this.field.getOne();
 
     // Run Euclidean algorithm until r's degree is less than R/2
-    while (r.getDegree() >= R / 2) {
+    while (r.getDegree() >= Math.round(R / 2)) {
       let rLastLast: ModulusPoly = rLast;
       let tLastLast: ModulusPoly = tLast;
       rLast = r;
