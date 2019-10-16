@@ -133,7 +133,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
     let leftToRight: boolean = leftRowIndicatorColumn !== null;
     for (let barcodeColumnCount /*int*/ = 1; barcodeColumnCount <= maxBarcodeColumn; barcodeColumnCount++) {
       let barcodeColumn: int = leftToRight ? barcodeColumnCount : maxBarcodeColumn - barcodeColumnCount;
-      if (detectionResult.getDetectionResultColumn(barcodeColumn) !== null) {
+      if (detectionResult.getDetectionResultColumn(barcodeColumn) !== /* null */ undefined) {
         // This will be the case for the opposite row indicator column, which doesn't need to be decoded again.
         continue;
       }
