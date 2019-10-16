@@ -35,6 +35,7 @@ export default /*final*/ class BarcodeValue {
    * Add an occurrence of a value
    */
    setValue(value: int): void {
+    value = Math.trunc(value);
     let confidence: int = this.values.get(value);
     if (confidence == null) {
       confidence = 0;
