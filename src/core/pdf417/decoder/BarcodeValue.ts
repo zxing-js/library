@@ -29,7 +29,7 @@ import PDF417Common from '../PDF417Common';
  * @author Guenther Grau
  */
 export default /*final*/ class BarcodeValue {
-  private /*final*/ values = new Map<number/*Interger*/, number/*Interger*/>();
+  private /*final*/ values = new Map<int, int>();
 
   /**
    * Add an occurrence of a value
@@ -48,8 +48,8 @@ export default /*final*/ class BarcodeValue {
    * @return an array of int, containing the values with the highest occurrence, or null, if no value was set
    */
    getValue(): Int32Array {
-    let maxConfidence: int /*int*/ = -1;
-    let result: /*Collection<Integer>*/int[] = new Array<int>();
+    let maxConfidence: int = -1;
+    let result: Collection<int> = new Array<int>();
     for (const entry of this.values.entries()) {
 
       const entryApi = {
@@ -68,7 +68,7 @@ export default /*final*/ class BarcodeValue {
     return PDF417Common.toIntArray(result);
   }
 
-   getConfidence(value: int): number/*Integer*/ {
+   getConfidence(value: int): int {
     return this.values.get(value);
   }
 

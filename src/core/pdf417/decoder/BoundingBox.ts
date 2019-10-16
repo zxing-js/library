@@ -33,10 +33,10 @@ export default /*final*/ class BoundingBox {
   private /*final*/ bottomLeft: ResultPoint;
   private /*final*/ topRight: ResultPoint;
   private /*final*/ bottomRight: ResultPoint;
-  private /*final*/ minX: /*int*/ number;
-  private /*final*/ maxX: /*int*/ number;
-  private /*final*/ minY: /*int*/ number;
-  private /*final*/ maxY: /*int*/ number;
+  private /*final*/ minX: int;
+  private /*final*/ maxX: int;
+  private /*final*/ minY: int;
+  private /*final*/ maxY: int;
 
   constructor( image: BitMatrix|BoundingBox,
                topLeft?: ResultPoint,
@@ -82,10 +82,10 @@ export default /*final*/ class BoundingBox {
     this.bottomLeft = bottomLeft;
     this.topRight = topRight;
     this.bottomRight = bottomRight;
-    this.minX = <int> Math.min(topLeft.getX(), bottomLeft.getX());
-    this.maxX = <int> Math.max(topRight.getX(), bottomRight.getX());
-    this.minY = <int> Math.min(topLeft.getY(), topRight.getY());
-    this.maxY = <int> Math.max(bottomLeft.getY(), bottomRight.getY());
+    this.minX = <int> Math.trunc(Math.min(topLeft.getX(), bottomLeft.getX()));
+    this.maxX = <int> Math.trunc(Math.max(topRight.getX(), bottomRight.getX()));
+    this.minY = <int> Math.trunc(Math.min(topLeft.getY(), topRight.getY()));
+    this.maxY = <int> Math.trunc(Math.max(bottomLeft.getY(), bottomRight.getY()));
   }
 
   private constructor_2(boundingBox: BoundingBox) {
@@ -116,7 +116,7 @@ export default /*final*/ class BoundingBox {
   /**
    * @throws NotFoundException
    */
-  addMissingRows(missingStartRows: /*int*/ number, missingEndRows: /*int*/ number, isLeft: boolean): BoundingBox {
+  addMissingRows(missingStartRows: int, missingEndRows: int, isLeft: boolean): BoundingBox {
     let newTopLeft: ResultPoint = this.topLeft;
     let newBottomLeft: ResultPoint = this.bottomLeft;
     let newTopRight: ResultPoint = this.topRight;
@@ -124,7 +124,7 @@ export default /*final*/ class BoundingBox {
 
     if (missingStartRows > 0) {
       let top: ResultPoint = isLeft ? this.topLeft : this.topRight;
-      let newMinY: /*int*/ number = <int> top.getY() - missingStartRows;
+      let newMinY: int = <int> Math.trunc(top.getY() - missingStartRows);
       if (newMinY < 0) {
         newMinY = 0;
       }
@@ -138,7 +138,7 @@ export default /*final*/ class BoundingBox {
 
     if (missingEndRows > 0) {
       let bottom: ResultPoint = isLeft ? this.bottomLeft : this.bottomRight;
-      let newMaxY: /*int*/ number = <int> bottom.getY() + missingEndRows;
+      let newMaxY: int = <int> Math.trunc(bottom.getY() + missingEndRows);
       if (newMaxY >= this.image.getHeight()) {
         newMaxY = this.image.getHeight() - 1;
       }
@@ -153,19 +153,19 @@ export default /*final*/ class BoundingBox {
     return new BoundingBox(this.image, newTopLeft, newBottomLeft, newTopRight, newBottomRight);
   }
 
-  getMinX(): /*int*/ number {
+  getMinX(): int {
     return this.minX;
   }
 
-  getMaxX(): /*int*/ number {
+  getMaxX(): int {
     return this.maxX;
   }
 
-  getMinY(): /*int*/ number {
+  getMinY(): int {
     return this.minY;
   }
 
-  getMaxY(): /*int*/ number {
+  getMaxY(): int {
     return this.maxY;
   }
 

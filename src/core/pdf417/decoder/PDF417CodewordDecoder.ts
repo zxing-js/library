@@ -90,7 +90,7 @@ export default /*final*/ class PDF417CodewordDecoder {
         result = (result << 1) | (i % 2 === 0 ? 1 : 0);
       }
     }
-    return Math.floor(<int>result);
+    return <int> Math.trunc(result);
   }
 
   private static getClosestDecodedValue(moduleBitCount: Int32Array): int {

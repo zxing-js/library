@@ -116,10 +116,10 @@ export default /*public*/ /*final*/ class Detector {
         column = 0;
         for (const barcodeCoordinate of barcodeCoordinates) {
           if (barcodeCoordinate[1] != null) {
-            row = <int> Math.max(row, barcodeCoordinate[1].getY());
+            row = <int> Math.trunc(Math.max(row, barcodeCoordinate[1].getY()));
           }
           if (barcodeCoordinate[3] != null) {
-            row = Math.max(row, <int> barcodeCoordinate[3].getY());
+            row = Math.max(row, <int> Math.trunc(barcodeCoordinate[3].getY()));
           }
         }
         row += Detector.ROW_STEP;
@@ -133,11 +133,11 @@ export default /*public*/ /*final*/ class Detector {
       // if we didn't find a right row indicator column, then continue the search for the next barcode after the
       // start pattern of the barcode just found.
       if (vertices[2] != null) {
-        column = <int> vertices[2].getX();
-        row = <int> vertices[2].getY();
+        column = <int> Math.trunc(vertices[2].getX());
+        row = <int> Math.trunc(vertices[2].getY());
       } else {
-        column = <int> vertices[4].getX();
-        row = <int> vertices[4].getY();
+        column = <int> Math.trunc(vertices[4].getX());
+        row = <int> Math.trunc(vertices[4].getY());
       }
     }
     return barcodeCoordinates;
@@ -168,8 +168,8 @@ export default /*public*/ /*final*/ class Detector {
         Detector.INDEXES_START_PATTERN);
 
     if (result[4] != null) {
-      startColumn = <int>result[4].getX();
-      startRow = <int>result[4].getY();
+      startColumn = <int> Math.trunc(result[4].getX());
+      startRow = <int> Math.trunc(result[4].getY());
     }
     Detector.copyToResult(result, Detector.findRowsWithPattern(matrix, height, width, startRow, startColumn, Detector.STOP_PATTERN),
         Detector.INDEXES_STOP_PATTERN);
@@ -214,7 +214,7 @@ export default /*public*/ /*final*/ class Detector {
     // Last row of the current symbol that contains pattern
     if (found) {
       let skippedRowCount = 0;
-      let previousRowLoc = Int32Array.from([<int> result[0].getX(), <int> result[1].getX()]);
+      let previousRowLoc = Int32Array.from([<int> Math.trunc(result[0].getX()), <int> Math.trunc(result[1].getX())]);
       for (; stopRow < height; stopRow++) {
         const loc = Detector.findGuardPattern(matrix, previousRowLoc[0], stopRow, width, false, pattern, counters);
         // a found pattern is only considered to belong to the same barcode if the start and end positions

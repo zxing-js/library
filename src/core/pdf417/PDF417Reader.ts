@@ -130,14 +130,14 @@ export default /*public final*/ class PDF417Reader implements Reader, MultipleBa
     if (p1 == null || p2 == null) {
       return 0;
     }
-    return <int> Math.abs(p1.getX() - p2.getX());
+    return <int> Math.trunc(Math.abs(p1.getX() - p2.getX()));
   }
 
   private static getMinWidth(p1: ResultPoint, p2: ResultPoint): number /*int*/ {
     if (p1 == null || p2 == null) {
       return Integer.MAX_VALUE;
     }
-    return <int> Math.abs(p1.getX() - p2.getX());
+    return <int> Math.trunc(Math.abs(p1.getX() - p2.getX()));
   }
 
   private static getMaxCodewordWidth(p: ResultPoint[]): number /*int*/ {

@@ -21,13 +21,13 @@
  */
 export default /*final*/ class BarcodeMetadata {
 
-  private /*final int*/ columnCount: /*int*/ number;
-  private /*final int*/ errorCorrectionLevel: /*int*/ number;
-  private /*final int*/ rowCountUpperPart: /*int*/ number;
-  private /*final int*/ rowCountLowerPart: /*int*/ number;
-  private /*final int*/ rowCount: /*int*/ number;
+  private /*final*/ columnCount: int;
+  private /*final*/ errorCorrectionLevel: int;
+  private /*final*/ rowCountUpperPart: int;
+  private /*final*/ rowCountLowerPart: int;
+  private /*final*/ rowCount: int;
 
-  constructor(columnCount: /*int*/ number, rowCountUpperPart: /*int*/ number, rowCountLowerPart: /*int*/ number, errorCorrectionLevel: /*int*/ number) {
+  constructor(columnCount: int, rowCountUpperPart: int, rowCountLowerPart: int, errorCorrectionLevel: int) {
     this.columnCount = columnCount;
     this.errorCorrectionLevel = errorCorrectionLevel;
     this.rowCountUpperPart = rowCountUpperPart;
@@ -35,23 +35,23 @@ export default /*final*/ class BarcodeMetadata {
     this.rowCount = rowCountUpperPart + rowCountLowerPart;
   }
 
-  getColumnCount(): /*int*/ number {
+  getColumnCount(): int {
     return this.columnCount;
   }
 
-  getErrorCorrectionLevel(): /*int*/ number {
+  getErrorCorrectionLevel(): int {
     return this.errorCorrectionLevel;
   }
 
-  getRowCount(): /*int*/ number {
+  getRowCount(): int {
     return this.rowCount;
   }
 
-  getRowCountUpperPart(): /*int*/ number {
+  getRowCountUpperPart(): int {
     return this.rowCountUpperPart;
   }
 
-  getRowCountLowerPart(): /*int*/ number {
+  getRowCountLowerPart(): int {
     return this.rowCountLowerPart;
   }
 
