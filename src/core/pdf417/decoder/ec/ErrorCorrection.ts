@@ -35,7 +35,7 @@ export default /*public final*/ class ErrorCorrection {
 
   private /*final*/ field: ModulusGF;
 
-  public ErrorCorrection() {
+  public constructor() {
     this.field = ModulusGF.PDF417_GF;
   }
 
