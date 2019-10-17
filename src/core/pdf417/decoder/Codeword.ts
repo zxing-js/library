@@ -30,10 +30,10 @@ export default /*final*/ class Codeword {
   private rowNumber: int = Codeword.BARCODE_ROW_UNKNOWN;
 
   constructor(startX: int, endX: int, bucket: int, value: int) {
-    this.startX = startX;
-    this.endX = endX;
-    this.bucket = bucket;
-    this.value = value;
+    this.startX = Math.trunc(startX);
+    this.endX = Math.trunc(endX);
+    this.bucket = Math.trunc(bucket);
+    this.value = Math.trunc(value);
   }
 
   hasValidRowNumber(): boolean {
