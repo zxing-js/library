@@ -105,20 +105,20 @@ export default /*public final*/ class PDF417ScanningDecoder {
     let rightRowIndicatorColumn: DetectionResultRowIndicatorColumn = null;
     let detectionResult: DetectionResult;
     for (let firstPass /*boolean*/ = true; ; firstPass = false) {
-      if (imageTopLeft !== null) {
+      if (imageTopLeft != null) {
         leftRowIndicatorColumn = PDF417ScanningDecoder.getRowIndicatorColumn(image, boundingBox, imageTopLeft, true, minCodewordWidth,
           maxCodewordWidth);
       }
-      if (imageTopRight !== null) {
+      if (imageTopRight != null) {
         rightRowIndicatorColumn = PDF417ScanningDecoder.getRowIndicatorColumn(image, boundingBox, imageTopRight, false, minCodewordWidth,
           maxCodewordWidth);
       }
       detectionResult = PDF417ScanningDecoder.merge(leftRowIndicatorColumn, rightRowIndicatorColumn);
-      if (detectionResult === null) {
+      if (detectionResult == null) {
         throw NotFoundException.getNotFoundInstance();
       }
       let resultBox: BoundingBox = detectionResult.getBoundingBox();
-      if (firstPass && resultBox !== null &&
+      if (firstPass && resultBox != null &&
         (resultBox.getMinY() < boundingBox.getMinY() || resultBox.getMaxY() > boundingBox.getMaxY())) {
         boundingBox = resultBox;
       } else {
@@ -130,7 +130,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
     detectionResult.setDetectionResultColumn(0, leftRowIndicatorColumn);
     detectionResult.setDetectionResultColumn(maxBarcodeColumn, rightRowIndicatorColumn);
 
-    let leftToRight: boolean = leftRowIndicatorColumn !== null;
+    let leftToRight: boolean = leftRowIndicatorColumn != null;
     for (let barcodeColumnCount /*int*/ = 1; barcodeColumnCount <= maxBarcodeColumn; barcodeColumnCount++) {
       let barcodeColumn: int = leftToRight ? barcodeColumnCount : maxBarcodeColumn - barcodeColumnCount;
       if (detectionResult.getDetectionResultColumn(barcodeColumn) !== /* null */ undefined) {
@@ -157,7 +157,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
         }
         let codeword: Codeword = PDF417ScanningDecoder.detectCodeword(image, boundingBox.getMinX(), boundingBox.getMaxX(), leftToRight,
           startColumn, imageRow, minCodewordWidth, maxCodewordWidth);
-        if (codeword !== null) {
+        if (codeword != null) {
           detectionResultColumn.setCodeword(imageRow, codeword);
           previousStartColumn = startColumn;
           minCodewordWidth = Math.min(minCodewordWidth, codeword.getWidth());
@@ -177,11 +177,11 @@ export default /*public final*/ class PDF417ScanningDecoder {
    */
   private static merge(leftRowIndicatorColumn: DetectionResultRowIndicatorColumn,
     rightRowIndicatorColumn: DetectionResultRowIndicatorColumn): DetectionResult {
-    if (leftRowIndicatorColumn === null && rightRowIndicatorColumn === null) {
+    if (leftRowIndicatorColumn == null && rightRowIndicatorColumn == null) {
       return null;
     }
     let barcodeMetadata: BarcodeMetadata = PDF417ScanningDecoder.getBarcodeMetadata(leftRowIndicatorColumn, rightRowIndicatorColumn);
-    if (barcodeMetadata === null) {
+    if (barcodeMetadata == null) {
       return null;
     }
     let boundingBox: BoundingBox = BoundingBox.merge(PDF417ScanningDecoder.adjustBoundingBox(leftRowIndicatorColumn),
@@ -196,11 +196,11 @@ export default /*public final*/ class PDF417ScanningDecoder {
    * @throws NotFoundException
    */
   private static adjustBoundingBox(rowIndicatorColumn: DetectionResultRowIndicatorColumn): BoundingBox {
-    if (rowIndicatorColumn === null) {
+    if (rowIndicatorColumn == null) {
       return null;
     }
     let rowHeights: Int32Array = rowIndicatorColumn.getRowHeights();
-    if (rowHeights === null) {
+    if (rowHeights == null) {
       return null;
     }
     let maxRowHeight: int = PDF417ScanningDecoder.getMax(rowHeights);
@@ -212,7 +212,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
       }
     }
     let codewords: Codeword[] = rowIndicatorColumn.getCodewords();
-    for (let row /*int*/ = 0; missingStartRows > 0 && codewords[row] === null; row++) {
+    for (let row /*int*/ = 0; missingStartRows > 0 && codewords[row] == null; row++) {
       missingStartRows--;
     }
     let missingEndRows: int = 0;
@@ -222,7 +222,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
         break;
       }
     }
-    for (let row /*int*/ = codewords.length - 1; missingEndRows > 0 && codewords[row] === null; row--) {
+    for (let row /*int*/ = codewords.length - 1; missingEndRows > 0 && codewords[row] == null; row--) {
       missingEndRows--;
     }
     return rowIndicatorColumn.getBoundingBox().addMissingRows(missingStartRows, missingEndRows,
@@ -240,13 +240,13 @@ export default /*public final*/ class PDF417ScanningDecoder {
   private static getBarcodeMetadata(leftRowIndicatorColumn: DetectionResultRowIndicatorColumn,
     rightRowIndicatorColumn: DetectionResultRowIndicatorColumn): BarcodeMetadata {
     let leftBarcodeMetadata: BarcodeMetadata;
-    if (leftRowIndicatorColumn === null ||
-      (leftBarcodeMetadata = leftRowIndicatorColumn.getBarcodeMetadata()) === null) {
+    if (leftRowIndicatorColumn == null ||
+      (leftBarcodeMetadata = leftRowIndicatorColumn.getBarcodeMetadata()) == null) {
       return rightRowIndicatorColumn == null ? null : rightRowIndicatorColumn.getBarcodeMetadata();
     }
     let rightBarcodeMetadata: BarcodeMetadata;
-    if (rightRowIndicatorColumn === null ||
-      (rightBarcodeMetadata = rightRowIndicatorColumn.getBarcodeMetadata()) === null) {
+    if (rightRowIndicatorColumn == null ||
+      (rightBarcodeMetadata = rightRowIndicatorColumn.getBarcodeMetadata()) == null) {
       return leftBarcodeMetadata;
     }
 
@@ -273,7 +273,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
         imageRow >= boundingBox.getMinY(); imageRow += increment) {
         let codeword: Codeword = PDF417ScanningDecoder.detectCodeword(image, 0, image.getWidth(), leftToRight, startColumn, imageRow,
           minCodewordWidth, maxCodewordWidth);
-        if (codeword !== null) {
+        if (codeword != null) {
           rowIndicatorColumn.setCodeword(imageRow, codeword);
           if (leftToRight) {
             startColumn = codeword.getStartX();
@@ -417,9 +417,9 @@ export default /*public final*/ class PDF417ScanningDecoder {
 
     let column: int = 0;
     for (let detectionResultColumn /*DetectionResultColumn*/ of detectionResult.getDetectionResultColumns()) {
-      if (detectionResultColumn !== null) {
+      if (detectionResultColumn != null) {
         for (let codeword /*Codeword*/ of detectionResultColumn.getCodewords()) {
-          if (codeword !== null) {
+          if (codeword != null) {
             let rowNumber: int = codeword.getRowNumber();
             if (rowNumber >= 0) {
               if (rowNumber >= barcodeMatrix.length) {
@@ -449,17 +449,17 @@ export default /*public final*/ class PDF417ScanningDecoder {
     if (PDF417ScanningDecoder.isValidBarcodeColumn(detectionResult, barcodeColumn - offset)) {
       codeword = detectionResult.getDetectionResultColumn(barcodeColumn - offset).getCodeword(imageRow);
     }
-    if (codeword !== null) {
+    if (codeword != null) {
       return leftToRight ? codeword.getEndX() : codeword.getStartX();
     }
     codeword = detectionResult.getDetectionResultColumn(barcodeColumn).getCodewordNearby(imageRow);
-    if (codeword !== null) {
+    if (codeword != null) {
       return leftToRight ? codeword.getStartX() : codeword.getEndX();
     }
     if (PDF417ScanningDecoder.isValidBarcodeColumn(detectionResult, barcodeColumn - offset)) {
       codeword = detectionResult.getDetectionResultColumn(barcodeColumn - offset).getCodewordNearby(imageRow);
     }
-    if (codeword !== null) {
+    if (codeword != null) {
       return leftToRight ? codeword.getEndX() : codeword.getStartX();
     }
     let skippedColumns: int = 0;
@@ -467,7 +467,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
     while (PDF417ScanningDecoder.isValidBarcodeColumn(detectionResult, barcodeColumn - offset)) {
       barcodeColumn -= offset;
       for (let previousRowCodeword /*Codeword*/ of detectionResult.getDetectionResultColumn(barcodeColumn).getCodewords()) {
-        if (previousRowCodeword !== null) {
+        if (previousRowCodeword != null) {
           return (leftToRight ? previousRowCodeword.getEndX() : previousRowCodeword.getStartX()) +
             offset *
             skippedColumns *
@@ -493,7 +493,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
     // min and maxCodewordWidth should not be used as they are calculated for the whole barcode an can be inaccurate
     // for the current position
     let moduleBitCount: Int32Array = PDF417ScanningDecoder.getModuleBitCount(image, minColumn, maxColumn, leftToRight, startColumn, imageRow);
-    if (moduleBitCount === null) {
+    if (moduleBitCount == null) {
       return null;
     }
     let endColumn: int;
@@ -628,7 +628,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
    * @throws ChecksumException if error correction fails
    */
   private static correctErrors(codewords: Int32Array, erasures: Int32Array, numECCodewords: int): int {
-    if (erasures !== null &&
+    if (erasures != null &&
       erasures.length > numECCodewords / 2 + PDF417ScanningDecoder.MAX_ERRORS ||
       numECCodewords < 0 ||
       numECCodewords > PDF417ScanningDecoder.MAX_EC_CODEWORDS) {

@@ -41,7 +41,7 @@ export default /*final*/ class DetectionResultRowIndicatorColumn extends Detecti
 
   private setRowNumbers(): void {
     for (let codeword /*Codeword*/ of this.getCodewords()) {
-      if (codeword !== null) {
+      if (codeword != null) {
         codeword.setRowNumberAsRowIndicatorColumn();
       }
     }
@@ -67,7 +67,7 @@ export default /*final*/ class DetectionResultRowIndicatorColumn extends Detecti
     let maxRowHeight: int = 1;
     let currentRowHeight: int = 0;
     for (let codewordsRow /*int*/ = firstRow; codewordsRow < lastRow; codewordsRow++) {
-      if (codewords[codewordsRow] === null) {
+      if (codewords[codewordsRow] == null) {
         continue;
       }
       let codeword: Codeword = codewords[codewordsRow];
@@ -105,7 +105,7 @@ export default /*final*/ class DetectionResultRowIndicatorColumn extends Detecti
         for (let i /*int*/ = 1; i <= checkedRows && !closePreviousCodewordFound; i++) {
           // there must be (height * rowDifference) number of codewords missing. For now we assume height = 1.
           // This should hopefully get rid of most problems already.
-          closePreviousCodewordFound = codewords[codewordsRow - i] !== null;
+          closePreviousCodewordFound = codewords[codewordsRow - i] != null;
         }
         if (closePreviousCodewordFound) {
           codewords[codewordsRow] = null;
@@ -120,13 +120,13 @@ export default /*final*/ class DetectionResultRowIndicatorColumn extends Detecti
 
   getRowHeights(): Int32Array {
     let barcodeMetadata: BarcodeMetadata = this.getBarcodeMetadata();
-    if (barcodeMetadata === null) {
+    if (barcodeMetadata == null) {
       return null;
     }
     this.adjustIncompleteIndicatorColumnRowNumbers(barcodeMetadata);
     let result: Int32Array = new Int32Array(barcodeMetadata.getRowCount());
     for (let codeword /*Codeword*/ of this.getCodewords()) {
-      if (codeword !== null) {
+      if (codeword != null) {
         let rowNumber: int = codeword.getRowNumber();
         if (rowNumber >= result.length) {
           // We have more rows than the barcode metadata allows for, ignore them.
@@ -153,7 +153,7 @@ export default /*final*/ class DetectionResultRowIndicatorColumn extends Detecti
     let maxRowHeight: int = 1;
     let currentRowHeight: int = 0;
     for (let codewordsRow /*int*/ = firstRow; codewordsRow < lastRow; codewordsRow++) {
-      if (codewords[codewordsRow] === null) {
+      if (codewords[codewordsRow] == null) {
         continue;
       }
       let codeword: Codeword = codewords[codewordsRow];
@@ -187,7 +187,7 @@ export default /*final*/ class DetectionResultRowIndicatorColumn extends Detecti
     let barcodeRowCountLowerPart: BarcodeValue = new BarcodeValue();
     let barcodeECLevel: BarcodeValue = new BarcodeValue();
     for (let codeword /*Codeword*/ of codewords) {
-      if (codeword === null) {
+      if (codeword == null) {
         continue;
       }
       codeword.setRowNumberAsRowIndicatorColumn();
@@ -230,7 +230,7 @@ export default /*final*/ class DetectionResultRowIndicatorColumn extends Detecti
     // TODO Maybe we should keep the incorrect codewords for the start and end positions?
     for (let codewordRow /*int*/ = 0; codewordRow < codewords.length; codewordRow++) {
       let codeword: Codeword = codewords[codewordRow];
-      if (codewords[codewordRow] === null) {
+      if (codewords[codewordRow] == null) {
         continue;
       }
       let rowIndicatorValue: int = codeword.getValue() % 30;
