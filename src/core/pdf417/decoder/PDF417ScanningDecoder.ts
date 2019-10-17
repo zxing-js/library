@@ -326,8 +326,8 @@ export default /*public final*/ class PDF417ScanningDecoder {
     PDF417ScanningDecoder.adjustCodewordCount(detectionResult, barcodeMatrix);
     let erasures /*Collection<Integer>*/ = new Array<number>();
     let codewords: Int32Array = new Int32Array(detectionResult.getBarcodeRowCount() * detectionResult.getBarcodeColumnCount());
-    let ambiguousIndexValuesList: Int32Array[];
-    let ambiguousIndexesList /*Collection<Integer>*/ = new Array<number>();
+    let ambiguousIndexValuesList: /*List<int[]>*/ List<Int32Array> = [];
+    let ambiguousIndexesList: /*Collection<Integer>*/ Collection<int> = new Array<int>();
     for (let row /*int*/ = 0; row < detectionResult.getBarcodeRowCount(); row++) {
       for (let column /*int*/ = 0; column < detectionResult.getBarcodeColumnCount(); column++) {
         let values: Int32Array = barcodeMatrix[row][column + 1].getValue();
