@@ -47,14 +47,14 @@ export default /*public final*/ class ErrorCorrection {
    * @throws ChecksumException if errors cannot be corrected, maybe because of too many errors
    */
   public decode(received: Int32Array,
-    numECCodewords: /*int*/number,
-    erasures: Int32Array): /*int*/ number {
+    numECCodewords: int,
+    erasures: Int32Array): int {
 
     let poly: ModulusPoly = new ModulusPoly(this.field, received);
     let S: Int32Array = new Int32Array(numECCodewords);
     let error: boolean = false;
     for (let i /*int*/ = numECCodewords; i > 0; i--) {
-      let evaluation: /*int*/ number = poly.evaluateAt(this.field.exp(i));
+      let evaluation: int = poly.evaluateAt(this.field.exp(i));
       S[numECCodewords - i] = evaluation;
       if (evaluation !== 0) {
         error = true;
@@ -68,7 +68,7 @@ export default /*public final*/ class ErrorCorrection {
     let knownErrors: ModulusPoly = this.field.getOne();
     if (erasures != null) {
       for (const erasure of erasures) {
-        let b: /*int*/ number = this.field.exp(received.length - 1 - erasure);
+        let b: int = this.field.exp(received.length - 1 - erasure);
         // Add (1 - bx) term:
         let term: ModulusPoly = new ModulusPoly(this.field, new Int32Array([this.field.subtract(0, b), 1]));
         knownErrors = knownErrors.multiply(term);
@@ -89,7 +89,7 @@ export default /*public final*/ class ErrorCorrection {
     let errorMagnitudes: Int32Array = this.findErrorMagnitudes(omega, sigma, errorLocations);
 
     for (let i /*int*/ = 0; i < errorLocations.length; i++) {
-      let position: /*int*/ number = received.length - 1 - this.field.log(errorLocations[i]);
+      let position: int = received.length - 1 - this.field.log(errorLocations[i]);
       if (position < 0) {
         throw ChecksumException.getChecksumInstance();
       }
@@ -135,11 +135,11 @@ export default /*public final*/ class ErrorCorrection {
       }
       r = rLastLast;
       let q: ModulusPoly = this.field.getZero();
-      let denominatorLeadingTerm: /*int*/ number = rLast.getCoefficient(rLast.getDegree());
-      let dltInverse: /*int*/ number = this.field.inverse(denominatorLeadingTerm);
+      let denominatorLeadingTerm: int = rLast.getCoefficient(rLast.getDegree());
+      let dltInverse: int = this.field.inverse(denominatorLeadingTerm);
       while (r.getDegree() >= rLast.getDegree() && !r.isZero()) {
-        let degreeDiff: /*int*/ number = r.getDegree() - rLast.getDegree();
-        let scale: /*int*/ number = this.field.multiply(r.getCoefficient(r.getDegree()), dltInverse);
+        let degreeDiff: int = r.getDegree() - rLast.getDegree();
+        let scale: int = this.field.multiply(r.getCoefficient(r.getDegree()), dltInverse);
         q = q.add(this.field.buildMonomial(degreeDiff, scale));
         r = r.subtract(rLast.multiplyByMonomial(degreeDiff, scale));
       }
@@ -147,12 +147,12 @@ export default /*public final*/ class ErrorCorrection {
       t = q.multiply(tLast).subtract(tLastLast).negative();
     }
 
-    let sigmaTildeAtZero: /*int*/ number = t.getCoefficient(0);
+    let sigmaTildeAtZero: int = t.getCoefficient(0);
     if (sigmaTildeAtZero === 0) {
       throw ChecksumException.getChecksumInstance();
     }
 
-    let inverse: /*int*/ number = this.field.inverse(sigmaTildeAtZero);
+    let inverse: int = this.field.inverse(sigmaTildeAtZero);
     let sigma: ModulusPoly = t.multiply(inverse);
     let omega: ModulusPoly = r.multiply(inverse);
     return [sigma, omega];
@@ -165,9 +165,9 @@ export default /*public final*/ class ErrorCorrection {
    */
   private findErrorLocations(errorLocator: ModulusPoly): Int32Array {
     // This is a direct application of Chien's search
-    let numErrors: /*int*/ number = errorLocator.getDegree();
+    let numErrors: int = errorLocator.getDegree();
     let result: Int32Array = new Int32Array(numErrors);
-    let e: /*int*/ number = 0;
+    let e: int = 0;
     for (let i /*int*/ = 1; i < this.field.getSize() && e < numErrors; i++) {
       if (errorLocator.evaluateAt(i) === 0) {
         result[e] = this.field.inverse(i);
@@ -183,7 +183,7 @@ export default /*public final*/ class ErrorCorrection {
   private findErrorMagnitudes(errorEvaluator: ModulusPoly,
     errorLocator: ModulusPoly,
     errorLocations: Int32Array): Int32Array {
-    let errorLocatorDegree: /*int*/ number = errorLocator.getDegree();
+    let errorLocatorDegree: int = errorLocator.getDegree();
     let formalDerivativeCoefficients: Int32Array = new Int32Array(errorLocatorDegree);
     for (let i /*int*/ = 1; i <= errorLocatorDegree; i++) {
       formalDerivativeCoefficients[errorLocatorDegree - i] =
@@ -192,12 +192,12 @@ export default /*public final*/ class ErrorCorrection {
     let formalDerivative: ModulusPoly = new ModulusPoly(this.field, formalDerivativeCoefficients);
 
     // This is directly applying Forney's Formula
-    let s: /*int*/ number = errorLocations.length;
+    let s: int = errorLocations.length;
     let result: Int32Array = new Int32Array(s);
     for (let i /*int*/ = 0; i < s; i++) {
-      let xiInverse: /*int*/ number = this.field.inverse(errorLocations[i]);
-      let numerator: /*int*/ number = this.field.subtract(0, errorEvaluator.evaluateAt(xiInverse));
-      let denominator: /*int*/ number = this.field.inverse(formalDerivative.evaluateAt(xiInverse));
+      let xiInverse: int = this.field.inverse(errorLocations[i]);
+      let numerator: int = this.field.subtract(0, errorEvaluator.evaluateAt(xiInverse));
+      let denominator: int = this.field.inverse(formalDerivative.evaluateAt(xiInverse));
       result[i] = this.field.multiply(numerator, denominator);
     }
     return result;

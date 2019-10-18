@@ -115,10 +115,12 @@ export default class Arrays {
     }
   }
 
-  public static copyOf(original: Int32Array, newLength: number) {
-    const copy = new Int32Array(newLength);
-    System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));
-    return copy;
+  public static copyOf(original: Int32Array, newLength: number): Int32Array {
+    return original.slice(0, newLength);
+  }
+
+  public static copyOfUint8Array(original: Uint8Array, newLength: number): Uint8Array {
+    return original.slice(0, newLength);
   }
 
   public static copyOfRange(original: Int32Array, from: number, to: number): Int32Array {
