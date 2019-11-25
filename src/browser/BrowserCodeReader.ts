@@ -763,7 +763,7 @@ export class BrowserCodeReader {
     this._stopAsyncDecode = false;
 
     const loop = (resolve: (value?: Result | PromiseLike<Result>) => void, reject: (reason?: any) => void) => {
-
+    const attempts = 0 
       if (this._stopAsyncDecode) {
         reject(new NotFoundException('Video stream has ended before any code could be detected.'));
         this._stopAsyncDecode = undefined;
@@ -780,8 +780,13 @@ export class BrowserCodeReader {
         const ifChecksumOrFormat = isChecksumOrFormatError && retryIfChecksumOrFormatError;
 
         if (ifNotFound || ifChecksumOrFormat) {
-          // trying again
-          return setTimeout(() => loop(resolve, reject), this._timeBetweenDecodingAttempts);
+            // Have 5 attempts for sucesss
+            if (attempts < 5) {
+                // trying again
+                return setTimeout(() => loop(resolve, reject), this._timeBetweenDecodingAttempts);
+            } else {
+                reject(new Error('The quality image is low'))
+            } 
         }
 
         reject(e);
