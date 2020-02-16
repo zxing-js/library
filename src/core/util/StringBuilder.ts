@@ -1,10 +1,15 @@
+import StringEncoding from './StringEncoding';
+
 export default class StringBuilder {
 
-  public constructor(private value: string = '') {}
+  public constructor(private value: string = '', private format = null) {}
 
   public append(s: string | number): StringBuilder {
     if (typeof s === 'string') {
       this.value += s.toString();
+    } else if (this.format) {
+      // use passed format (fromCharCode will return UTF8 encoding)
+      this.value += StringEncoding.decode(new Uint8Array([s]), this.format);
     } else {
       this.value += String.fromCharCode(s);
     }

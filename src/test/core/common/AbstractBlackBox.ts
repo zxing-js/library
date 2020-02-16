@@ -190,7 +190,7 @@ abstract class AbstractBlackBoxSpec {
             if (fs.existsSync(expectedTextFile)) {
                 expectedText = AbstractBlackBoxSpec.readTextFileAsString(expectedTextFile);
             } else {
-                expectedTextFile = path.resolve(fileBaseName + '.bin');
+                expectedTextFile = path.resolve(this.testBase, fileBaseName + '.bin');
                 assert.strictEqual(fs.existsSync(expectedTextFile), true, 'result bin/text file should exists');
                 expectedText = AbstractBlackBoxSpec.readBinFileAsString(expectedTextFile);
             }

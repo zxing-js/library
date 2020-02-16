@@ -99,15 +99,16 @@ export default class GlobalHistogramBinarizer extends Binarizer {
         const width = source.getWidth();
         const height = source.getHeight();
         const matrix = new BitMatrix(width, height);
+        let test = null;
 
         // Quickly calculates the histogram by sampling four rows from the image. This proved to be
         // more robust on the blackbox tests than sampling a diagonal as we used to do.
         this.initArrays(width);
         const localBuckets = this.buckets;
         for (let y = 1; y < 5; y++) {
-            const row = height * y / 5;
-            const localLuminances = source.getRow(row, this.luminances);
+            const row = Math.floor((height * y) / 5);
             const right = Math.floor((width * 4) / 5);
+            const localLuminances = source.getRow(row, this.luminances);
             for (let x = Math.floor(width / 5); x < right; x++) {
                 const pixel = localLuminances[x] & 0xff;
                 localBuckets[pixel >> GlobalHistogramBinarizer.LUMINANCE_SHIFT]++;
@@ -118,11 +119,11 @@ export default class GlobalHistogramBinarizer extends Binarizer {
         // We delay reading the entire image luminance until the black point estimation succeeds.
         // Although we end up reading four rows twice, it is consistent with our motto of
         // "fail quickly" which is necessary for continuous scanning.
-        const localLuminances = source.getMatrix();
+        const localLuminancesMatrix = source.getMatrix();
         for (let y = 0; y < height; y++) {
             const offset = y * width;
             for (let x = 0; x < width; x++) {
-                const pixel = localLuminances[offset + x] & 0xff;
+                const pixel = localLuminancesMatrix[offset + x] & 0xff;
                 if (pixel < blackPoint) {
                     matrix.set(x, y);
                 }
