@@ -417,7 +417,7 @@ export default /*final*/ class DecodedBitStreamParser {
         case Mode.LOWER:
           // Lower (alphabetic: lowercase)
           if (subModeCh < 26) {
-            ch = /*(char)*/String.fromCharCode(97 + subModeCh);
+            ch = /*(char)('a' + subModeCh)*/String.fromCharCode(97 + subModeCh);
           } else {
             switch (subModeCh) {
               case 26:
