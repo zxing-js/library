@@ -503,7 +503,7 @@ export default /*final*/ class DecodedBitStreamParser {
           // Restore sub-mode
           subMode = priorToShiftMode;
           if (subModeCh < 26) {
-            ch = /*(char)*/ String.fromCharCode(65 + subModeCh);
+            ch = /*(char)('A' + subModeCh)*/ String.fromCharCode(65 + subModeCh);
           } else {
             switch (subModeCh) {
               case 26:
