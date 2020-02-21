@@ -99,7 +99,6 @@ export default class GlobalHistogramBinarizer extends Binarizer {
         const width = source.getWidth();
         const height = source.getHeight();
         const matrix = new BitMatrix(width, height);
-        let test = null;
 
         // Quickly calculates the histogram by sampling four rows from the image. This proved to be
         // more robust on the blackbox tests than sampling a diagonal as we used to do.
