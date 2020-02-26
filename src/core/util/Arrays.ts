@@ -120,14 +120,14 @@ export default class Arrays {
   }
 
   public static copyOfUint8Array(original: Uint8Array, newLength: number): Uint8Array {
-    let newArray: Uint8Array;
-    if(original.length <= newLength) {
-      newArray = new Uint8Array(newLength);
+
+    if (original.length <= newLength) {
+      const newArray = new Uint8Array(newLength);
       newArray.set(original);
-    } else {
-      newArray = original.slice(0, newLength);
+      return newArray;
     }
-    return newArray;
+
+    return original.slice(0, newLength);
   }
 
   public static copyOfRange(original: Int32Array, from: number, to: number): Int32Array {
