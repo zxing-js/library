@@ -118,11 +118,11 @@ export default class GlobalHistogramBinarizer extends Binarizer {
         // We delay reading the entire image luminance until the black point estimation succeeds.
         // Although we end up reading four rows twice, it is consistent with our motto of
         // "fail quickly" which is necessary for continuous scanning.
-        const localLuminancesMatrix = source.getMatrix();
+        const localLuminances = source.getMatrix();
         for (let y = 0; y < height; y++) {
             const offset = y * width;
             for (let x = 0; x < width; x++) {
-                const pixel = localLuminancesMatrix[offset + x] & 0xff;
+                const pixel = localLuminances[offset + x] & 0xff;
                 if (pixel < blackPoint) {
                     matrix.set(x, y);
                 }
