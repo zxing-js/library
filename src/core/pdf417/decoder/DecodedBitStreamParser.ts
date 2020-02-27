@@ -128,10 +128,18 @@ export default /*final*/ class DecodedBitStreamParser {
    * @throws FormatException
    */
   static decode(codewords: Int32Array, ecLevel: string): DecoderResult {
+    // pass encoding to result (will be used for decode symbols in byte mode)
+    let result: StringBuilder = new StringBuilder('');
     // let encoding: Charset = StandardCharsets.ISO_8859_1;
     let encoding = CharacterSetECI.ISO8859_1;
-    // pass encoding to result (will be used for decode symbols in byte mode)
-    let result: StringBuilder = new StringBuilder('', encoding);
+    /**
+     * @note the next command is specific from this TypeScript library
+     * because TS can't properly cast some values to char and
+     * convert it to string later correctlt due to encoding
+     * differences from Java version. As reported here:
+     * https://github.com/zxing-js/library/pull/264/files#r382831593
+     */
+    result.enableDecoding(encoding);
     // Get compaction mode
     let codeIndex: int = 1;
     let code: int = codewords[codeIndex++];
