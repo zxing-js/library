@@ -44,6 +44,8 @@ describe('ErrorCorrectionTestCase', () => {
         const received = Int32Array.from(PDF417_TEST_WITH_EC);
         // no errors
         checkDecode(received);
+
+        done()
     });
     //   }
 
@@ -57,6 +59,8 @@ describe('ErrorCorrectionTestCase', () => {
             received[i] = random.nextInt(256);
             checkDecode(received);
         }
+
+        done()
     });
     // }
 
@@ -65,11 +69,14 @@ describe('ErrorCorrectionTestCase', () => {
     it('testMaxErrors', done => {
 
         const random: Random = AbstractErrorCorrectionSpec.getRandom();
+
         for (let testIterations /*int*/ = 0; testIterations < 100; testIterations++) { // # iterations is kind of arbitrary
             const received: Int32Array = Int32Array.from(PDF417_TEST_WITH_EC);
             AbstractErrorCorrectionSpec.corrupt(received, MAX_ERRORS, random);
             checkDecode(received);
         }
+
+        done()
     });
     //   }
 
@@ -104,6 +111,8 @@ describe('ErrorCorrectionTestCase', () => {
             const erasures = AbstractErrorCorrectionSpec.erase(received, MAX_ERASURES, random);
             checkDecode(received, erasures);
         }
+
+        done()
     });
     //   }
 
@@ -117,7 +126,7 @@ describe('ErrorCorrectionTestCase', () => {
         const erasures: Int32Array = AbstractErrorCorrectionSpec.erase(received, MAX_ERASURES + 1, random);
         try {
             checkDecode(received, erasures);
-            done('Should not have decoded');
+            assert.fail('Should not have decoded');
         } catch (ce) {
             if (ce instanceof ChecksumException) {
                 // good
