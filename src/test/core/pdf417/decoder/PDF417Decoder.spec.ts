@@ -37,7 +37,7 @@ describe('PDF417DecoderTestCase', () => {
    */
   //   @Test
   //   public void testStandardSample1() throws FormatException {
-  it('testStandardSample1', done => {
+  it('testStandardSample1', () => {
 
     const resultMetadata = new PDF417ResultMetadata();
     const sampleCodes = Int32Array.from([20, 928, 111, 100, 17, 53, 923, 1, 111, 104, 923, 3, 64, 416, 34, 923, 4, 258, 446, 67,
@@ -66,7 +66,7 @@ describe('PDF417DecoderTestCase', () => {
    */
   //   @Test
   //   public void testStandardSample2() throws FormatException {
-  it('testStandardSample2', done => {
+  it('testStandardSample2', () => {
 
     const resultMetadata = new PDF417ResultMetadata();
     const sampleCodes = Int32Array.from([11, 928, 111, 103, 17, 53, 923, 1, 111, 104, 922,
@@ -91,7 +91,7 @@ describe('PDF417DecoderTestCase', () => {
 
   // @Test
   // public void testSampleWithFilename() throws FormatException {
-  it('testSampleWithFilename', done => {
+  it('testSampleWithFilename', () => {
 
     const sampleCodes: Int32Array = Int32Array.from([
       23, 477, 928, 111, 100, 0, 252, 21, 86, 923, 0, 815, 251, 133, 12, 148, 537, 593,
@@ -113,7 +113,7 @@ describe('PDF417DecoderTestCase', () => {
 
   // @Test
   // public void testSampleWithNumericValues() throws FormatException {
-  it('testSampleWithNumericValues', done => {
+  it('testSampleWithNumericValues', () => {
 
     const sampleCodes: Int32Array = Int32Array.from([
       25, 477, 928, 111, 100, 0, 252, 21, 86, 923, 2, 2, 0, 1, 0, 0, 0, 923, 5, 130, 923,
