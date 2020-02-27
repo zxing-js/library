@@ -408,7 +408,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
     // let barcodeMatrix: BarcodeValue[][] =
       // new BarcodeValue[detectionResult.getBarcodeRowCount()][detectionResult.getBarcodeColumnCount() + 2];
     let barcodeMatrix: BarcodeValue[][] =
-      Array.from({ length:detectionResult.getBarcodeRowCount() }, () => new Array(detectionResult.getBarcodeColumnCount() + 2));
+      Array.from({ length: detectionResult.getBarcodeRowCount() }, () => new Array(detectionResult.getBarcodeColumnCount() + 2));
     for (let row /*int*/ = 0; row < barcodeMatrix.length; row++) {
       for (let column /*int*/ = 0; column < barcodeMatrix[row].length; column++) {
         barcodeMatrix[row][column] = new BarcodeValue();

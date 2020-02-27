@@ -141,19 +141,19 @@ export default /*public final*/ class PDF417Reader implements Reader, MultipleBa
   }
 
   private static getMaxCodewordWidth(p: ResultPoint[]): number /*int*/ {
-    return Math.max(
+    return Math.floor(Math.max(
       Math.max(PDF417Reader.getMaxWidth(p[0], p[4]), PDF417Reader.getMaxWidth(p[6], p[2]) * PDF417Common.MODULES_IN_CODEWORD /
         PDF417Common.MODULES_IN_STOP_PATTERN),
       Math.max(PDF417Reader.getMaxWidth(p[1], p[5]), PDF417Reader.getMaxWidth(p[7], p[3]) * PDF417Common.MODULES_IN_CODEWORD /
-        PDF417Common.MODULES_IN_STOP_PATTERN));
+        PDF417Common.MODULES_IN_STOP_PATTERN)));
   }
 
   private static getMinCodewordWidth(p: ResultPoint[]): number /*int*/ {
-    return Math.min(
+    return Math.floor(Math.min(
       Math.min(PDF417Reader.getMinWidth(p[0], p[4]), PDF417Reader.getMinWidth(p[6], p[2]) * PDF417Common.MODULES_IN_CODEWORD /
         PDF417Common.MODULES_IN_STOP_PATTERN),
       Math.min(PDF417Reader.getMinWidth(p[1], p[5]), PDF417Reader.getMinWidth(p[7], p[3]) * PDF417Common.MODULES_IN_CODEWORD /
-        PDF417Common.MODULES_IN_STOP_PATTERN));
+        PDF417Common.MODULES_IN_STOP_PATTERN)));
   }
 
   // @Override

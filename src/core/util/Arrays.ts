@@ -120,6 +120,13 @@ export default class Arrays {
   }
 
   public static copyOfUint8Array(original: Uint8Array, newLength: number): Uint8Array {
+
+    if (original.length <= newLength) {
+      const newArray = new Uint8Array(newLength);
+      newArray.set(original);
+      return newArray;
+    }
+
     return original.slice(0, newLength);
   }
 

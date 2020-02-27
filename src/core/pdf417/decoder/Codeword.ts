@@ -45,7 +45,7 @@ export default /*final*/ class Codeword {
   }
 
   setRowNumberAsRowIndicatorColumn(): void {
-    this.rowNumber = Math.trunc((this.value / 30) * 3 + this.bucket / 3);
+    this.rowNumber = Math.trunc((Math.trunc(this.value / 30)) * 3 + Math.trunc(this.bucket / 3));
   }
 
   getWidth(): int {

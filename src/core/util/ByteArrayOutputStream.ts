@@ -120,7 +120,7 @@ export default /*public*/ class ByteArrayOutputStream extends OutputStream {
         throw new OutOfMemoryError();
       newCapacity = Integer.MAX_VALUE;
     }
-    this.buf = new Uint8Array(Arrays.copyOf(new Int32Array(this.buf), newCapacity));
+    this.buf = Arrays.copyOfUint8Array(this.buf, newCapacity);
   }
 
   /**

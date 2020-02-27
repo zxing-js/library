@@ -49,7 +49,7 @@ import StringEncoding from '../../util/StringEncoding';
 }
 
 function getEXP900(): BigInt[] {
-
+  // in Java - array with length = 16
   let EXP900 = [];
 
   EXP900[0] = BigInt(1);
@@ -58,7 +58,8 @@ function getEXP900(): BigInt[] {
 
   EXP900[1] = nineHundred;
 
-  for (let i /*int*/ = 2; i < EXP900.length; i++) {
+  // in Java - array with length = 16
+  for (let i /*int*/ = 2; i < 16; i++) {
     EXP900[i] = EXP900[i - 1] * nineHundred;
   }
 
@@ -127,9 +128,18 @@ export default /*final*/ class DecodedBitStreamParser {
    * @throws FormatException
    */
   static decode(codewords: Int32Array, ecLevel: string): DecoderResult {
-    let result: StringBuilder = new StringBuilder(/*codewords.length * 2*/);
+    // pass encoding to result (will be used for decode symbols in byte mode)
+    let result: StringBuilder = new StringBuilder('');
     // let encoding: Charset = StandardCharsets.ISO_8859_1;
     let encoding = CharacterSetECI.ISO8859_1;
+    /**
+     * @note the next command is specific from this TypeScript library
+     * because TS can't properly cast some values to char and
+     * convert it to string later correctlt due to encoding
+     * differences from Java version. As reported here:
+     * https://github.com/zxing-js/library/pull/264/files#r382831593
+     */
+    result.enableDecoding(encoding);
     // Get compaction mode
     let codeIndex: int = 1;
     let code: int = codewords[codeIndex++];
@@ -378,13 +388,14 @@ export default /*final*/ class DecodedBitStreamParser {
     let i: int = 0;
     while (i < length) {
       let subModeCh: int = textCompactionData[i];
-      let ch: /*char*/ string = '0';
+      let ch: /*char*/ string = '';
       switch (subMode) {
         case Mode.ALPHA:
           // Alpha (alphabetic: uppercase)
           if (subModeCh < 26) {
             // Upper case Alpha Character
-            ch = /*(char)*/('A' + subModeCh);
+            // Note: 65 = 'A' ASCII -> there is byte code of symbol
+            ch = /*(char)('A' + subModeCh) */ String.fromCharCode(65 + subModeCh);
           } else {
             switch (subModeCh) {
               case 26:
@@ -414,7 +425,7 @@ export default /*final*/ class DecodedBitStreamParser {
         case Mode.LOWER:
           // Lower (alphabetic: lowercase)
           if (subModeCh < 26) {
-            ch = /*(char)*/('a' + subModeCh);
+            ch = /*(char)('a' + subModeCh)*/String.fromCharCode(97 + subModeCh);
           } else {
             switch (subModeCh) {
               case 26:
@@ -500,7 +511,7 @@ export default /*final*/ class DecodedBitStreamParser {
           // Restore sub-mode
           subMode = priorToShiftMode;
           if (subModeCh < 26) {
-            ch = /*(char)*/('A' + subModeCh);
+            ch = /*(char)('A' + subModeCh)*/ String.fromCharCode(65 + subModeCh);
           } else {
             switch (subModeCh) {
               case 26:
@@ -536,7 +547,7 @@ export default /*final*/ class DecodedBitStreamParser {
           break;
       }
       // if (ch !== 0) {
-      if (ch !== '0') {
+      if (ch !== '') {
         // Append decoded character to result
         result.append(ch);
       }
@@ -648,8 +659,12 @@ export default /*final*/ class DecodedBitStreamParser {
           if ((count % 5 === 0) && (count > 0)) {
             // Decode every 5 codewords
             // Convert to Base 256
+            /* @note
+             * JavaScript stores numbers as 64 bits floating point numbers, but all bitwise operations are performed on 32 bits binary numbers.
+             * So the next bitwise operation could not be done with simple numbers
+            */
             for (let j /*int*/ = 0; j < 6; ++j) {
-              decodedBytes.write(/*(byte)*/(value >> (8 * (5 - j))));
+              decodedBytes.write(/*(byte)*/Number(BigInt(value) >> BigInt(8 * (5 - j))));
             }
             value = 0;
             count = 0;

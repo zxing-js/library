@@ -1,11 +1,26 @@
+import CharacterSetECI from '../common/CharacterSetECI';
+import StringEncoding from './StringEncoding';
+
+
 export default class StringBuilder {
 
+  private encoding: CharacterSetECI;
+
   public constructor(private value: string = '') {}
+
+  public enableDecoding(encoding: CharacterSetECI): StringBuilder {
+    this.encoding = encoding
+    return this;
+  }
 
   public append(s: string | number): StringBuilder {
     if (typeof s === 'string') {
       this.value += s.toString();
+    } else if (this.encoding) {
+      // use passed format (fromCharCode will return UTF8 encoding)
+      this.value += StringEncoding.decode(new Uint8Array([s]), this.encoding);
     } else {
+      // correctly converts from UTF-8, but not other encodings
       this.value += String.fromCharCode(s);
     }
     return this;

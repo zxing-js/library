@@ -249,7 +249,7 @@ export default /*final*/ class DetectionResultRowIndicatorColumn extends Detecti
           }
           break;
         case 1:
-          if (Math.round(rowIndicatorValue / 3) !== barcodeMetadata.getErrorCorrectionLevel() ||
+          if (Math.trunc(rowIndicatorValue / 3) !== barcodeMetadata.getErrorCorrectionLevel() ||
               rowIndicatorValue % 3 !== barcodeMetadata.getRowCountLowerPart()) {
             codewords[codewordRow] = null;
           }

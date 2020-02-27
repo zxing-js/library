@@ -105,7 +105,7 @@ export default class GlobalHistogramBinarizer extends Binarizer {
         this.initArrays(width);
         const localBuckets = this.buckets;
         for (let y = 1; y < 5; y++) {
-            const row = height * y / 5;
+            const row = Math.floor((height * y) / 5);
             const localLuminances = source.getRow(row, this.luminances);
             const right = Math.floor((width * 4) / 5);
             for (let x = Math.floor(width / 5); x < right; x++) {

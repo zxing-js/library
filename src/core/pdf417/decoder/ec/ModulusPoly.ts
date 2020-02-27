@@ -92,11 +92,11 @@ export default /*final*/ class ModulusPoly {
     }
     if (a === 1) {
       // Just the sum of the coefficients
-      let result: /*int*/ number = 0;
+      let sum: /*int*/ number = 0;
       for (let coefficient /*int*/ of this.coefficients) {
-        result = this.field.add(result, coefficient);
+        sum = this.field.add(sum, coefficient);
       }
-      return result;
+      return sum;
     }
     let result: /*int*/ number = this.coefficients[0];
     let size: /*int*/ number = this.coefficients.length;
