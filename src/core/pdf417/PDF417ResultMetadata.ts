@@ -101,7 +101,7 @@ export default /*public final*/ class PDF417ResultMetadata {
     }
 
     public getSender(): string {
-        return this.sender;
+        return this.sender || null;
     }
 
     public setSender(sender: string): void {
@@ -109,7 +109,7 @@ export default /*public final*/ class PDF417ResultMetadata {
     }
 
     public getAddressee(): string {
-        return this.addressee;
+        return this.addressee || null;
     }
 
     public setAddressee(addressee: string): void {

@@ -126,7 +126,7 @@ describe('PDF417DecoderTestCase', () => {
     assertEquals('AAIMAVC ', resultMetadata.getFileId());
     assertFalse(resultMetadata.isLastSegment());
 
-    assertEquals('180980729000000L', resultMetadata.getTimestamp());
+    assertEquals('180980729000000L', `${resultMetadata.getTimestamp()}L`); // Java oddly returns timestamp as a string Long (?!)
     assertEquals(30, resultMetadata.getFileSize());
     assertEquals(260013, resultMetadata.getChecksum());
   });

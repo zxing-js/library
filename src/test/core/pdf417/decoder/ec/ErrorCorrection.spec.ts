@@ -39,19 +39,17 @@ describe('ErrorCorrectionTestCase', () => {
 
     //   @Test
     //   public void testNoError() throws ChecksumException {
-    it('testNoError', done => {
+    it('testNoError', () => {
 
         const received = Int32Array.from(PDF417_TEST_WITH_EC);
         // no errors
         checkDecode(received);
-
-        done()
     });
     //   }
 
     //   @Test
     //   public void testOneError() throws ChecksumException {
-    it('testOneError', done => {
+    it('testOneError', () => {
 
         const random = AbstractErrorCorrectionSpec.getRandom();
         for (let i: number /*int*/ = 0; i < PDF417_TEST_WITH_EC.length; i++) {
@@ -59,14 +57,12 @@ describe('ErrorCorrectionTestCase', () => {
             received[i] = random.nextInt(256);
             checkDecode(received);
         }
-
-        done()
     });
     // }
 
     //   @Test
     //   public void testMaxErrors() throws ChecksumException {
-    it('testMaxErrors', done => {
+    it('testMaxErrors', () => {
 
         const random: Random = AbstractErrorCorrectionSpec.getRandom();
 
@@ -75,8 +71,6 @@ describe('ErrorCorrectionTestCase', () => {
             AbstractErrorCorrectionSpec.corrupt(received, MAX_ERRORS, random);
             checkDecode(received);
         }
-
-        done()
     });
     //   }
 
@@ -103,7 +97,7 @@ describe('ErrorCorrectionTestCase', () => {
     //   @Ignore("Erasures not implemented yet")
     //   @Test
     //   public void testMaxErasures() throws ChecksumException {
-    it('testMaxErasures', done => {
+    it('testMaxErasures', () => {
 
         const random: Random = AbstractErrorCorrectionSpec.getRandom();
         for (const test /*int*/ of PDF417_TEST) { // # iterations is kind of arbitrary
@@ -111,15 +105,13 @@ describe('ErrorCorrectionTestCase', () => {
             const erasures = AbstractErrorCorrectionSpec.erase(received, MAX_ERASURES, random);
             checkDecode(received, erasures);
         }
-
-        done()
     });
     //   }
 
     //   @Ignore("Erasures not implemented yet")
     //   @Test
     //   public void testTooManyErasures() {
-    it('testTooManyErasures', done => {
+    it('testTooManyErasures', () => {
 
         const random: Random = AbstractErrorCorrectionSpec.getRandom();
         const received: Int32Array = Int32Array.from(PDF417_TEST_WITH_EC);
