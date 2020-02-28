@@ -27,8 +27,8 @@ class PDF417BlackBox3Spec extends AbstractBlackBoxSpec {
 
   public constructor() {
     super('src/test/resources/blackbox/pdf417-3', new MultiFormatReader(), BarcodeFormat.PDF_417);
-    this.addTestWithMax(25, 25, 0, 0, 0.0);
-    this.addTestWithMax(25, 25, 0, 0, 180.0);
+    this.addTestWithMax(19, 19, 0, 0, 0.0);
+    this.addTestWithMax(19, 19, 0, 0, 180.0);
   }
 
 }
