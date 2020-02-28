@@ -99,6 +99,9 @@ describe('ErrorCorrectionTestCase', () => {
     //   public void testMaxErasures() throws ChecksumException {
     it('testMaxErasures', () => {
 
+        // ignored as Java version
+        return;
+
         const random: Random = AbstractErrorCorrectionSpec.getRandom();
         for (const test /*int*/ of PDF417_TEST) { // # iterations is kind of arbitrary
             const received = Int32Array.from(PDF417_TEST_WITH_EC);
