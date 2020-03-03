@@ -19,7 +19,7 @@
 import IllegalArgumentException from '../../../IllegalArgumentException';
 import System from '../../../util/System';
 import StringBuilder from '../../../util/StringBuilder';
-import ModulusGF from './ModulusGF';
+import ModulusBase from './ModulusBase';
 
 /**
  * @author Sean Owen
@@ -27,10 +27,10 @@ import ModulusGF from './ModulusGF';
  */
 export default /*final*/ class ModulusPoly {
 
-  private /*final*/ field: ModulusGF;
+  private /*final*/ field: ModulusBase;
   private /*final*/ coefficients: Int32Array;
 
-  constructor(field: ModulusGF, coefficients: Int32Array) {
+  constructor(field: ModulusBase, coefficients: Int32Array) {
     if (coefficients.length === 0) {
       throw new IllegalArgumentException();
     }
@@ -158,7 +158,8 @@ export default /*final*/ class ModulusPoly {
       throw new IllegalArgumentException('ModulusPolys do not have same ModulusGF field');
     }
     if (this.isZero() || other.isZero()) {
-      return this.field.getZero();
+      // return this.field.getZero();
+      return new ModulusPoly(this.field, new Int32Array([0]));
     }
     let aCoefficients: Int32Array = this.coefficients;
     let aLength: /*int*/ number = aCoefficients.length;
@@ -185,7 +186,7 @@ export default /*final*/ class ModulusPoly {
 
   multiplyScalar(scalar: /*int*/ number): ModulusPoly {
     if (scalar === 0) {
-      return this.field.getZero();
+      return new ModulusPoly(this.field, new Int32Array([0]));
     }
     if (scalar === 1) {
       return this;
@@ -203,7 +204,7 @@ export default /*final*/ class ModulusPoly {
       throw new IllegalArgumentException();
     }
     if (coefficient === 0) {
-      return this.field.getZero();
+      return new ModulusPoly(this.field, new Int32Array([0]));
     }
     let size: /*int*/ number = this.coefficients.length;
     let product: Int32Array = new Int32Array(size + degree);

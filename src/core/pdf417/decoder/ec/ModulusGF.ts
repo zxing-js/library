@@ -24,7 +24,7 @@ import PDF417Common from '../../PDF417Common';
 import ModulusPoly from './ModulusPoly';
 
 import IllegalArgumentException from '../../../IllegalArgumentException';
-import ArithmeticException from '../../../ArithmeticException';
+import ModulusBase from './ModulusBase';
 
 
 /**
@@ -33,17 +33,18 @@ import ArithmeticException from '../../../ArithmeticException';
  * @author Sean Owen
  * @see com.google.zxing.common.reedsolomon.GenericGF
  */
-export default /*public final*/ class ModulusGF {
+export default /*public final*/ class ModulusGF extends ModulusBase {
 
   public static /*final*/ PDF417_GF: ModulusGF = new ModulusGF(PDF417Common.NUMBER_OF_CODEWORDS, 3);
 
-  private /*final*/ expTable: Int32Array;
-  private /*final*/ logTable: Int32Array;
+  // private /*final*/ expTable: Int32Array;
+  // private /*final*/ logTable: Int32Array;
   private /*final*/ zero: ModulusPoly;
   private /*final*/ one: ModulusPoly;
-  private /*final*/ modulus: /*int*/ number;
+  // private /*final*/ modulus: /*int*/ number;
 
   private constructor(modulus: /*int*/ number, generator: /*int*/ number) {
+    super();
     this.modulus = modulus;
     this.expTable = new Int32Array(modulus);
     this.logTable = new Int32Array(modulus);
@@ -79,47 +80,6 @@ export default /*public final*/ class ModulusGF {
     let coefficients: Int32Array = new Int32Array(degree + 1);
     coefficients[0] = coefficient;
     return new ModulusPoly(this, coefficients);
-  }
-
-  add(a: /*int*/ number, b: /*int*/ number): /*int*/ number {
-    return (a + b) % this.modulus;
-  }
-
-  subtract(a: /*int*/ number, b: /*int*/ number): /*int*/ number {
-    return (this.modulus + a - b) % this.modulus;
-  }
-
-  exp(a: /*int*/ number): /*int*/ number {
-    return this.expTable[a];
-  }
-
-  log(a: /*int*/ number): /*int*/ number {
-    if (a === 0) {
-      throw new IllegalArgumentException();
-    }
-    return this.logTable[a];
-  }
-
-  inverse(a: /*int*/ number): /*int*/ number {
-    if (a === 0) {
-      throw new ArithmeticException();
-    }
-    return this.expTable[this.modulus - this.logTable[a] - 1];
-  }
-
-  multiply(a: /*int*/ number, b: /*int*/ number): /*int*/ number {
-    if (a === 0 || b === 0) {
-      return 0;
-    }
-    return this.expTable[(this.logTable[a] + this.logTable[b]) % (this.modulus - 1)];
-  }
-
-  getSize(): /*int*/ number {
-    return this.modulus;
-  }
-
-  equals(o: Object): boolean {
-    return o === this;
   }
 
 }
