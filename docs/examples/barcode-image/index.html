@@ -108,9 +108,9 @@
 
       console.log('ZXing code reader initialized');
 
-      const decodeFun = () => {
+      const decodeFun = (e) => {
 
-        const parent = this.parentNode.parentNode;
+        const parent = e.target.parentNode.parentNode;
         const img = parent.getElementsByClassName('img')[0].cloneNode(true);
         const resultEl = parent.getElementsByClassName('result')[0];
 
@@ -127,9 +127,9 @@
         console.log(`Started decode for image from ${img.src}`)
       };
 
-      document.getElementsByClassName('decodeButton').forEach(element => {
+      for (const element of document.getElementsByClassName('decodeButton')) {
         element.addEventListener('click', decodeFun, false);
-      });
+      }
     })
   </script>
 
