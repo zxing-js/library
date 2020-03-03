@@ -16,7 +16,7 @@
 
 /*namespace com.google.zxing.common.reedsolomon {*/
 
-import GenericGF from './GenericGF';
+import AbstractGenericGF from './AbstractGenericGF';
 
 import System from '../../util/System';
 import IllegalArgumentException from '../../IllegalArgumentException';
@@ -32,7 +32,7 @@ import IllegalArgumentException from '../../IllegalArgumentException';
  */
 export default class GenericGFPoly {
 
-    private field: GenericGF;
+    private field: AbstractGenericGF;
     private coefficients: Int32Array;
 
     /**
@@ -44,7 +44,7 @@ export default class GenericGFPoly {
      * or if leading coefficient is 0 and this is not a
      * constant polynomial (that is, it is not the monomial "0")
      */
-    public constructor(field: GenericGF, coefficients: Int32Array) {
+    public constructor(field: AbstractGenericGF, coefficients: Int32Array) {
         if (coefficients.length === 0) {
             throw new IllegalArgumentException();
         }
@@ -111,7 +111,7 @@ export default class GenericGFPoly {
             result = 0;
             for (let i = 0, length = coefficients.length; i !== length; i++) {
                 const coefficient = coefficients[i];
-                result = GenericGF.addOrSubtract(result, coefficient);
+                result = AbstractGenericGF.addOrSubtract(result, coefficient);
             }
             return result;
         }
@@ -119,7 +119,7 @@ export default class GenericGFPoly {
         const size = coefficients.length;
         const field = this.field;
         for (let i = 1; i < size; i++) {
-            result = GenericGF.addOrSubtract(field.multiply(a, result), coefficients[i]);
+            result = AbstractGenericGF.addOrSubtract(field.multiply(a, result), coefficients[i]);
         }
         return result;
     }
@@ -148,7 +148,7 @@ export default class GenericGFPoly {
         System.arraycopy(largerCoefficients, 0, sumDiff, 0, lengthDiff);
 
         for (let i = lengthDiff; i < largerCoefficients.length; i++) {
-            sumDiff[i] = GenericGF.addOrSubtract(smallerCoefficients[i - lengthDiff], largerCoefficients[i]);
+            sumDiff[i] = AbstractGenericGF.addOrSubtract(smallerCoefficients[i - lengthDiff], largerCoefficients[i]);
         }
 
         return new GenericGFPoly(this.field, sumDiff);
@@ -170,7 +170,7 @@ export default class GenericGFPoly {
         for (let i = 0; i < aLength; i++) {
             const aCoeff = aCoefficients[i];
             for (let j = 0; j < bLength; j++) {
-                product[i + j] = GenericGF.addOrSubtract(product[i + j],
+                product[i + j] = AbstractGenericGF.addOrSubtract(product[i + j],
                     field.multiply(aCoeff, bCoefficients[j]));
             }
         }

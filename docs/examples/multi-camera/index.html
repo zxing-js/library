@@ -48,9 +48,7 @@
       </div>
 
       <label>Result:</label>
-      <blockquote>
-        <p id="result"></p>
-      </blockquote>
+      <pre><code id="result"></code></pre>
 
       <p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/multi-camera/">source code</a>
         for this example.</p>
@@ -92,7 +90,7 @@
           }
 
           document.getElementById('startButton').addEventListener('click', () => {
-            codeReader.decodeFromInputVideoDeviceContinuously(selectedDeviceId, 'video', (result, err) => {
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
               if (result) {
                 console.log(result)
                 document.getElementById('result').textContent = result.text

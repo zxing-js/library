@@ -1,6 +1,6 @@
 {
     "name": "@zxing/library",
-    "version": "0.14.2",
+    "version": "0.16.0",
     "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
     "keywords": [
         "reader",
@@ -42,7 +42,8 @@
     "private": false,
     "main": "./umd/index.min.js",
     "module": "./esm5/index.js",
-    "typings": "./esm5/index.d.ts",
+    "typings": "./esm/index.d.ts",
+    "esnext": "./esm/index.js",
     "nyc": {
         "include": [
             "src/**/*.ts"
@@ -51,11 +52,14 @@
         "instrument": false
     },
     "scripts": {
-        "lint": "yarn tslint src/**/*.ts",
-        "clean": "yarn shx rm -rf umd esm5",
+        "lint": "yarn tslint --project .",
+        "clean": "yarn shx rm -rf umd esm esm5",
         "test": "yarn mocha-webpack \"./src/**/*.spec.ts\" --timeout 200000 --webpack-config webpack.config.test.js",
         "cover": "yarn nyc --reporter=lcov --reporter=text yarn test",
-        "build": "yarn clean && yarn tsc && yarn webpack --mode production",
+        "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:umd",
+        "build:es5": "yarn tsc",
+        "build:es6": "yarn tsc --target es6 --outdir esm --module esnext",
+        "build:umd": "yarn webpack --mode production",
         "shx": "./node_modules/.bin/shx",
         "tsc": "./node_modules/.bin/tsc",
         "tslint": "./node_modules/.bin/tslint",
@@ -102,12 +106,14 @@
         "sinon": "^7.2.7",
         "ts-loader": "^5.3.3",
         "tslint": "^5.13.1",
+        "tslint-no-circular-imports": "^0.7.0",
         "typescript": "~3.3.3333",
         "uglify-js": "^3.4.9",
         "uglifyjs-webpack-plugin": "^2.1.2",
         "webpack": "^4.29.6",
         "webpack-cli": "^3.2.3",
         "webpack-config-utils": "2.3.1",
-        "webpack-node-externals": "^1.6.0"
+        "webpack-node-externals": "^1.6.0",
+        "yarn": "^1.17.3"
     }
 }
