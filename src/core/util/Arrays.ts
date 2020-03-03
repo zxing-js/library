@@ -1,6 +1,60 @@
 import System from './System';
+import IllegalArgumentException from '../IllegalArgumentException';
+import ArrayIndexOutOfBoundsException from '../ArrayIndexOutOfBoundsException';
 
 export default class Arrays {
+
+  /**
+   * Assigns the specified int value to each element of the specified array
+   * of ints.
+   *
+   * @param a the array to be filled
+   * @param val the value to be stored in all elements of the array
+   */
+  public static fill(a: Int32Array | Uint8Array | any[], val: int): void {
+    for (let i = 0, len = a.length; i < len; i++)
+      a[i] = val;
+  }
+
+  /**
+   * Assigns the specified int value to each element of the specified
+   * range of the specified array of ints.  The range to be filled
+   * extends from index {@code fromIndex}, inclusive, to index
+   * {@code toIndex}, exclusive.  (If {@code fromIndex==toIndex}, the
+   * range to be filled is empty.)
+   *
+   * @param a the array to be filled
+   * @param fromIndex the index of the first element (inclusive) to be
+   *        filled with the specified value
+   * @param toIndex the index of the last element (exclusive) to be
+   *        filled with the specified value
+   * @param val the value to be stored in all elements of the array
+   * @throws IllegalArgumentException if {@code fromIndex > toIndex}
+   * @throws ArrayIndexOutOfBoundsException if {@code fromIndex < 0} or
+   *         {@code toIndex > a.length}
+   */
+  public static fillWithin(a: Int32Array, fromIndex: int, toIndex: int, val: int): void {
+    Arrays.rangeCheck(a.length, fromIndex, toIndex);
+    for (let i = fromIndex; i < toIndex; i++)
+      a[i] = val;
+  }
+
+  /**
+   * Checks that {@code fromIndex} and {@code toIndex} are in
+   * the range and throws an exception if they aren't.
+   */
+  static rangeCheck(arrayLength: int, fromIndex: int, toIndex: int): void {
+    if (fromIndex > toIndex) {
+      throw new IllegalArgumentException(
+        'fromIndex(' + fromIndex + ') > toIndex(' + toIndex + ')');
+    }
+    if (fromIndex < 0) {
+      throw new ArrayIndexOutOfBoundsException(fromIndex);
+    }
+    if (toIndex > arrayLength) {
+      throw new ArrayIndexOutOfBoundsException(toIndex);
+    }
+  }
 
   public static asList<T = any>(...args: T[]): T[] {
     return args;
@@ -44,12 +98,6 @@ export default class Arrays {
     return true;
   }
 
-  public static fill(a: Int32Array | Uint8Array | Array<any>, value: number): void {
-    for (let i = 0; i !== a.length; i++) {
-      a[i] = value;
-    }
-  }
-
   public static hashCode(a: any) {
     if (a === null) {
       return 0;
@@ -60,9 +108,32 @@ export default class Arrays {
     }
     return result;
   }
-  public static copyOf(original: Int32Array, newLength: number) {
+
+  public static fillUint8Array(a: Uint8Array, value: number) {
+    for (let i = 0; i !== a.length; i++) {
+      a[i] = value;
+    }
+  }
+
+  public static copyOf(original: Int32Array, newLength: number): Int32Array {
+    return original.slice(0, newLength);
+  }
+
+  public static copyOfUint8Array(original: Uint8Array, newLength: number): Uint8Array {
+
+    if (original.length <= newLength) {
+      const newArray = new Uint8Array(newLength);
+      newArray.set(original);
+      return newArray;
+    }
+
+    return original.slice(0, newLength);
+  }
+
+  public static copyOfRange(original: Int32Array, from: number, to: number): Int32Array {
+    const newLength = to - from;
     const copy = new Int32Array(newLength);
-    System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));
+    System.arraycopy(original, from, copy, 0, newLength);
     return copy;
   }
 
