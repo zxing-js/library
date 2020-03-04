@@ -1,6 +1,6 @@
 {
     "name": "@zxing/library",
-    "version": "0.15.3",
+    "version": "0.16.0",
     "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
     "keywords": [
         "reader",
@@ -52,7 +52,7 @@
         "instrument": false
     },
     "scripts": {
-        "lint": "yarn tslint src/**/*.ts",
+        "lint": "yarn tslint --project .",
         "clean": "yarn shx rm -rf umd esm esm5",
         "test": "yarn mocha-webpack \"./src/**/*.spec.ts\" --timeout 200000 --webpack-config webpack.config.test.js",
         "cover": "yarn nyc --reporter=lcov --reporter=text yarn test",

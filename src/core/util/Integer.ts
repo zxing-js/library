@@ -1,11 +1,14 @@
-
+/**
+ * Ponyfill for Java's Integer class.
+ */
 export default class Integer {
 
-  public static MIN_VALUE_32_BITS = -2147483648;
+  static MIN_VALUE_32_BITS = -2147483648;
+  static MAX_VALUE: number = Number.MAX_SAFE_INTEGER;
 
   public static numberOfTrailingZeros(i: number): number {
 
-    let y;
+    let y: number;
 
     if (i === 0) return 32;
 
@@ -76,14 +79,6 @@ export default class Integer {
     return n;
   }
 
-  public static parseInt(str: string): int {
-    return Number.parseInt(str);
-  }
-
-  public static toBinaryString(n: number): string {
-    return n.toString(2);
-  }
-
   public static toHexString(i: number) {
     return i.toString(16);
   }
@@ -100,5 +95,14 @@ export default class Integer {
     i = i + (i >>> 16);
 
     return i & 0x3f;
+  }
+
+  /**
+   * Converts A string to an integer.
+   * @param s A string to convert into a number.
+   * @param radix A value between 2 and 36 that specifies the base of the number in numString. If this argument is not supplied, strings with a prefix of '0x' are considered hexadecimal. All other strings are considered decimal.
+   */
+  static parseInt(num: string, radix: number = undefined) {
+    return parseInt(num, radix);
   }
 }

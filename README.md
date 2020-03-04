@@ -19,7 +19,7 @@
 | ~~UPC-A~~  | Code 39             | QR Code        |
 | ~~UPC-E~~  | ~~Code 93~~         | Data Matrix    |
 | EAN-8      | Code 128            | ~~Aztec~~ \*   |
-| EAN-13     | ~~Codabar~~         | ~~PDF 417~~ \* |
+| EAN-13     | ~~Codabar~~         | PDF 417        |
 |            | ITF                 | ~~MaxiCode~~   |
 |            | RSS-14              |
 |            | ~~RSS-Expanded~~ \* |
@@ -202,18 +202,18 @@ If there is just one input device you can use the first `deviceId` and the video
 const firstDeviceId = videoInputDevices[0].deviceId;
 
 codeReader
-  .decodeFromInputVideoDevice(firstDeviceId, 'video')
+  .decodeOnceFromVideoDevice(firstDeviceId, 'video')
   .then(result => console.log(result.text))
   .catch(err => console.error(err));
 ```
 
-If there are more input devices then you will need to chose one for `codeReader.decodeFromInputVideoDevice` device id parameter.
+If there are more input devices then you will need to chose one for `codeReader.decodeOnceFromVideoDevice` device id parameter.
 
 You can also provide `undefined` for the device id parameter in which case the library will automatically choose the camera, preferring the main (environment facing) camera if more are available:
 
 ```javascript
 codeReader
-  .decodeFromInputVideoDevice(undefined, 'video')
+  .decodeOnceFromVideoDevice(undefined, 'video')
   .then(result => console.log(result.text))
   .catch(err => console.error(err));
 ```
