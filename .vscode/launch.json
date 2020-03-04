@@ -65,6 +65,22 @@
                 "--webpack-config",
                 "webpack.config.test.js"
             ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Aztec 2D Tests",
+            "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
+            "args": [
+                "./src/test/core/aztec/**/*.spec.ts",
+                "--colors",
+                "--timeout",
+                "999999",
+                "--webpack-env",
+                "dbg",
+                "--webpack-config",
+                "webpack.config.test.js"
+            ]
         }
     ]
 }
