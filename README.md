@@ -19,7 +19,7 @@
 | ~~UPC-A~~  | Code 39             | QR Code        |
 | ~~UPC-E~~  | ~~Code 93~~         | Data Matrix    |
 | EAN-8      | Code 128            | ~~Aztec~~ \*   |
-| EAN-13     | ~~Codabar~~         | ~~PDF 417~~ \* |
+| EAN-13     | ~~Codabar~~         | PDF 417        |
 |            | ITF                 | ~~MaxiCode~~   |
 |            | RSS-14              |
 |            | ~~RSS-Expanded~~ \* |
@@ -37,7 +37,7 @@
 [![Contributors](https://img.shields.io/github/contributors/zxing-js/library.svg)](https://github.com/zxing-js/library/graphs/contributors)
 [![Commits to deploy](https://img.shields.io/github/commits-since/zxing-js/library/master.svg?label=commits%20to%20deploy)](https://github.com/zxing-js/library/compare/master...develop)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/39d86bc5d5f04bc8953cc68d729807b0)](https://www.codacy.com/app/zxing-js/library?utm_source=github.com&utm_medium=referral&utm_content=zxing-js/library&utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9aaa5317fcc740af9f25b3c7f832aa1d)](https://www.codacy.com/app/zxing/library?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zxing-js/library&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b9c6ae92412ee8e15a9/maintainability)](https://codeclimate.com/github/zxing-js/library/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/2b9c6ae92412ee8e15a9/test_coverage)](https://codeclimate.com/github/zxing-js/library/test_coverage)
 [![BCH compliance](https://bettercodehub.com/edge/badge/zxing-js/library?branch=master)](https://bettercodehub.com/)
@@ -202,18 +202,18 @@ If there is just one input device you can use the first `deviceId` and the video
 const firstDeviceId = videoInputDevices[0].deviceId;
 
 codeReader
-  .decodeFromInputVideoDevice(firstDeviceId, 'video')
+  .decodeOnceFromVideoDevice(firstDeviceId, 'video')
   .then(result => console.log(result.text))
   .catch(err => console.error(err));
 ```
 
-If there are more input devices then you will need to chose one for `codeReader.decodeFromInputVideoDevice` device id parameter.
+If there are more input devices then you will need to chose one for `codeReader.decodeOnceFromVideoDevice` device id parameter.
 
 You can also provide `undefined` for the device id parameter in which case the library will automatically choose the camera, preferring the main (environment facing) camera if more are available:
 
 ```javascript
 codeReader
-  .decodeFromInputVideoDevice(undefined, 'video')
+  .decodeOnceFromVideoDevice(undefined, 'video')
   .then(result => console.log(result.text))
   .catch(err => console.error(err));
 ```

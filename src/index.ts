@@ -1,15 +1,4 @@
-// browser
-export * from './browser/BrowserAztecCodeReader';
-export * from './browser/BrowserBarcodeReader';
-export * from './browser/BrowserCodeReader';
-export * from './browser/BrowserDatamatrixCodeReader';
-export * from './browser/BrowserMultiFormatReader';
-export * from './browser/BrowserQRCodeReader';
-export * from './browser/BrowserQRCodeSvgWriter';
-export * from './browser/DecodeContinuouslyCallback';
-export * from './browser/HTMLCanvasElementLuminanceSource';
-export * from './browser/HTMLVisualMediaElement';
-export * from './browser/VideoInputDevice';
+export * from './browser';
 
 // Exceptions
 export { default as ArgumentException } from './core/ArgumentException';
@@ -79,8 +68,6 @@ export { default as QRCodeDecoderErrorCorrectionLevel } from './core/qrcode/deco
 export { default as QRCodeEncoder } from './core/qrcode/encoder/Encoder';
 export { default as QRCodeEncoderQRCode } from './core/qrcode/encoder/QRCode';
 
-export { default as AztecCodeReader } from './core/aztec/AztecReader';
-
 // core/oned
 export { default as OneDReader } from './core/oned/OneDReader';
 export { default as EAN13Reader } from './core/oned/EAN13Reader';
@@ -88,4 +75,5 @@ export { default as Code128Reader } from './core/oned/Code128Reader';
 export { default as ITFReader } from './core/oned/ITFReader';
 export { default as Code39Reader } from './core/oned/Code39Reader';
 export { default as RSS14Reader } from './core/oned/rss/RSS14Reader';
+export { default as RSSExpandedReader } from './core/oned/rss/expanded/RSSExpandedReader';
 export { default as MultiformatReader } from './core/oned/MultiFormatOneDReader';

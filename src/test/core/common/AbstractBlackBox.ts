@@ -190,7 +190,7 @@ abstract class AbstractBlackBoxSpec {
             if (fs.existsSync(expectedTextFile)) {
                 expectedText = AbstractBlackBoxSpec.readTextFileAsString(expectedTextFile);
             } else {
-                expectedTextFile = path.resolve(fileBaseName + '.bin');
+                expectedTextFile = path.resolve(this.testBase, fileBaseName + '.bin');
                 assert.strictEqual(fs.existsSync(expectedTextFile), true, 'result bin/text file should exists');
                 expectedText = AbstractBlackBoxSpec.readBinFileAsString(expectedTextFile);
             }
@@ -213,7 +213,7 @@ abstract class AbstractBlackBoxSpec {
                         misreadCounts[x]++;
                     }
                 } catch (e) {
-                    console.log(`could not read at rotation ${rotation} failed with ${e.constructor.name}. Message: ${e.message}`);
+                    console.log(`      could not read at rotation ${rotation} failed with ${e.constructor.name}. Message: ${e.message}`);
                 }
                 try {
                     if (this.decode(bitmap, rotation, expectedText, expectedMetadata, true)) {
@@ -222,7 +222,7 @@ abstract class AbstractBlackBoxSpec {
                         tryHarderMisreadCounts[x]++;
                     }
                 } catch (e) {
-                    console.log(`could not read at rotation ${rotation} w/TH failed with ${e.constructor.name}.`);
+                    console.log(`        could not read at rotation ${rotation} w/TH failed with ${e.constructor.name}.`);
                 }
             }
         }

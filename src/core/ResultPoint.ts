@@ -27,13 +27,13 @@ import Float from './util/Float';
  */
 export default class ResultPoint {
 
-    public constructor(private x: number/*float*/, private y: number/*float*/) { }
+    public constructor(private x: float, private y: float) { }
 
-    public getX(): number/*float*/ {
+    public getX(): float {
         return this.x;
     }
 
-    public getY(): number/*float*/ {
+    public getY(): float {
         return this.y;
     }
 
@@ -47,7 +47,7 @@ export default class ResultPoint {
     }
 
     /*@Override*/
-    public hashCode(): number /*int*/ {
+    public hashCode(): int {
         return 31 * Float.floatToIntBits(this.x) + Float.floatToIntBits(this.y);
     }
 
@@ -107,7 +107,7 @@ export default class ResultPoint {
      * @param pattern2 second pattern
      * @return distance between two points
      */
-    public static distance(pattern1: ResultPoint, pattern2: ResultPoint): number/*float*/ {
+    public static distance(pattern1: ResultPoint, pattern2: ResultPoint): float {
         return MathUtils.distance(pattern1.x, pattern1.y, pattern2.x, pattern2.y);
     }
 
@@ -116,7 +116,7 @@ export default class ResultPoint {
      */
     private static crossProductZ(pointA: ResultPoint,
         pointB: ResultPoint,
-        pointC: ResultPoint): number/*float*/ {
+        pointC: ResultPoint): float {
         const bX = pointB.x;
         const bY = pointB.y;
         return ((pointC.x - bX) * (pointA.y - bY)) - ((pointC.y - bY) * (pointA.x - bX));

@@ -21,8 +21,8 @@ import DecodeHintType from '../DecodeHintType';
 import Result from '../Result';
 import ResultMetadataType from '../ResultMetadataType';
 import ResultPoint from '../ResultPoint';
-import OneDReader from './OneDReader';
 import UPCEANExtensionSupport from './UPCEANExtensionSupport';
+import AbstractUPCEANReader from './AbstractUPCEANReader';
 import NotFoundException from '../NotFoundException';
 import FormatException from '../FormatException';
 import ChecksumException from '../ChecksumException';
@@ -35,50 +35,7 @@ import ChecksumException from '../ChecksumException';
  * @author Sean Owen
  * @author alasdair@google.com (Alasdair Mackintosh)
  */
-export default abstract class UPCEANReader extends OneDReader {
-    // These two values are critical for determining how permissive the decoding will be.
-    // We've arrived at these values through a lot of trial and error. Setting them any higher
-    // lets false positives creep in quickly.
-    private static MAX_AVG_VARIANCE = 0.48;
-    private static MAX_INDIVIDUAL_VARIANCE = 0.7;
-
-    /**
-     * Start/end guard pattern.
-     */
-    public static START_END_PATTERN: number[] = [1, 1, 1];
-
-    /**
-     * Pattern marking the middle of a UPC/EAN pattern, separating the two halves.
-     */
-    public static MIDDLE_PATTERN: number[] = [1, 1, 1, 1, 1];
-    /**
-     * end guard pattern.
-     */
-    public static END_PATTERN: number[] = [1, 1, 1, 1, 1, 1];
-    /**
-     * "Odd", or "L" patterns used to encode UPC/EAN digits.
-     */
-    public static L_PATTERNS: number[][] = [
-        [3, 2, 1, 1], // 0
-        [2, 2, 2, 1], // 1
-        [2, 1, 2, 2], // 2
-        [1, 4, 1, 1], // 3
-        [1, 1, 3, 2], // 4
-        [1, 2, 3, 1], // 5
-        [1, 1, 1, 4], // 6
-        [1, 3, 1, 2], // 7
-        [1, 2, 1, 3], // 8
-        [3, 1, 1, 2], // 9
-    ];
-
-    /**
-     * As above but also including the "even", or "G" patterns used to encode UPC/EAN digits.
-     */
-    public static L_AND_G_PATTERNS: number[][];
-
-    private decodeRowStringBuffer = '';
-    // private final UPCEANExtensionSupport extensionReader;
-    // private final EANManufacturerOrgSupport eanManSupport;
+export default abstract class UPCEANReader extends AbstractUPCEANReader {
 
     public constructor() {
         super();
@@ -96,32 +53,6 @@ export default abstract class UPCEANReader extends OneDReader {
             }
             UPCEANReader.L_AND_G_PATTERNS[i] = reversedWidths;
         }
-    }
-
-    /*
-    protected UPCEANReader() {
-        decodeRowStringBuffer = new StringBuilder(20);
-        extensionReader = new UPCEANExtensionSupport();
-        eanManSupport = new EANManufacturerOrgSupport();
-    }
-    */
-
-    static findStartGuardPattern(row: BitArray): number[] {
-        let foundStart = false;
-        let startRange: number[] = null;
-        let nextStart = 0;
-        let counters = [0, 0, 0];
-        while (!foundStart) {
-            counters = [0, 0, 0];
-            startRange = UPCEANReader.findGuardPattern(row, nextStart, false, this.START_END_PATTERN, counters);
-            let start = startRange[0];
-            nextStart = startRange[1];
-            let quietStart = start - (nextStart - start);
-            if (quietStart >= 0) {
-                foundStart = row.isRange(quietStart, start, false);
-            }
-        }
-        return startRange;
     }
 
     public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
@@ -244,78 +175,4 @@ export default abstract class UPCEANReader extends OneDReader {
     static decodeEnd(row: BitArray, endStart: number): number[] {
         return UPCEANReader.findGuardPattern(row, endStart, false, UPCEANReader.START_END_PATTERN, new Array(UPCEANReader.START_END_PATTERN.length).fill(0));
     }
-
-    static findGuardPattern(row: BitArray, rowOffset: number, whiteFirst: boolean, pattern: number[], counters: number[]) {
-        let width = row.getSize();
-        rowOffset = whiteFirst ? row.getNextUnset(rowOffset) : row.getNextSet(rowOffset);
-        let counterPosition = 0;
-        let patternStart = rowOffset;
-        let patternLength = pattern.length;
-        let isWhite = whiteFirst;
-        for (let x = rowOffset; x < width; x++) {
-            if (row.get(x) !== isWhite) {
-                counters[counterPosition]++;
-            } else {
-                if (counterPosition === patternLength - 1) {
-                    if (OneDReader.patternMatchVariance(counters, pattern, UPCEANReader.MAX_INDIVIDUAL_VARIANCE) < UPCEANReader.MAX_AVG_VARIANCE) {
-                        return [patternStart, x];
-                    }
-                    patternStart += counters[0] + counters[1];
-
-                    let slice = counters.slice(2, counters.length);
-                    for (let i = 0; i < counterPosition - 1; i++) {
-                        counters[i] = slice[i];
-                    }
-
-                    counters[counterPosition - 1] = 0;
-                    counters[counterPosition] = 0;
-                    counterPosition--;
-                } else {
-                    counterPosition++;
-                }
-                counters[counterPosition] = 1;
-                isWhite = !isWhite;
-            }
-        }
-        throw new NotFoundException();
-    }
-
-    static decodeDigit(row: BitArray, counters: number[], rowOffset: number, patterns: number[][]) {
-        this.recordPattern(row, rowOffset, counters);
-        let bestVariance = this.MAX_AVG_VARIANCE;
-        let bestMatch = -1;
-        let max = patterns.length;
-        for (let i = 0; i < max; i++) {
-            let pattern = patterns[i];
-            let variance = OneDReader.patternMatchVariance(counters, pattern, UPCEANReader.MAX_INDIVIDUAL_VARIANCE);
-            if (variance < bestVariance) {
-                bestVariance = variance;
-                bestMatch = i;
-            }
-        }
-        if (bestMatch >= 0) {
-            return bestMatch;
-        } else {
-            throw new NotFoundException();
-        }
-    }
-
-    /**
-     * Get the format of this decoder.
-     *
-     * @return The 1D format.
-     */
-    public abstract getBarcodeFormat();
-
-    /**
-     * Subclasses override this to decode the portion of a barcode between the start
-     * and end guard patterns.
-     *
-     * @param row row of black/white values to search
-     * @param startRange start/end offset of start guard pattern
-     * @param resultString {@link StringBuilder} to append decoded chars to
-     * @return horizontal offset of first pixel after the "middle" that was decoded
-     * @throws NotFoundException if decoding could not complete successfully
-     */
-    public abstract decodeMiddle(row: BitArray, startRange: number[], resultString: string);
 }

@@ -49,11 +49,11 @@ export default class Result {
     // }
 
     public constructor(private text: string,
-        private rawBytes: Uint8Array,
-        private numBits: number /*int*/,
-        private resultPoints: Array<ResultPoint>,
-        private format: BarcodeFormat,
-        private timestamp: number /*long*/) {
+      private rawBytes: Uint8Array,
+      private numBits: number /*int*/ = rawBytes == null ? 0 : 8 * rawBytes.length,
+      private resultPoints: ResultPoint[],
+      private format: BarcodeFormat,
+      private timestamp: number /*long*/ = System.currentTimeMillis()) {
         this.text = text;
         this.rawBytes = rawBytes;
         if (undefined === numBits || null === numBits) {
@@ -140,7 +140,7 @@ export default class Result {
         if (oldPoints === null) {
             this.resultPoints = newPoints;
         } else if (newPoints !== null && newPoints.length > 0) {
-            const allPoints = new ResultPoint[oldPoints.length + newPoints.length];
+            const allPoints = new Array<ResultPoint>(oldPoints.length + newPoints.length);
             System.arraycopy(oldPoints, 0, allPoints, 0, oldPoints.length);
             System.arraycopy(newPoints, 0, allPoints, oldPoints.length, newPoints.length);
             this.resultPoints = allPoints;
