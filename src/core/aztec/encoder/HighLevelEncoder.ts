@@ -236,8 +236,7 @@ export default /*public final*/ class HighLevelEncoder {
     let result: Collection<State> = [];
     for (const newState of states) {
       let add: boolean = true;
-      for (let iterator = result[Symbol.iterator](); !iterator/*hasNext*/.return().done;) {
-        let oldState: State = iterator.next().value;
+      for (const oldState of result) {
         if (oldState.isBetterThanOrEqualTo(newState)) {
           add = false;
           break;
