@@ -25,6 +25,8 @@ import FinderPatternInfo from './FinderPatternInfo';
 
 import NotFoundException from '../../NotFoundException';
 
+import { float } from '../../../customTypings';
+
 /*import java.io.Serializable;*/
 /*import java.util.ArrayList;*/
 /*import java.util.Collections;*/

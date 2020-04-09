@@ -22,6 +22,8 @@ import PerspectiveTransform from './PerspectiveTransform';
 
 import NotFoundException from '../NotFoundException';
 
+import { float } from '../../customTypings';
+
 /**
  * @author Sean Owen
  */

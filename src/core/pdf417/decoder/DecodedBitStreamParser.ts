@@ -38,6 +38,8 @@ import Long from '../../util/Long';
 import ByteArrayOutputStream from '../../util/ByteArrayOutputStream';
 import StringEncoding from '../../util/StringEncoding';
 
+import { int } from '../../../customTypings';
+
 
 /*private*/ enum Mode {
   ALPHA,

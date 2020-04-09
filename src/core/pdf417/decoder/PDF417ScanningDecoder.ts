@@ -48,6 +48,7 @@ import DecodedBitStreamParser from './DecodedBitStreamParser';
 
 // utils
 import Formatter from '../../util/Formatter';
+import { int, List, Collection } from '../../../customTypings';
 
 // import java.util.ArrayList;
 // import java.util.Collection;

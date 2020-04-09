@@ -22,6 +22,7 @@ import NotFoundException from '../../NotFoundException';
 import ResultPoint from '../../ResultPoint';
 // import com.google.zxing.common.BitMatrix;
 import BitMatrix from '../../common/BitMatrix';
+import { int } from '../../../customTypings';
 
 /**
  * @author Guenther Grau

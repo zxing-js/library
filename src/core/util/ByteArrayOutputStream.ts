@@ -35,6 +35,8 @@ import OutOfMemoryError from '../OutOfMemoryError';
 import System from './System';
 import IndexOutOfBoundsException from '../IndexOutOfBoundsException';
 
+import { int } from '../../customTypings';
+
 
 /**
  * This class implements an output stream in which the data is
