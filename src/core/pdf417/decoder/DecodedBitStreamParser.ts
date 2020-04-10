@@ -137,7 +137,7 @@ export default /*final*/ class DecodedBitStreamParser {
     /**
      * @note the next command is specific from this TypeScript library
      * because TS can't properly cast some values to char and
-     * convert it to string later correctlt due to encoding
+     * convert it to string later correctly due to encoding
      * differences from Java version. As reported here:
      * https://github.com/zxing-js/library/pull/264/files#r382831593
      */
