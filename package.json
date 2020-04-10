@@ -1,6 +1,6 @@
 {
     "name": "@zxing/library",
-    "version": "0.16.0",
+    "version": "0.16.1",
     "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
     "keywords": [
         "reader",
@@ -30,7 +30,7 @@
         }
     ],
     "engines": {
-        "node": ">= 8.9.0"
+        "node": ">= 10.4.0"
     },
     "license": "MIT",
     "bugs": "https://github.com/zxing-js/library/issues/new",

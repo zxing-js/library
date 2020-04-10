@@ -24,6 +24,8 @@ import Arrays from '../util/Arrays';
 import StringBuilder from '../util/StringBuilder';
 import IllegalArgumentException from '../IllegalArgumentException';
 
+import { int } from '../../customTypings';
+
 /**
  * <p>Represents a 2D matrix of bits. In function arguments below, and throughout the common
  * module, x is the column position, and y is the row position. The ordering is always x, y.

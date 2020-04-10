@@ -19,6 +19,8 @@
 // import com.google.zxing.pdf417.PDF417Common;
 import PDF417Common from '../PDF417Common';
 
+import { int, Collection } from '../../../customTypings';
+
 // import java.util.ArrayList;
 // import java.util.Collection;
 // import java.util.HashMap;

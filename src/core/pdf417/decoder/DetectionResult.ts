@@ -28,6 +28,8 @@ import Codeword from './Codeword';
 import DetectionResultRowIndicatorColumn from './DetectionResultRowIndicatorColumn';
 import Formatter from '../../util/Formatter';
 
+import { int } from '../../../customTypings';
+
 /**
  * @author Guenther Grau
  */

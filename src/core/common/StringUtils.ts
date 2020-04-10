@@ -22,6 +22,7 @@
 import DecodeHintType from '../DecodeHintType';
 import CharacterSetECI from './CharacterSetECI';
 import StringEncoding from '../util/StringEncoding';
+import { int } from '../../customTypings';
 
 /**
  * Common string-related functions.

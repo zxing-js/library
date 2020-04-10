@@ -18,6 +18,7 @@
 
 import MathUtils from './common/detector/MathUtils';
 import Float from './util/Float';
+import { float, int } from '../customTypings';
 
 /**
  * <p>Encapsulates a point of interest in an image containing a barcode. Typically, this

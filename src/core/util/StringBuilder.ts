@@ -1,5 +1,6 @@
 import CharacterSetECI from '../common/CharacterSetECI';
 import StringEncoding from './StringEncoding';
+import { int } from '../../customTypings';
 
 
 export default class StringBuilder {
@@ -9,7 +10,7 @@ export default class StringBuilder {
   public constructor(private value: string = '') {}
 
   public enableDecoding(encoding: CharacterSetECI): StringBuilder {
-    this.encoding = encoding
+    this.encoding = encoding;
     return this;
   }
 

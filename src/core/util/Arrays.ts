@@ -1,6 +1,7 @@
 import System from './System';
 import IllegalArgumentException from '../IllegalArgumentException';
 import ArrayIndexOutOfBoundsException from '../ArrayIndexOutOfBoundsException';
+import { int } from '../../customTypings';
 
 export default class Arrays {
 

@@ -22,6 +22,8 @@ import Formatter from '../../util/Formatter';
 import Codeword from './Codeword';
 import BoundingBox from './BoundingBox';
 
+import { int } from '../../../customTypings';
+
 /**
  * @author Guenther Grau
  */

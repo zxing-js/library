@@ -1,3 +1,5 @@
+import { Collection, int } from '../../customTypings';
+
 export default class Collections {
 
   /**
