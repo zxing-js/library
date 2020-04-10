@@ -58,7 +58,7 @@
         "cover": "yarn nyc --reporter=lcov --reporter=text yarn test",
         "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:umd",
         "build:es5": "yarn tsc",
-        "build:es6": "yarn tsc --target es6 --outdir esm --module esnext",
+        "build:es6": "yarn tsc --target es6 --outdir esm --module es6",
         "build:umd": "yarn webpack --mode production",
         "shx": "./node_modules/.bin/shx",
         "tsc": "./node_modules/.bin/tsc",
