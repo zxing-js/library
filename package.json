@@ -70,9 +70,6 @@
     "dependencies": {
         "ts-custom-error": "^3.0.0"
     },
-    "optionalDependencies": {
-        "text-encoding": "^0.7.0"
-    },
     "devDependencies": {
         "@types/chai": "^4.1.7",
         "@types/mocha": "^5.2.6",
