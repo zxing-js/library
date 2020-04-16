@@ -168,6 +168,10 @@ Also, note that the library is using the [`TypedArray`](https://developer.mozill
 
 _You can use [core-js](https://github.com/zloirock/core-js) to add support to these browsers._
 
+In the PDF 417 decoder recent addition, the library now makes use of the new `BigInt` type, which [is not supported by all browsers][2] as well. There's no way to polyfill that and ponyfill libraries are **way to big**, but even if PDF 417 decoding relies on `BigInt` the rest of the library shall work ok in browsers that doesn't support it.
+
+_There's no polyfills for `BigInt` in the way it's coded in here._
+
 ### Scanning from Video Camera
 
 To display the input from the video camera you will need to add a video element in the HTML page:
@@ -353,3 +357,4 @@ And a special thanks to @aleris who created the project itself and made the init
 
 [0]: https://www.npmjs.com/package/@zxing/library
 [1]: https://github.com/zxing/zxing
+[2]: https://caniuse.com/#feat=bigint
