@@ -114,7 +114,7 @@
     array-from "^2.1.1"
     lodash "^4.17.11"
 
-"@sinonjs/text-encoding@^0.7.1":
+"@sinonjs/text-encoding@0.7.1", "@sinonjs/text-encoding@^0.7.1":
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==

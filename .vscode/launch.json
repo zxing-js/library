@@ -24,7 +24,7 @@
             "name": "Code 39 Tests",
             "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
             "args": [
-                "./src/**/Code39*.spec.ts",
+                "./src/test/core/oned/Code39*.spec.ts",
                 "--colors",
                 "--timeout",
                 "999999",
@@ -40,7 +40,7 @@
             "name": "EAN 13 Tests",
             "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
             "args": [
-                "./src/**/Ean13*.spec.ts",
+                "./src/test/core/oned/Ean13*.spec.ts",
                 "--colors",
                 "--timeout",
                 "999999",
@@ -56,7 +56,42 @@
             "name": "PDF417 Tests",
             "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
             "args": [
-                "./src/test/core/pdf417/**/*.spec.ts",
+                "./src/test/core/pdf417/",
+                "--recursive",
+                "--colors",
+                "--timeout",
+                "999999",
+                "--webpack-env",
+                "dbg",
+                "--webpack-config",
+                "webpack.config.test.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "QR Code Tests",
+            "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
+            "args": [
+                "./src/test/core/qrcode/",
+                "--recursive",
+                "--colors",
+                "--timeout",
+                "999999",
+                "--webpack-env",
+                "dbg",
+                "--webpack-config",
+                "webpack.config.test.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Data Matrix Tests",
+            "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
+            "args": [
+                "./src/test/core/datamatrix/",
+                "--recursive",
                 "--colors",
                 "--timeout",
                 "999999",

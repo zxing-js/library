@@ -71,6 +71,7 @@
         "ts-custom-error": "^3.0.0"
     },
     "devDependencies": {
+        "@sinonjs/text-encoding": "^0.7.1",
         "@types/chai": "^4.1.7",
         "@types/mocha": "^5.2.6",
         "@types/node": "^10.12.29",
@@ -111,5 +112,8 @@
         "webpack-config-utils": "2.3.1",
         "webpack-node-externals": "^1.6.0",
         "yarn": "^1.17.3"
+    },
+    "optionalDependencies": {
+      "@sinonjs/text-encoding": "0.7.1"
     }
 }
