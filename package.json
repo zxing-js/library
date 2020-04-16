@@ -76,7 +76,6 @@
         "@types/node": "^10.12.29",
         "@types/seedrandom": "^2.4.27",
         "@types/sharp": "^0.22.2",
-        "@types/text-encoding": "0.0.35",
         "awesome-typescript-loader": "^5.2.1",
         "chai": "^4.2.0",
         "codacy-coverage": "^3.4.0",
