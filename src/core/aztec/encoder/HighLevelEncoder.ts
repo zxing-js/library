@@ -35,6 +35,8 @@ import * as ShiftTable from './ShiftTable';
 import * as LatchTable from './LatchTable';
 import StringUtils from '../../common/StringUtils';
 
+import { int, Collection, char } from '../../../customTypings';
+
 /**
  * This produces nearly optimal encodings of text into the first-level of
  * encoding used by Aztec code.

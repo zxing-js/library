@@ -40,6 +40,8 @@ import IllegalStateException from '../IllegalStateException';
 import IllegalArgumentException from '../IllegalArgumentException';
 import StringUtils from '../common/StringUtils';
 
+import { int } from '../../customTypings';
+
 /**
  * Renders an Aztec code as a {@link BitMatrix}.
  */

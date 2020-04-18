@@ -29,6 +29,8 @@ import * as LatchTable from './LatchTable';
 import * as ShiftTable from './ShiftTable';
 import StringUtils from '../../common/StringUtils';
 
+import { int, Deque } from '../../../customTypings';
+
 /**
  * State represents all information about a sequence necessary to generate the current output.
  * Note that a state is immutable.

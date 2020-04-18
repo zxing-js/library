@@ -19,6 +19,8 @@
 // import com.google.zxing.common.BitMatrix;
 import BitMatrix from '../../common/BitMatrix';
 
+import { int } from '../../../customTypings';
+
 /**
  * Aztec 2D code representation
  *

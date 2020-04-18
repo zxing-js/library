@@ -19,6 +19,8 @@
 // import com.google.zxing.common.BitArray;
 import BitArray from '../../common/BitArray';
 
+import { int } from '../../../customTypings';
+
 export default abstract class Token {
 
   private /*final*/ previous: Token;

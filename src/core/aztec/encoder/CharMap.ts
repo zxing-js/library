@@ -2,6 +2,8 @@ import * as C from './EncoderConstants';
 import Arrays from '../../util/Arrays';
 import StringUtils from '../../common/StringUtils';
 
+import { int } from '../../../customTypings';
+
 export function static_CHAR_MAP(CHAR_MAP: Int32Array[]): Int32Array[] {
   CHAR_MAP[C.MODE_UPPER][' '] = 1;
   const zUpperCharCode = StringUtils.getCharCode('Z');

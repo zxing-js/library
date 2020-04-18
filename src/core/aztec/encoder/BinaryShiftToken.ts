@@ -22,6 +22,8 @@ import BitArray from '../../common/BitArray';
 import Token from './Token';
 import SimpleToken from './SimpleToken';
 
+import { short, int } from '../../../customTypings';
+
 export default /*final*/ class BinaryShiftToken extends SimpleToken {
 
   private /*final*/  binaryShiftStart: short;

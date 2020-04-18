@@ -1,6 +1,8 @@
 import Token from './Token';
 import SimpleToken from './SimpleToken';
 
+import { int } from '../../../customTypings';
+
 export const /*final*/ MODE_NAMES: String[] = [
     'UPPER',
     'LOWER',

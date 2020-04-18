@@ -22,6 +22,8 @@ import BitArray from '../../common/BitArray';
 import Token from './Token';
 import Integer from '../../util/Integer';
 
+import { short, int } from '../../../customTypings';
+
 export default /*final*/ class SimpleToken extends Token {
 
   // For normal words, indicates value and bitCount

@@ -7,6 +7,8 @@ import ReedSolomonEncoder from '../../common/reedsolomon/ReedSolomonEncoder';
 import GenericGF from '../../common/reedsolomon/GenericGF';
 import HighLevelEncoder from './HighLevelEncoder';
 
+import { int } from '../../../customTypings';
+
 /*
  * Copyright 2013 ZXing authors
  *
