@@ -50,13 +50,55 @@ import { int } from '../../../customTypings';
   PUNCT_SHIFT
 }
 
-function getEXP900(): BigInt[] {
+/**
+ * Indirectly access the global BigInt constructor, it
+ * allows browsers that doesn't support BigInt to run
+ * the library without breaking due to "undefined BigInt"
+ * errors.
+ */
+function getBigIntConstructor(): BigIntConstructor {
+
+  if (typeof window !== 'undefined') {
+    return window['BigInt'] || null;
+  }
+
+  if (typeof global !== 'undefined') {
+    return global['BigInt'] || null;
+  }
+
+  throw new Error('Can\'t search globals for BigInt!');
+}
+
+/**
+ * Used to store the BigInt constructor.
+ */
+let BigInteger: BigIntConstructor;
+
+/**
+ * This function creates a bigint value. It allows browsers
+ * that doesn't support BigInt to run the rest of the library
+ * by not directly accessing the BigInt constructor.
+ */
+function createBigInt(num: number | string | bigint): bigint {
+
+  if (typeof BigInteger === 'undefined') {
+    BigInteger = getBigIntConstructor();
+  }
+
+  if (BigInteger === null) {
+    throw new Error('BigInt is not supported!');
+  }
+
+  return BigInteger(num);
+}
+
+function getEXP900(): bigint[] {
   // in Java - array with length = 16
   let EXP900 = [];
 
-  EXP900[0] = BigInt(1);
+  EXP900[0] = createBigInt(1);
 
-  let nineHundred = BigInt(900);
+  let nineHundred = createBigInt(900);
 
   EXP900[1] = nineHundred;
 
@@ -115,7 +157,7 @@ export default /*final*/ class DecodedBitStreamParser {
    * Table containing values for the exponent of 900.
    * This is used in the numeric compaction decode algorithm.
    */
-  private static /*final*/ EXP900: BigInt[] = getEXP900();
+  private static /*final*/ EXP900: bigint[] = getBigIntConstructor() ? getEXP900() : [];
 
   private static /*final*/ NUMBER_OF_SEQUENCE_CODEWORDS: int = 2;
 
@@ -222,7 +264,7 @@ export default /*final*/ class DecodedBitStreamParser {
       throw FormatException.getFormatInstance();
     }
     let segmentIndexArray: Int32Array = new Int32Array(DecodedBitStreamParser.NUMBER_OF_SEQUENCE_CODEWORDS);
-    for (let i /*int*/ = 0; i < DecodedBitStreamParser.NUMBER_OF_SEQUENCE_CODEWORDS; i++ , codeIndex++) {
+    for (let i /*int*/ = 0; i < DecodedBitStreamParser.NUMBER_OF_SEQUENCE_CODEWORDS; i++, codeIndex++) {
       segmentIndexArray[i] = codewords[codeIndex];
     }
     resultMetadata.setSegmentIndex(Integer.parseInt(DecodedBitStreamParser.decodeBase900toBase10(segmentIndexArray,
@@ -612,7 +654,7 @@ export default /*final*/ class DecodedBitStreamParser {
                    * JavaScript stores numbers as 64 bits floating point numbers, but all bitwise operations are performed on 32 bits binary numbers.
                    * So the next bitwise operation could not be done with simple numbers
                    */
-                  decodedBytes.write(/*(byte)*/Number(BigInt(value) >> BigInt(8 * (5 - j))));
+                  decodedBytes.write(/*(byte)*/Number(createBigInt(value) >> createBigInt(8 * (5 - j))));
                 }
                 value = 0;
                 count = 0;
@@ -666,7 +708,7 @@ export default /*final*/ class DecodedBitStreamParser {
              * So the next bitwise operation could not be done with simple numbers
             */
             for (let j /*int*/ = 0; j < 6; ++j) {
-              decodedBytes.write(/*(byte)*/Number(BigInt(value) >> BigInt(8 * (5 - j))));
+              decodedBytes.write(/*(byte)*/Number(createBigInt(value) >> createBigInt(8 * (5 - j))));
             }
             value = 0;
             count = 0;
@@ -772,9 +814,9 @@ export default /*final*/ class DecodedBitStreamParser {
    * @throws FormatException
    */
   private static decodeBase900toBase10(codewords: Int32Array, count: int): string {
-    let result: bigint = BigInt(0);
+    let result = createBigInt(0);
     for (let i /*int*/ = 0; i < count; i++) {
-      result += BigInt(DecodedBitStreamParser.EXP900[count - i - 1]) * BigInt(codewords[i]);
+      result += DecodedBitStreamParser.EXP900[count - i - 1] * createBigInt(codewords[i]);
     }
     let resultString: String = result.toString();
     if (resultString.charAt(0) !== '1') {

@@ -168,6 +168,10 @@ Also, note that the library is using the [`TypedArray`](https://developer.mozill
 
 _You can use [core-js](https://github.com/zloirock/core-js) to add support to these browsers._
 
+In the PDF 417 decoder recent addition, the library now makes use of the new `BigInt` type, which [is not supported by all browsers][2] as well. There's no way to polyfill that and ponyfill libraries are **way to big**, but even if PDF 417 decoding relies on `BigInt` the rest of the library shall work ok in browsers that doesn't support it.
+
+_There's no polyfills for `BigInt` in the way it's coded in here._
+
 ### Scanning from Video Camera
 
 To display the input from the video camera you will need to add a video element in the HTML page:
@@ -345,7 +349,7 @@ Special thanks to all the contributors who have contributed for this project. We
 
 [![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/0)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/0)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/1)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/1)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/2)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/2)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/3)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/3)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/4)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/4)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/5)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/5)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/6)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/6)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/7)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/7)
 
-And a special thanks to @aleris who created the project itself and made the initial QR code port.
+And a special thanks to [@aleris][3] who created the project itself and made available the initial QR code port.
 
 ---
 
@@ -353,3 +357,5 @@ And a special thanks to @aleris who created the project itself and made the init
 
 [0]: https://www.npmjs.com/package/@zxing/library
 [1]: https://github.com/zxing/zxing
+[2]: https://caniuse.com/#feat=bigint
+[3]: https://github.com/aleris

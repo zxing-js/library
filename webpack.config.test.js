@@ -28,12 +28,6 @@ module.exports = (env, argv) => {
         use: loaders
       }],
     },
-    plugins: [
-      new ProvidePlugin({
-        'TextDecoder': ['text-encoding', 'TextDecoder'],
-        'TextEncoder': ['text-encoding', 'TextEncoder'],
-      })
-    ],
     target: 'node',  // webpack should compile node compatible code
     externals: [nodeExternals()], // in order to ignore all modules in node_modules folder
     devtool: 'inline-cheap-module-source-map'

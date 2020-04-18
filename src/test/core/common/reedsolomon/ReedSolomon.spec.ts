@@ -24,9 +24,9 @@ import GenericGF from '../../../../core/common/reedsolomon/GenericGF';
 import ReedSolomonEncoder from '../../../../core/common/reedsolomon/ReedSolomonEncoder';
 import ReedSolomonDecoder from '../../../../core/common/reedsolomon/ReedSolomonDecoder';
 
-/*import java.util.Arrays;*/
-import BitSet from '../../util/BitSet';
 /*import java.util.Random;*/
+
+import { corrupt } from './ReedSolomonCorrupt';
 
 /**
  * @author Rustam Abdullaev
@@ -500,24 +500,6 @@ describe('ReedSolomonSpec', () => {
 
 });
 
-function corrupt(received: Int32Array, howMany: number /*int*/, random: Random, max: number /*int*/): void {
-
-    const corrupted: BitSet = new Map<number, boolean>(/*received.length*/);
-
-    for (let j: number /*int*/ = 0; j < howMany; j++) {
-
-        const location: number /*int*/ = random.next(received.length);
-        const value: number /*int*/ = random.next(max);
-
-        if (corrupted.get(location) === true || received[location] === value) {
-            j--;
-        } else {
-            corrupted.set(location, true);
-            received[location] = value;
-        }
-    }
-}
-
 const DECODER_RANDOM_TEST_ITERATIONS: number /*int*/ = 3;
 const DECODER_TEST_ITERATIONS: number /*int*/ = 10;
 
@@ -637,5 +619,3 @@ function arrayToString(data: Int32Array): String {
 function getPseudoRandom(): Random {
     return new Random('0xDEADBEEF');
 }
-
-export { corrupt };

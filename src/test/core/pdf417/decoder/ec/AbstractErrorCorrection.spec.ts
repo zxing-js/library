@@ -16,9 +16,9 @@
 
 // package com.google.zxing.pdf417.decoder.ec;
 
-import * as ReedSolomonTestCase from '../../../common/reedsolomon/ReedSolomon.spec';
 import Random from '../../../util/Random';
 import BitSet from '../../../util/BitSet';
+import { corrupt } from '../../../common/reedsolomon/ReedSolomonCorrupt';
 // import org.junit.Assert;
 
 // import java.util.BitSet;
@@ -30,7 +30,7 @@ import BitSet from '../../../util/BitSet';
 export default abstract class AbstractErrorCorrectionSpec {
 
     static corrupt(received: Int32Array, howMany: /*int*/number, random: Random): void {
-        ReedSolomonTestCase.corrupt(received, howMany, random, 929);
+        corrupt(received, howMany, random, 929);
     }
 
     static erase(received: Int32Array, howMany: /*int*/number, random: Random): Int32Array {
