@@ -25,3 +25,4 @@ export const assertFalse = x => assert.strictEqual(!!x, false);
 export const assertTrue = x => assert.strictEqual(!!x, true);
 export const assertNull = x => assert.strictEqual(x, null);
 export const assertNotNull = x => assert.notStrictEqual(x, null);
+export const assertThrow = (func, err) => assert.throws(func, err);
