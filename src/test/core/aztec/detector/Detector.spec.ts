@@ -1,18 +1,18 @@
 /*
-* Copyright 2013 ZXing authors
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright 2013 ZXing authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 // package com.google.zxing.aztec.detector;
 
@@ -34,7 +34,7 @@ import BitMatrix from '../../../../core/common/BitMatrix';
 // import com.google.zxing.common.DecoderResult;
 import DecoderResult from '../../../../core/common/DecoderResult';
 // import org.junit.Assert;
-import { assertEquals, assertNotNull } from '../../util/AssertUtils';
+import { assertEquals, assertNotNull, assertThrow } from '../../util/AssertUtils';
 import { fail } from 'assert';
 // import org.junit.Test;
 
@@ -48,6 +48,7 @@ import Arrays from '../../../../core/util/Arrays';
 import Random from '../../util/Random';
 import StringUtils from '../../../../core/common/StringUtils';
 import StandardCharsets from '../../../../core/util/StandardCharsets';
+import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 // import java.util.TreeSet;
 
 /**
@@ -94,10 +95,12 @@ describe('DetectorTest', () => {
     // Test that we can tolerate errors in the parameter locator bits
     function testErrorInParameterLocator(data: string): void {
         let aztec: AztecCode = Encoder.encode(StringUtils.getBytes(data, StandardCharsets.ISO_8859_1), 25, Encoder.DEFAULT_AZTEC_LAYERS);
-        let random: Random = new Random(aztec.getMatrix().hashCode().toString());   // pseudo-random, but deterministic
+
+        let random: Random = new Random(aztec.getMatrix().hashCode()); // pseudo-random, but deterministic
         let layers: /*int*/ number = aztec.getLayers();
         let compact: boolean = aztec.isCompact();
         let orientationPoints: Point[] = getOrientationPoints(aztec);
+
         for (const isMirror of [false, true]) {
             for (const matrix of getRotations(aztec.getMatrix())) {
                 // Systematically try every possible 1- and 2-bit error.
@@ -109,8 +112,10 @@ describe('DetectorTest', () => {
                             // if error2 == error1, we only test a single error
                             copy.flip(orientationPoints[error2].getX(), orientationPoints[error2].getY());
                         }
+
                         // The detector doesn't seem to work when matrix bits are only 1x1.  So magnify.
                         let r: AztecDetectorResult = new Detector(makeLarger(copy, 3)).detectMirror(isMirror);
+
                         assertNotNull(r);
                         assertEquals(r.getNbLayers(), layers);
                         assertEquals(r.isCompact(), compact);
@@ -118,17 +123,19 @@ describe('DetectorTest', () => {
                         assertEquals(data, res.getText());
                     }
                 }
+
                 // Try a few random three-bit errors;
                 for (let i = 0; i < 5; i++) {
                     let copy: BitMatrix = clone(matrix);
-                    let errors: /* Collection<Integer> */ number[] = /* new TreeSet<>() */[];
-                    while (errors.length < 3) {
+                    let errors: /* Collection<Integer> */ Set<number> = /* new TreeSet<>() */ new Set();
+                    while (errors.size < 3) {
                         // Quick and dirty way of getting three distinct integers between 1 and n.
-                        errors.push(random.nextInt(orientationPoints.length));
+                        errors.add(random.nextInt(orientationPoints.length));
                     }
                     for (const error of errors) {
                         copy.flip(orientationPoints[error].getX(), orientationPoints[error].getY());
                     }
+
                     try {
                         new Detector(makeLarger(copy, 3)).detectMirror(false);
                         fail('Should not reach here');
@@ -208,7 +215,7 @@ describe('DetectorTest', () => {
     }
 
     function getOrientationPoints(code: AztecCode): Point[] {
-        let center: number = code.getMatrix().getWidth() / 2;
+        let center: number = Math.trunc(code.getMatrix().getWidth() / 2);
         let offset: number = code.isCompact() ? 5 : 7;
         let result: Point[] = [];
         for (let xSign: number = -1; xSign <= 1; xSign += 2) {
