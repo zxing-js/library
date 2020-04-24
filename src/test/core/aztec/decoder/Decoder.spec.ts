@@ -72,7 +72,7 @@ describe('DecoderTest', () => {
         const r = new AztecDetectorResult(matrix, NO_POINTS, false, 30, 2);
         const result = new Decoder().decode(r);
         assertEquals('88888TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT', result.getText());
-        assertArrayEquals(new Uint8Array([-11, 85, 85, 117, 107, 90, -42, -75, -83, 107, 90, -42, -75, -83, 107, 90, -42, -75, -83, 107, 90, -42, -80]), result.getRawBytes() as Int8Array);
+        assertArrayEquals(new Uint8Array([-11, 85, 85, 117, 107, 90, -42, -75, -83, 107, 90, -42, -75, -83, 107, 90, -42, -75, -83, 107, 90, -42, -80]), result.getRawBytes());
         assertEquals(180, result.getNumBits());
     });
 
@@ -124,7 +124,7 @@ describe('DecoderTest', () => {
      */
     it('testDecodeTooManyErrors2', () => {
         const matrix = BitMatrix.parseFromString(
-          ''+
+          '' +
                 '. X X . . X . X X . . . X . . X X X . . . X X . X X . \n' +
                 'X X . X X . . X . . . X X . . . X X . X X X . X . X X \n' +
                 '. . . . X . . . X X X . X X . X X X X . X X . . X . . \n' +
