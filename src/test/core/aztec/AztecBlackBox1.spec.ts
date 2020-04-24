@@ -29,11 +29,18 @@ import AztecReader from '../../../core/aztec/AztecReader';
 export /*public final*/ class AztecBlackBox1TestCase extends AbstractBlackBoxSpec {
 
   public constructor() {
-    super('src/test/resources/blackbox/aztec-1', new AztecReader(), BarcodeFormat.AZTEC);
-    this.addTest(13, 13, 0.0);
-    this.addTest(13, 13, 90.0);
-    this.addTest(13, 13, 180.0);
-    this.addTest(13, 13, 270.0);
-  }
+        super('src/test/resources/blackbox/aztec-1', new AztecReader(), BarcodeFormat.AZTEC);
+        this.addTest(13, 13, 0.0);
+        this.addTest(13, 13, 90.0);
+        this.addTest(13, 13, 180.0);
+        this.addTest(13, 13, 270.0);
+    }
 
 }
+
+describe('AztecBlackBox.1', () => {
+    it('testBlackBox', done => {
+        const test = new AztecBlackBox1TestCase();
+        return test.testBlackBox(done);
+    });
+});
