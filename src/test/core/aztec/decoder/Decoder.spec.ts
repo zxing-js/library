@@ -23,17 +23,17 @@ import BitMatrix from '../../../../core/common/BitMatrix';
 // import com.google.zxing.common.DecoderResult;
 // import org.junit.Test;
 // import org.junit.Assert;
-import { assertEquals, assertArrayEquals} from '../../util/AssertUtils';
+import { assertEquals, assertArrayEquals, assertThrow } from '../../util/AssertUtils';
 
 import ResultPoint from '../../../../core/ResultPoint';
 import Decoder from '../../../../core/aztec/decoder/Decoder';
 import AztecDetectorResult from '../../../../core/aztec/AztecDetectorResult';
+import FormatException from '../../../../core/FormatException';
 
 /**
  * Tests {@link Decoder}.
  */
 describe('DecoderTest', () => {
-
     const NO_POINTS: ResultPoint[] = [];
 
     /**
@@ -43,76 +43,78 @@ describe('DecoderTest', () => {
     it('testAztecResult', () => {
         const matrix = BitMatrix.parseFromString(
             'X X X X X     X X X       X X X     X X X     \n' +
-            'X X X     X X X     X X X X     X X X     X X \n' +
-            '  X   X X       X   X   X X X X     X     X X \n' +
-            '  X   X X     X X     X     X   X       X   X \n' +
-            '  X X   X X         X               X X     X \n' +
-            '  X X   X X X X X X X X X X X X X X X     X   \n' +
-            '  X X X X X                       X   X X X   \n' +
-            '  X   X   X   X X X X X X X X X   X X X   X X \n' +
-            '  X   X X X   X               X   X X       X \n' +
-            '  X X   X X   X   X X X X X   X   X X X X   X \n' +
-            '  X X   X X   X   X       X   X   X   X X X   \n' +
-            '  X   X   X   X   X   X   X   X   X   X   X   \n' +
-            '  X X X   X   X   X       X   X   X X   X X   \n' +
-            '  X X X X X   X   X X X X X   X   X X X   X X \n' +
-            'X X   X X X   X               X   X   X X   X \n' +
-            '  X       X   X X X X X X X X X   X   X     X \n' +
-            '  X X   X X                       X X   X X   \n' +
-            '  X X X   X X X X X X X X X X X X X X   X X   \n' +
-            'X     X     X     X X   X X               X X \n' +
-            'X   X X X X X   X X X X X     X   X   X     X \n' +
-            'X X X   X X X X           X X X       X     X \n' +
-            'X X     X X X     X X X X     X X X     X X   \n' +
-            '    X X X     X X X       X X X     X X X X   \n',
-            'X ', '  ');
+                'X X X     X X X     X X X X     X X X     X X \n' +
+                '  X   X X       X   X   X X X X     X     X X \n' +
+                '  X   X X     X X     X     X   X       X   X \n' +
+                '  X X   X X         X               X X     X \n' +
+                '  X X   X X X X X X X X X X X X X X X     X   \n' +
+                '  X X X X X                       X   X X X   \n' +
+                '  X   X   X   X X X X X X X X X   X X X   X X \n' +
+                '  X   X X X   X               X   X X       X \n' +
+                '  X X   X X   X   X X X X X   X   X X X X   X \n' +
+                '  X X   X X   X   X       X   X   X   X X X   \n' +
+                '  X   X   X   X   X   X   X   X   X   X   X   \n' +
+                '  X X X   X   X   X       X   X   X X   X X   \n' +
+                '  X X X X X   X   X X X X X   X   X X X   X X \n' +
+                'X X   X X X   X               X   X   X X   X \n' +
+                '  X       X   X X X X X X X X X   X   X     X \n' +
+                '  X X   X X                       X X   X X   \n' +
+                '  X X X   X X X X X X X X X X X X X X   X X   \n' +
+                'X     X     X     X X   X X               X X \n' +
+                'X   X X X X X   X X X X X     X   X   X     X \n' +
+                'X X X   X X X X           X X X       X     X \n' +
+                'X X     X X X     X X X X     X X X     X X   \n' +
+                '    X X X     X X X       X X X     X X X X   \n',
+            'X ',
+            '  '
+        );
+
         const r = new AztecDetectorResult(matrix, NO_POINTS, false, 30, 2);
         const result = new Decoder().decode(r);
         assertEquals('88888TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT', result.getText());
-        assertArrayEquals(
-            new Uint8Array([- 11, 85, 85, 117, 107, 90, -42, -75, -83, 107,
-                90, -42, -75, -83, 107, 90, -42, -75, -83, 107,
-                90, -42, -80]),
-            result.getRawBytes());
+        assertArrayEquals(new Uint8Array([-11, 85, 85, 117, 107, 90, -42, -75, -83, 107, 90, -42, -75, -83, 107, 90, -42, -75, -83, 107, 90, -42, -80]), result.getRawBytes() as Int8Array);
         assertEquals(180, result.getNumBits());
     });
 
     /**
      * @Test(expected = FormatException.class)
      * throws FormatException
-    */
+     */
     it('testDecodeTooManyErrors', () => {
-        const matrix = BitMatrix.parseFromString(''
-            + 'X X . X . . . X X . . . X . . X X X . X . X X X X X . \n'
-            + 'X X . . X X . . . . . X X . . . X X . . . X . X . . X \n'
-            + 'X . . . X X . . X X X . X X . X X X X . X X . . X . . \n'
-            + '. . . . X . X X . . X X . X X . X . X X X X . X . . X \n'
-            + 'X X X . . X X X X X . . . . . X X . . . X . X . X . X \n'
-            + 'X X . . . . . . . . X . . . X . X X X . X . . X . . . \n'
-            + 'X X . . X . . . . . X X . . . . . X . . . . X . . X X \n'
-            + '. . . X . X . X . . . . . X X X X X X . . . . . . X X \n'
-            + 'X . . . X . X X X X X X . . X X X . X . X X X X X X . \n'
-            + 'X . . X X X . X X X X X X X X X X X X X . . . X . X X \n'
-            + '. . . . X X . . . X . . . . . . . X X . . . X X . X . \n'
-            + '. . . X X X . . X X . X X X X X . X . . X . . . . . . \n'
-            + 'X . . . . X . X . X . X . . . X . X . X X . X X . X X \n'
-            + 'X . X . . X . X . X . X . X . X . X . . . . . X . X X \n'
-            + 'X . X X X . . X . X . X . . . X . X . X X X . . . X X \n'
-            + 'X X X X X X X X . X . X X X X X . X . X . X . X X X . \n'
-            + '. . . . . . . X . X . . . . . . . X X X X . . . X X X \n'
-            + 'X X . . X . . X . X X X X X X X X X X X X X . . X . X \n'
-            + 'X X X . X X X X . . X X X X . . X . . . . X . . X X X \n'
-            + '. . . . X . X X X . . . . X X X X . . X X X X . . . . \n'
-            + '. . X . . X . X . . . X . X X . X X . X . . . X . X . \n'
-            + 'X X . . X . . X X X X X X X . . X . X X X X X X X . . \n'
-            + 'X . X X . . X X . . . . . X . . . . . . X X . X X X . \n'
-            + 'X . . X X . . X X . X . X . . . . X . X . . X . . X . \n'
-            + 'X . X . X . . X . X X X X X X X X . X X X X . . X X . \n'
-            + 'X X X X . . . X . . X X X . X X . . X . . . . X X X . \n'
-            + 'X X . X . X . . . X . X . . . . X X . X . . X X . . . \n',
-            'X ', '. ');
+        const matrix = BitMatrix.parseFromString(
+            '' +
+                'X X . X . . . X X . . . X . . X X X . X . X X X X X . \n' +
+                'X X . . X X . . . . . X X . . . X X . . . X . X . . X \n' +
+                'X . . . X X . . X X X . X X . X X X X . X X . . X . . \n' +
+                '. . . . X . X X . . X X . X X . X . X X X X . X . . X \n' +
+                'X X X . . X X X X X . . . . . X X . . . X . X . X . X \n' +
+                'X X . . . . . . . . X . . . X . X X X . X . . X . . . \n' +
+                'X X . . X . . . . . X X . . . . . X . . . . X . . X X \n' +
+                '. . . X . X . X . . . . . X X X X X X . . . . . . X X \n' +
+                'X . . . X . X X X X X X . . X X X . X . X X X X X X . \n' +
+                'X . . X X X . X X X X X X X X X X X X X . . . X . X X \n' +
+                '. . . . X X . . . X . . . . . . . X X . . . X X . X . \n' +
+                '. . . X X X . . X X . X X X X X . X . . X . . . . . . \n' +
+                'X . . . . X . X . X . X . . . X . X . X X . X X . X X \n' +
+                'X . X . . X . X . X . X . X . X . X . . . . . X . X X \n' +
+                'X . X X X . . X . X . X . . . X . X . X X X . . . X X \n' +
+                'X X X X X X X X . X . X X X X X . X . X . X . X X X . \n' +
+                '. . . . . . . X . X . . . . . . . X X X X . . . X X X \n' +
+                'X X . . X . . X . X X X X X X X X X X X X X . . X . X \n' +
+                'X X X . X X X X . . X X X X . . X . . . . X . . X X X \n' +
+                '. . . . X . X X X . . . . X X X X . . X X X X . . . . \n' +
+                '. . X . . X . X . . . X . X X . X X . X . . . X . X . \n' +
+                'X X . . X . . X X X X X X X . . X . X X X X X X X . . \n' +
+                'X . X X . . X X . . . . . X . . . . . . X X . X X X . \n' +
+                'X . . X X . . X X . X . X . . . . X . X . . X . . X . \n' +
+                'X . X . X . . X . X X X X X X X X . X X X X . . X X . \n' +
+                'X X X X . . . X . . X X X . X X . . X . . . . X X X . \n' +
+                'X X . X . X . . . X . X . . . . X X . X . . X X . . . \n',
+            'X ',
+            '. '
+        );
         const r = new AztecDetectorResult(matrix, NO_POINTS, true, 16, 4);
-        new Decoder().decode(r);
+        assertThrow(() => new Decoder().decode(r), FormatException);
     });
 
     /**
@@ -121,37 +123,40 @@ describe('DecoderTest', () => {
      * @throws FormatException
      */
     it('testDecodeTooManyErrors2', () => {
-        const matrix = BitMatrix.parseFromString(''
-            + '. X X . . X . X X . . . X . . X X X . . . X X . X X . \n'
-            + 'X X . X X . . X . . . X X . . . X X . X X X . X . X X \n'
-            + '. . . . X . . . X X X . X X . X X X X . X X . . X . . \n'
-            + 'X . X X . . X . . . X X . X X . X . X X . . . . . X . \n'
-            + 'X X . X . . X . X X . . . . . X X . . . . . X . . . X \n'
-            + 'X . . X . . . . . . X . . . X . X X X X X X X . . . X \n'
-            + 'X . . X X . . X . . X X . . . . . X . . . . . X X X . \n'
-            + '. . X X X X . X . . . . . X X X X X X . . . . . . X X \n'
-            + 'X . . . X . X X X X X X . . X X X . X . X X X X X X . \n'
-            + 'X . . X X X . X X X X X X X X X X X X X . . . X . X X \n'
-            + '. . . . X X . . . X . . . . . . . X X . . . X X . X . \n'
-            + '. . . X X X . . X X . X X X X X . X . . X . . . . . . \n'
-            + 'X . . . . X . X . X . X . . . X . X . X X . X X . X X \n'
-            + 'X . X . . X . X . X . X . X . X . X . . . . . X . X X \n'
-            + 'X . X X X . . X . X . X . . . X . X . X X X . . . X X \n'
-            + 'X X X X X X X X . X . X X X X X . X . X . X . X X X . \n'
-            + '. . . . . . . X . X . . . . . . . X X X X . . . X X X \n'
-            + 'X X . . X . . X . X X X X X X X X X X X X X . . X . X \n'
-            + 'X X X . X X X X . . X X X X . . X . . . . X . . X X X \n'
-            + '. . X X X X X . X . . . . X X X X . . X X X . X . X . \n'
-            + '. . X X . X . X . . . X . X X . X X . . . . X X . . . \n'
-            + 'X . . . X . X . X X X X X X . . X . X X X X X . X . . \n'
-            + '. X . . . X X X . . . . . X . . . . . X X X X X . X . \n'
-            + 'X . . X . X X X X . X . X . . . . X . X X . X . . X . \n'
-            + 'X . . . X X . X . X X X X X X X X . X X X X . . X X . \n'
-            + '. X X X X . . X . . X X X . X X . . X . . . . X X X . \n'
-            + 'X X . . . X X . . X . X . . . . X X . X . . X . X . X \n',
-            'X ', '. ');
+        const matrix = BitMatrix.parseFromString(
+          ''+
+                '. X X . . X . X X . . . X . . X X X . . . X X . X X . \n' +
+                'X X . X X . . X . . . X X . . . X X . X X X . X . X X \n' +
+                '. . . . X . . . X X X . X X . X X X X . X X . . X . . \n' +
+                'X . X X . . X . . . X X . X X . X . X X . . . . . X . \n' +
+                'X X . X . . X . X X . . . . . X X . . . . . X . . . X \n' +
+                'X . . X . . . . . . X . . . X . X X X X X X X . . . X \n' +
+                'X . . X X . . X . . X X . . . . . X . . . . . X X X . \n' +
+                '. . X X X X . X . . . . . X X X X X X . . . . . . X X \n' +
+                'X . . . X . X X X X X X . . X X X . X . X X X X X X . \n' +
+                'X . . X X X . X X X X X X X X X X X X X . . . X . X X \n' +
+                '. . . . X X . . . X . . . . . . . X X . . . X X . X . \n' +
+                '. . . X X X . . X X . X X X X X . X . . X . . . . . . \n' +
+                'X . . . . X . X . X . X . . . X . X . X X . X X . X X \n' +
+                'X . X . . X . X . X . X . X . X . X . . . . . X . X X \n' +
+                'X . X X X . . X . X . X . . . X . X . X X X . . . X X \n' +
+                'X X X X X X X X . X . X X X X X . X . X . X . X X X . \n' +
+                '. . . . . . . X . X . . . . . . . X X X X . . . X X X \n' +
+                'X X . . X . . X . X X X X X X X X X X X X X . . X . X \n' +
+                'X X X . X X X X . . X X X X . . X . . . . X . . X X X \n' +
+                '. . X X X X X . X . . . . X X X X . . X X X . X . X . \n' +
+                '. . X X . X . X . . . X . X X . X X . . . . X X . . . \n' +
+                'X . . . X . X . X X X X X X . . X . X X X X X . X . . \n' +
+                '. X . . . X X X . . . . . X . . . . . X X X X X . X . \n' +
+                'X . . X . X X X X . X . X . . . . X . X X . X . . X . \n' +
+                'X . . . X X . X . X X X X X X X X . X X X X . . X X . \n' +
+                '. X X X X . . X . . X X X . X X . . X . . . . X X X . \n' +
+                'X X . . . X X . . X . X . . . . X X . X . . X . X . X \n',
+            'X ',
+            '. '
+        );
         const r = new AztecDetectorResult(matrix, NO_POINTS, true, 16, 4);
-        new Decoder().decode(r);
+        assertThrow(() => new Decoder().decode(r), FormatException);
     });
 
     /**
@@ -162,18 +167,14 @@ describe('DecoderTest', () => {
         let bool1: boolean[] = [true];
         let bool7: boolean[] = [true, false, true, false, true, false, true];
         let bool8: boolean[] = [true, false, true, false, true, false, true, false];
-        let bool9: boolean[] = [
-            true, false, true, false, true, false, true, false,
-            true];
-        let bool16: boolean[] = [
-            false, true, true, false, false, false, true, true,
-            true, true, false, false, false, false, false, true];
-        let byte0: /*byte[]*/Uint8Array = new Uint8Array([]);
-        let byte1: /*byte[]*/Uint8Array = new Uint8Array([-128]);
-        let byte7: /*byte[]*/ Uint8Array = new Uint8Array([- 86]);
-        let byte8: /*byte[]*/ Uint8Array = new Uint8Array([- 86]);
-        let byte9: /*byte[]*/ Uint8Array = new Uint8Array([- 86, -128]);
-        let byte16: /*byte[]*/ Uint8Array = new Uint8Array([99, - 63]);
+        let bool9: boolean[] = [true, false, true, false, true, false, true, false, true];
+        let bool16: boolean[] = [false, true, true, false, false, false, true, true, true, true, false, false, false, false, false, true];
+        let byte0: /*byte[]*/ Uint8Array = new Uint8Array([]);
+        let byte1: /*byte[]*/ Uint8Array = new Uint8Array([-128]);
+        let byte7: /*byte[]*/ Uint8Array = new Uint8Array([-86]);
+        let byte8: /*byte[]*/ Uint8Array = new Uint8Array([-86]);
+        let byte9: /*byte[]*/ Uint8Array = new Uint8Array([-86, -128]);
+        let byte16: /*byte[]*/ Uint8Array = new Uint8Array([99, -63]);
 
         assertArrayEquals(byte0, Decoder.convertBoolArrayToByteArray(bool0));
         assertArrayEquals(byte1, Decoder.convertBoolArrayToByteArray(bool1));
