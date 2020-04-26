@@ -62,7 +62,7 @@
         "build:umd": "yarn webpack --mode production",
         "shx": "./node_modules/.bin/shx",
         "tsc": "./node_modules/.bin/tsc",
-        "tslint": "./node_modules/.bin/tslint",
+        "tslint": "./node_modules/.bin/tslint \"./src/**/*.ts\"",
         "mocha-webpack": "./node_modules/.bin/mocha-webpack",
         "nyc": "./node_modules/.bin/nyc",
         "webpack": "./node_modules/.bin/webpack-cli"

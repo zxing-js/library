@@ -42,6 +42,7 @@ import { int } from '../../customTypings';
  * @author dswitkin@google.com (Daniel Switkin)
  */
 export default class BitMatrix /*implements Cloneable*/ {
+
     /**
      * Creates an empty square {@link BitMatrix}.
      *
@@ -127,7 +128,7 @@ export default class BitMatrix /*implements Cloneable*/ {
         let pos = 0;
         while (pos < stringRepresentation.length) {
             if (stringRepresentation.charAt(pos) === '\n' ||
-            stringRepresentation.charAt(pos) === '\r') {
+                stringRepresentation.charAt(pos) === '\r') {
                 if (bitsPos > rowStartPos) {
                     if (rowLength === -1) {
                         rowLength = bitsPos - rowStartPos;
@@ -148,7 +149,7 @@ export default class BitMatrix /*implements Cloneable*/ {
                 bitsPos++;
             } else {
                 throw new IllegalArgumentException(
-                  'illegal character encountered: ' + stringRepresentation.substring(pos));
+                    'illegal character encountered: ' + stringRepresentation.substring(pos));
             }
         }
 
@@ -191,12 +192,12 @@ export default class BitMatrix /*implements Cloneable*/ {
      */
     public set(x: number /*int*/, y: number /*int*/): void {
         const offset = y * this.rowSize + Math.floor(x / 32);
-        this.bits[offset] |= (1 << (x & 0x1f)) & 0xffffffff;
+        this.bits[offset] |= (1 << (x & 0x1f)) & 0xFFFFFFFF;
     }
 
     public unset(x: number /*int*/, y: number /*int*/): void {
         const offset = y * this.rowSize + Math.floor(x / 32);
-        this.bits[offset] &= ~((1 << (x & 0x1f)) & 0xffffffff);
+        this.bits[offset] &= ~((1 << (x & 0x1f)) & 0xFFFFFFFF);
     }
 
     /**
@@ -207,7 +208,7 @@ export default class BitMatrix /*implements Cloneable*/ {
      */
     public flip(x: number /*int*/, y: number /*int*/): void {
         const offset = y * this.rowSize + Math.floor(x / 32);
-        this.bits[offset] ^= (1 << (x & 0x1f)) & 0xffffffff;
+        this.bits[offset] ^= ((1 << (x & 0x1f)) & 0xFFFFFFFF);
     }
 
     /**
@@ -218,7 +219,7 @@ export default class BitMatrix /*implements Cloneable*/ {
      */
     public xor(mask: BitMatrix): void {
         if (this.width !== mask.getWidth() || this.height !== mask.getHeight()
-        || this.rowSize !== mask.getRowSize()) {
+            || this.rowSize !== mask.getRowSize()) {
             throw new IllegalArgumentException('input matrix dimensions do not match');
         }
         const rowArray = new BitArray(Math.floor(this.width / 32) + 1);
@@ -269,7 +270,7 @@ export default class BitMatrix /*implements Cloneable*/ {
         for (let y = top; y < bottom; y++) {
             const offset = y * rowSize;
             for (let x = left; x < right; x++) {
-                bits[offset + Math.floor(x / 32)] |= (1 << (x & 0x1f)) & 0xffffffff;
+                bits[offset + Math.floor(x / 32)] |= ((1 << (x & 0x1f)) & 0xFFFFFFFF);
             }
         }
     }
@@ -351,19 +352,19 @@ export default class BitMatrix /*implements Cloneable*/ {
                     }
                     if (x32 * 32 < left) {
                         let bit = 0;
-                        while (((theBits << (31 - bit)) & 0xffffffff) === 0) {
+                        while (((theBits << (31 - bit)) & 0xFFFFFFFF) === 0) {
                             bit++;
                         }
-                        if (x32 * 32 + bit < left) {
+                        if ((x32 * 32 + bit) < left) {
                             left = x32 * 32 + bit;
                         }
                     }
                     if (x32 * 32 + 31 > right) {
                         let bit = 31;
-                        while (theBits >>> bit === 0) {
+                        while ((theBits >>> bit) === 0) {
                             bit--;
                         }
-                        if (x32 * 32 + bit > right) {
+                        if ((x32 * 32 + bit) > right) {
                             right = x32 * 32 + bit;
                         }
                     }
@@ -399,7 +400,7 @@ export default class BitMatrix /*implements Cloneable*/ {
 
         const theBits = bits[bitsOffset];
         let bit = 0;
-        while (((theBits << (31 - bit)) & 0xffffffff) === 0) {
+        while (((theBits << (31 - bit)) & 0xFFFFFFFF) === 0) {
             bit++;
         }
         x += bit;
@@ -423,7 +424,7 @@ export default class BitMatrix /*implements Cloneable*/ {
 
         const theBits = bits[bitsOffset];
         let bit = 31;
-        while (theBits >>> bit === 0) {
+        while ((theBits >>> bit) === 0) {
             bit--;
         }
         x += bit;
@@ -459,7 +460,7 @@ export default class BitMatrix /*implements Cloneable*/ {
         }
         const other = <BitMatrix>o;
         return this.width === other.width && this.height === other.height && this.rowSize === other.rowSize &&
-        Arrays.equals(this.bits, other.bits);
+            Arrays.equals(this.bits, other.bits);
     }
 
     /*@Override*/

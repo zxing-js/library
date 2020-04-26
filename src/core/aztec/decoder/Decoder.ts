@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+
 import AztecDetectorResult from '../AztecDetectorResult';
 import BitMatrix from '../../common/BitMatrix';
 import DecoderResult from '../../common/DecoderResult';
@@ -22,6 +23,7 @@ import ReedSolomonDecoder from '../../common/reedsolomon/ReedSolomonDecoder';
 import IllegalStateException from '../../IllegalStateException';
 import FormatException from '../../FormatException';
 import { StringUtils } from '../../..';
+import Integer from '../../util/Integer';
 
 // import java.util.Arrays;
 
@@ -41,149 +43,33 @@ enum Table {
  * @author David Olivier
  */
 export default class Decoder {
+
     private static UPPER_TABLE: string[] = [
-        'CTRL_PS',
-        ' ',
-        'A',
-        'B',
-        'C',
-        'D',
-        'E',
-        'F',
-        'G',
-        'H',
-        'I',
-        'J',
-        'K',
-        'L',
-        'M',
-        'N',
-        'O',
-        'P',
-        'Q',
-        'R',
-        'S',
-        'T',
-        'U',
-        'V',
-        'W',
-        'X',
-        'Y',
-        'Z',
-        'CTRL_LL',
-        'CTRL_ML',
-        'CTRL_DL',
-        'CTRL_BS',
+        'CTRL_PS', ' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+        'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'CTRL_LL', 'CTRL_ML', 'CTRL_DL', 'CTRL_BS'
     ];
 
     private static LOWER_TABLE: string[] = [
-        'CTRL_PS',
-        ' ',
-        'a',
-        'b',
-        'c',
-        'd',
-        'e',
-        'f',
-        'g',
-        'h',
-        'i',
-        'j',
-        'k',
-        'l',
-        'm',
-        'n',
-        'o',
-        'p',
-        'q',
-        'r',
-        's',
-        't',
-        'u',
-        'v',
-        'w',
-        'x',
-        'y',
-        'z',
-        'CTRL_US',
-        'CTRL_ML',
-        'CTRL_DL',
-        'CTRL_BS',
+        'CTRL_PS', ' ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+        'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'CTRL_US', 'CTRL_ML', 'CTRL_DL', 'CTRL_BS'
     ];
 
     private static MIXED_TABLE: string[] = [
         // Module parse failed: Octal literal in strict mode (50:29)
         // so number string were scaped
-        'CTRL_PS',
-        ' ',
-        '\\1',
-        '\\2',
-        '\\3',
-        '\\4',
-        '\\5',
-        '\\6',
-        '\\7',
-        '\b',
-        '\t',
-        '\n',
-        '\\13',
-        '\f',
-        '\r',
-        '\\33',
-        '\\34',
-        '\\35',
-        '\\36',
-        '\\37',
-        '@',
-        '\\',
-        '^',
-        '_',
-        '`',
-        '|',
-        '~',
-        '\\177',
-        'CTRL_LL',
-        'CTRL_UL',
-        'CTRL_PL',
-        'CTRL_BS',
+        'CTRL_PS', ' ', '\\1', '\\2', '\\3', '\\4', '\\5', '\\6', '\\7', '\b', '\t', '\n',
+        '\\13', '\f', '\r', '\\33', '\\34', '\\35', '\\36', '\\37', '@', '\\', '^', '_',
+        '`', '|', '~', '\\177', 'CTRL_LL', 'CTRL_UL', 'CTRL_PL', 'CTRL_BS'
     ];
 
     private static PUNCT_TABLE: string[] = [
-        '',
-        '\r',
-        '\r\n',
-        '. ',
-        ', ',
-        ': ',
-        '!',
-        '"',
-        '#',
-        '$',
-        '%',
-        '&',
-        '\'',
-        '(',
-        ')',
-        '*',
-        '+',
-        ',',
-        '-',
-        '.',
-        '/',
-        ':',
-        ';',
-        '<',
-        '=',
-        '>',
-        '?',
-        '[',
-        ']',
-        '{',
-        '}',
-        'CTRL_UL',
+        '', '\r', '\r\n', '. ', ', ', ': ', '!', '"', '#', '$', '%', '&', '\'', '(', ')',
+        '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '[', ']', '{', '}', 'CTRL_UL'
     ];
 
-    private static DIGIT_TABLE: string[] = ['CTRL_PS', ' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ',', '.', 'CTRL_UL', 'CTRL_US'];
+    private static DIGIT_TABLE: string[] = [
+        'CTRL_PS', ' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ',', '.', 'CTRL_UL', 'CTRL_US'
+    ];
 
     private ddata: AztecDetectorResult;
 
@@ -194,7 +80,6 @@ export default class Decoder {
         let correctedBits = this.correctBits(rawbits);
         let rawBytes = Decoder.convertBoolArrayToByteArray(correctedBits);
         let result = Decoder.getEncodedData(correctedBits);
-
         let decoderResult = new DecoderResult(rawBytes, result, null, null);
         decoderResult.setNumBits(correctedBits.length);
         return decoderResult;
@@ -232,7 +117,7 @@ export default class Decoder {
                 }
                 for (let charCount = 0; charCount < length; charCount++) {
                     if (endIndex - index < 8) {
-                        index = endIndex; // Force outer loop to exit
+                        index = endIndex;  // Force outer loop to exit
                         break;
                     }
                     let code = Decoder.readCode(correctedBits, index, 8);
@@ -346,7 +231,7 @@ export default class Decoder {
         let offset = rawbits.length % codewordSize;
 
         let dataWords: Int32Array = new Int32Array(numCodewords);
-        for (let i = 0; i < numCodewords; i++, offset += codewordSize) {
+        for (let i = 0; i < numCodewords; i++ , offset += codewordSize) {
             dataWords[i] = Decoder.readCode(rawbits, offset, codewordSize);
         }
 
@@ -405,12 +290,11 @@ export default class Decoder {
                 alignmentMap[i] = i;
             }
         } else {
-            let matrixSize = baseMatrixSize + 1 + 2 * Math.trunc((Math.trunc(baseMatrixSize / 2) - 1) / 15);
+            let matrixSize = baseMatrixSize + 1 + 2 * Integer.truncDivision((Integer.truncDivision(baseMatrixSize / 2) - 1) / 15);
             let origCenter = baseMatrixSize / 2;
-            let center = Math.trunc(matrixSize / 2);
-
+            let center = Integer.truncDivision(matrixSize / 2);
             for (let i = 0; i < origCenter; i++) {
-                let newOffset = i + Math.trunc(i / 15);
+                let newOffset = i + Integer.truncDivision(i / 15);
                 alignmentMap[origCenter - i - 1] = center - newOffset - 1;
                 alignmentMap[origCenter + i] = center + newOffset + 1;
             }
@@ -426,13 +310,17 @@ export default class Decoder {
                 let columnOffset = j * 2;
                 for (let k = 0; k < 2; k++) {
                     // left column
-                    rawbits[rowOffset + columnOffset + k] = matrix.get(alignmentMap[low + k], alignmentMap[low + j]);
+                    rawbits[rowOffset + columnOffset + k] =
+                        matrix.get(alignmentMap[low + k], alignmentMap[low + j]);
                     // bottom row
-                    rawbits[rowOffset + 2 * rowSize + columnOffset + k] = matrix.get(alignmentMap[low + j], alignmentMap[high - k]);
+                    rawbits[rowOffset + 2 * rowSize + columnOffset + k] =
+                        matrix.get(alignmentMap[low + j], alignmentMap[high - k]);
                     // right column
-                    rawbits[rowOffset + 4 * rowSize + columnOffset + k] = matrix.get(alignmentMap[high - k], alignmentMap[high - j]);
+                    rawbits[rowOffset + 4 * rowSize + columnOffset + k] =
+                        matrix.get(alignmentMap[high - k], alignmentMap[high - j]);
                     // top row
-                    rawbits[rowOffset + 6 * rowSize + columnOffset + k] = matrix.get(alignmentMap[high - j], alignmentMap[low + k]);
+                    rawbits[rowOffset + 6 * rowSize + columnOffset + k] =
+                        matrix.get(alignmentMap[high - j], alignmentMap[low + k]);
                 }
             }
             rowOffset += rowSize * 8;

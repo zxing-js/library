@@ -25,7 +25,7 @@ import ReedSolomonDecoder from '../../common/reedsolomon/ReedSolomonDecoder';
 import NotFoundException from '../../NotFoundException';
 import GridSamplerInstance from '../../common/GridSamplerInstance';
 import Integer from '../../util/Integer';
-import { runInThisContext } from 'vm';
+
 
 export class Point {
     private x: number;
@@ -62,11 +62,12 @@ export class Point {
  * @author Frank Yellin
  */
 export default class Detector {
+
     private EXPECTED_CORNER_BITS = new Int32Array([
-        0xee0, // 07340  XXX .XX X.. ...
-        0x1dc, // 00734  ... XXX .XX X..
-        0x83b, // 04073  X.. ... XXX .XX
-        0x707, // 03407 .XX X.. ... XXX
+        0xee0,  // 07340  XXX .XX X.. ...
+        0x1dc,  // 00734  ... XXX .XX X..
+        0x83b,  // 04073  X.. ... XXX .XX
+        0x707,  // 03407 .XX X.. ... XXX
     ]);
 
     private image: BitMatrix;
@@ -99,7 +100,7 @@ export default class Detector {
 
         // 2. Get the center points of the four diagonal points just outside the bull's eye
         //  [topRight, bottomRight, bottomLeft, topLeft]
-        let bullsEyeCorners: ResultPoint[] = this.getBullsEyeCorners(pCenter);
+        let bullsEyeCorners = this.getBullsEyeCorners(pCenter);
 
         if (isMirror) {
             let temp = bullsEyeCorners[0];
@@ -112,8 +113,7 @@ export default class Detector {
 
 
         // 4. Sample the grid
-        let bits: BitMatrix = this.sampleGrid(
-            this.image,
+        let bits: BitMatrix = this.sampleGrid(this.image,
             bullsEyeCorners[this.shift % 4],
             bullsEyeCorners[(this.shift + 1) % 4],
             bullsEyeCorners[(this.shift + 2) % 4],
@@ -143,7 +143,7 @@ export default class Detector {
             this.sampleLine(bullsEyeCorners[0], bullsEyeCorners[1], length), // Right side
             this.sampleLine(bullsEyeCorners[1], bullsEyeCorners[2], length), // Bottom
             this.sampleLine(bullsEyeCorners[2], bullsEyeCorners[3], length), // Left side
-            this.sampleLine(bullsEyeCorners[3], bullsEyeCorners[0], length), // Top
+            this.sampleLine(bullsEyeCorners[3], bullsEyeCorners[0], length)  // Top
         ]);
 
         // bullsEyeCorners[shift] is the corner of the bulls'eye that has three
@@ -159,11 +159,11 @@ export default class Detector {
             if (this.compact) {
                 // Each side of the form ..XXXXXXX. where Xs are parameter data
                 parameterData <<= 7;
-                parameterData += (side >> 1) & 0x7f;
+                parameterData += (side >> 1) & 0x7F;
             } else {
                 // Each side of the form ..XXXXX.XXXXX. where Xs are parameter data
                 parameterData <<= 10;
-                parameterData += ((side >> 2) & (0x1f << 5)) + ((side >> 1) & 0x1f);
+                parameterData += ((side >> 2) & (0x1f << 5)) + ((side >> 1) & 0x1F);
             }
         }
 
@@ -174,11 +174,11 @@ export default class Detector {
         if (this.compact) {
             // 8 bits:  2 bits layers and 6 bits data blocks
             this.nbLayers = (correctedData >> 6) + 1;
-            this.nbDataBlocks = (correctedData & 0x3f) + 1;
+            this.nbDataBlocks = (correctedData & 0x3F) + 1;
         } else {
             // 16 bits:  5 bits layers and 11 bits data blocks
             this.nbLayers = (correctedData >> 11) + 1;
-            this.nbDataBlocks = (correctedData & 0x7ff) + 1;
+            this.nbDataBlocks = (correctedData & 0x7FF) + 1;
         }
     }
 
@@ -241,7 +241,7 @@ export default class Detector {
         let numECCodewords = numCodewords - numDataCodewords;
         let parameterWords: Int32Array = new Int32Array(numCodewords);
         for (let i = numCodewords - 1; i >= 0; --i) {
-            parameterWords[i] = parameterData & 0xf;
+            parameterWords[i] = parameterData & 0xF;
             parameterData >>= 4;
         }
         try {
@@ -268,7 +268,7 @@ export default class Detector {
      * @throws NotFoundException If no valid bull-eye can be found
      */
     private getBullsEyeCorners(pCenter: Point): ResultPoint[] {
-        let corr_factor = 1.0;
+
 
         let pina = pCenter;
         let pinb = pCenter;
@@ -278,7 +278,6 @@ export default class Detector {
         let color = true;
 
         for (this.nbCenterLayers = 1; this.nbCenterLayers < 9; this.nbCenterLayers++) {
-            let corr_tmp;
 
             let pouta = this.getFirstDifferent(pina, color, 1, -1);
             let poutb = this.getFirstDifferent(pinb, color, 1, 1);
@@ -319,7 +318,9 @@ export default class Detector {
 
         // Expand the square so that its corners are the centers of the points
         // just outside the bull's eye.
-        return this.expandSquare([pinax, pinbx, pincx, pindx], 2 * this.nbCenterLayers - 3, 2 * this.nbCenterLayers);
+        return this.expandSquare([pinax, pinbx, pincx, pindx],
+            2 * this.nbCenterLayers - 3,
+            2 * this.nbCenterLayers);
     }
 
     /**
@@ -393,31 +394,6 @@ export default class Detector {
      */
     private getMatrixCornerPoints(bullsEyeCorners: ResultPoint[]): ResultPoint[] {
         return this.expandSquare(bullsEyeCorners, 2 * this.nbCenterLayers, this.getDimension());
-
-        // let maxX = 0.0;
-        //   let minX = this.image.getWidth();
-        //   bullsEyeCorners.forEach((bullsEyeCorner, idx, arr) => {
-        //       let tmpX = bullsEyeCorner.getX();
-        //       if (tmpX > maxX) {
-        //           maxX = tmpX;
-        //       }
-        //       if (tmpX < minX) {
-        //           minX = tmpX;
-        //       }
-        //   });
-        //   // for (var bullsEyeCorner: ResultPoint in bullsEyeCorners) {
-        //   //     var tmpX = bullsEyeCorner.getX();
-        //   //     if (tmpX > maxX) {
-        //   //         maxX = tmpX;
-        //   //     }
-        //   //     if (tmpX < minX) {
-        //   //         minX = tmpX;
-        //   //     }
-        //   // }
-        //
-        //   let initSize = maxX - minX;  // we are looking for first white rectangle outside of bulls eye
-        //
-        //   return (new CornerDetector(this.image, initSize, pCenter.getX(), pCenter.getY(), targetMatrixSize)).detect();
     }
 
     /**
@@ -425,34 +401,29 @@ export default class Detector {
      * topLeft, topRight, bottomRight, and bottomLeft are the centers of the squares on the
      * diagonal just outside the bull's eye.
      */
-    private sampleGrid(image: BitMatrix, topLeft: ResultPoint, topRight: ResultPoint, bottomRight: ResultPoint, bottomLeft: ResultPoint): BitMatrix {
+    private sampleGrid(image: BitMatrix,
+        topLeft: ResultPoint,
+        topRight: ResultPoint,
+        bottomRight: ResultPoint,
+        bottomLeft: ResultPoint): BitMatrix {
+
         let sampler = GridSamplerInstance.getInstance();
         let dimension = this.getDimension();
 
         let low = dimension / 2 - this.nbCenterLayers;
         let high = dimension / 2 + this.nbCenterLayers;
 
-        return sampler.sampleGrid(
-            image,
+        return sampler.sampleGrid(image,
             dimension,
             dimension,
-            low,
-            low, // topleft
-            high,
-            low, // topright
-            high,
-            high, // bottomright
-            low,
-            high, // bottomleft
-            topLeft.getX(),
-            topLeft.getY(),
-            topRight.getX(),
-            topRight.getY(),
-            bottomRight.getX(),
-            bottomRight.getY(),
-            bottomLeft.getX(),
-            bottomLeft.getY()
-        );
+            low, low,   // topleft
+            high, low,  // topright
+            high, high, // bottomright
+            low, high,  // bottomleft
+            topLeft.getX(), topLeft.getY(),
+            topRight.getX(), topRight.getY(),
+            bottomRight.getX(), bottomRight.getY(),
+            bottomLeft.getX(), bottomLeft.getY());
     }
 
     /**
@@ -470,8 +441,8 @@ export default class Detector {
         let moduleSize = d / size;
         let px = p1.getX();
         let py = p1.getY();
-        let dx = (moduleSize * (p2.getX() - p1.getX())) / d;
-        let dy = (moduleSize * (p2.getY() - p1.getY())) / d;
+        let dx = moduleSize * (p2.getX() - p1.getX()) / d;
+        let dy = moduleSize * (p2.getY() - p1.getY()) / d;
         for (let i = 0; i < size; i++) {
             if (this.image.get(MathUtils.round(px + i * dx), MathUtils.round(py + i * dy))) {
                 result |= 1 << (size - i - 1);
@@ -484,7 +455,11 @@ export default class Detector {
      * @return true if the border of the rectangle passed in parameter is compound of white points only
      *         or black points only
      */
-    private isWhiteOrBlackRectangle(p1: Point, p2: Point, p3: Point, p4: Point): boolean {
+    private isWhiteOrBlackRectangle(p1: Point,
+        p2: Point,
+        p3: Point,
+        p4: Point): boolean {
+
         let corr = 3;
         p1 = new Point(p1.getX() - corr, p1.getY() + corr);
         p2 = new Point(p2.getX() - corr, p2.getY() - corr);
@@ -631,7 +606,7 @@ export default class Detector {
         if (this.nbLayers <= 4) {
             return 4 * this.nbLayers + 15;
         }
-        return 4 * this.nbLayers + 2 * (Math.trunc((this.nbLayers - 4) / 8) + 1) + 15;
+        return 4 * this.nbLayers + 2 * (Integer.truncDivision((this.nbLayers - 4) / 8) + 1) + 15;
     }
 
 }
