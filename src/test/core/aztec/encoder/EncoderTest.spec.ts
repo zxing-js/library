@@ -36,6 +36,9 @@ import AztecWriter from '../../../../core/aztec/AztecWriter';
 import ResultPoint from '../../../../core/ResultPoint';
 import StringEncoding from '../../../../core/util/StringEncoding';
 import Charset from '../../../../core/util/Charset';
+import { TextEncoder } from '@sinonjs/text-encoding';
+
+StringEncoding.customEncoder = (b, e) => new TextEncoder(e, { NONSTANDARD_allowLegacyEncoding: true }).encode(b);
 
 /**
  * Aztec 2D generator unit tests.
@@ -85,8 +88,8 @@ describe('EncoderTest', () => {
     );
   });
 
-  //@Test
-  //public void testEncode2() {
+  // @Test
+  // public void testEncode2() {
   it('testEncode2', () => {
     testEncode(
       'Aztec Code is a public domain 2D matrix barcode symbology' +
@@ -138,7 +141,7 @@ describe('EncoderTest', () => {
     );
   });
 
-  //@Test
+  // @Test
   // public void testAztecWriter() throws Exception {
 
   it('testAztecWriter', () => {
@@ -163,20 +166,20 @@ describe('EncoderTest', () => {
 
   // synthetic tests (encode-decode round-trip)
 
-  //@Test
-  //public void testEncodeDecode1() throws Exception {
+  // @Test
+  // public void testEncodeDecode1() throws Exception {
   it('testEncodeDecode1', () => {
     testEncodeDecode('Abc123!', true, 1);
   });
 
   // @Test
-  //public void testEncodeDecode2() throws Exception {
+  // public void testEncodeDecode2() throws Exception {
   it('testEncodeDecode2', () => {
     testEncodeDecode('Lorem ipsum. http://test/', true, 2);
   });
 
-  //@Test
-  //public void testEncodeDecode3() throws Exception {
+  // @Test
+  // public void testEncodeDecode3() throws Exception {
   it('testEncodeDecode3', () => {
     testEncodeDecode(
       'AAAANAAAANAAAANAAAANAAAANAAAANAAAANAAAANAAAANAAAAN',
@@ -185,8 +188,8 @@ describe('EncoderTest', () => {
     );
   });
 
-  //@Test
-  //public void testEncodeDecode4() throws Exception {
+  // @Test
+  // public void testEncodeDecode4() throws Exception {
   it('testEncodeDecode4', () => {
     testEncodeDecode(
       'http://test/~!@#*^%&)__ ;:\'"[]{}\\|-+-=`1029384',
@@ -206,8 +209,8 @@ describe('EncoderTest', () => {
     );
   });
 
-  //@Test
-  //public void testEncodeDecode10() throws Exception {
+  // @Test
+  // public void testEncodeDecode10() throws Exception {
   it('testEncodeDecode10', () => {
     testEncodeDecode(
       'In ut magna vel mauris malesuada dictum. Nulla ullamcorper metus quis diam' +
@@ -221,8 +224,8 @@ describe('EncoderTest', () => {
     );
   });
 
-  //@Test
-  //public void testEncodeDecode23() throws Exception {
+  // @Test
+  // public void testEncodeDecode23() throws Exception {
   it('testEncodeDecode23', () => {
     testEncodeDecode(
       'In ut magna vel mauris malesuada dictum. Nulla ullamcorper metus quis diam' +
@@ -252,8 +255,8 @@ describe('EncoderTest', () => {
     );
   });
 
-  //@Test
-  //public void testEncodeDecode31() throws Exception {
+  // @Test
+  // public void testEncodeDecode31() throws Exception {
   it('testEncodeDecode31', () => {
     testEncodeDecode(
       'In ut magna vel mauris malesuada dictum. Nulla ullamcorper metus quis diam' +
@@ -298,8 +301,8 @@ describe('EncoderTest', () => {
     );
   });
 
-  //@Test
-  //public void testGenerateModeMessage() {
+  // @Test
+  // public void testGenerateModeMessage() {
   it('testGenerateModeMessage', () => {
     testModeMessage(true, 2, 29, '.X .XXX.. ...X XX.. ..X .XX. .XX.X');
     testModeMessage(true, 4, 64, 'XX XXXXXX .X.. ...X ..XX .X.. XX..');
@@ -317,8 +320,8 @@ describe('EncoderTest', () => {
     );
   });
 
-  //@Test
-  //public void testStuffBits() {
+  // @Test
+  // public void testStuffBits() {
   it('testStuffBits', () => {
     testStuffBits(5, '.X.X. X.X.X .X.X.', '.X.X. X.X.X .X.X.');
     testStuffBits(5, '.X.X. ..... .X.X', '.X.X. ....X ..X.X');
@@ -345,8 +348,8 @@ describe('EncoderTest', () => {
     );
   });
 
-  //@Test
-  //public void testHighLevelEncode() {
+  // @Test
+  // public void testHighLevelEncode() {
   it('testHighLevelEncode', () => {
     testHighLevelEncodeString(
       'A. b.',
@@ -370,13 +373,13 @@ describe('EncoderTest', () => {
     );
     testHighLevelEncodeString(
       '. x://abc/.',
-      //P/S   '. '  L/L   'x'   P/S   ':'   P/S   '/'   P/S   '/'   'a'   'b'   'c'   P/S   '/'   D/L   '.'
+      // P/S   '. '  L/L   'x'   P/S   ':'   P/S   '/'   P/S   '/'   'a'   'b'   'c'   P/S   '/'   D/L   '.'
       '..... ...XX XXX.. XX..X ..... X.X.X ..... X.X.. ..... X.X.. ...X. ...XX ..X.. ..... X.X.. XXXX. XX.X'
     );
     // Uses Binary/Shift rather than Lower/Shift to save two bits.
     testHighLevelEncodeString(
       'ABCdEFG',
-      //'A'   'B'   'C'   B/S    =1    'd'     'E'   'F'   'G'
+      // 'A'   'B'   'C'   B/S    =1    'd'     'E'   'F'   'G'
       '...X. ...XX ..X.. XXXXX ....X .XX..X.. ..XX. ..XXX .X...'
     );
 
@@ -389,8 +392,8 @@ describe('EncoderTest', () => {
     );
   });
 
-  //@Test
-  //public void testHighLevelEncodeBinary() {
+  // @Test
+  // public void testHighLevelEncodeBinary() {
   // binary short form single byte
   it('testHighLevelEncodeBinary', () => {
     testHighLevelEncodeString(
@@ -422,7 +425,7 @@ describe('EncoderTest', () => {
     // getting into binary mode from digit mode
     testHighLevelEncodeString(
       '1234\0',
-      //D/L   '1'  '2'  '3'  '4'  U/L  B/S    =1    \0
+      // D/L   '1'  '2'  '3'  '4'  U/L  B/S    =1    \0
       'XXXX. ..XX .X.. .X.X .XX. XXX. XXXXX ....X ........'
     );
 
@@ -509,8 +512,8 @@ describe('EncoderTest', () => {
     testHighLevelEncodeString(sb.toString(), 21 + 64 * 8);
   });
 
-  //@Test
-  //public void testHighLevelEncodePairs() {
+  // @Test
+  // public void testHighLevelEncodePairs() {
   // Typical usage
   it('testHighLevelEncodePairs', () => {
     testHighLevelEncodeString(
@@ -540,8 +543,8 @@ describe('EncoderTest', () => {
     );
   });
 
-  //@Test
-  //public void testUserSpecifiedLayers() {
+  // @Test
+  // public void testUserSpecifiedLayers() {
   it('testUserSpecifiedLayers', () => {
     const alphabet: Uint8Array = StringUtils.getBytes(
       'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
@@ -564,14 +567,14 @@ describe('EncoderTest', () => {
 
     try {
       Encoder.encode(alphabet, 25, -1);
-      fail("Encode should have failed.  Text can't fit in 1-layer compact");
+      fail('Encode should have failed.  Text can\'t fit in 1-layer compact');
     } catch (expected) {
       // continue
     }
   });
 
-  //@Test
-  //public void testBorderCompact4Case() {
+  // @Test
+  // public void testBorderCompact4Case() {
   it('testBorderCompact4Case', () => {
     // Compact(4) con hold 608 bits of information, but at most 504 can be data.  Rest must
     // be error correction
@@ -584,7 +587,7 @@ describe('EncoderTest', () => {
     );
     try {
       Encoder.encode(data, 0, -4);
-      fail("Encode should have failed.  Text can't fit in 1-layer compact");
+      fail('Encode should have failed.  Text can\'t fit in 1-layer compact');
     } catch (expected) {
       // continue
     }
@@ -776,8 +779,6 @@ describe('EncoderTest', () => {
   }
 
   function testHighLevelEncodeString(s: string, expectedBits: string | number) {
-    const jhu = StringUtils.getBytes(s, StandardCharsets.ISO_8859_1);
-
     const bits: BitArray = new HighLevelEncoder(
       StringUtils.getBytes(s, StandardCharsets.ISO_8859_1)
     ).encode();
