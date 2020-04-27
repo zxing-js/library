@@ -101,8 +101,8 @@ export default class Integer {
     return i & 0x3f;
   }
 
-  public static truncDivision(i: number): number {
-    return Math.trunc(i);
+  public static truncDivision(dividend: number, divisor: number): number {
+    return Math.trunc(dividend / divisor);
   }
 
   /**

@@ -209,7 +209,7 @@ describe('DetectorTest', () => {
     }
 
     function getOrientationPoints(code: AztecCode): Point[] {
-        let center: number = Integer.truncDivision(code.getMatrix().getWidth() / 2);
+        let center: number = Integer.truncDivision(code.getMatrix().getWidth(), 2);
         let offset: number = code.isCompact() ? 5 : 7;
         let result: Point[] = [];
         for (let xSign: number = -1; xSign <= 1; xSign += 2) {

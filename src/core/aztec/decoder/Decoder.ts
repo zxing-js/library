@@ -290,11 +290,11 @@ export default class Decoder {
                 alignmentMap[i] = i;
             }
         } else {
-            let matrixSize = baseMatrixSize + 1 + 2 * Integer.truncDivision((Integer.truncDivision(baseMatrixSize / 2) - 1) / 15);
+            let matrixSize = baseMatrixSize + 1 + 2 * Integer.truncDivision((Integer.truncDivision(baseMatrixSize, 2) - 1), 15);
             let origCenter = baseMatrixSize / 2;
-            let center = Integer.truncDivision(matrixSize / 2);
+            let center = Integer.truncDivision(matrixSize, 2);
             for (let i = 0; i < origCenter; i++) {
-                let newOffset = i + Integer.truncDivision(i / 15);
+                let newOffset = i + Integer.truncDivision(i, 15);
                 alignmentMap[origCenter - i - 1] = center - newOffset - 1;
                 alignmentMap[origCenter + i] = center + newOffset + 1;
             }

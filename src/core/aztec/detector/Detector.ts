@@ -606,7 +606,7 @@ export default class Detector {
         if (this.nbLayers <= 4) {
             return 4 * this.nbLayers + 15;
         }
-        return 4 * this.nbLayers + 2 * (Integer.truncDivision((this.nbLayers - 4) / 8) + 1) + 15;
+        return 4 * this.nbLayers + 2 * (Integer.truncDivision((this.nbLayers - 4), 8) + 1) + 15;
     }
 
 }
