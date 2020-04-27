@@ -24,6 +24,7 @@ import IllegalStateException from '../../IllegalStateException';
 import FormatException from '../../FormatException';
 import { StringUtils } from '../../..';
 import Integer from '../../util/Integer';
+import { int } from '../../../customTypings';
 
 // import java.util.Arrays;
 
@@ -120,8 +121,8 @@ export default class Decoder {
                         index = endIndex;  // Force outer loop to exit
                         break;
                     }
-                    let code = Decoder.readCode(correctedBits, index, 8);
-                    result += StringUtils.getCharAt(code);
+                    const code: int = Decoder.readCode(correctedBits, index, 8);
+                    result += /*(char)*/ StringUtils.castAsNonUtf8Char(code);
                     index += 8;
                 }
                 // Go back to whatever mode we had been in

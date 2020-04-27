@@ -36,9 +36,10 @@ import AztecWriter from '../../../../core/aztec/AztecWriter';
 import ResultPoint from '../../../../core/ResultPoint';
 import StringEncoding from '../../../../core/util/StringEncoding';
 import Charset from '../../../../core/util/Charset';
-import { TextEncoder } from '@sinonjs/text-encoding';
+import { TextEncoder, TextDecoder } from '@sinonjs/text-encoding';
 
 StringEncoding.customEncoder = (b, e) => new TextEncoder(e, { NONSTANDARD_allowLegacyEncoding: true }).encode(b);
+StringEncoding.customDecoder = (s, e) => new TextDecoder(e, { NONSTANDARD_allowLegacyEncoding: true }).decode(s);
 
 /**
  * Aztec 2D generator unit tests.
