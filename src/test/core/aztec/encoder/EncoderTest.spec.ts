@@ -15,7 +15,7 @@
  */
 
 import AztecCode from '../../../../core/aztec/encoder/AztecCode';
-import { assertEquals, assertTrue, assertFalse } from '../../util/AssertUtils';
+import { assertEquals, assertTrue, assertFalse, assertArrayEquals } from '../../util/AssertUtils';
 import BitMatrix from '../../../../core/common/BitMatrix';
 import {
   BarcodeFormat,
@@ -162,7 +162,14 @@ describe('EncoderTest', () => {
       Encoder.DEFAULT_AZTEC_LAYERS
     );
     const expectedMatrix: BitMatrix = aztec.getMatrix();
-    assertEquals(matrix, expectedMatrix);
+    // TYPESCRIPTPORT: here we have to compare each property
+    // since assertEquals would strictly compare two different
+    // objects with same values and fail
+    assertEquals(matrix.getHeight(), expectedMatrix.getHeight());
+    assertEquals(matrix.getRowSize(), expectedMatrix.getRowSize());
+    assertEquals(matrix.getWidth(), expectedMatrix.getWidth());
+    // since bits is private we have to access it this way
+    assertArrayEquals(matrix['bits'], expectedMatrix['bits']);
   });
 
   // synthetic tests (encode-decode round-trip)
