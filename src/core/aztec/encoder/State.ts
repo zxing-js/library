@@ -196,7 +196,7 @@ export default /*final*/ class State {
       token !== null;
       token = token.getPrevious()
     ) {
-      symbols.unshift(this.token);
+      symbols.unshift(token);
     }
     let bitArray: BitArray = new BitArray();
     // Add each token to the result.

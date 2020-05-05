@@ -23,11 +23,12 @@ import BitMatrix from '../../../../core/common/BitMatrix';
 // import com.google.zxing.common.DecoderResult;
 // import org.junit.Test;
 // import org.junit.Assert;
-import { assertEquals, assertArrayEquals} from '../../util/AssertUtils';
+import { assertEquals, assertArrayEquals, assertThrow } from '../../util/AssertUtils';
 
 import ResultPoint from '../../../../core/ResultPoint';
 import Decoder from '../../../../core/aztec/decoder/Decoder';
 import AztecDetectorResult from '../../../../core/aztec/AztecDetectorResult';
+import FormatException from '../../../../core/FormatException';
 
 /**
  * Tests {@link Decoder}.
@@ -112,7 +113,7 @@ describe('DecoderTest', () => {
             + 'X X . X . X . . . X . X . . . . X X . X . . X X . . . \n',
             'X ', '. ');
         const r = new AztecDetectorResult(matrix, NO_POINTS, true, 16, 4);
-        new Decoder().decode(r);
+        assertThrow(() => new Decoder().decode(r), FormatException);
     });
 
     /**
@@ -151,7 +152,7 @@ describe('DecoderTest', () => {
             + 'X X . . . X X . . X . X . . . . X X . X . . X . X . X \n',
             'X ', '. ');
         const r = new AztecDetectorResult(matrix, NO_POINTS, true, 16, 4);
-        new Decoder().decode(r);
+        assertThrow(() => new Decoder().decode(r), FormatException);
     });
 
     /**

@@ -34,7 +34,7 @@ import BitMatrix from '../../../../core/common/BitMatrix';
 // import com.google.zxing.common.DecoderResult;
 import DecoderResult from '../../../../core/common/DecoderResult';
 // import org.junit.Assert;
-import { assertEquals, assertNotNull } from '../../util/AssertUtils';
+import { assertEquals, assertNotNull, assertThrow } from '../../util/AssertUtils';
 import { fail } from 'assert';
 // import org.junit.Test;
 
@@ -48,6 +48,7 @@ import Arrays from '../../../../core/util/Arrays';
 import Random from '../../util/Random';
 import StringUtils from '../../../../core/common/StringUtils';
 import StandardCharsets from '../../../../core/util/StandardCharsets';
+import Integer from '../../../../core/util/Integer';
 // import java.util.TreeSet;
 
 /**
@@ -121,10 +122,10 @@ describe('DetectorTest', () => {
                 // Try a few random three-bit errors;
                 for (let i = 0; i < 5; i++) {
                     let copy: BitMatrix = clone(matrix);
-                    let errors: /* Collection<Integer> */ number[] = /* new TreeSet<>() */[];
-                    while (errors.length < 3) {
+                    let errors: /* Collection<Integer> */ Set<number> = /* new TreeSet<>() */ new Set();
+                    while (errors.size < 3) {
                         // Quick and dirty way of getting three distinct integers between 1 and n.
-                        errors.push(random.nextInt(orientationPoints.length));
+                        errors.add(random.nextInt(orientationPoints.length));
                     }
                     for (const error of errors) {
                         copy.flip(orientationPoints[error].getX(), orientationPoints[error].getY());
@@ -208,7 +209,7 @@ describe('DetectorTest', () => {
     }
 
     function getOrientationPoints(code: AztecCode): Point[] {
-        let center: number = code.getMatrix().getWidth() / 2;
+        let center: number = Integer.truncDivision(code.getMatrix().getWidth(), 2);
         let offset: number = code.isCompact() ? 5 : 7;
         let result: Point[] = [];
         for (let xSign: number = -1; xSign <= 1; xSign += 2) {

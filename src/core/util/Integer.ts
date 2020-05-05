@@ -101,6 +101,10 @@ export default class Integer {
     return i & 0x3f;
   }
 
+  public static truncDivision(dividend: number, divisor: number): number {
+    return Math.trunc(dividend / divisor);
+  }
+
   /**
    * Converts A string to an integer.
    * @param s A string to convert into a number.

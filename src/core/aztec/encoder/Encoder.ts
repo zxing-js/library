@@ -8,6 +8,7 @@ import GenericGF from '../../common/reedsolomon/GenericGF';
 import HighLevelEncoder from './HighLevelEncoder';
 
 import { int } from '../../../customTypings';
+import Integer from '../../util/Integer';
 
 /*
  * Copyright 2013 ZXing authors
@@ -76,7 +77,7 @@ export default /*public final*/ class Encoder {
     let bits: BitArray = new HighLevelEncoder(data).encode();
 
     // stuff bits and choose symbol size
-    let eccBits: int = bits.getSize() * minECCPercent / 100 + 11;
+    let eccBits: int = Integer.truncDivision((bits.getSize() * minECCPercent), 100) + 11;
     let totalSizeBits: int = bits.getSize() + eccBits;
     let compact: boolean;
     let layers: int;
@@ -150,11 +151,11 @@ export default /*public final*/ class Encoder {
         alignmentMap[i] = i;
       }
     } else {
-      matrixSize = baseMatrixSize + 1 + 2 * ((baseMatrixSize / 2 - 1) / 15);
-      let origCenter: int = baseMatrixSize / 2;
-      let center: int = matrixSize / 2;
+      matrixSize = baseMatrixSize + 1 + 2 * Integer.truncDivision((Integer.truncDivision(baseMatrixSize, 2) - 1), 15);
+      let origCenter: int = Integer.truncDivision(baseMatrixSize, 2);
+      let center: int = Integer.truncDivision(matrixSize, 2);
       for (let i /*int*/ = 0; i < origCenter; i++) {
-        let newOffset: int = i + i / 15;
+        let newOffset: int = i + Integer.truncDivision(i, 15);
         alignmentMap[origCenter - i - 1] = center - newOffset - 1;
         alignmentMap[origCenter + i] = center + newOffset + 1;
       }
@@ -189,15 +190,15 @@ export default /*public final*/ class Encoder {
 
     // draw alignment marks
     if (compact) {
-      Encoder.drawBullsEye(matrix, matrixSize / 2, 5);
+      Encoder.drawBullsEye(matrix, Integer.truncDivision(matrixSize, 2), 5);
     } else {
-      Encoder.drawBullsEye(matrix, matrixSize / 2, 7);
-      for (let i /*int*/ = 0, j = 0; i < baseMatrixSize / 2 - 1; i += 15, j += 16) {
-        for (let k /*int*/ = (matrixSize / 2) & 1; k < matrixSize; k += 2) {
-          matrix.set(matrixSize / 2 - j, k);
-          matrix.set(matrixSize / 2 + j, k);
-          matrix.set(k, matrixSize / 2 - j);
-          matrix.set(k, matrixSize / 2 + j);
+      Encoder.drawBullsEye(matrix, Integer.truncDivision(matrixSize, 2), 7);
+      for (let i /*int*/ = 0, j = 0; i < Integer.truncDivision(baseMatrixSize, 2) - 1; i += 15, j += 16) {
+        for (let k /*int*/ = Integer.truncDivision(matrixSize, 2) & 1; k < matrixSize; k += 2) {
+          matrix.set(Integer.truncDivision(matrixSize, 2) - j, k);
+          matrix.set(Integer.truncDivision(matrixSize, 2) + j, k);
+          matrix.set(k, Integer.truncDivision(matrixSize, 2) - j);
+          matrix.set(k, Integer.truncDivision(matrixSize, 2) + j);
         }
       }
     }
@@ -243,7 +244,7 @@ export default /*public final*/ class Encoder {
   }
 
   private static drawModeMessage(matrix: BitMatrix, compact: boolean, matrixSize: int, modeMessage: BitArray): void {
-    let center: int = matrixSize / 2;
+    let center: int = Integer.truncDivision(matrixSize, 2);
     if (compact) {
       for (let i /*int*/ = 0; i < 7; i++) {
         let offset: int = center - 3 + i;
@@ -262,7 +263,7 @@ export default /*public final*/ class Encoder {
       }
     } else {
       for (let i /*int*/ = 0; i < 10; i++) {
-        let offset: int = center - 5 + i + i / 5;
+        let offset: int = center - 5 + i + Integer.truncDivision(i, 5);
         if (modeMessage.get(i)) {
           matrix.set(offset, center - 7);
         }
@@ -283,7 +284,7 @@ export default /*public final*/ class Encoder {
     // bitArray is guaranteed to be a multiple of the wordSize, so no padding needed
     let messageSizeInWords: int = bitArray.getSize() / wordSize;
     let rs: ReedSolomonEncoder = new ReedSolomonEncoder(Encoder.getGF(wordSize));
-    let totalWords: int = totalBits / wordSize;
+    let totalWords: int = Integer.truncDivision(totalBits, wordSize);
     let messageWords: Int32Array = Encoder.bitsToWords(bitArray, wordSize, totalWords);
     rs.encode(messageWords, totalWords - messageSizeInWords);
     let startPad: int = totalBits % wordSize;

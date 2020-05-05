@@ -22,6 +22,9 @@ import GenericGF from '../../common/reedsolomon/GenericGF';
 import ReedSolomonDecoder from '../../common/reedsolomon/ReedSolomonDecoder';
 import IllegalStateException from '../../IllegalStateException';
 import FormatException from '../../FormatException';
+import { StringUtils } from '../../..';
+import Integer from '../../util/Integer';
+import { int } from '../../../customTypings';
 
 // import java.util.Arrays;
 
@@ -97,7 +100,7 @@ export default class Decoder {
         let endIndex: number = correctedBits.length;
         let latchTable = Table.UPPER; // table most recently latched to
         let shiftTable = Table.UPPER; // table to use for the next read
-        let result: string;
+        let result: string = '';
         let index = 0;
         while (index < endIndex) {
             if (shiftTable === Table.BINARY) {
@@ -118,8 +121,8 @@ export default class Decoder {
                         index = endIndex;  // Force outer loop to exit
                         break;
                     }
-                    let code = Decoder.readCode(correctedBits, index, 8);
-                    result += code;
+                    const code: int = Decoder.readCode(correctedBits, index, 8);
+                    result += /*(char)*/ StringUtils.castAsNonUtf8Char(code);
                     index += 8;
                 }
                 // Go back to whatever mode we had been in
@@ -247,7 +250,7 @@ export default class Decoder {
         for (let i = 0; i < numDataCodewords; i++) {
             let dataWord = dataWords[i];
             if (dataWord === 0 || dataWord === mask) {
-                throw new FormatException;
+                throw new FormatException();
             } else if (dataWord === 1 || dataWord === mask - 1) {
                 stuffedBits++;
             }
@@ -288,11 +291,11 @@ export default class Decoder {
                 alignmentMap[i] = i;
             }
         } else {
-            let matrixSize = baseMatrixSize + 1 + 2 * ((baseMatrixSize / 2 - 1) / 15);
+            let matrixSize = baseMatrixSize + 1 + 2 * Integer.truncDivision((Integer.truncDivision(baseMatrixSize, 2) - 1), 15);
             let origCenter = baseMatrixSize / 2;
-            let center = matrixSize / 2;
+            let center = Integer.truncDivision(matrixSize, 2);
             for (let i = 0; i < origCenter; i++) {
-                let newOffset = i + i / 15;
+                let newOffset = i + Integer.truncDivision(i, 15);
                 alignmentMap[origCenter - i - 1] = center - newOffset - 1;
                 alignmentMap[origCenter + i] = center + newOffset + 1;
             }
