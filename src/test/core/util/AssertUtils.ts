@@ -20,8 +20,9 @@ export default class AssertUtils {
 
 
 export const assertEquals = assert.strictEqual;
-export const assertArrayEquals = (a: Array<any> | Uint8Array, b: Array<any> | Uint8Array) => assert.deepStrictEqual(a, b);
+export const assertArrayEquals = (a: Array<any> | Uint8Array | Int32Array, b: Array<any> | Uint8Array| Int32Array) => assert.deepStrictEqual(a, b);
 export const assertFalse = x => assert.strictEqual(!!x, false);
 export const assertTrue = x => assert.strictEqual(!!x, true);
 export const assertNull = x => assert.strictEqual(x, null);
 export const assertNotNull = x => assert.notStrictEqual(x, null);
+export const assertThrow = (func, err) => assert.throws(func, err);

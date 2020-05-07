@@ -1,6 +1,7 @@
 import CharacterSetECI from '../common/CharacterSetECI';
 import StringEncoding from './StringEncoding';
 import { int } from '../../customTypings';
+import StringUtils from '../common/StringUtils';
 
 
 export default class StringBuilder {
@@ -19,7 +20,7 @@ export default class StringBuilder {
       this.value += s.toString();
     } else if (this.encoding) {
       // use passed format (fromCharCode will return UTF8 encoding)
-      this.value += StringEncoding.decode(new Uint8Array([s]), this.encoding);
+      this.value += StringUtils.castAsNonUtf8Char(s, this.encoding);
     } else {
       // correctly converts from UTF-8, but not other encodings
       this.value += String.fromCharCode(s);

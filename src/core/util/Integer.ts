@@ -83,6 +83,10 @@ export default class Integer {
     return i.toString(16);
   }
 
+  public static toBinaryString(intNumber: number): string {
+    return String(parseInt(String(intNumber), 2));
+  }
+
   // Returns the number of one-bits in the two's complement binary representation of the specified int value. This function is sometimes referred to as the population count.
   // Returns:
   // the number of one-bits in the two's complement binary representation of the specified int value.
@@ -95,6 +99,10 @@ export default class Integer {
     i = i + (i >>> 16);
 
     return i & 0x3f;
+  }
+
+  public static truncDivision(dividend: number, divisor: number): number {
+    return Math.trunc(dividend / divisor);
   }
 
   /**
