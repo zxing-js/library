@@ -1,6 +1,6 @@
 {
     "name": "@zxing/library",
-    "version": "0.16.3",
+    "version": "0.17.0",
     "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
     "keywords": [
         "reader",
@@ -115,6 +115,6 @@
         "yarn": "^1.17.3"
     },
     "optionalDependencies": {
-      "@sinonjs/text-encoding": "0.7.1"
+        "@sinonjs/text-encoding": "0.7.1"
     }
 }
