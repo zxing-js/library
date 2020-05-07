@@ -19,6 +19,7 @@
 import BarcodeFormat from '../../../core/BarcodeFormat';
 import MultiFormatReader from '../../../core/MultiFormatReader';
 import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
+import '@sinonjs/text-encoding';
 import { TextDecoder, TextEncoder } from '@sinonjs/text-encoding';
 import StringEncoding from '../../../core/util/StringEncoding';
 
