@@ -19,7 +19,7 @@
 import BarcodeFormat from '../../../core/BarcodeFormat';
 import MultiFormatReader from '../../../core/MultiFormatReader';
 import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
-import '@sinonjs/text-encoding';
+import 'text-encoding';
 import { TextDecoder, TextEncoder } from '@sinonjs/text-encoding';
 import StringEncoding from '../../../core/util/StringEncoding';
 
@@ -45,6 +45,6 @@ export default class QRCodeBlackBox2Spec extends AbstractBlackBoxSpec {
 describe('QRCodeBlackBox.2', () => {
     it('testBlackBox', async () => {
         const test = new QRCodeBlackBox2Spec();
-        return await test.testBlackBox();
+        await test.testBlackBox();
     });
 });

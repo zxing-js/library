@@ -35,6 +35,6 @@ class Code128BlackBox1Spec extends AbstractBlackBoxSpec {
 describe('Code128BlackBox.1', () => {
     it('testBlackBox', async () => {
         const test = new Code128BlackBox1Spec();
-        return await test.testBlackBox();
+        await test.testBlackBox();
     });
 });

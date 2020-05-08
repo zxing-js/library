@@ -16,7 +16,7 @@
 
 /*package com.google.zxing.common;*/
 
-import * as assert from 'assert';
+import { assertEquals } from '../util/AssertUtils';
 import SharpImage from '../util/SharpImage';
 import SharpImageLuminanceSource from '../SharpImageLuminanceSource';
 import BarcodeFormat from '../../../core/BarcodeFormat';
@@ -141,7 +141,7 @@ abstract class AbstractBlackBoxSpec {
    * @throws IOException
    */
   protected getImageFiles(): Array<string> {
-    assert.strictEqual(fs.existsSync(this.testBase), true, 'Please download and install test images, and run from the \'core\' directory');
+    assertEquals(fs.existsSync(this.testBase), true, 'Please download and install test images, and run from the \'core\' directory');
     return this.walkDirectory(this.testBase);
   }
 
@@ -157,34 +157,23 @@ abstract class AbstractBlackBoxSpec {
    *
    * @throws IOException
    */
-  public async testBlackBox(): Promise<Error> {
+  public async testBlackBox(): Promise<void> {
     try {
-      const error = await this.testBlackBoxCountingResults(true);
+      await this.testBlackBoxCountingResults(true);
       console.log('testBlackBox finished.');
-      return error;
     } catch (e) {
       console.log('Test ended with error: ', e);
-      return e;
+      throw e;
     }
   }
 
   /**
    * @throws IOException
    */
-  private async testBlackBoxCountingResults(assertOnFailure: boolean): Promise<any> {
-    try {
-      assert.strictEqual(this.testResults.length > 0, true);
-    } catch (e) {
-      return e;
-    }
+  private async testBlackBoxCountingResults(assertOnFailure: boolean): Promise<void> {
+    assertEquals(this.testResults.length > 0, true);
 
-    let imageFiles: Array<string>;
-
-    try {
-      imageFiles = this.getImageFiles();
-    } catch (e) {
-      return e;
-    }
+    const imageFiles: Array<string> = this.getImageFiles();
     const testCount: number /*int*/ = this.testResults.length;
 
     const passedCounts = new Int32Array(testCount);
@@ -209,11 +198,7 @@ abstract class AbstractBlackBoxSpec {
           expectedText = AbstractBlackBoxSpec.readTextFileAsString(expectedTextFile);
         } else {
           expectedTextFile = path.resolve(this.testBase, fileBaseName + '.bin');
-          try {
-            assert.strictEqual(fs.existsSync(expectedTextFile), true, 'result bin/text file should exists');
-          } catch (e) {
-            return e;
-          }
+          assertEquals(fs.existsSync(expectedTextFile), true, 'result bin/text file should exists');
           expectedText = AbstractBlackBoxSpec.readBinFileAsString(expectedTextFile);
         }
 
@@ -311,18 +296,12 @@ abstract class AbstractBlackBoxSpec {
         const testResult = this.testResults[x];
         const label = '      Rotation ' + testResult.getRotation() + ' degrees: Too many images failed.';
 
-        try {
-          assert.strictEqual(passedCounts[x] >= testResult.getMustPassCount(), true, label);
-          assert.strictEqual(tryHarderCounts[x] >= testResult.getTryHarderCount(), true, `Try harder, ${label}`);
-          assert.strictEqual(misreadCounts[x] <= testResult.getMaxMisreads(), true, label);
-          assert.strictEqual(tryHarderMisreadCounts[x] <= testResult.getMaxTryHarderMisreads(), true, `Try harder, ${label}`);
-        } catch (e) {
-          return e;
-        }
+        assertEquals(passedCounts[x] >= testResult.getMustPassCount(), true, label);
+        assertEquals(tryHarderCounts[x] >= testResult.getTryHarderCount(), true, `Try harder, ${label}`);
+        assertEquals(misreadCounts[x] <= testResult.getMaxMisreads(), true, label);
+        assertEquals(tryHarderMisreadCounts[x] <= testResult.getMaxTryHarderMisreads(), true, `Try harder, ${label}`);
       }
     }
-
-    return;
   }
 
   /**

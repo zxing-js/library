@@ -37,7 +37,7 @@ class ITFBlackBoxSpec extends AbstractBlackBoxSpec {
 describe('ITFBlackBox', () => {
     it('testBlackBox', async () => {
         const test = new ITFBlackBoxSpec();
-        return await test.testBlackBox();
+        await test.testBlackBox();
     });
 });
 
