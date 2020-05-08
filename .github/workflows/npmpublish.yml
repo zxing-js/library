@@ -37,11 +37,16 @@ jobs:
       - name: Build the application
         run: yarn build
       
+      - name: Build the package
+        run: |
+          npm pack
+          mv zxing-library-v*.tgz package.tgz
+      
       - name: Upload build artifacts
         uses: actions/upload-artifact@v1
         with:
-          name: build-result
-          path: .
+          name: package
+          path: ./package.tgz
 
   publish-npm:
     needs: build
@@ -51,14 +56,14 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v1
         with:
-          name: build-result
+          name: package
 
       - uses: actions/setup-node@v1
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
 
-      - run: npm publish
+      - run: npm publish package.tgz
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
@@ -70,13 +75,13 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v1
         with:
-          name: build-result
+          name: package
 
       - uses: actions/setup-node@v1
         with:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
 
-      - run: npm publish
+      - run: npm publish package.tgz
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
