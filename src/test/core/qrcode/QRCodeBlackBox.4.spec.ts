@@ -38,8 +38,8 @@ export default class QRCodeBlackBox4Spec extends AbstractBlackBoxSpec {
 }
 
 describe('QRCodeBlackBox.4', () => {
-    it('testBlackBox', done => {
+    it('testBlackBox', async () => {
         const test = new QRCodeBlackBox4Spec();
-        return test.testBlackBox(done);
+        return await test.testBlackBox();
     });
 });

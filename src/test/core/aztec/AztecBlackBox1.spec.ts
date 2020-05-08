@@ -39,8 +39,8 @@ export /*public final*/ class AztecBlackBox1TestCase extends AbstractBlackBoxSpe
 }
 
 describe('AztecBlackBox.1', () => {
-    it('testBlackBox', done => {
+    it('testBlackBox', async () => {
         const test = new AztecBlackBox1TestCase();
-        return test.testBlackBox(done);
+        return await test.testBlackBox();
     });
 });

@@ -33,8 +33,8 @@ class Code39BlackBox3Spec extends AbstractBlackBoxSpec {
 }
 
 describe('Code39BlackBox.3', () => {
-    it('testBlackBox', done => {
+    it('testBlackBox', async () => {
         const test = new Code39BlackBox3Spec();
-        return test.testBlackBox(done);
+        return await test.testBlackBox();
     });
 });

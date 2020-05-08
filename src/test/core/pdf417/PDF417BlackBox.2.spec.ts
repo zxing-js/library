@@ -40,8 +40,8 @@ class PDF417BlackBox2Spec extends AbstractBlackBoxSpec {
 }
 
 describe('PDF417BlackBox.2', () => {
-  it('testBlackBox', done => {
+  it('testBlackBox', async () => {
     const test = new PDF417BlackBox2Spec();
-    return test.testBlackBox(done);
+    return await test.testBlackBox();
   });
 });
