@@ -40,7 +40,7 @@ jobs:
       - name: Build the package
         run: |
           npm pack
-          mv zxing-library-v*.tgz package.tgz
+          mv zxing-library-*.tgz package.tgz
       
       - name: Upload build artifacts
         uses: actions/upload-artifact@v1
