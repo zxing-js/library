@@ -76,6 +76,23 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: pack-artifact
+          
+      - name: Install JQ for JSON handling
+        run: sudo apt-get install jq
+      
+      - name: Get repository name
+        run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+        
+      - name: Rename NPM package
+        run: |
+          ORG_NAME="zxing-js"
+          PACKAGE_NAME="@$ORG_NAME/$REPOSITORY_NAME"
+          tar -xzf ./pack-artifact/package.tgz
+          cd ./package
+          mv package.json temp.json
+          jq -r --arg NAME $PACKAGE_NAME '.name |= $NAME' temp.json > package.json
+          rm temp.json
 
       - uses: actions/setup-node@v1
         with:
@@ -84,4 +101,4 @@ jobs:
 
       - run: npm publish ./pack-artifact/package.tgz
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GPR_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
