@@ -13,7 +13,7 @@
     "sourceMap": true,
     "declaration": true,
     "preserveConstEnums": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
   },
   "include": [
     "src/**/*.ts"

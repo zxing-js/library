@@ -29,6 +29,15 @@ import QRCode from '../../../../core/qrcode/encoder/QRCode';
 import StringBuilder from '../../../../core/util/StringBuilder';
 import StringEncoding from '../../../../core/util/StringEncoding';
 import WriterException from '../../../../core/WriterException';
+import { TextDecoder, TextEncoder } from '@sinonjs/text-encoding';
+
+function createCustomEncoder(e: string) {
+  return new TextEncoder(e, { NONSTANDARD_allowLegacyEncoding: true });
+}
+
+function createCustomDecoder(e: string) {
+  return new TextDecoder(e, { NONSTANDARD_allowLegacyEncoding: true });
+}
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator
@@ -65,6 +74,9 @@ describe('Encoder', () => {
     });
 
     it('testChooseMode', () => {
+
+        StringEncoding.customDecoder = (b, e) => createCustomDecoder(e).decode(b);
+
         // Numeric mode.
         assert.strictEqual(Mode.NUMERIC.equals(Encoder.chooseMode('0')), true);
         assert.strictEqual(Mode.NUMERIC.equals(Encoder.chooseMode('0123456789')), true);
@@ -87,6 +99,8 @@ describe('Encoder', () => {
 
         // Sou-Utsu-Byou in Kanji in Shift_JIS.
         assert.strictEqual(Mode.BYTE.equals(Encoder.chooseMode(shiftJISString(Uint8Array.from([0xe, 0x4, 0x9, 0x5, 0x9, 0x61])))), true);
+
+        StringEncoding.customDecoder = undefined;
     });
 
     it('testEncode', () => {
@@ -180,6 +194,9 @@ describe('Encoder', () => {
     });
 
     it('testEncodeKanjiMode', () => {
+
+        StringEncoding.customEncoder = (b, e) => createCustomEncoder(e).encode(b);
+
         const hints = new Map<EncodeHintType, any>(); // EncodeHintType.class)
         hints.set(EncodeHintType.CHARACTER_SET, CharacterSetECI.SJIS.getName());
         // Nihon in Kanji
@@ -214,6 +231,8 @@ describe('Encoder', () => {
             ' 1 1 1 1 1 1 1 0 1 1 0 1 0 1 1 1 0 0 1 0 0\n' +
             '>>\n';
         assert.strictEqual(qrCode.toString(), expected);
+
+        StringEncoding.customEncoder = undefined;
     });
 
     it('testEncodeShiftjisNumeric', () => {
@@ -286,6 +305,9 @@ describe('Encoder', () => {
     });
 
     it('testAppendBytes', () => {
+        StringEncoding.customEncoder = (b, e) => createCustomEncoder(e).encode(b);
+        StringEncoding.customDecoder = (b, e) => createCustomDecoder(e).decode(b);
+
         // Should use appendNumericBytes.
         // 1 = 01 = 0001 in 4 bits.
         let bits = new BitArray();
@@ -319,6 +341,9 @@ describe('Encoder', () => {
         bits = new BitArray();
         Encoder.appendBytes(shiftJISString(Uint8Array.from([0x93, 0x5f])), Mode.KANJI, bits, Encoder.DEFAULT_BYTE_MODE_ENCODING);
         assert.strictEqual(bits.toString(), ' .XX.XX.. XXXXX');
+
+        StringEncoding.customEncoder = undefined;
+        StringEncoding.customDecoder = undefined;
     });
 
     it('testTerminateBits', () => {
@@ -509,12 +534,18 @@ describe('Encoder', () => {
 
     // Numbers are from page 21 of JISX0510:2004
     it('testAppendKanjiBytes', () => {
+        StringEncoding.customEncoder = (b, e) => createCustomEncoder(e).encode(b);
+        StringEncoding.customDecoder = (b, e) => createCustomDecoder(e).decode(b);
+
         const bits = new BitArray();
         Encoder.appendKanjiBytes(shiftJISString(Uint8Array.from([0x93, 0x5f])), bits);
         assert.strictEqual(bits.toString(), ' .XX.XX.. XXXXX');
         Encoder.appendKanjiBytes(shiftJISString(Uint8Array.from([0xe4, 0xaa])), bits);
         assert.strictEqual(bits.toString(), ' .XX.XX.. XXXXXXX. X.X.X.X. X.');
-    });
+
+        StringEncoding.customEncoder = undefined;
+        StringEncoding.customDecoder = undefined;
+      });
 
     // Numbers are from http://www.swetake.com/qr/qr3.html and
     // http://www.swetake.com/qr/qr9.html

@@ -27,6 +27,8 @@ import DetectionResultColumn from './DetectionResultColumn';
 import Codeword from './Codeword';
 import BarcodeValue from './BarcodeValue';
 
+import { int } from '../../../customTypings';
+
 /**
  * @author Guenther Grau
  */

@@ -19,6 +19,10 @@
 import BarcodeFormat from '../../../core/BarcodeFormat';
 import MultiFormatReader from '../../../core/MultiFormatReader';
 import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
+import StringEncoding from '../../../core/util/StringEncoding';
+import { TextDecoder } from '@sinonjs/text-encoding';
+
+StringEncoding.customDecoder = (b, e) => new TextDecoder(e, { NONSTANDARD_allowLegacyEncoding: true }).decode(b);
 
 /**
  * This test consists of perfect, computer-generated images. We should have 100% passing.
@@ -36,8 +40,8 @@ class PDF417BlackBox1Spec extends AbstractBlackBoxSpec {
 }
 
 describe('PDF417BlackBox.1', () => {
-  it('testBlackBox', done => {
+  it('testBlackBox', async () => {
     const test = new PDF417BlackBox1Spec();
-    return test.testBlackBox(done);
+    await test.testBlackBox();
   });
 });

@@ -1,6 +1,6 @@
 {
     "name": "@zxing/library",
-    "version": "0.16.0",
+    "version": "0.17.0",
     "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
     "keywords": [
         "reader",
@@ -30,7 +30,7 @@
         }
     ],
     "engines": {
-        "node": ">= 8.9.0"
+        "node": ">= 10.4.0"
     },
     "license": "MIT",
     "bugs": "https://github.com/zxing-js/library/issues/new",
@@ -58,11 +58,11 @@
         "cover": "yarn nyc --reporter=lcov --reporter=text yarn test",
         "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:umd",
         "build:es5": "yarn tsc",
-        "build:es6": "yarn tsc --target es6 --outdir esm --module esnext",
+        "build:es6": "yarn tsc --target es6 --outdir esm --module es6",
         "build:umd": "yarn webpack --mode production",
         "shx": "./node_modules/.bin/shx",
         "tsc": "./node_modules/.bin/tsc",
-        "tslint": "./node_modules/.bin/tslint",
+        "tslint": "./node_modules/.bin/tslint \"./src/**/*.ts\"",
         "mocha-webpack": "./node_modules/.bin/mocha-webpack",
         "nyc": "./node_modules/.bin/nyc",
         "webpack": "./node_modules/.bin/webpack-cli"
@@ -70,16 +70,13 @@
     "dependencies": {
         "ts-custom-error": "^3.0.0"
     },
-    "optionalDependencies": {
-        "text-encoding": "^0.7.0"
-    },
     "devDependencies": {
+        "@sinonjs/text-encoding": "^0.7.1",
         "@types/chai": "^4.1.7",
         "@types/mocha": "^5.2.6",
         "@types/node": "^10.12.29",
         "@types/seedrandom": "^2.4.27",
         "@types/sharp": "^0.22.2",
-        "@types/text-encoding": "0.0.35",
         "awesome-typescript-loader": "^5.2.1",
         "chai": "^4.2.0",
         "codacy-coverage": "^3.4.0",
@@ -105,6 +102,7 @@
         "shx": "0.3.2",
         "sinon": "^7.2.7",
         "ts-loader": "^5.3.3",
+        "ts-node": "^8.9.0",
         "tslint": "^5.13.1",
         "tslint-no-circular-imports": "^0.7.0",
         "typescript": "~3.3.3333",
@@ -115,5 +113,8 @@
         "webpack-config-utils": "2.3.1",
         "webpack-node-externals": "^1.6.0",
         "yarn": "^1.17.3"
+    },
+    "optionalDependencies": {
+        "@sinonjs/text-encoding": "0.7.1"
     }
 }

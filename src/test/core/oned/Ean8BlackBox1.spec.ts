@@ -31,8 +31,8 @@ class Ean8BlackBox1Spec extends AbstractBlackBoxSpec {
 }
 
 describe('Ean8BlackBox1Spec.1', () => {
-    it('testBlackBox', done => {
+    it('testBlackBox', async () => {
         const test = new Ean8BlackBox1Spec();
-        return test.testBlackBox(done);
+        await test.testBlackBox();
     });
 });

@@ -19,6 +19,10 @@
 import BarcodeFormat from '../../../core/BarcodeFormat';
 import MultiFormatReader from '../../../core/MultiFormatReader';
 import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
+import { TextDecoder } from '@sinonjs/text-encoding';
+import StringEncoding from '../../../core/util/StringEncoding';
+
+StringEncoding.customDecoder = (b, e) => new TextDecoder(e, { NONSTANDARD_allowLegacyEncoding: true }).decode(b);
 
 /**
  * This test contains 480x240 images captured from an Android device at preview resolution.
@@ -36,8 +40,8 @@ class PDF417BlackBox2Spec extends AbstractBlackBoxSpec {
 }
 
 describe('PDF417BlackBox.2', () => {
-  it('testBlackBox', done => {
+  it('testBlackBox', async () => {
     const test = new PDF417BlackBox2Spec();
-    return test.testBlackBox(done);
+    await test.testBlackBox();
   });
 });

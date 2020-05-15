@@ -29,6 +29,8 @@ import System from '../../util/System';
 import Arrays from '../../util/Arrays';
 import PDF417DetectorResult from './PDF417DetectorResult';
 
+import { float, int } from '../../../customTypings';
+
 // import java.util.ArrayList;
 // import java.util.Arrays;
 // import java.util.List;

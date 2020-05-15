@@ -22,6 +22,8 @@ import ChecksumException from '../../../ChecksumException';
 import ModulusPoly from './ModulusPoly';
 import ModulusGF from './ModulusGF';
 
+import { int } from '../../../../customTypings';
+
 /**
  * <p>PDF417 error correction implementation.</p>
  *

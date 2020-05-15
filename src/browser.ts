@@ -1,4 +1,5 @@
 // browser
+export * from './browser/BrowserAztecCodeReader';
 export * from './browser/BrowserBarcodeReader';
 export * from './browser/BrowserCodeReader';
 export * from './browser/BrowserDatamatrixCodeReader';

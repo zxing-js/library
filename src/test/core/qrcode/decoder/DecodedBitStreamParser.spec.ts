@@ -21,6 +21,10 @@ import DecodedBitStreamParser from '../../../../core/qrcode/decoder/DecodedBitSt
 import BitSourceBuilder from '../../common/BitSourceBuilder';
 import Version from '../../../../core/qrcode/decoder/Version';
 import Random from '../../util/Random';
+import { TextDecoder } from '@sinonjs/text-encoding';
+import StringEncoding from '../../../../core/util/StringEncoding';
+
+StringEncoding.customDecoder = (b, e) => new TextDecoder(e, { NONSTANDARD_allowLegacyEncoding: true }).decode(b);
 
 /**
  * Tests {@link DecodedBitStreamParser}.

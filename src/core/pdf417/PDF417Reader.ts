@@ -49,6 +49,8 @@ import MultipleBarcodeReader from '../multi/MultipleBarcodeReader';
 import Detector from './detector/Detector';
 import PDF417ScanningDecoder from './decoder/PDF417ScanningDecoder';
 
+import { int } from '../../customTypings';
+
 
 // import java.util.ArrayList;
 // import java.util.List;

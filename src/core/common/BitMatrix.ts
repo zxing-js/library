@@ -24,6 +24,8 @@ import Arrays from '../util/Arrays';
 import StringBuilder from '../util/StringBuilder';
 import IllegalArgumentException from '../IllegalArgumentException';
 
+import { int } from '../../customTypings';
+
 /**
  * <p>Represents a 2D matrix of bits. In function arguments below, and throughout the common
  * module, x is the column position, and y is the row position. The ordering is always x, y.
@@ -496,13 +498,13 @@ export default class BitMatrix /*implements Cloneable*/ {
      * @deprecated call {@link #toString(String,String)} only, which uses \n line separator always
      */
     // @Deprecated
-    public toString(setString: string = 'x', unsetString: string = ' ', lineSeparator: string = '\n'): string {
+    public toString(setString: string = 'X ', unsetString: string = '  ', lineSeparator: string = '\n'): string {
         return this.buildToString(setString, unsetString, lineSeparator);
     }
 
     private buildToString(setString: string, unsetString: string, lineSeparator: string) {
         let result = new StringBuilder();
-        result.append(lineSeparator);
+        // result.append(lineSeparator);
         for (let y = 0, height = this.height; y < height; y++) {
             for (let x = 0, width = this.width; x < width; x++) {
                 result.append(this.get(x, y) ? setString : unsetString);

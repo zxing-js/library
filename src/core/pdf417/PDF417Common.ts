@@ -22,6 +22,8 @@ import Arrays from '../util/Arrays';
 // import com.google.zxing.common.detector.MathUtils;
 import MathUtils from '../common/detector/MathUtils';
 
+import { int } from '../../customTypings';
+
 /**
  * @author SITA Lab (kevin.osullivan@sita.aero)
  * @author Guenther Grau

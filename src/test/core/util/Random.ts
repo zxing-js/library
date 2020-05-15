@@ -1,5 +1,7 @@
 import * as seedrandom from 'seedrandom';
 
+import { int } from '../../../customTypings';
+
 export default class Random {
   private r: seedrandom.prng;
   public constructor(seed: string | number) {
