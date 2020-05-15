@@ -19,7 +19,7 @@
 | ~~UPC-A~~  | Code 39             | QR Code        |
 | ~~UPC-E~~  | ~~Code 93~~         | Data Matrix    |
 | EAN-8      | Code 128            | ~~Aztec~~ \*   |
-| EAN-13     | ~~Codabar~~         | ~~PDF 417~~ \* |
+| EAN-13     | ~~Codabar~~         | PDF 417        |
 |            | ITF                 | ~~MaxiCode~~   |
 |            | RSS-14              |
 |            | ~~RSS-Expanded~~ \* |
@@ -37,7 +37,7 @@
 [![Contributors](https://img.shields.io/github/contributors/zxing-js/library.svg)](https://github.com/zxing-js/library/graphs/contributors)
 [![Commits to deploy](https://img.shields.io/github/commits-since/zxing-js/library/master.svg?label=commits%20to%20deploy)](https://github.com/zxing-js/library/compare/master...develop)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/39d86bc5d5f04bc8953cc68d729807b0)](https://www.codacy.com/app/zxing-js/library?utm_source=github.com&utm_medium=referral&utm_content=zxing-js/library&utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9aaa5317fcc740af9f25b3c7f832aa1d)](https://www.codacy.com/app/zxing/library?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zxing-js/library&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b9c6ae92412ee8e15a9/maintainability)](https://codeclimate.com/github/zxing-js/library/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/2b9c6ae92412ee8e15a9/test_coverage)](https://codeclimate.com/github/zxing-js/library/test_coverage)
 [![BCH compliance](https://bettercodehub.com/edge/badge/zxing-js/library?branch=master)](https://bettercodehub.com/)
@@ -60,9 +60,28 @@ or
 
 ### Use on browser with ES6 modules:
 
-```javascript
+```html
 <script type="module">
-    import { BrowserQRCodeReader } from '@zxing/library';
+  import { BrowserQRCodeReader } from '@zxing/library';
+
+  const codeReader = new BrowserQRCodeReader();
+  const img = document.getElementById('img');
+
+  try {
+      const result = await codeReader.decodeFromImage(img);
+  } catch (err) {
+      console.error(err);
+  }
+
+  console.log(result);
+</script>
+```
+
+#### Or asynchronously:
+
+```html
+<script type="module">
+  import('@zxing/library').then({ BrowserQRCodeReader } => {
 
     const codeReader = new BrowserQRCodeReader();
     const img = document.getElementById('img');
@@ -74,26 +93,28 @@ or
     }
 
     console.log(result);
+
+  });
 </script>
 ```
 
 ### Use on browser with AMD:
 
-```javascript
+```html
 <script type="text/javascript" src="https://unpkg.com/requirejs"></script>
 <script type="text/javascript">
-    require(['@zxing/library'], ZXing => {
-        const codeReader = new ZXing.BrowserQRCodeReader();
-        const img = document.getElementById('img');
+  require(['@zxing/library'], ZXing => {
+    const codeReader = new ZXing.BrowserQRCodeReader();
+    const img = document.getElementById('img');
 
-        try {
-            const result = await codeReader.decodeFromImage(img);
-        } catch (err) {
-            console.error(err);
-        }
+    try {
+        const result = await codeReader.decodeFromImage(img);
+    } catch (err) {
+        console.error(err);
+    }
 
-        console.log(result);
-    });
+    console.log(result);
+  });
 </script>
 ```
 
@@ -102,18 +123,18 @@ or
 ```html
 <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
 <script type="text/javascript">
-    window.addEventListener('load', () => {
-        const codeReader = new ZXing.BrowserQRCodeReader();
-        const img = document.getElementById('img');
+  window.addEventListener('load', () => {
+    const codeReader = new ZXing.BrowserQRCodeReader();
+    const img = document.getElementById('img');
 
-        try {
-            const result = await codeReader.decodeFromImage(img);
-        } catch (err) {
-            console.error(err);
-        }
+    try {
+        const result = await codeReader.decodeFromImage(img);
+    } catch (err) {
+        console.error(err);
+    }
 
-        console.log(result);
-    });
+    console.log(result);
+  });
 </script>
 ```
 
@@ -147,16 +168,20 @@ Also, note that the library is using the [`TypedArray`](https://developer.mozill
 
 _You can use [core-js](https://github.com/zloirock/core-js) to add support to these browsers._
 
+In the PDF 417 decoder recent addition, the library now makes use of the new `BigInt` type, which [is not supported by all browsers][2] as well. There's no way to polyfill that and ponyfill libraries are **way to big**, but even if PDF 417 decoding relies on `BigInt` the rest of the library shall work ok in browsers that doesn't support it.
+
+_There's no polyfills for `BigInt` in the way it's coded in here._
+
 ### Scanning from Video Camera
 
 To display the input from the video camera you will need to add a video element in the HTML page:
 
 ```html
 <video
-    id="video"
-    width="300"
-    height="200"
-    style="border: 1px solid gray"
+  id="video"
+  width="300"
+  height="200"
+  style="border: 1px solid gray"
 ></video>
 ```
 
@@ -166,35 +191,35 @@ To start decoding, first obtain a list of video input devices with:
 const codeReader = new ZXing.BrowserQRCodeReader();
 
 codeReader
-    .getVideoInputDevices()
-    .then(videoInputDevices => {
-        videoInputDevices.forEach(device =>
-            console.log(`${device.label}, ${device.deviceId}`)
-        );
-    })
-    .catch(err => console.error(err));
+  .listVideoInputDevices()
+  .then(videoInputDevices => {
+    videoInputDevices.forEach(device =>
+      console.log(`${device.label}, ${device.deviceId}`)
+    );
+  })
+  .catch(err => console.error(err));
 ```
 
-If there is just one input device you can use the first deviceId and the video element id (in the example below is also 'video') to decode:
+If there is just one input device you can use the first `deviceId` and the video element id (in the example below is also 'video') to decode:
 
 ```javascript
 const firstDeviceId = videoInputDevices[0].deviceId;
 
 codeReader
-    .decodeFromInputVideoDevice(firstDeviceId, 'video')
-    .then(result => console.log(result.text))
-    .catch(err => console.error(err));
+  .decodeOnceFromVideoDevice(firstDeviceId, 'video')
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
 ```
 
-If there are more input devices then you will need to chose one for `codeReader.decodeFromInputVideoDevice` device id parameter.
+If there are more input devices then you will need to chose one for `codeReader.decodeOnceFromVideoDevice` device id parameter.
 
 You can also provide `undefined` for the device id parameter in which case the library will automatically choose the camera, preferring the main (environment facing) camera if more are available:
 
 ```javascript
 codeReader
-    .decodeFromInputVideoDevice(undefined, 'video')
-    .then(result => console.log(result.text))
-    .catch(err => console.error(err));
+  .decodeOnceFromVideoDevice(undefined, 'video')
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
 ```
 
 ### Scanning from Video File
@@ -203,10 +228,10 @@ Similar as above you can use a video element in the HTML page:
 
 ```html
 <video
-    id="video"
-    width="300"
-    height="200"
-    style="border: 1px solid gray"
+  id="video"
+  width="300"
+  height="200"
+  style="border: 1px solid gray"
 ></video>
 ```
 
@@ -217,18 +242,25 @@ const codeReader = new ZXing.BrowserQRCodeReader();
 const videoSrc = 'your url to a video';
 
 codeReader
-    .decodeFromVideoSource(videoSrc, 'video')
-    .then(result => console.log(result.text))
-    .catch(err => console.error(err));
+  .decodeFromVideo('video', videoSrc)
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
 ```
 
 You can also decode the video url without showing it in the page, in this case no `video` element is needed in HTML.
 
 ```javascript
 codeReader
-    .decodeFromVideoSource(videoSrc)
-    .then(result => console.log(result.text))
-    .catch(err => console.error(err));
+  .decodeFromVideoUrl(videoUrl)
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
+
+// or alternatively
+
+codeReader
+  .decodeFromVideo(null, videoUrl)
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
 ```
 
 ### Scanning from Image
@@ -237,11 +269,11 @@ Similar as above you can use a img element in the HTML page (with src attribute 
 
 ```html
 <img
-    id="img"
-    src="qrcode-image.png"
-    width="200"
-    height="300"
-    style="border: 1px solid gray"
+  id="img"
+  src="qrcode-image.png"
+  width="200"
+  height="300"
+  style="border: 1px solid gray"
 />
 ```
 
@@ -252,9 +284,9 @@ const codeReader = new ZXing.BrowserQRCodeReader();
 const img = document.getElementById('img');
 
 codeReader
-    .decodeFromImage(img)
-    .then(result => console.log(result.text))
-    .catch(err => console.error(err));
+  .decodeFromImage(img)
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
 ```
 
 You can also decode the image url without showing it in the page, in this case no `img` element is needed in HTML:
@@ -263,19 +295,19 @@ You can also decode the image url without showing it in the page, in this case n
 const imgSrc = 'url to image';
 
 codeReader
-    .decodeFromImage(undefined, imgSrc)
-    .then(result => console.log(result.text))
-    .catch(err => console.error(err));
+  .decodeFromImage(undefined, imgSrc)
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
 ```
 
 Or decode the image url directly from an url, with an `img` element in page (notice no `src` attribute is set for `img` element):
 
 ```html
 <img
-    id="img-to-decode"
-    width="200"
-    height="300"
-    style="border: 1px solid gray"
+  id="img-to-decode"
+  width="200"
+  height="300"
+  style="border: 1px solid gray"
 />
 ```
 
@@ -284,9 +316,9 @@ const imgSrc = 'url to image';
 const imgDomId = 'img-to-decode';
 
 codeReader
-    .decodeFromImage(imgDomId, imgSrc)
-    .then(result => console.log(result.text))
-    .catch(err => console.error(err));
+  .decodeFromImage(imgDomId, imgSrc)
+  .then(result => console.log(result.text))
+  .catch(err => console.error(err));
 ```
 
 ## Barcode generation
@@ -317,7 +349,7 @@ Special thanks to all the contributors who have contributed for this project. We
 
 [![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/0)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/0)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/1)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/1)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/2)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/2)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/3)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/3)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/4)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/4)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/5)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/5)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/6)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/6)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/7)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/7)
 
-And a special thanks to @aleris who created the project itself and made the initial QR code port.
+And a special thanks to [@aleris][3] who created the project itself and made available the initial QR code port.
 
 ---
 
@@ -325,3 +357,5 @@ And a special thanks to @aleris who created the project itself and made the init
 
 [0]: https://www.npmjs.com/package/@zxing/library
 [1]: https://github.com/zxing/zxing
+[2]: https://caniuse.com/#feat=bigint
+[3]: https://github.com/aleris

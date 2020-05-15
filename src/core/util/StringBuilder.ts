@@ -1,42 +1,65 @@
+import CharacterSetECI from '../common/CharacterSetECI';
+import StringEncoding from './StringEncoding';
+import { int } from '../../customTypings';
+import StringUtils from '../common/StringUtils';
+
+
 export default class StringBuilder {
-    public constructor(private value: string = '') {
 
-    }
-    public append(s: string | number): StringBuilder {
-        if (typeof s === 'string') {
-            this.value += s.toString();
-        } else {
-            this.value += String.fromCharCode(s);
-        }
-        return this;
-    }
+  private encoding: CharacterSetECI;
 
-    public length(): number {
-        return this.value.length;
-    }
+  public constructor(private value: string = '') { }
 
-    public charAt(n: number): string {
-        return this.value.charAt(n);
-    }
+  public enableDecoding(encoding: CharacterSetECI): StringBuilder {
+    this.encoding = encoding;
+    return this;
+  }
 
-    public deleteCharAt(n: number) {
-        this.value = this.value.substr(0, n) + this.value.substring(n + 1);
+  public append(s: string | number): StringBuilder {
+    if (typeof s === 'string') {
+      this.value += s.toString();
+    } else if (this.encoding) {
+      // use passed format (fromCharCode will return UTF8 encoding)
+      this.value += StringUtils.castAsNonUtf8Char(s, this.encoding);
+    } else {
+      // correctly converts from UTF-8, but not other encodings
+      this.value += String.fromCharCode(s);
     }
+    return this;
+  }
 
-    public setCharAt(n: number, c: string) {
-        this.value = this.value.substr(0, n) + c + this.value.substr(n + 1);
-    }
+  public length(): number {
+    return this.value.length;
+  }
 
-    public toString(): string {
-        return this.value;
-    }
+  public charAt(n: number): string {
+    return this.value.charAt(n);
+  }
 
-    // @note helper method for RSS Expanded
-    public setLengthToZero(): void {
-        this.value = '';
-    }
+  public deleteCharAt(n: number) {
+    this.value = this.value.substr(0, n) + this.value.substring(n + 1);
+  }
 
-    public insert(n: number, c: string) {
-        this.value = this.value.substr(0, n) + c + this.value.substr(n + c.length);
-    }
+  public setCharAt(n: number, c: string) {
+    this.value = this.value.substr(0, n) + c + this.value.substr(n + 1);
+  }
+
+  public substring(start: int, end: int): string {
+    return this.value.substring(start, end);
+  }
+
+  /**
+   * @note helper method for RSS Expanded
+   */
+  public setLengthToZero(): void {
+    this.value = '';
+  }
+
+  public toString(): string {
+    return this.value;
+  }
+
+  public insert(n: number, c: string) {
+    this.value = this.value.substr(0, n) + c + this.value.substr(n + c.length);
+  }
 }

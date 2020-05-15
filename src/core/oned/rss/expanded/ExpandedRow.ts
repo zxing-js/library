@@ -1,5 +1,6 @@
 import ExpandedPair from './ExpandedPair';
 
+
 export default class ExpandedRow {
   private readonly pairs: Array<ExpandedPair>;
   private readonly rowNumber: number;

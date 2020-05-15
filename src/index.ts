@@ -1,18 +1,10 @@
-// browser
-export * from './browser/BrowserQRCodeReader';
-export * from './browser/BrowserDatamatrixCodeReader';
-export * from './browser/BrowserQRCodeSvgWriter';
-export * from './browser/BrowserBarcodeReader';
-export * from './browser/BrowserCodeReader';
-export * from './browser/BrowserMultiFormatReader';
-export * from './browser/HTMLCanvasElementLuminanceSource';
-export * from './browser/VideoInputDevice';
+export * from './browser';
 
 // Exceptions
-export { default as Exception } from './core/Exception';
 export { default as ArgumentException } from './core/ArgumentException';
 export { default as ArithmeticException } from './core/ArithmeticException';
 export { default as ChecksumException } from './core/ChecksumException';
+export { default as Exception } from './core/Exception';
 export { default as FormatException } from './core/FormatException';
 export { default as IllegalArgumentException } from './core/IllegalArgumentException';
 export { default as IllegalStateException } from './core/IllegalStateException';
@@ -75,6 +67,9 @@ export { default as QRCodeWriter } from './core/qrcode/QRCodeWriter';
 export { default as QRCodeDecoderErrorCorrectionLevel } from './core/qrcode/decoder/ErrorCorrectionLevel';
 export { default as QRCodeEncoder } from './core/qrcode/encoder/Encoder';
 export { default as QRCodeEncoderQRCode } from './core/qrcode/encoder/QRCode';
+
+// core/twod/aztec
+export { default as AztecCodeReader } from './core/aztec/AztecReader';
 
 // core/oned
 export { default as OneDReader } from './core/oned/OneDReader';

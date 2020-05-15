@@ -14,8 +14,8 @@ Replace: `$1 /*final*/ $5: $4$6`
 
 ## forof
 
-Search: `for\s*\((.*) :`
-Replace: `for ($1 of`
+Search: `for\s*\((.*) (\w+) :`
+Replace: `for (const $2/*: $1*/ of`
 
 ## for
 
@@ -25,7 +25,7 @@ Replace: `for (let $2 /*$1*/`
 ## Number Casts
 
 Search: `\((float|int|byte|short|long|char)\)\s*(\w+)`
-Replace: `/*($1)*/ $2`
+Replace: `<$1>$2`
 
 ## Function types
 
@@ -34,7 +34,7 @@ Replace: `$1 $5: $4`
 
 ### No declared accessors
 
-Be careful.
+⚠️ Be careful. ⚠️
 
 Search: `([\w\[\]]+) (\w+\(.*?\))`
 Replace: `$2: $1`
@@ -44,12 +44,19 @@ Replace: `$2: $1`
 Search: `^(\s*)([\w\[\]]+) (\w+) =`
 Replace: `$1let $3: $2 =`
 
+⚠️ Be careful️. ⚠️
+
+Search: `^(\s*)([\w\[\]]+) (\w+);`
+Replace: `$1let $3: $2;`
+
 ## Params (single)
 
 Search: `\((([\w\[\]]+) (\w+)(\,)?)+\)`
 Replace: `($3: $2$4)`
 
 ## Params (multiple)
+
+⚠️ Be careful️. ⚠️
 
 Search: `(\w+) (\w+)(, |\))`
 Replace: `$2: $1$3`

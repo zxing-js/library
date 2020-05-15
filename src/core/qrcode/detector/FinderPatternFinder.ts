@@ -25,6 +25,8 @@ import FinderPatternInfo from './FinderPatternInfo';
 
 import NotFoundException from '../../NotFoundException';
 
+import { float } from '../../../customTypings';
+
 /*import java.io.Serializable;*/
 /*import java.util.ArrayList;*/
 /*import java.util.Collections;*/
@@ -597,19 +599,19 @@ export default class FinderPatternFinder {
 
         const possibleCenters = this.possibleCenters;
 
-        let average: number; /*float*/
+        let average: float;
         // Filter outlier possibilities whose module size is too different
         if (startSize > 3) {
             // But we can only afford to do so if we have at least 4 possibilities to choose from
-            let totalModuleSize: number /*float*/ = 0.0;
-            let square: number /*float*/ = 0.0;
+            let totalModuleSize: float = 0.0;
+            let square: float = 0.0;
             for (const center of this.possibleCenters) {
-                const size: number /*float*/ = center.getEstimatedModuleSize();
+                const size: float = center.getEstimatedModuleSize();
                 totalModuleSize += size;
                 square += size * size;
             }
             average = totalModuleSize / startSize;
-            let stdDev: number /*float*/ = /*(float) */Math.sqrt(square / startSize - average * average);
+            let stdDev: float = <float>Math.sqrt(square / startSize - average * average);
 
             possibleCenters.sort(
                 /**
@@ -617,12 +619,12 @@ export default class FinderPatternFinder {
                  */
                 // FurthestFromAverageComparator implements Comparator<FinderPattern>
                 (center1: FinderPattern, center2: FinderPattern) => {
-                    const dA: number /*float*/ = Math.abs(center2.getEstimatedModuleSize() - average);
-                    const dB: number /*float*/ = Math.abs(center1.getEstimatedModuleSize() - average);
+                    const dA: float = Math.abs(center2.getEstimatedModuleSize() - average);
+                    const dB: float = Math.abs(center1.getEstimatedModuleSize() - average);
                     return dA < dB ? -1 : dA > dB ? 1 : 0;
                 });
 
-            const limit: number /*float*/ = Math.max(0.2 * average, stdDev);
+            const limit: float = Math.max(0.2 * average, stdDev);
 
             for (let i = 0; i < possibleCenters.length && possibleCenters.length > 3; i++) {
                 const pattern: FinderPattern = possibleCenters[i];
@@ -636,7 +638,7 @@ export default class FinderPatternFinder {
         if (possibleCenters.length > 3) {
             // Throw away all but those first size candidate points we found.
 
-            let totalModuleSize: number /*float*/ = 0.0;
+            let totalModuleSize: float = 0.0;
             for (const possibleCenter of possibleCenters) {
                 totalModuleSize += possibleCenter.getEstimatedModuleSize();
             }
@@ -650,8 +652,8 @@ export default class FinderPatternFinder {
                 // CenterComparator implements Comparator<FinderPattern>
                 (center1: FinderPattern, center2: FinderPattern) => {
                     if (center2.getCount() === center1.getCount()) {
-                        const dA: number /*float*/ = Math.abs(center2.getEstimatedModuleSize() - average);
-                        const dB: number /*float*/ = Math.abs(center1.getEstimatedModuleSize() - average);
+                        const dA: float = Math.abs(center2.getEstimatedModuleSize() - average);
+                        const dB: float = Math.abs(center1.getEstimatedModuleSize() - average);
                         return dA < dB ? 1 : dA > dB ? -1 : 0;
                     } else {
                         return center2.getCount() - center1.getCount();

@@ -5,7 +5,6 @@ import GenericGF from '../../common/reedsolomon/GenericGF';
 import ReedSolomonDecoder from '../../common/reedsolomon/ReedSolomonDecoder';
 import BitMatrixParser from './BitMatrixParser';
 import DataBlock from './DataBlock';
-// import { Exception } from '../../..';
 import DecodedBitStreamParser from './DecodedBitStreamParser';
 
 /*

@@ -22,6 +22,8 @@ import PerspectiveTransform from './PerspectiveTransform';
 
 import NotFoundException from '../NotFoundException';
 
+import { float } from '../../customTypings';
+
 /**
  * @author Sean Owen
  */
@@ -61,7 +63,7 @@ export default class DefaultGridSampler extends GridSampler {
             const max = points.length;
             const iValue: number /*float*/ = y + 0.5;
             for (let x = 0; x < max; x += 2) {
-                points[x] = /*(float)*/ (x / 2) + 0.5;
+                points[x] = <float> (x / 2) + 0.5;
                 points[x + 1] = iValue;
             }
             transform.transformPoints(points);

@@ -21,6 +21,9 @@
 
 import DecodeHintType from '../DecodeHintType';
 import CharacterSetECI from './CharacterSetECI';
+import StringEncoding from '../util/StringEncoding';
+import { int } from '../../customTypings';
+import Charset from '../util/Charset';
 
 /**
  * Common string-related functions.
@@ -33,14 +36,20 @@ export default class StringUtils {
   public static SHIFT_JIS = CharacterSetECI.SJIS.getName(); // "SJIS"
   public static GB2312 = 'GB2312';
   public static ISO88591 = CharacterSetECI.ISO8859_1.getName(); // "ISO8859_1"
-  // private static EUC_JP = 'EUC_JP';
+  private static EUC_JP = 'EUC_JP';
   private static UTF8 = CharacterSetECI.UTF8.getName(); // "UTF8"
   private static PLATFORM_DEFAULT_ENCODING = StringUtils.UTF8; // "UTF8"//Charset.defaultCharset().name()
   private static ASSUME_SHIFT_JIS = false;
   // SHIFT_JIS.equalsIgnoreCase(PLATFORM_DEFAULT_ENCODING) ||
   // EUC_JP.equalsIgnoreCase(PLATFORM_DEFAULT_ENCODING);
 
-  private constructor() { }
+  static castAsNonUtf8Char(code: number, encoding: Charset = null) {
+    // ISO 8859-1 is the Java default as UTF-8 is JavaScripts
+    // you can see this method as a Java version of String.fromCharCode
+    const e = encoding ? encoding.getName() : this.ISO88591;
+    // use passed format (fromCharCode will return UTF8 encoding)
+    return StringEncoding.decode(new Uint8Array([code]), e);
+  }
 
   /**
    * @param bytes bytes encoding a string, whose encoding should be guessed
@@ -204,8 +213,74 @@ export default class StringUtils {
     if (canBeUTF8) {
       return StringUtils.UTF8;
     }
+
     // Otherwise, we take a wild guess with platform encoding
     return StringUtils.PLATFORM_DEFAULT_ENCODING;
   }
 
+  /**
+   *
+   * @see https://stackoverflow.com/a/13439711/4367683
+   *
+   * @param append The new string to append.
+   * @param args Argumets values to be formated.
+   */
+  public static format(append: string, ...args: any[]) {
+
+    let i = -1;
+
+    function callback(exp: string | number, p0: any, p1: any, p2: any, p3: any, p4: any) {
+
+      if (exp === '%%') return '%';
+      if (args[++i] === undefined) return undefined;
+
+      exp = p2 ? parseInt(p2.substr(1)) : undefined;
+
+      let base = p3 ? parseInt(p3.substr(1)) : undefined;
+      let val: string;
+
+      switch (p4) {
+        case 's': val = args[i]; break;
+        case 'c': val = args[i][0]; break;
+        case 'f': val = parseFloat(args[i]).toFixed(exp); break;
+        case 'p': val = parseFloat(args[i]).toPrecision(exp); break;
+        case 'e': val = parseFloat(args[i]).toExponential(exp); break;
+        case 'x': val = parseInt(args[i]).toString(base ? base : 16); break;
+        case 'd': val = parseFloat(parseInt(args[i], base ? base : 10).toPrecision(exp)).toFixed(0); break;
+      }
+
+      val = typeof val === 'object' ? JSON.stringify(val) : (+val).toString(base);
+      let size = parseInt(p1); /* padding size */
+      let ch = p1 && (p1[0] + '') === '0' ? '0' : ' '; /* isnull? */
+
+      while (val.length < size) val = p0 !== undefined ? val + ch : ch + val; /* isminus? */
+
+      return val;
+    }
+
+    let regex = /%(-)?(0?[0-9]+)?([.][0-9]+)?([#][0-9]+)?([scfpexd%])/g;
+
+    return append.replace(regex, callback);
+  }
+
+  /**
+   *
+   */
+  public static getBytes(str: string, encoding: CharacterSetECI): Uint8Array {
+    return StringEncoding.encode(str, encoding);
+  }
+
+  /**
+   * Returns the charcode at the specified index or at index zero.
+   */
+  public static getCharCode(str: string, index = 0): int {
+    return str.charCodeAt(index);
+  }
+
+  /**
+   * Returns char for given charcode
+   */
+  public static getCharAt(charCode: number): string {
+    return String.fromCharCode(charCode);
+  }
 }

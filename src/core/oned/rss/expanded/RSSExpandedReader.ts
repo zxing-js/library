@@ -14,6 +14,7 @@ import FinderPattern from '../../rss/FinderPattern';
 import RSSUtils from '../../rss/RSSUtils';
 import AbstractExpandedDecoder from '../expanded/decoders/AbstractExpandedDecoder';
 import BitArrayBuilder from './BitArrayBuilder';
+import { createDecoder } from './decoders/AbstractExpandedDecoderComplement';
 import ExpandedPair from './ExpandedPair';
 import ExpandedRow from './ExpandedRow';
 
@@ -359,7 +360,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
   static constructResult(pairs: Array<ExpandedPair>) {
     let binary = BitArrayBuilder.buildBitArray(pairs);
 
-    let decoder = AbstractExpandedDecoder.createDecoder(binary);
+    let decoder = createDecoder(binary);
     let resultingString = decoder.parseInformation();
 
     let firstPoints = pairs[0].getFinderPattern().getResultPoints();

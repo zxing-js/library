@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="ZXing for JS">
+
+  <title>ZXing TypeScript | Decoding PDF 417 from image file</title>
+
+  <link rel="stylesheet" rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null"
+    href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+  <link rel="stylesheet" rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null"
+    href="https://unpkg.com/normalize.css@8.0.0/normalize.css">
+  <link rel="stylesheet" rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null"
+    href="https://unpkg.com/milligram@1.3.0/dist/milligram.min.css">
+</head>
+
+<body>
+
+  <main class="wrapper" style="padding-top:2em">
+
+    <section class="container" id="demo-content">
+      <h1 class="title">Scan PDF 417 from Image</h1>
+
+      <p>
+        <a class="button-small button-outline" href="../../index.html">HOME 🏡</a>
+      </p>
+
+      <p>
+        This example shows how to scan a PDF 417 with ZXing javascript library from an image.
+        The example decodes from the
+        <code>src</code> in
+        <code>img</code> tag, however is also possible to decode directly from an url without an
+        <code>img</code> tag.
+      </p>
+
+      <div id="pdf417-1">
+        <div>
+          <a class="button decodeButton">Decode</a>
+        </div>
+        <div>
+          <img class="img" src="../../resources/blackbox/pdf417-2/05.png" style="border: 1px solid gray"></img>
+        </div>
+        <label>Result:</label>
+        <blockquote>
+          <p class="result"></p>
+        </blockquote>
+      </div>
+
+      <div id="pdf417-2">
+        <div>
+          <a class="button decodeButton">Decode</a>
+        </div>
+        <div>
+          <img class="img" src="../../resources/blackbox/pdf417-2/15.png" style="border: 1px solid gray"></img>
+        </div>
+        <label>Result:</label>
+        <blockquote>
+          <p class="result"></p>
+        </blockquote>
+      </div>
+
+      <br />
+
+      <div id="pdf417-3">
+        <div>
+          <a class="button decodeButton">Decode</a>
+        </div>
+        <div>
+          <img class="img" src="../../resources/blackbox/pdf417-3/08.png" style="border: 1px solid gray"></img>
+        </div>
+        <label>Result:</label>
+        <blockquote>
+          <p class="result"></p>
+        </blockquote>
+      </div>
+
+      <p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/pdf417-image/">source code</a>
+        for this example.</p>
+
+    </section>
+
+    <footer class="footer">
+      <section class="container">
+        <p>ZXing TypeScript Demo. Licensed under the <a target="_blank"
+            href="https://github.com/zxing-js/library#license" title="MIT">MIT</a>.</p>
+      </section>
+    </footer>
+
+  </main>
+
+  <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
+  <script type="text/javascript">
+    window.addEventListener('load', function () {
+      const codeReader = new ZXing.BrowserPDF417Reader()
+      console.log('ZXing code reader initialized');
+
+      const decodeFun = (e) => {
+
+        const parent = e.target.parentNode.parentNode;
+        const img = parent.getElementsByClassName('img')[0].cloneNode(true);
+        const resultEl = parent.getElementsByClassName('result')[0];
+
+        codeReader.decodeFromImage(img)
+          .then(result => {
+            console.log(result);
+            resultEl.textContent = result.text;
+          })
+          .catch(err => {
+            console.error(err);
+            resultEl.textContent = err;
+          });
+
+        console.log(`Started decode for image from ${img.src}`)
+      };
+
+      for (const element of document.getElementsByClassName('decodeButton')) {
+        element.addEventListener('click', decodeFun, false);
+      }
+
+    })
+  </script>
+
+</body>
+
+</html>

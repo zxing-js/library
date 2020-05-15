@@ -4,8 +4,6 @@
     "target": "es5",
     "moduleResolution": "node",
     "lib": [
-      "es5",
-      "es6",
       "es7",
       "dom"
     ],
@@ -14,7 +12,8 @@
     "noImplicitAny": false,
     "sourceMap": true,
     "declaration": true,
-    "preserveConstEnums": true
+    "preserveConstEnums": true,
+    "downlevelIteration": true,
   },
   "include": [
     "src/**/*.ts"

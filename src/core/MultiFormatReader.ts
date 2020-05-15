@@ -21,9 +21,11 @@ import BinaryBitmap from './BinaryBitmap';
 import BarcodeFormat from './BarcodeFormat';
 import QRCodeReader from './qrcode/QRCodeReader';
 
+import AztecReader from './aztec/AztecReader';
 import MultiFormatOneDReader from './oned/MultiFormatOneDReader';
 import DataMatrixReader from './datamatrix/DataMatrixReader';
 import NotFoundException from './NotFoundException';
+import PDF417Reader from './pdf417/PDF417Reader';
 import ReaderException from './ReaderException';
 
 /*namespace com.google.zxing {*/
@@ -130,12 +132,12 @@ export default class MultiFormatReader implements Reader {
             if (formats.includes(BarcodeFormat.DATA_MATRIX)) {
               readers.push(new DataMatrixReader());
             }
-            // if (formats.includes(BarcodeFormat.AZTEC)) {
-            //   readers.push(new AztecReader())
-            // }
-            // if (formats.includes(BarcodeFormat.PDF_417)) {
-            //    readers.push(new PDF417Reader())
-            // }
+            if (formats.includes(BarcodeFormat.AZTEC)) {
+              readers.push(new AztecReader());
+            }
+            if (formats.includes(BarcodeFormat.PDF_417)) {
+               readers.push(new PDF417Reader());
+            }
             // if (formats.includes(BarcodeFormat.MAXICODE)) {
             //    readers.push(new MaxiCodeReader())
             // }
@@ -151,8 +153,8 @@ export default class MultiFormatReader implements Reader {
 
             readers.push(new QRCodeReader());
             readers.push(new DataMatrixReader());
-            // readers.push(new AztecReader())
-            // readers.push(new PDF417Reader())
+            readers.push(new AztecReader());
+            readers.push(new PDF417Reader());
             // readers.push(new MaxiCodeReader())
 
             if (tryHarder) {

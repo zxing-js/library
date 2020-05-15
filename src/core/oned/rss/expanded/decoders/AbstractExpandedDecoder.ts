@@ -22,4 +22,5 @@ export default abstract class AbstractExpandedDecoder {
 
   public abstract parseInformation(): string;
 
+  // createDecoder moved to own file due to circular dependency
 }

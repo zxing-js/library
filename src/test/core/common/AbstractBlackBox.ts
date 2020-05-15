@@ -16,7 +16,6 @@
 
 /*package com.google.zxing.common;*/
 
-import * as assert from 'assert';
 import * as fs from 'fs';
 import * as path from 'path';
 import BarcodeFormat from '../../../core/BarcodeFormat';
@@ -30,6 +29,7 @@ import ResultMetadataType from '../../../core/ResultMetadataType';
 import StringEncoding from '../../../core/util/StringEncoding';
 import TestResult from '../common/TestResult';
 import SharpImageLuminanceSource from '../SharpImageLuminanceSource';
+import { assertEquals } from '../util/AssertUtils';
 import SharpImage from '../util/SharpImage';
 
 
@@ -141,7 +141,7 @@ abstract class AbstractBlackBoxSpec {
    * @throws IOException
    */
   protected getImageFiles(): Array<string> {
-    assert.strictEqual(fs.existsSync(this.testBase), true, 'Please download and install test images, and run from the \'core\' directory');
+    assertEquals(fs.existsSync(this.testBase), true, 'Please download and install test images, and run from the \'core\' directory');
     return this.walkDirectory(this.testBase);
   }
 
@@ -157,20 +157,21 @@ abstract class AbstractBlackBoxSpec {
    *
    * @throws IOException
    */
-  public testBlackBox(done: (err: any) => any): void {
-    this.testBlackBoxCountingResults(true, done)
-      .then(() => console.log('testBlackBox finished.'))
-      .catch((e) => {
-        console.log('Test ended with error: ', e);
-        done(e);
-      });
+  public async testBlackBox(): Promise<void> {
+    try {
+      await this.testBlackBoxCountingResults(true);
+      console.log('testBlackBox finished.');
+    } catch (e) {
+      console.log('Test ended with error: ', e);
+      throw e;
+    }
   }
 
   /**
    * @throws IOException
    */
-  private async testBlackBoxCountingResults(assertOnFailure: boolean, done: (err?: any) => any): Promise<void> {
-    assert.strictEqual(this.testResults.length > 0, true);
+  private async testBlackBoxCountingResults(assertOnFailure: boolean): Promise<void> {
+    assertEquals(this.testResults.length > 0, true);
 
     const imageFiles: Array<string> = this.getImageFiles();
     const testCount: number /*int*/ = this.testResults.length;
@@ -180,52 +181,75 @@ abstract class AbstractBlackBoxSpec {
     const tryHarderCounts = new Int32Array(testCount);
     const tryHarderMisreadCounts = new Int32Array(testCount);
 
+    const testImageIterations: Promise<void>[] = [];
+
     for (const testImage of imageFiles) {
 
-      console.log(`    Starting ${testImage}`);
-      const fileBaseName: string = path.basename(testImage, path.extname(testImage));
-      let expectedTextFile: string = path.resolve(this.testBase, fileBaseName + '.txt');
-      let expectedText: string;
-      // Next line can be found in line 155 of the original file.
-      if (fs.existsSync(expectedTextFile)) {
-        expectedText = AbstractBlackBoxSpec.readTextFileAsString(expectedTextFile);
-      } else {
-        expectedTextFile = path.resolve(fileBaseName + '.bin');
-        assert.strictEqual(fs.existsSync(expectedTextFile), true, 'result bin/text file should exists');
-        expectedText = AbstractBlackBoxSpec.readBinFileAsString(expectedTextFile);
-      }
+      // we run this in a separated scope so we can iterate faster
+      // and run tests in parallel
+      testImageIterations.push(new Promise(async resolve => {
 
-      const expectedMetadataFile: string = path.resolve(fileBaseName + '.metadata.txt');
-      let expectedMetadata = null;
-      if (fs.existsSync(expectedMetadataFile)) {
-        expectedMetadata = AbstractBlackBoxSpec.readTextFileAsMetadata(expectedMetadataFile);
-      }
+        console.log(`    Starting ${testImage}`);
+        const fileBaseName: string = path.basename(testImage, path.extname(testImage));
+        let expectedTextFile: string = path.resolve(this.testBase, fileBaseName + '.txt');
+        let expectedText: string;
+        // Next line can be found in line 155 of the original file.
+        if (fs.existsSync(expectedTextFile)) {
+          expectedText = AbstractBlackBoxSpec.readTextFileAsString(expectedTextFile);
+        } else {
+          expectedTextFile = path.resolve(this.testBase, fileBaseName + '.bin');
+          assertEquals(fs.existsSync(expectedTextFile), true, 'result bin/text file should exists');
+          expectedText = AbstractBlackBoxSpec.readBinFileAsString(expectedTextFile);
+        }
 
-      for (let x: number /*int*/ = 0; x < testCount; x++) {
-        const rotation: number /*float*/ = this.testResults[x].getRotation();
-        const rotatedImage = await SharpImage.loadWithRotation(testImage, rotation);
-        const source: LuminanceSource = new SharpImageLuminanceSource(rotatedImage);
-        const bitmap = new BinaryBitmap(new HybridBinarizer(source));
-        try {
-          if (this.decode(bitmap, rotation, expectedText, expectedMetadata, false)) {
-            passedCounts[x]++;
-          } else {
-            misreadCounts[x]++;
-          }
-        } catch (e) {
-          console.log(`could not read at rotation ${rotation} failed with ${e.constructor.name}. Message: ${e.message}`);
+        const expectedMetadataFile: string = path.resolve(fileBaseName + '.metadata.txt');
+        let expectedMetadata = null;
+        if (fs.existsSync(expectedMetadataFile)) {
+          expectedMetadata = AbstractBlackBoxSpec.readTextFileAsMetadata(expectedMetadataFile);
         }
-        try {
-          if (this.decode(bitmap, rotation, expectedText, expectedMetadata, true)) {
-            tryHarderCounts[x]++;
-          } else {
-            tryHarderMisreadCounts[x]++;
-          }
-        } catch (e) {
-          console.log(`could not read at rotation ${rotation} w/TH failed with ${e.constructor.name}.`);
+
+        const decodeIterations: Promise<void>[] = [];
+
+        for (let x: number /*int*/ = 0; x < testCount; x++) {
+
+          // we run this in a separated scope so we can iterate faster
+          // and run tests in parallel
+          decodeIterations.push(new Promise(async resolve => {
+
+            const rotation: number /*float*/ = this.testResults[x].getRotation();
+            const rotatedImage = await SharpImage.loadWithRotation(testImage, rotation);
+            const source: LuminanceSource = new SharpImageLuminanceSource(rotatedImage);
+            const bitmap = new BinaryBitmap(new HybridBinarizer(source));
+            try {
+              if (this.decode(bitmap, rotation, expectedText, expectedMetadata, false)) {
+                passedCounts[x]++;
+              } else {
+                misreadCounts[x]++;
+              }
+            } catch (e) {
+              console.log(`      could not read at rotation ${rotation} failed with ${e.constructor.name}. Message: ${e.message}`);
+            }
+            try {
+              if (this.decode(bitmap, rotation, expectedText, expectedMetadata, true)) {
+                tryHarderCounts[x]++;
+              } else {
+                tryHarderMisreadCounts[x]++;
+              }
+            } catch (e) {
+              console.log(`        could not read at rotation ${rotation} w/TH failed with ${e.constructor.name}.`);
+            }
+
+            resolve();
+          }));
         }
-      }
+
+        await Promise.all(decodeIterations);
+
+        resolve();
+      }));
     }
+
+    await Promise.all(testImageIterations);
 
     // Original reference: 197.
     // Print the results of all tests first
@@ -272,14 +296,12 @@ abstract class AbstractBlackBoxSpec {
         const testResult = this.testResults[x];
         const label = '      Rotation ' + testResult.getRotation() + ' degrees: Too many images failed.';
 
-        assert.strictEqual(passedCounts[x] >= testResult.getMustPassCount(), true, label);
-        assert.strictEqual(tryHarderCounts[x] >= testResult.getTryHarderCount(), true, `Try harder, ${label}`);
-        assert.strictEqual(misreadCounts[x] <= testResult.getMaxMisreads(), true, label);
-        assert.strictEqual(tryHarderMisreadCounts[x] <= testResult.getMaxTryHarderMisreads(), true, `Try harder, ${label}`);
+        assertEquals(passedCounts[x] >= testResult.getMustPassCount(), true, label);
+        assertEquals(tryHarderCounts[x] >= testResult.getTryHarderCount(), true, `Try harder, ${label}`);
+        assertEquals(misreadCounts[x] <= testResult.getMaxMisreads(), true, label);
+        assertEquals(tryHarderMisreadCounts[x] <= testResult.getMaxTryHarderMisreads(), true, `Try harder, ${label}`);
       }
     }
-
-    done();
   }
 
   /**

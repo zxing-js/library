@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import UnsupportedOperationException from './UnsupportedOperationException';
+
 import StringBuilder from './util/StringBuilder';
+import UnsupportedOperationException from './UnsupportedOperationException';
 
 /*namespace com.google.zxing {*/
 

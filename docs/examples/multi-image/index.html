@@ -8,9 +8,9 @@
 
     <title>ZXing TypeScript | Decoding from image file</title>
 
-    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
-    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/normalize.css@8.0.0/normalize.css">
-    <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/milligram@1.3.0/dist/milligram.min.css">
+    <link rel="stylesheet" rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/normalize.css@8.0.0/normalize.css">
+    <link rel="stylesheet" rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/milligram@1.3.0/dist/milligram.min.css">
 </head>
 
 <body>
@@ -41,9 +41,7 @@
             </div>
 
             <label>Result:</label>
-            <blockquote>
-                <p id="result"></p>
-            </blockquote>
+            <pre><code id="result"></code></pre>
 
             <p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/multi-image/">source code</a> for this example.</p>
 
@@ -60,7 +58,7 @@
     <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
     <script type="text/javascript">
         window.addEventListener('load', function () {
-            const codeReader = new ZXing.BrowserMultiFormatReader('video')
+            const codeReader = new ZXing.BrowserMultiFormatReader()
             console.log('ZXing code reader initialized')
 
             document.getElementById('decodeButton').addEventListener('click', () => {
