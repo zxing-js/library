@@ -38,31 +38,35 @@ import UPCEANReader from './UPCEANReader';
  * @author Sean Owen
  * @author sam2332 (Sam Rudloff)
  */
-export default class UPCAReader implements UPCEANReader {
+export default class UPCAReader extends UPCEANReader{
 
-    ean13Reader = new EAN13Reader()
+    private ean13Reader = new EAN13Reader()
+    public constructor() {
+        super();    
+    }
+    // @Override
+    public getBarcodeFormat(): BarcodeFormat {
+        return BarcodeFormat.UPC_A;
+    }
 
- 
-    public decodeRowStringBuffer(){} 
-    public getBarcodeFormat(){} 
-    public doDecode(){}
 
     // Note that we don't try rotation without the try harder flag, even if rotation was supported.
     // @Override
     public decode(image: BinaryBitmap, hints?: Map<DecodeHintType, any>): Result {
         return this.maybeReturnResult(this.ean13Reader.decode(image));
     }
-
+    // @Override
     public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
         return this.maybeReturnResult(this.ean13Reader.decodeRow(rowNumber, row,  hints))
     }
-    public decodeMiddle(row:BitArray, startRange: Array, resultString: String){
+    // @Override
+    public decodeMiddle(row: BitArray, startRange: number[], resultString: string){
         return this.ean13Reader.decodeMiddle(row, startRange, resultString);
     }
     public maybeReturnResult(result: Result){
         let text = result.getText();
         if (text.charAt(0) == '0') {
-            let upcaResult = new Result(text.substring(1), null, result.getResultPoints(), BarcodeFormat.UPC_A);
+            let upcaResult = new Result(text.substring(1), null, null, result.getResultPoints(), BarcodeFormat.UPC_A);
             if (result.getResultMetadata() != null) {
                 upcaResult.putAllMetadata(result.getResultMetadata());
             }
