@@ -1,6 +1,6 @@
 ---
 name: "Ask a Question ❓\U0001F64B‍♂️"
-about: Describe this issue template's purpose here.
+about: Ask anything you want.
 title: ''
 labels: question
 assignees: ''
@@ -8,7 +8,8 @@ assignees: ''
 ---
 
 <!-- 
-    Please, consider asking on StackOverflow, so more people can help you and link the question in here. 
+    Please, consider asking technical stuff on StackOverflow, 
+    so more people can help you and link the question in here. 
     Recommended tags: zxing-js, zxing and javascript
     The zxing-js is a watched by us tag, so we get notified when someone uses it!
 -->
