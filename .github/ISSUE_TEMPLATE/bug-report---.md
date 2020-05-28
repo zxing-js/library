@@ -7,6 +7,18 @@ assignees: ''
 
 ---
 
+<!-- 
+Hey! Are you loving ZXing for JS? 
+
+We hope this project saved you thousands of hours of studying, coding and testing.
+If so, please consider contributing to the project so we can dedicate even more to it
+not only on our spare time! 👉 https://opencollective.com/zxing-js
+
+Or just say thanks, that's much appreciated as well! And will fill our hearts. 🖤
+
+Thank you and good luck!
+-->
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
