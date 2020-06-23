@@ -781,7 +781,7 @@ export class BrowserCodeReader {
 
         if (ifNotFound || ifChecksumOrFormat) {
           // trying again
-          return setTimeout(() => loop(resolve, reject), this._timeBetweenDecodingAttempts);
+          return setTimeout(loop, this._timeBetweenDecodingAttempts, resolve, reject);
         }
 
         reject(e);
@@ -808,7 +808,7 @@ export class BrowserCodeReader {
       try {
         const result = this.decode(element);
         callbackFn(result, null);
-        setTimeout(() => loop(), this.timeBetweenScansMillis);
+        setTimeout(loop, this.timeBetweenScansMillis);
       } catch (e) {
 
         callbackFn(null, e);
@@ -818,7 +818,7 @@ export class BrowserCodeReader {
 
         if (isChecksumOrFormatError || isNotFound) {
           // trying again
-          setTimeout(() => loop(), this._timeBetweenDecodingAttempts);
+          setTimeout(loop, this._timeBetweenDecodingAttempts);
         }
 
       }
