@@ -66,12 +66,12 @@
             let selectedDeviceId;
             const codeReader = new ZXing.BrowserBarcodeReader()
             console.log('ZXing code reader initialized')
-            codeReader.getVideoInputDevices()
-                .then((videoInputDevices) => {
+            codeReader.listVideoInputDevices()
+                .then((mediaDeviceInfo) => {
                     const sourceSelect = document.getElementById('sourceSelect')
-                    selectedDeviceId = videoInputDevices[0].deviceId
-                    if (videoInputDevices.length > 1) {
-                        videoInputDevices.forEach((element) => {
+                    selectedDeviceId = mediaDeviceInfo[0].deviceId
+                    if (mediaDeviceInfo.length > 1) {
+                      mediaDeviceInfo.forEach((element) => {
                             const sourceOption = document.createElement('option')
                             sourceOption.text = element.label
                             sourceOption.value = element.deviceId
