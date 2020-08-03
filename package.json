@@ -65,8 +65,7 @@
     "tslint": "./node_modules/.bin/tslint \"./src/**/*.ts\"",
     "mocha-webpack": "./node_modules/.bin/mocha-webpack",
     "nyc": "./node_modules/.bin/nyc",
-    "webpack": "./node_modules/.bin/webpack-cli",
-    "postinstall": "opencollective postinstall"
+    "webpack": "./node_modules/.bin/webpack-cli"
   },
   "dependencies": {
     "ts-custom-error": "^3.0.0"
