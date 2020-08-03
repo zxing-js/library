@@ -547,7 +547,7 @@ describe('EncoderTest', () => {
     );
     // Don't bother leaving Binary Shift.
     testHighLevelEncodeString(
-      'A\x200. \x200',
+      'A\x80. \x80',
       // 'A'  B/S    =2    \200      "."     " "     \200
       '...X. XXXXX ..X.. X....... ..X.XXX. ..X..... X.......'
     );
