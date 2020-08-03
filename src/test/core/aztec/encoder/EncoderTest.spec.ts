@@ -147,7 +147,10 @@ describe('EncoderTest', () => {
   // public void testAztecWriter() throws Exception {
 
   it('testAztecWriter', () => {
-    testWriter('\u20AC 1 sample data.', 'ISO-8859-1', 25, true, 2);
+    // this char is not officially present on ISO-8859-1
+    // testWriter('\u20AC 1 sample data.', 'ISO-8859-1', 25, true, 2);
+    // using windows-1252 instead
+    testWriter('\u20AC 1 sample data.', 'windows-1252', 25, true, 2);
     testWriter('\u20AC 1 sample data.', 'ISO-8859-15', 25, true, 2);
     testWriter('\u20AC 1 sample data.', 'UTF-8', 25, true, 2);
     testWriter('\u20AC 1 sample data.', 'UTF-8', 100, true, 3);
@@ -405,7 +408,7 @@ describe('EncoderTest', () => {
   // public void testHighLevelEncodeBinary() {
   // binary short form single byte
   // @todo enable and fix this test for Encoder release
-  it.skip('testHighLevelEncodeBinary', () => {
+  it('testHighLevelEncodeBinary', () => {
     testHighLevelEncodeString(
       'N\0N',
       // 'N'  B/S    =1   '\0'      N
@@ -526,7 +529,7 @@ describe('EncoderTest', () => {
   // public void testHighLevelEncodePairs() {
   // Typical usage
   // @todo enable and fix this test for Encoder release
-  it.skip('testHighLevelEncodePairs', () => {
+  it('testHighLevelEncodePairs', () => {
     testHighLevelEncodeString(
       'ABC. DEF\r\n',
       //  A     B    C    P/S   .<sp>   D    E     F    P/S   \r\n
