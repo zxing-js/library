@@ -29,14 +29,14 @@ import QRCode from '../../../../core/qrcode/encoder/QRCode';
 import StringBuilder from '../../../../core/util/StringBuilder';
 import StringEncoding from '../../../../core/util/StringEncoding';
 import WriterException from '../../../../core/WriterException';
-import { TextDecoder, TextEncoder } from '@sinonjs/text-encoding';
+import { TextDecoder, TextEncoder } from '@zxing/text-encoding';
 
 function createCustomEncoder(e: string) {
   return new TextEncoder(e, { NONSTANDARD_allowLegacyEncoding: true });
 }
 
 function createCustomDecoder(e: string) {
-  return new TextDecoder(e, { NONSTANDARD_allowLegacyEncoding: true });
+  return new TextDecoder(e);
 }
 
 /**
