@@ -29,15 +29,7 @@ import QRCode from '../../../../core/qrcode/encoder/QRCode';
 import StringBuilder from '../../../../core/util/StringBuilder';
 import StringEncoding from '../../../../core/util/StringEncoding';
 import WriterException from '../../../../core/WriterException';
-import { TextDecoder, TextEncoder } from '@zxing/text-encoding';
-
-function createCustomEncoder(e: string) {
-  return new TextEncoder(e, { NONSTANDARD_allowLegacyEncoding: true });
-}
-
-function createCustomDecoder(e: string) {
-  return new TextDecoder(e);
-}
+import { createCustomEncoder, createCustomDecoder } from '../../util/textEncodingFactory';
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator
@@ -522,6 +514,7 @@ describe('Encoder', () => {
     });
 
     it('testAppend8BitBytes', () => {
+        StringEncoding.customEncoder = (b, e) => createCustomEncoder(e).encode(b);
         // 0x61, 0x62, 0x63
         let bits = new BitArray();
         Encoder.append8BitBytes('abc', bits, Encoder.DEFAULT_BYTE_MODE_ENCODING);
