@@ -60,20 +60,20 @@ describe('DecodedBitStreamParser', () => {
 
     // TYPESCRIPTPORT: CP437 not supported by TextEncoding. TODO: search for an alternative
     // See here for a possibility: https://github.com/SheetJS/js-codepage
-    // it("testECI", () => {/*throws Exception*/
-    //   const builder = new BitSourceBuilder()
-    //   builder.write(0x07, 4); // ECI mode
-    //   builder.write(0x02, 8); // ECI 2 = CP437 encoding
-    //   builder.write(0x04, 4); // Byte mode
-    //   builder.write(0x03, 8); // 3 bytes
-    //   builder.write(0xA1, 8)
-    //   builder.write(0xA2, 8)
-    //   builder.write(0xA3, 8)
-    //   const byteArray = builder.toByteArray()
-    //   const result: string = DecodedBitStreamParser.decode(byteArray,
-    //       Version.getVersionForNumber(1), null, null).getText()
-    //   assert.strictEqual(result, "\u00ed\u00f3\u00fa")
-    // })
+    it.skip('testECI', () => {/*throws Exception*/
+      const builder = new BitSourceBuilder();
+      builder.write(0x07, 4); // ECI mode
+      builder.write(0x02, 8); // ECI 2 = CP437 encoding
+      builder.write(0x04, 4); // Byte mode
+      builder.write(0x03, 8); // 3 bytes
+      builder.write(0xA1, 8);
+      builder.write(0xA2, 8);
+      builder.write(0xA3, 8);
+      const byteArray = builder.toByteArray();
+      const result: string = DecodedBitStreamParser.decode(byteArray,
+          Version.getVersionForNumber(1), null, null).getText();
+      assert.strictEqual(result, '\u00ed\u00f3\u00fa');
+    });
 
     const eciTestData = [
         // label, eciBits, byte1, byte2, byte3, expected
