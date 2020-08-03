@@ -527,7 +527,7 @@ describe('EncoderTest', () => {
   // @todo enable and fix this test for Encoder release
   it.skip('testHighLevelEncodePairs', () => {
     testHighLevelEncodeString(
-      '{}ABC. DEF\r\n',
+      'ABC. DEF\r\n',
       //  A     B    C    P/S   .<sp>   D    E     F    P/S   \r\n
       '...X. ...XX ..X.. ..... ...XX ..X.X ..XX. ..XXX ..... ...X.'
     );
@@ -795,12 +795,12 @@ describe('EncoderTest', () => {
 
     if (typeof expectedBits === 'number') {
       const receivedBitCount: number = stripSpace(bits.toString()).length;
-      assertEquals(expectedBits, receivedBitCount);
-      assertEquals(s, Decoder.highLevelDecode(toBooleanArray(bits)));
+      assertEquals(receivedBitCount, expectedBits);
+      assertEquals(Decoder.highLevelDecode(toBooleanArray(bits)), s);
     } else {
       const receivedBits: string = stripSpace(bits.toString());
-      assertEquals(stripSpace(expectedBits), receivedBits);
-      assertEquals(s, Decoder.highLevelDecode(toBooleanArray(bits)));
+      assertEquals(receivedBits, stripSpace(expectedBits));
+      assertEquals(Decoder.highLevelDecode(toBooleanArray(bits)), s);
     }
   }
 
