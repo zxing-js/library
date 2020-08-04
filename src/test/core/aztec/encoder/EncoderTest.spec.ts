@@ -36,10 +36,11 @@ import AztecWriter from '../../../../core/aztec/AztecWriter';
 import ResultPoint from '../../../../core/ResultPoint';
 import StringEncoding from '../../../../core/util/StringEncoding';
 import Charset from '../../../../core/util/Charset';
-import { TextEncoder, TextDecoder } from '@sinonjs/text-encoding';
+import '@zxing/text-encoding/cjs/encoding-indexes';
+import { TextEncoder, TextDecoder } from '@zxing/text-encoding';
 
 StringEncoding.customEncoder = (b, e) => new TextEncoder(e, { NONSTANDARD_allowLegacyEncoding: true }).encode(b);
-StringEncoding.customDecoder = (s, e) => new TextDecoder(e, { NONSTANDARD_allowLegacyEncoding: true }).decode(s);
+StringEncoding.customDecoder = (s, e) => new TextDecoder(e).decode(s);
 
 /**
  * Aztec 2D generator unit tests.
@@ -146,7 +147,10 @@ describe('EncoderTest', () => {
   // public void testAztecWriter() throws Exception {
 
   it('testAztecWriter', () => {
-    testWriter('\u20AC 1 sample data.', 'ISO-8859-1', 25, true, 2);
+    // this char is not officially present on ISO-8859-1
+    // testWriter('\u20AC 1 sample data.', 'ISO-8859-1', 25, true, 2);
+    // using windows-1252 instead
+    testWriter('\u20AC 1 sample data.', 'windows-1252', 25, true, 2);
     testWriter('\u20AC 1 sample data.', 'ISO-8859-15', 25, true, 2);
     testWriter('\u20AC 1 sample data.', 'UTF-8', 25, true, 2);
     testWriter('\u20AC 1 sample data.', 'UTF-8', 100, true, 3);
@@ -404,7 +408,7 @@ describe('EncoderTest', () => {
   // public void testHighLevelEncodeBinary() {
   // binary short form single byte
   // @todo enable and fix this test for Encoder release
-  it.skip('testHighLevelEncodeBinary', () => {
+  it('testHighLevelEncodeBinary', () => {
     testHighLevelEncodeString(
       'N\0N',
       // 'N'  B/S    =1   '\0'      N
@@ -525,9 +529,9 @@ describe('EncoderTest', () => {
   // public void testHighLevelEncodePairs() {
   // Typical usage
   // @todo enable and fix this test for Encoder release
-  it.skip('testHighLevelEncodePairs', () => {
+  it('testHighLevelEncodePairs', () => {
     testHighLevelEncodeString(
-      '{}ABC. DEF\r\n',
+      'ABC. DEF\r\n',
       //  A     B    C    P/S   .<sp>   D    E     F    P/S   \r\n
       '...X. ...XX ..X.. ..... ...XX ..X.X ..XX. ..XXX ..... ...X.'
     );
@@ -547,7 +551,7 @@ describe('EncoderTest', () => {
     );
     // Don't bother leaving Binary Shift.
     testHighLevelEncodeString(
-      'A\x200. \x200',
+      'A\x80. \x80',
       // 'A'  B/S    =2    \200      "."     " "     \200
       '...X. XXXXX ..X.. X....... ..X.XXX. ..X..... X.......'
     );
@@ -795,12 +799,12 @@ describe('EncoderTest', () => {
 
     if (typeof expectedBits === 'number') {
       const receivedBitCount: number = stripSpace(bits.toString()).length;
-      assertEquals(expectedBits, receivedBitCount);
-      assertEquals(s, Decoder.highLevelDecode(toBooleanArray(bits)));
+      assertEquals(receivedBitCount, expectedBits);
+      assertEquals(Decoder.highLevelDecode(toBooleanArray(bits)), s);
     } else {
       const receivedBits: string = stripSpace(bits.toString());
-      assertEquals(stripSpace(expectedBits), receivedBits);
-      assertEquals(s, Decoder.highLevelDecode(toBooleanArray(bits)));
+      assertEquals(receivedBits, stripSpace(expectedBits));
+      assertEquals(Decoder.highLevelDecode(toBooleanArray(bits)), s);
     }
   }
 

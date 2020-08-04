@@ -20,6 +20,24 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Unit Tests - ts-node",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "args": [
+        "--require",
+        "ts-node/register",
+        "-u",
+        "tdd",
+        "--timeout",
+        "999999",
+        "--colors",
+        "--recursive",
+        "./src/test/**/*.spec.ts"
+      ],
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Code 39 Tests",
       "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
       "args": [
