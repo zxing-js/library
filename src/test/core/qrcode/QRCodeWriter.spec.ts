@@ -25,6 +25,8 @@ import BitMatrix from '../../../core/common/BitMatrix';
 import ErrorCorrectionLevel from '../../../core/qrcode/decoder/ErrorCorrectionLevel';
 import SharpImage from '../util/SharpImage';
 import QRCodeWriter from '../../../core/qrcode/QRCodeWriter';
+import StringEncoding from '../../../core/util/StringEncoding';
+import { createCustomEncoder } from '../util/textEncodingFactory';
 
 const path = require('path');
 
@@ -42,6 +44,7 @@ const path = require('path');
  * @author dswitkin@google.com (Daniel Switkin) - ported and expanded from C++
  */
 describe('QRCodeWriter', () => {
+    StringEncoding.customEncoder = (b, e) => createCustomEncoder(e).encode(b);
 
     const BASE_IMAGE_PATH = 'src/test/resources/golden/qrcode/';
 
