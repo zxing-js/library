@@ -1,6 +1,6 @@
 {
   "name": "@zxing/library",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
   "keywords": [
     "reader",
@@ -114,7 +114,7 @@
     "webpack-node-externals": "^1.6.0",
     "yarn": "^1.17.3"
   },
-  "optionalDependencies":  {
+  "optionalDependencies": {
     "@zxing/text-encoding": "~0.9.0"
   },
   "collective": {
