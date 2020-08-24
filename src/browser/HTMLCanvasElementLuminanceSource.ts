@@ -2,9 +2,6 @@ import InvertedLuminanceSource from '../core/InvertedLuminanceSource';
 import LuminanceSource from '../core/LuminanceSource';
 import IllegalArgumentException from '../core/IllegalArgumentException';
 
-/**
- * @deprecated Moving to @zxing/browser
- */
 export class HTMLCanvasElementLuminanceSource extends LuminanceSource {
 
     private buffer: Uint8ClampedArray;

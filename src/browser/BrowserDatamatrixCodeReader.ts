@@ -2,8 +2,6 @@ import { BrowserCodeReader } from './BrowserCodeReader';
 import DataMatrixReader from '../core/datamatrix/DataMatrixReader';
 
 /**
- * @deprecated Moving to @zxing/browser
- *
  * QR Code reader to use from browser.
  */
 export class BrowserDatamatrixCodeReader extends BrowserCodeReader {

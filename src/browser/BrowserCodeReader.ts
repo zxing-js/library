@@ -13,8 +13,6 @@ import { HTMLVisualMediaElement } from './HTMLVisualMediaElement';
 import { VideoInputDevice } from './VideoInputDevice';
 
 /**
- * @deprecated Moving to @zxing/browser
- *
  * Base class for browser code reader.
  */
 export class BrowserCodeReader {

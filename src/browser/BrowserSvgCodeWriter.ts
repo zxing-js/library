@@ -5,9 +5,6 @@ import ErrorCorrectionLevel from '../core/qrcode/decoder/ErrorCorrectionLevel';
 import IllegalArgumentException from '../core/IllegalArgumentException';
 import IllegalStateException from '../core/IllegalStateException';
 
-/**
- * @deprecated Moving to @zxing/browser
- */
 abstract class BrowserSvgCodeWriter {
 
     /**

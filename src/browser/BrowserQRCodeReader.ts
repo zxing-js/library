@@ -2,8 +2,6 @@ import { BrowserCodeReader } from './BrowserCodeReader';
 import QRCodeReader from '../core/qrcode/QRCodeReader';
 
 /**
- * @deprecated Moving to @zxing/browser
- *
  * QR Code reader to use from browser.
  */
 export class BrowserQRCodeReader extends BrowserCodeReader {

@@ -3,8 +3,6 @@ import MultiFormatOneDReader from '../core/oned/MultiFormatOneDReader';
 import DecodeHintType from '../core/DecodeHintType';
 
 /**
- * @deprecated Moving to @zxing/browser
- *
  * Barcode reader reader to use from browser.
  */
 export class BrowserBarcodeReader extends BrowserCodeReader {
