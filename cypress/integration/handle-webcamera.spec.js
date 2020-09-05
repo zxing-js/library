@@ -5,10 +5,10 @@ context('Actions', () => {
     cy.visit('http://localhost:8080/examples/multi-camera/');
   });
 
-  describe('My First Test', () => {
-    it('Does not do much!', () => {
+  describe('Start Decoding from camera', () => {
+    it('decodes some result from web camera stream', () => {
       cy.get('#startButton').click();
-      expect(true).to.equal(true);
+      cy.get('#result').should('have.text', '192.168.1.13:3000')
     });
   });
 

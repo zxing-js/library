@@ -94,3 +94,20 @@ Will became: `StringEncoding.decode(<ByteArray>, encoding)`.
 ----
 
 Most of things here are opinions and were written by the first porter, please feel free to discuss and help us to make it better.
+
+## Testing WebRTC
+
+We use Cypress for E2E tests, in which you can provide fixture video files for webcamera testing.
+For creating a file Chrome can read and use, you can use `ffmpeg` and create either a `.y4m` file or a compressed `.mjpeg` file.
+
+In your terminal just do:
+
+```bash
+# first convert your file to the format chrome can read
+# example: ffmpeg -i <INPUT_FILENAME>.<mp4|y4m> -pix_fmt yuv420p <OUTPUT_FILENAME>.<mjpeg|y4m>
+ffmpeg -i qrcode-video.mp4 -pix_fmt yuv420p qrcode-video.mjpeg
+# then you need to make sure you remove some redundant characters: (where mjpeg could be y4m)
+sed -i '0,/C420mpeg2/s//C420/' *.mjpeg
+```
+
+Then just use it.

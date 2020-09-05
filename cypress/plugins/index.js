@@ -21,10 +21,10 @@ module.exports = (on, config) => {
   on('before:browser:launch', (browser = {}, launchOptions) => {
     if (browser.family === 'chromium' && browser.name !== 'electron') {
       // Mac/Linux
-      // launchOptions.args.push('--use-file-for-fake-video-capture=cypress/fixtures/qrcode-video.mp4')
+      launchOptions.args.push('--use-file-for-fake-video-capture=cypress/fixtures/qrcode-video.mjpeg')
 
       // Windows
-      launchOptions.args.push('--use-file-for-fake-video-capture=C:\\Users\\luizf\\Projects\\zxing-js\\library\\cypress\\fixtures\\qrcode-video.mp4');
+      // launchOptions.args.push('--use-file-for-fake-video-capture=cypress\\fixtures\\qrcode-video.mp4');
 
       // generate Y4M file
       // https://testrtc.com/y4m-video-chrome/
