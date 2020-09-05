@@ -20,3 +20,6 @@ typings
 *.tgz
 package
 .tmp
+
+## e2e
+cypress/videos/
