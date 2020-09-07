@@ -98,7 +98,7 @@ Most of things here are opinions and were written by the first porter, please fe
 ## Testing WebRTC
 
 We use Cypress for E2E tests, in which you can provide fixture video files for webcamera testing.
-For creating a file Chrome can read and use, you can use `ffmpeg` and create either a `.y4m` file or a compressed `.mjpeg` file.
+For creating a file Chrome can read and use, you can use `ffmpeg` and create either a `.y4m` file or a compressed `.mjpeg` file. For more info take a look [here](https://testrtc.com/y4m-video-chrome/).
 
 In your terminal just do:
 
