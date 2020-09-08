@@ -2,7 +2,7 @@
 
 context('Actions', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:8080/examples/multi-camera/');
+    cy.visit('http://localhost:8080/e2e/pages/qr-camera/index.html');
   });
 
   describe('Start Decoding from camera', () => {
