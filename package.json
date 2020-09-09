@@ -69,7 +69,7 @@
     "e2e:serve:start": "yarn pm2 serve ./ 8080 --name library-e2e",
     "e2e:serve:stop": "yarn pm2 del library-e2e",
     "e2e:test": "yarn e2e:serve:start && yarn e2e:run && yarn e2e:serve:stop",
-    "e2e:run": "yarn cypress run --headless --browser chrome"
+    "e2e:run": "cypress run --headless --browser chrome"
   },
   "dependencies": {
     "ts-custom-error": "^3.0.0"
