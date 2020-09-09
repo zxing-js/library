@@ -9,6 +9,12 @@ language: node_js
 node_js:
   - '12'
 
+addons:
+  apt:
+    packages:
+      # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
+      - libgconf-2-4
+
 before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get -qq update
@@ -27,6 +33,8 @@ cache:
   yarn: true
   directories:
     - node_modules
+    # we also need to cache folder with Cypress binary
+    - ~/.cache
 
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
