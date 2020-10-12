@@ -41,7 +41,7 @@
   "homepage": "https://zxing-js.github.io/library/",
   "private": false,
   "main": "./umd/index.min.js",
-  "module": "./esm5/index.js",
+  "module": "./esm/index.js",
   "typings": "./esm/index.d.ts",
   "esnext": "./esm/index.js",
   "nyc": {
