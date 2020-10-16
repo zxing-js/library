@@ -27,21 +27,21 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-      
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Test the application
-        run: yarn test
+      - name: E2E Test the application
+        run: yarn e2e:test
 
       - name: Build the application
         run: yarn build
-      
+
       - name: Build the package
         run: |
           npm pack
           mv zxing-library-*.tgz package.tgz
-      
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v1
         with:
@@ -71,19 +71,19 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      
+
       - name: Download build artifacts
         uses: actions/download-artifact@v1
         with:
           name: pack-artifact
-          
+
       - name: Install JQ for JSON handling
         run: sudo apt-get install jq
-      
+
       - name: Get repository name
         run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
         shell: bash
-        
+
       - name: Rename NPM package
         run: |
           ORG_NAME="zxing-js"
