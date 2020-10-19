@@ -61,6 +61,9 @@ export { default as ReedSolomonEncoder } from './core/common/reedsolomon/ReedSol
 // core/datamatrix
 export { default as DataMatrixReader } from './core/datamatrix/DataMatrixReader';
 
+// core/pdf417
+export { default as PDF417Reader } from './core/pdf417/PDF417Reader';
+
 // core/twod/qrcode
 export { default as QRCodeReader } from './core/qrcode/QRCodeReader';
 export { default as QRCodeWriter } from './core/qrcode/QRCodeWriter';
@@ -79,4 +82,4 @@ export { default as ITFReader } from './core/oned/ITFReader';
 export { default as Code39Reader } from './core/oned/Code39Reader';
 export { default as RSS14Reader } from './core/oned/rss/RSS14Reader';
 export { default as RSSExpandedReader } from './core/oned/rss/expanded/RSSExpandedReader';
-export { default as MultiformatReader } from './core/oned/MultiFormatOneDReader';
+export { default as MultiFormatOneDReader } from './core/oned/MultiFormatOneDReader';
