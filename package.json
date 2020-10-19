@@ -46,7 +46,7 @@
   "esnext": "./esm/index.js",
   "scripts": {
     "lint": "yarn tslint --project .",
-    "clean": "yarn shx rm -rf umd esm esm5",
+    "clean": "yarn shx rm -rf dist output",
     "test": "yarn test:build && yarn test:run",
     "test:build": "tsc --build tsconfig.test.json",
     "test:run": "mocha -r tsconfig-paths/register --timeout 200000 output/tests/**/*.spec.js",
