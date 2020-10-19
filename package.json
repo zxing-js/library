@@ -54,7 +54,7 @@
     "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:umd  && yarn run build:umd:min && yarn build:copy",
     "build:es5": "yarn tsc --build tsconfig.libes5.json",
     "build:es6": "yarn tsc --build tsconfig.libes6.json",
-    "build:umd": "rollup dist/esm/index.js --format umd --name ZXingLibrary --sourceMap --output dist/umd/zxing-library.js",
+    "build:umd": "rollup dist/esm/index.js --format umd --name ZXingLibrary --sourceMap --file dist/umd/zxing-library.js",
     "build:umd:min": "cd dist/umd && uglifyjs --compress --mangle --source-map --screw-ie8 --comments --o zxing-library.min.js -- zxing-library.js && gzip zxing-library.min.js -c > zxing-library.min.js.gz",
     "build:copy": "cp README.md dist && cp package.json dist && cp LICENSE dist",
     "shx": "./node_modules/.bin/shx",
