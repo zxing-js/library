@@ -22,7 +22,7 @@ import GenericGF from '../../common/reedsolomon/GenericGF';
 import ReedSolomonDecoder from '../../common/reedsolomon/ReedSolomonDecoder';
 import IllegalStateException from '../../IllegalStateException';
 import FormatException from '../../FormatException';
-import { StringUtils } from '../../..';
+import StringUtils from '../../common/StringUtils';
 import Integer from '../../util/Integer';
 import { int } from '../../../customTypings';
 
