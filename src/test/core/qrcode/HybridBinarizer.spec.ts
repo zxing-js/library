@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import HybridBinarizer from '../../../core/common/HybridBinarizer';
+import { HybridBinarizer } from '@zxing/library';
 import SharpImageLuminanceSource from '../SharpImageLuminanceSource';
 import SharpImage from '../util/SharpImage';
 

@@ -17,7 +17,7 @@
 // package com.google.zxing.pdf417.decoder.ec;
 
 // import com.google.zxing.ChecksumException;
-import ChecksumException from '../../../../../core/ChecksumException';
+import { ChecksumException } from '@zxing/library';
 
 // import org.junit.Ignore;
 // import org.junit.Test;
@@ -25,7 +25,7 @@ import ChecksumException from '../../../../../core/ChecksumException';
 // import java.util.Random;
 import Random from '../../../util/Random';
 
-import ErrorCorrection from '../../../../../core/pdf417/decoder/ec/ErrorCorrection';
+import { PDF417DecoderErrorCorrection } from '@zxing/library';
 
 import * as assert from 'assert';
 import AbstractErrorCorrectionSpec from './AbstractErrorCorrection.spec';
@@ -153,7 +153,7 @@ const /*private static final int*/ ERROR_LIMIT: number = ECC_BYTES;
 const /*private static final int*/ MAX_ERRORS: number = ERROR_LIMIT / 2;
 const /*private static final int*/ MAX_ERASURES: number = ERROR_LIMIT;
 
-const /*private final ErrorCorrection*/ ec = new ErrorCorrection();
+const /*private final ErrorCorrection*/ ec = new PDF417DecoderErrorCorrection();
 
 /**
  *

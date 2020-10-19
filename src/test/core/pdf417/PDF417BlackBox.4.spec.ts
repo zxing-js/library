@@ -35,11 +35,11 @@
 
 // import java.awt.image.BufferedImage;
 // import java.io.IOException;
-// import java.nio.charset.StandardCharsets;
+// import java.nio.charset.ZXingStandardCharsets;
 // import java.nio.file.Files;
 // import java.nio.file.Path;
 // import java.util.ArrayList;
-// import java.util.Arrays;
+// import java.util.ZXingArrays;
 // import java.util.Collections;
 // import java.util.Comparator;
 // import java.util.EnumMap;
@@ -91,11 +91,11 @@
 //       String expectedText;
 //       Path expectedTextFile = testBase.resolve(fileBaseName + ".txt");
 //       if (Files.exists(expectedTextFile)) {
-//         expectedText = readFileAsString(expectedTextFile, StandardCharsets.UTF_8);
+//         expectedText = readFileAsString(expectedTextFile, ZXingStandardCharsets.UTF_8);
 //       } else {
 //         expectedTextFile = testBase.resolve(fileBaseName + ".bin");
 //         assertTrue(Files.exists(expectedTextFile));
-//         expectedText = readFileAsString(expectedTextFile, StandardCharsets.ISO_8859_1);
+//         expectedText = readFileAsString(expectedTextFile, ZXingStandardCharsets.ISO_8859_1);
 //       }
 
 //       for (int x = 0; x < testCount; x++) {
@@ -108,7 +108,7 @@
 //           BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
 
 //           try {
-//             results.addAll(Arrays.asList(decode(bitmap, false)));
+//             results.addAll(ZXingArrays.asList(decode(bitmap, false)));
 //           } catch (ReaderException ignored) {
 //             // ignore
 //           }
@@ -121,7 +121,7 @@
 //             return resultMetadata.getSegmentIndex() - otherResultMetadata.getSegmentIndex();
 //           }
 //         });
-//         StringBuilder resultText = new StringBuilder();
+//         ZXingStringBuilder resultText = new ZXingStringBuilder();
 //         String fileId = null;
 //         for (Result result : results) {
 //           PDF417ResultMetadata resultMetadata = getMeta(result);

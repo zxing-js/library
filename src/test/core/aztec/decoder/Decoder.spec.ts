@@ -19,16 +19,16 @@
 // import com.google.zxing.ResultPoint;
 // import com.google.zxing.aztec.AztecDetectorResult;
 // import com.google.zxing.common.BitMatrix;
-import BitMatrix from '../../../../core/common/BitMatrix';
+import { BitMatrix } from '@zxing/library';
 // import com.google.zxing.common.DecoderResult;
 // import org.junit.Test;
 // import org.junit.Assert;
-import { assertEquals, assertArrayEquals, assertThrow } from '../../util/AssertUtils';
+import { assertEquals, assertArrayEquals, assertThrow } from '../../../core/util/AssertUtils';
 
-import ResultPoint from '../../../../core/ResultPoint';
-import Decoder from '../../../../core/aztec/decoder/Decoder';
-import AztecDetectorResult from '../../../../core/aztec/AztecDetectorResult';
-import FormatException from '../../../../core/FormatException';
+import { ResultPoint } from '@zxing/library';
+import { AztecDecoder } from '@zxing/library';
+import { AztecDetectorResult } from '@zxing/library';
+import { FormatException } from '@zxing/library';
 
 /**
  * Tests {@link Decoder}.
@@ -68,7 +68,7 @@ describe('DecoderTest', () => {
             '    X X X     X X X       X X X     X X X X   \n',
             'X ', '  ');
         const r = new AztecDetectorResult(matrix, NO_POINTS, false, 30, 2);
-        const result = new Decoder().decode(r);
+        const result = new AztecDecoder().decode(r);
         assertEquals('88888TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT', result.getText());
         assertArrayEquals(
             new Uint8Array([- 11, 85, 85, 117, 107, 90, -42, -75, -83, 107,
@@ -113,7 +113,7 @@ describe('DecoderTest', () => {
             + 'X X . X . X . . . X . X . . . . X X . X . . X X . . . \n',
             'X ', '. ');
         const r = new AztecDetectorResult(matrix, NO_POINTS, true, 16, 4);
-        assertThrow(() => new Decoder().decode(r), FormatException);
+        assertThrow(() => new AztecDecoder().decode(r), FormatException);
     });
 
     /**
@@ -152,7 +152,7 @@ describe('DecoderTest', () => {
             + 'X X . . . X X . . X . X . . . . X X . X . . X . X . X \n',
             'X ', '. ');
         const r = new AztecDetectorResult(matrix, NO_POINTS, true, 16, 4);
-        assertThrow(() => new Decoder().decode(r), FormatException);
+        assertThrow(() => new AztecDecoder().decode(r), FormatException);
     });
 
     /**
@@ -176,11 +176,11 @@ describe('DecoderTest', () => {
         let byte9: /*byte[]*/ Uint8Array = new Uint8Array([- 86, -128]);
         let byte16: /*byte[]*/ Uint8Array = new Uint8Array([99, - 63]);
 
-        assertArrayEquals(byte0, Decoder.convertBoolArrayToByteArray(bool0));
-        assertArrayEquals(byte1, Decoder.convertBoolArrayToByteArray(bool1));
-        assertArrayEquals(byte7, Decoder.convertBoolArrayToByteArray(bool7));
-        assertArrayEquals(byte8, Decoder.convertBoolArrayToByteArray(bool8));
-        assertArrayEquals(byte9, Decoder.convertBoolArrayToByteArray(bool9));
-        assertArrayEquals(byte16, Decoder.convertBoolArrayToByteArray(bool16));
+        assertArrayEquals(byte0, AztecDecoder.convertBoolArrayToByteArray(bool0));
+        assertArrayEquals(byte1, AztecDecoder.convertBoolArrayToByteArray(bool1));
+        assertArrayEquals(byte7, AztecDecoder.convertBoolArrayToByteArray(bool7));
+        assertArrayEquals(byte8, AztecDecoder.convertBoolArrayToByteArray(bool8));
+        assertArrayEquals(byte9, AztecDecoder.convertBoolArrayToByteArray(bool9));
+        assertArrayEquals(byte16, AztecDecoder.convertBoolArrayToByteArray(bool16));
     });
 });

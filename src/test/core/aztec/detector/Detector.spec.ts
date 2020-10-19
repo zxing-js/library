@@ -17,38 +17,38 @@
 // package com.google.zxing.aztec.detector;
 
 // import com.google.zxing.NotFoundException;
-import NotFoundException from '../../../../core/NotFoundException';
+import { NotFoundException } from '@zxing/library';
 // import com.google.zxing.aztec.AztecDetectorResult;
-import AztecDetectorResult from '../../../../core/aztec/AztecDetectorResult';
+import { AztecDetectorResult } from '@zxing/library';
 // import com.google.zxing.aztec.decoder.Decoder;
-import Decoder from '../../../../core/aztec/decoder/Decoder';
-// import com.google.zxing.aztec.detector.Detector.Point;
-import Detector, { Point } from '../../../../core/aztec/detector/Detector';
+import { AztecDecoder } from '@zxing/library';
+// import com.google.zxing.aztec.detector.Detector.AztecPoint;
+import { AztecDetector, AztecPoint } from '@zxing/library';
 // import com.google.zxing.aztec.encoder.AztecCode;
-import AztecCode from '../../../../core/aztec/encoder/AztecCode';
-// import com.google.zxing.aztec.encoder.Encoder;
-import Encoder from '../../../../core/aztec/encoder/Encoder';
-// import Encoder from '../../../../core/aztec/encoder/Encoder';
+import { AztecCode } from '@zxing/library';
+// import com.google.zxing.aztec.encoder.AztecEncoder;
+import { AztecEncoder } from '@zxing/library';
+// import { AztecEncoder } from '@zxing/library';
 // import com.google.zxing.common.BitMatrix;
-import BitMatrix from '../../../../core/common/BitMatrix';
+import { BitMatrix } from '@zxing/library';
 // import com.google.zxing.common.DecoderResult;
-import DecoderResult from '../../../../core/common/DecoderResult';
+import { DecoderResult } from '@zxing/library';
 // import org.junit.Assert;
 import { assertEquals, assertNotNull, assertThrow } from '../../util/AssertUtils';
 import { fail } from 'assert';
 // import org.junit.Test;
 
-// import java.nio.charset.StandardCharsets;
+// import java.nio.charset.ZXingStandardCharsets;
 // import java.util.ArrayList;
-// import java.util.Arrays;
-import Arrays from '../../../../core/util/Arrays';
+// import java.util.ZXingArrays;
+import { ZXingArrays } from '@zxing/library';
 // import java.util.Collection;
 // import java.util.List;
 // import java.util.Random;
-import Random from '../../util/Random';
-import StringUtils from '../../../../core/common/StringUtils';
-import StandardCharsets from '../../../../core/util/StandardCharsets';
-import Integer from '../../../../core/util/Integer';
+import Random from '../../../core/util/Random';
+import { StringUtils } from '@zxing/library';
+import { ZXingStandardCharsets } from '@zxing/library';
+import { ZXingInteger } from '@zxing/library';
 // import java.util.TreeSet;
 
 /**
@@ -94,11 +94,11 @@ describe('DetectorTest', () => {
      */
     // Test that we can tolerate errors in the parameter locator bits
     function testErrorInParameterLocator(data: string): void {
-        let aztec: AztecCode = Encoder.encode(StringUtils.getBytes(data, StandardCharsets.ISO_8859_1), 25, Encoder.DEFAULT_AZTEC_LAYERS);
+        let aztec: AztecCode = AztecEncoder.encode(StringUtils.getBytes(data, ZXingStandardCharsets.ISO_8859_1), 25, AztecEncoder.DEFAULT_AZTEC_LAYERS);
         let random: Random = new Random(aztec.getMatrix().hashCode().toString());   // pseudo-random, but deterministic
         let layers: /*int*/ number = aztec.getLayers();
         let compact: boolean = aztec.isCompact();
-        let orientationPoints: Point[] = getOrientationPoints(aztec);
+        let orientationPoints: AztecPoint[] = getOrientationPoints(aztec);
         for (const isMirror of [false, true]) {
             for (const matrix of getRotations(aztec.getMatrix())) {
                 // Systematically try every possible 1- and 2-bit error.
@@ -111,11 +111,11 @@ describe('DetectorTest', () => {
                             copy.flip(orientationPoints[error2].getX(), orientationPoints[error2].getY());
                         }
                         // The detector doesn't seem to work when matrix bits are only 1x1.  So magnify.
-                        let r: AztecDetectorResult = new Detector(makeLarger(copy, 3)).detectMirror(isMirror);
+                        let r: AztecDetectorResult = new AztecDetector(makeLarger(copy, 3)).detectMirror(isMirror);
                         assertNotNull(r);
                         assertEquals(r.getNbLayers(), layers);
                         assertEquals(r.isCompact(), compact);
-                        let res: DecoderResult = new Decoder().decode(r);
+                        let res: DecoderResult = new AztecDecoder().decode(r);
                         assertEquals(data, res.getText());
                     }
                 }
@@ -131,7 +131,7 @@ describe('DetectorTest', () => {
                         copy.flip(orientationPoints[error].getX(), orientationPoints[error].getY());
                     }
                     try {
-                        new Detector(makeLarger(copy, 3)).detectMirror(false);
+                        new AztecDetector(makeLarger(copy, 3)).detectMirror(false);
                         fail('Should not reach here');
                     } catch (expected) {
                         // continue
@@ -163,7 +163,7 @@ describe('DetectorTest', () => {
         let matrix90: BitMatrix = rotateRight(matrix0);
         let matrix180: BitMatrix = rotateRight(matrix90);
         let matrix270: BitMatrix = rotateRight(matrix180);
-        return Arrays.asList(matrix0, matrix90, matrix180, matrix270);
+        return ZXingArrays.asList(matrix0, matrix90, matrix180, matrix270);
     }
 
     // Rotates a square BitMatrix to the right by 90 degrees
@@ -208,15 +208,15 @@ describe('DetectorTest', () => {
         return result;
     }
 
-    function getOrientationPoints(code: AztecCode): Point[] {
-        let center: number = Integer.truncDivision(code.getMatrix().getWidth(), 2);
+    function getOrientationPoints(code: AztecCode): AztecPoint[] {
+        let center: number = ZXingInteger.truncDivision(code.getMatrix().getWidth(), 2);
         let offset: number = code.isCompact() ? 5 : 7;
-        let result: Point[] = [];
+        let result: AztecPoint[] = [];
         for (let xSign: number = -1; xSign <= 1; xSign += 2) {
             for (let ySign: number = -1; ySign <= 1; ySign += 2) {
-                result.push(new Point(center + xSign * offset, center + ySign * offset));
-                result.push(new Point(center + xSign * (offset - 1), center + ySign * offset));
-                result.push(new Point(center + xSign * offset, center + ySign * (offset - 1)));
+                result.push(new AztecPoint(center + xSign * offset, center + ySign * offset));
+                result.push(new AztecPoint(center + xSign * (offset - 1), center + ySign * offset));
+                result.push(new AztecPoint(center + xSign * offset, center + ySign * (offset - 1)));
             }
         }
         return result;

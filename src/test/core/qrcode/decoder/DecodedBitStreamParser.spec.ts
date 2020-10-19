@@ -17,21 +17,21 @@
 /*package com.google.zxing.qrcode.decoder;*/
 
 import * as assert from 'assert';
-import DecodedBitStreamParser from '../../../../core/qrcode/decoder/DecodedBitStreamParser';
-import BitSourceBuilder from '../../common/BitSourceBuilder';
-import Version from '../../../../core/qrcode/decoder/Version';
-import Random from '../../util/Random';
+import { QRCodeDecodedBitStreamParser } from '@zxing/library';
+import BitSourceBuilder from '../../../core/common/BitSourceBuilder';
+import { QRCodeVersion } from '@zxing/library';
+import Random from '../../../core/util/Random';
 import { TextDecoder } from '@zxing/text-encoding';
-import StringEncoding from '../../../../core/util/StringEncoding';
+import { ZXingStringEncoding } from '@zxing/library';
 
-StringEncoding.customDecoder = (b, e) => new TextDecoder(e).decode(b);
+ZXingStringEncoding.customDecoder = (b, e) => new TextDecoder(e).decode(b);
 
 /**
- * Tests {@link DecodedBitStreamParser}.
+ * Tests {@link QRCodeDecodedBitStreamParser}.
  *
  * @author Sean Owen
  */
-describe('DecodedBitStreamParser', () => {
+describe('QRCodeDecodedBitStreamParser', () => {
 
     it('testSimpleByteMode', () => {/*throws Exception*/
         const builder = new BitSourceBuilder();
@@ -40,8 +40,8 @@ describe('DecodedBitStreamParser', () => {
         builder.write(0xF1, 8);
         builder.write(0xF2, 8);
         builder.write(0xF3, 8);
-        const result: string = DecodedBitStreamParser.decode(builder.toByteArray(),
-            Version.getVersionForNumber(1), null, null).getText();
+        const result: string = QRCodeDecodedBitStreamParser.decode(builder.toByteArray(),
+            QRCodeVersion.getVersionForNumber(1), null, null).getText();
         assert.strictEqual(result, '\u00f1\u00f2\u00f3');
     });
 
@@ -53,8 +53,8 @@ describe('DecodedBitStreamParser', () => {
         builder.write(0xA2, 8);
         builder.write(0xA3, 8);
         builder.write(0xD0, 8);
-        const result: string = DecodedBitStreamParser.decode(builder.toByteArray(),
-            Version.getVersionForNumber(1), null, null).getText();
+        const result: string = QRCodeDecodedBitStreamParser.decode(builder.toByteArray(),
+            QRCodeVersion.getVersionForNumber(1), null, null).getText();
         assert.strictEqual(result, '\uff61\uff62\uff63\uff90');
     });
 
@@ -70,8 +70,8 @@ describe('DecodedBitStreamParser', () => {
       builder.write(0xA2, 8);
       builder.write(0xA3, 8);
       const byteArray = builder.toByteArray();
-      const result: string = DecodedBitStreamParser.decode(byteArray,
-          Version.getVersionForNumber(1), null, null).getText();
+      const result: string = QRCodeDecodedBitStreamParser.decode(byteArray,
+          QRCodeVersion.getVersionForNumber(1), null, null).getText();
       assert.strictEqual(result, '\u00ed\u00f3\u00fa');
     });
 
@@ -116,8 +116,8 @@ describe('DecodedBitStreamParser', () => {
         builder.write(b2, 8);
         builder.write(b3, 8);
         const byteArray = builder.toByteArray();
-        const result: string = DecodedBitStreamParser.decode(byteArray,
-            Version.getVersionForNumber(1), null, null).getText();
+        const result: string = QRCodeDecodedBitStreamParser.decode(byteArray,
+            QRCodeVersion.getVersionForNumber(1), null, null).getText();
         assert.strictEqual(result, expected, encodingLabel);
     }
 
@@ -155,8 +155,8 @@ describe('DecodedBitStreamParser', () => {
         builder.write(b5, 8);
         builder.write(b6, 8);
         const byteArray = builder.toByteArray();
-        const result: string = DecodedBitStreamParser.decode(byteArray,
-            Version.getVersionForNumber(1), null, null).getText();
+        const result: string = QRCodeDecodedBitStreamParser.decode(byteArray,
+            QRCodeVersion.getVersionForNumber(1), null, null).getText();
         assert.strictEqual(result, expected1 + expected2, encodingLabel1 + ' & ' + encodingLabel2);
     }
 
@@ -166,8 +166,8 @@ describe('DecodedBitStreamParser', () => {
         builder.write(0x01, 4); // Subset 1 = GB2312 encoding
         builder.write(0x01, 8); // 1 characters
         builder.write(0x03C1, 13);
-        const result: string = DecodedBitStreamParser.decode(builder.toByteArray(),
-            Version.getVersionForNumber(1), null, null).getText();
+        const result: string = QRCodeDecodedBitStreamParser.decode(builder.toByteArray(),
+            QRCodeVersion.getVersionForNumber(1), null, null).getText();
         assert.strictEqual(result, '\u963f');
     });
 

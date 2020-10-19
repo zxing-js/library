@@ -17,9 +17,9 @@
 
 // package com.google.zxing.oned;
 
-import BarcodeFormat from './../../../core/BarcodeFormat';
+import { BarcodeFormat } from '@zxing/library';
 import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
-import Code39Reader from '../../../core/oned/Code39Reader';
+import { Code39Reader } from '@zxing/library';
 
 /**
  * @author Sean Owen

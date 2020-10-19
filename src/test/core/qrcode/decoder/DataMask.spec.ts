@@ -17,8 +17,8 @@
 /*package com.google.zxing.qrcode.decoder;*/
 
 import * as assert from 'assert';
-import BitMatrix from '../../../../core/common/BitMatrix';
-import DataMask from '../../../../core/qrcode/decoder/DataMask';
+import { BitMatrix } from '@zxing/library';
+import { QRCodeDataMask } from '@zxing/library';
 
 interface MaskCondition {
     isMasked(i: number /*int*/, j: number /*int*/): boolean;
@@ -94,14 +94,14 @@ describe('DataMask', () => {
     });
 
     function testMaskAcrossDimensions(reference: number /*int*/, condition: MaskCondition): void {
-        const mask = DataMask.values.get(reference);
+        const mask = QRCodeDataMask.values.get(reference);
         for (let version: number /*int*/ = 1; version <= 40; version++) {
             const dimension: number /*int*/ = 17 + 4 * version;
             testMask(mask, dimension, condition);
         }
     }
 
-    function testMask(mask: DataMask, dimension: number /*int*/, condition: MaskCondition): void {
+    function testMask(mask: QRCodeDataMask, dimension: number /*int*/, condition: MaskCondition): void {
         const bits = new BitMatrix(dimension);
         mask.unmaskBitMatrix(bits, dimension);
         for (let i: number /*int*/ = 0; i < dimension; i++) {

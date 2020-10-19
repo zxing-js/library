@@ -17,7 +17,7 @@
 /*package com.google.zxing.qrcode.encoder;*/
 
 import * as assert from 'assert';
-import BitArray from '../../../../core/common/BitArray';
+import { BitArray } from '@zxing/library';
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator

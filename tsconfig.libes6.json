@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist/esm",
+    "target": "es6",
+    "module": "es6"
+  },
+  "exclude": [
+    "src/test"
+  ]
+}
