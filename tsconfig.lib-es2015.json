@@ -1,9 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist/esm",
-    "target": "es6",
-    "module": "es6"
+    "module": "es2015",
+    "target": "es2015",
+    "outDir": "dist/es2015"
   },
   "exclude": [
     "src/test"
