@@ -14,33 +14,33 @@
  * limitations under the License.
  */
 
-import AztecCode from '../../../../core/aztec/encoder/AztecCode';
+import { AztecCode } from '@zxing/library';
 import { assertEquals, assertTrue, assertFalse, assertArrayEquals } from '../../util/AssertUtils';
-import BitMatrix from '../../../../core/common/BitMatrix';
+import { BitMatrix } from '@zxing/library';
 import {
   BarcodeFormat,
   DecoderResult,
   EncodeHintType,
   BitArray,
   StringUtils,
-} from '../../../..';
-import Encoder from '../../../../core/aztec/encoder/Encoder';
-import StandardCharsets from '../../../../core/util/StandardCharsets';
-import StringBuilder from '../../../../core/util/StringBuilder';
+} from '@zxing/library';
+import { AztecEncoder } from '@zxing/library';
+import { ZXingStandardCharsets } from '@zxing/library';
+import { ZXingStringBuilder } from '@zxing/library';
 import { fail } from 'assert';
-import AztecDetectorResult from '../../../../core/aztec/AztecDetectorResult';
-import Decoder from '../../../../core/aztec/decoder/Decoder';
-import Random from '../../util/Random';
-import HighLevelEncoder from '../../../../core/aztec/encoder/HighLevelEncoder';
-import AztecWriter from '../../../../core/aztec/AztecWriter';
-import ResultPoint from '../../../../core/ResultPoint';
-import StringEncoding from '../../../../core/util/StringEncoding';
-import Charset from '../../../../core/util/Charset';
+import { AztecDetectorResult } from '@zxing/library';
+import { AztecDecoder } from '@zxing/library';
+import Random from '../../../core/util/Random';
+import { AztecHighLevelEncoder } from '@zxing/library';
+import { AztecCodeWriter } from '@zxing/library';
+import { ResultPoint } from '@zxing/library';
+import { ZXingStringEncoding } from '@zxing/library';
+import { ZXingCharset } from '@zxing/library';
 import '@zxing/text-encoding/cjs/encoding-indexes';
 import { TextEncoder, TextDecoder } from '@zxing/text-encoding';
 
-StringEncoding.customEncoder = (b, e) => new TextEncoder(e, { NONSTANDARD_allowLegacyEncoding: true }).encode(b);
-StringEncoding.customDecoder = (s, e) => new TextDecoder(e).decode(s);
+ZXingStringEncoding.customEncoder = (b, e) => new TextEncoder(e, { NONSTANDARD_allowLegacyEncoding: true }).encode(b);
+ZXingStringEncoding.customDecoder = (s, e) => new TextDecoder(e).decode(s);
 
 /**
  * Aztec 2D generator unit tests.
@@ -156,14 +156,14 @@ describe('EncoderTest', () => {
     testWriter('\u20AC 1 sample data.', 'UTF-8', 100, true, 3);
     testWriter('\u20AC 1 sample data.', 'UTF-8', 300, true, 4);
     testWriter('\u20AC 1 sample data.', 'UTF-8', 500, false, 5);
-    // Test AztecWriter defaults
+    // Test AztecCodeWriter defaults
     const data: string = 'In ut magna vel mauris malesuada';
-    const writer: AztecWriter = new AztecWriter();
+    const writer: AztecCodeWriter = new AztecCodeWriter();
     const matrix: BitMatrix = writer.encode(data, BarcodeFormat.AZTEC, 0, 0);
-    const aztec: AztecCode = Encoder.encode(
-      StringUtils.getBytes(data, StandardCharsets.ISO_8859_1),
-      Encoder.DEFAULT_EC_PERCENT,
-      Encoder.DEFAULT_AZTEC_LAYERS
+    const aztec: AztecCode = AztecEncoder.encode(
+      StringUtils.getBytes(data, ZXingStandardCharsets.ISO_8859_1),
+      AztecEncoder.DEFAULT_EC_PERCENT,
+      AztecEncoder.DEFAULT_AZTEC_LAYERS
     );
     const expectedMatrix: BitMatrix = aztec.getMatrix();
     // TYPESCRIPTPORT: here we have to compare each property
@@ -407,7 +407,7 @@ describe('EncoderTest', () => {
   // @Test
   // public void testHighLevelEncodeBinary() {
   // binary short form single byte
-  // @todo enable and fix this test for Encoder release
+  // @todo enable and fix this test for AztecEncoder release
   it('testHighLevelEncodeBinary', () => {
     testHighLevelEncodeString(
       'N\0N',
@@ -443,7 +443,7 @@ describe('EncoderTest', () => {
     );
 
     // Create a string in which every character requires binary
-    let sb: StringBuilder = new StringBuilder();
+    let sb: ZXingStringBuilder = new ZXingStringBuilder();
     for (let i = 0; i <= 3000; i++) {
       sb.append(128 + (i % 30));
     }
@@ -492,7 +492,7 @@ describe('EncoderTest', () => {
       );
     }
 
-    sb = new StringBuilder();
+    sb = new ZXingStringBuilder();
     for (let i = 0; i < 32; i++) {
       sb.append('§'); // § forces binary encoding
     }
@@ -500,7 +500,7 @@ describe('EncoderTest', () => {
     // expect B/S(1) A B/S(30)
     testHighLevelEncodeString(sb.toString(), 5 + 20 + 31 * 8);
 
-    sb = new StringBuilder();
+    sb = new ZXingStringBuilder();
     for (let i = 0; i < 31; i++) {
       sb.append('§');
     }
@@ -508,7 +508,7 @@ describe('EncoderTest', () => {
     // expect B/S(31)
     testHighLevelEncodeString(sb.toString(), 10 + 31 * 8);
 
-    sb = new StringBuilder();
+    sb = new ZXingStringBuilder();
     for (let i = 0; i < 34; i++) {
       sb.append('§');
     }
@@ -516,7 +516,7 @@ describe('EncoderTest', () => {
     // expect B/S(31) B/S(3)
     testHighLevelEncodeString(sb.toString(), 20 + 34 * 8);
 
-    sb = new StringBuilder();
+    sb = new ZXingStringBuilder();
     for (let i = 0; i < 64; i++) {
       sb.append('§');
     }
@@ -528,7 +528,7 @@ describe('EncoderTest', () => {
   // @Test
   // public void testHighLevelEncodePairs() {
   // Typical usage
-  // @todo enable and fix this test for Encoder release
+  // @todo enable and fix this test for AztecEncoder release
   it('testHighLevelEncodePairs', () => {
     testHighLevelEncodeString(
       'ABC. DEF\r\n',
@@ -562,25 +562,25 @@ describe('EncoderTest', () => {
   it('testUserSpecifiedLayers', () => {
     const alphabet: Uint8Array = StringUtils.getBytes(
       'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-      StandardCharsets.ISO_8859_1
+      ZXingStandardCharsets.ISO_8859_1
     );
-    let aztec = Encoder.encode(alphabet, 25, -2);
+    let aztec = AztecEncoder.encode(alphabet, 25, -2);
     assertEquals(2, aztec.getLayers());
     assertTrue(aztec.isCompact());
 
-    aztec = Encoder.encode(alphabet, 25, 32);
+    aztec = AztecEncoder.encode(alphabet, 25, 32);
     assertEquals(32, aztec.getLayers());
     assertFalse(aztec.isCompact());
 
     try {
-      Encoder.encode(alphabet, 25, 33);
+      AztecEncoder.encode(alphabet, 25, 33);
       fail('Encode should have failed.  No such thing as 33 layers');
     } catch (expected) {
       // continue
     }
 
     try {
-      Encoder.encode(alphabet, 25, -1);
+      AztecEncoder.encode(alphabet, 25, -1);
       fail('Encode should have failed.  Text can\'t fit in 1-layer compact');
     } catch (expected) {
       // continue
@@ -597,33 +597,33 @@ describe('EncoderTest', () => {
     const alphabet4: string = alphabet + alphabet + alphabet + alphabet;
     const data: Uint8Array = StringUtils.getBytes(
       alphabet4,
-      StandardCharsets.ISO_8859_1
+      ZXingStandardCharsets.ISO_8859_1
     );
     try {
-      Encoder.encode(data, 0, -4);
+      AztecEncoder.encode(data, 0, -4);
       fail('Encode should have failed.  Text can\'t fit in 1-layer compact');
     } catch (expected) {
       // continue
     }
 
     // If we just try to encode it normally, it will go to a non-compact 4 layer
-    let aztecCode: AztecCode = Encoder.encode(
+    let aztecCode: AztecCode = AztecEncoder.encode(
       data,
       0,
-      Encoder.DEFAULT_AZTEC_LAYERS
+      AztecEncoder.DEFAULT_AZTEC_LAYERS
     );
     assertFalse(aztecCode.isCompact());
     assertEquals(4, aztecCode.getLayers());
 
     // But shortening the string to 100 bytes (500 bits of data), compact works fine, even if we
     // include more error checking.
-    aztecCode = Encoder.encode(
+    aztecCode = AztecEncoder.encode(
       StringUtils.getBytes(
         alphabet4.substring(0, 100),
-        StandardCharsets.ISO_8859_1
+        ZXingStandardCharsets.ISO_8859_1
       ),
       10,
-      Encoder.DEFAULT_AZTEC_LAYERS
+      AztecEncoder.DEFAULT_AZTEC_LAYERS
     );
     assertTrue(aztecCode.isCompact());
     assertEquals(4, aztecCode.getLayers());
@@ -637,10 +637,10 @@ describe('EncoderTest', () => {
     layers: number,
     expected: string
   ) {
-    const aztec: AztecCode = Encoder.encode(
-      StringUtils.getBytes(data, StandardCharsets.ISO_8859_1),
+    const aztec: AztecCode = AztecEncoder.encode(
+      StringUtils.getBytes(data, ZXingStandardCharsets.ISO_8859_1),
       33,
-      Encoder.DEFAULT_AZTEC_LAYERS
+      AztecEncoder.DEFAULT_AZTEC_LAYERS
     );
     assertEquals(compact, aztec.isCompact());
     assertEquals(layers, aztec.getLayers());
@@ -649,10 +649,10 @@ describe('EncoderTest', () => {
   }
 
   function testEncodeDecode(data: string, compact: boolean, layers: number) {
-    const aztec = Encoder.encode(
-      StringUtils.getBytes(data, StandardCharsets.ISO_8859_1),
+    const aztec = AztecEncoder.encode(
+      StringUtils.getBytes(data, ZXingStandardCharsets.ISO_8859_1),
       25,
-      Encoder.DEFAULT_AZTEC_LAYERS
+      AztecEncoder.DEFAULT_AZTEC_LAYERS
     );
     assertEquals(compact, aztec.isCompact());
     assertEquals(layers, aztec.getLayers());
@@ -664,7 +664,7 @@ describe('EncoderTest', () => {
       aztec.getCodeWords(),
       aztec.getLayers()
     );
-    let res: DecoderResult = new Decoder().decode(r);
+    let res: DecoderResult = new AztecDecoder().decode(r);
     assertEquals(data, res.getText());
     // Check error correction by introducing a few minor errors
     const random = getPseudoRandom();
@@ -685,7 +685,7 @@ describe('EncoderTest', () => {
       aztec.getCodeWords(),
       aztec.getLayers()
     );
-    res = new Decoder().decode(r);
+    res = new AztecDecoder().decode(r);
     assertEquals(data, res.getText());
   }
 
@@ -697,15 +697,15 @@ describe('EncoderTest', () => {
     layers: number
   ) {
     // 1. Perform an encode-decode round-trip because it can be lossy.
-    // 2. Aztec Decoder currently always decodes the data with a LATIN-1 charset:
-    const expectedData = StringEncoding.decode(
-      StringUtils.getBytes(data, Charset.forName(charset)),
-      StandardCharsets.ISO_8859_1
+    // 2. Aztec AztecDecoder currently always decodes the data with a LATIN-1 charset:
+    const expectedData = ZXingStringEncoding.decode(
+      StringUtils.getBytes(data, ZXingCharset.forName(charset)),
+      ZXingStandardCharsets.ISO_8859_1
     );
     const hints: Map<EncodeHintType, any> = new Map<EncodeHintType, any>();
     hints.set(EncodeHintType.CHARACTER_SET, charset);
     hints.set(EncodeHintType.ERROR_CORRECTION, eccPercent);
-    const writer = new AztecWriter();
+    const writer = new AztecCodeWriter();
     const matrix = writer.encodeWithHints(
       data,
       BarcodeFormat.AZTEC,
@@ -713,10 +713,10 @@ describe('EncoderTest', () => {
       0,
       hints
     );
-    const aztec = Encoder.encode(
-      StringUtils.getBytes(data, Charset.forName(charset)),
+    const aztec = AztecEncoder.encode(
+      StringUtils.getBytes(data, ZXingCharset.forName(charset)),
       eccPercent,
-      Encoder.DEFAULT_AZTEC_LAYERS
+      AztecEncoder.DEFAULT_AZTEC_LAYERS
     );
     assertEquals(compact, aztec.isCompact());
     assertEquals(layers, aztec.getLayers());
@@ -729,7 +729,7 @@ describe('EncoderTest', () => {
       aztec.getCodeWords(),
       aztec.getLayers()
     );
-    let res = new Decoder().decode(r);
+    let res = new AztecDecoder().decode(r);
     assertEquals(expectedData, res.getText());
     // Check error correction by introducing up to eccPercent/2 errors
     const ecWords = (aztec.getCodeWords() * eccPercent) / 100 / 2;
@@ -751,7 +751,7 @@ describe('EncoderTest', () => {
       aztec.getCodeWords(),
       aztec.getLayers()
     );
-    res = new Decoder().decode(r);
+    res = new AztecDecoder().decode(r);
     assertEquals(expectedData, res.getText());
   }
 
@@ -765,13 +765,13 @@ describe('EncoderTest', () => {
     words: number,
     expected: string
   ) {
-    const inArr: BitArray = Encoder.generateModeMessage(compact, layers, words);
+    const inArr: BitArray = AztecEncoder.generateModeMessage(compact, layers, words);
     assertEquals(stripSpace(expected), stripSpace(inArr.toString()));
   }
 
   function testStuffBits(wordSize: number, bits: string, expected: string) {
     const inArr = toBitArray(bits);
-    const stuffed: BitArray = Encoder.stuffBits(inArr, wordSize);
+    const stuffed: BitArray = AztecEncoder.stuffBits(inArr, wordSize);
     assertEquals(stripSpace(expected), stripSpace(stuffed.toString()));
   }
 
@@ -793,27 +793,27 @@ describe('EncoderTest', () => {
   }
 
   function testHighLevelEncodeString(s: string, expectedBits: string | number) {
-    const bits: BitArray = new HighLevelEncoder(
-      StringUtils.getBytes(s, StandardCharsets.ISO_8859_1)
+    const bits: BitArray = new AztecHighLevelEncoder(
+      StringUtils.getBytes(s, ZXingStandardCharsets.ISO_8859_1)
     ).encode();
 
     if (typeof expectedBits === 'number') {
       const receivedBitCount: number = stripSpace(bits.toString()).length;
       assertEquals(receivedBitCount, expectedBits);
-      assertEquals(Decoder.highLevelDecode(toBooleanArray(bits)), s);
+      assertEquals(AztecDecoder.highLevelDecode(toBooleanArray(bits)), s);
     } else {
       const receivedBits: string = stripSpace(bits.toString());
       assertEquals(receivedBits, stripSpace(expectedBits));
-      assertEquals(Decoder.highLevelDecode(toBooleanArray(bits)), s);
+      assertEquals(AztecDecoder.highLevelDecode(toBooleanArray(bits)), s);
     }
   }
 
   /*   function testHighLevelEncodeString(s: string, expectedReceivedBits: number) {
-    const bits: BitArray = new HighLevelEncoder(StringUtils.getBytes(s, StandardCharsets.ISO_8859_1)).encode();
+    const bits: BitArray = new AztecHighLevelEncoder(StringUtils.getBytes(s, ZXingStandardCharsets.ISO_8859_1)).encode();
     const receivedBitCount: number = stripSpace(bits.toString()).length;
     assertEquals("highLevelEncode() failed for input string: " + s,
                  expectedReceivedBits, receivedBitCount);
-    assertEquals(s, Decoder.highLevelDecode(toBooleanArray(bits)));
+    assertEquals(s, AztecDecoder.highLevelDecode(toBooleanArray(bits)));
   } */
 
   function stripSpace(s: string): string {

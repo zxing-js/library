@@ -18,8 +18,8 @@
 
 import * as assert from 'assert';
 
-import Version from '../../../../core/qrcode/decoder/Version';
-import Mode from '../../../../core/qrcode/decoder/Mode';
+import { QRCodeVersion } from '@zxing/library';
+import { QRCodeMode } from '@zxing/library';
 
 /**
  * @author Sean Owen
@@ -27,13 +27,13 @@ import Mode from '../../../../core/qrcode/decoder/Mode';
 describe('Mode', () => {
 
     it('testForBits', () => {
-        assert.strictEqual(Mode.TERMINATOR.equals(Mode.forBits(0x00)), true);
-        assert.strictEqual(Mode.NUMERIC.equals(Mode.forBits(0x01)), true);
-        assert.strictEqual(Mode.ALPHANUMERIC.equals(Mode.forBits(0x02)), true);
-        assert.strictEqual(Mode.BYTE.equals(Mode.forBits(0x04)), true);
-        assert.strictEqual(Mode.KANJI.equals(Mode.forBits(0x08)), true);
+        assert.strictEqual(QRCodeMode.TERMINATOR.equals(QRCodeMode.forBits(0x00)), true);
+        assert.strictEqual(QRCodeMode.NUMERIC.equals(QRCodeMode.forBits(0x01)), true);
+        assert.strictEqual(QRCodeMode.ALPHANUMERIC.equals(QRCodeMode.forBits(0x02)), true);
+        assert.strictEqual(QRCodeMode.BYTE.equals(QRCodeMode.forBits(0x04)), true);
+        assert.strictEqual(QRCodeMode.KANJI.equals(QRCodeMode.forBits(0x08)), true);
         try {
-            Mode.forBits(0x10);
+            QRCodeMode.forBits(0x10);
             assert.ok(false, 'Should have thrown an exception');
         } catch (ex) {
             // good for InvalidArgumentException
@@ -42,12 +42,12 @@ describe('Mode', () => {
 
     it('testCharacterCount', () => {
         // Spot check a few values
-        assert.strictEqual(Mode.NUMERIC.getCharacterCountBits(Version.getVersionForNumber(5)), 10);
-        assert.strictEqual(Mode.NUMERIC.getCharacterCountBits(Version.getVersionForNumber(26)), 12);
-        assert.strictEqual(Mode.NUMERIC.getCharacterCountBits(Version.getVersionForNumber(40)), 14);
-        assert.strictEqual(Mode.ALPHANUMERIC.getCharacterCountBits(Version.getVersionForNumber(6)), 9);
-        assert.strictEqual(Mode.BYTE.getCharacterCountBits(Version.getVersionForNumber(7)), 8);
-        assert.strictEqual(Mode.KANJI.getCharacterCountBits(Version.getVersionForNumber(8)), 8);
+        assert.strictEqual(QRCodeMode.NUMERIC.getCharacterCountBits(QRCodeVersion.getVersionForNumber(5)), 10);
+        assert.strictEqual(QRCodeMode.NUMERIC.getCharacterCountBits(QRCodeVersion.getVersionForNumber(26)), 12);
+        assert.strictEqual(QRCodeMode.NUMERIC.getCharacterCountBits(QRCodeVersion.getVersionForNumber(40)), 14);
+        assert.strictEqual(QRCodeMode.ALPHANUMERIC.getCharacterCountBits(QRCodeVersion.getVersionForNumber(6)), 9);
+        assert.strictEqual(QRCodeMode.BYTE.getCharacterCountBits(QRCodeVersion.getVersionForNumber(7)), 8);
+        assert.strictEqual(QRCodeMode.KANJI.getCharacterCountBits(QRCodeVersion.getVersionForNumber(8)), 8);
     });
 
 });

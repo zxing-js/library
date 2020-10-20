@@ -1,5 +1,5 @@
-import Random from '../../util/Random';
-import BitSet from '../../util/BitSet';
+import Random from '../../../core/util/Random';
+import BitSet from '../../../core/util/BitSet';
 
 /**
  * This function was part of ReedSolomonTestCase, but as it's used

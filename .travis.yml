@@ -26,8 +26,8 @@ before_script:
   - ./cc-test-reporter before-build
 
 script:
-  - yarn run build
-  - yarn run e2e:test
+  - yarn build
+  - yarn e2e:test
   - yarn cover
 
 cache:

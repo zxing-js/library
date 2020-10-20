@@ -31,15 +31,15 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Test the application
-        run: yarn test
-
       - name: Build the application
         run: yarn build
 
+      - name: Test the application
+        run: yarn test
+
       - name: Build the package
         run: |
-          npm pack
+          npm pack dist/
           mv zxing-library-*.tgz package.tgz
 
       - name: Upload build artifacts

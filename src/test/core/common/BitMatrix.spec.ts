@@ -18,11 +18,11 @@
 
 import * as assert from 'assert';
 import AssertUtils from '../util/AssertUtils';
-import BitMatrix from '../../../core/common/BitMatrix';
-import BitArray from '../../../core/common/BitArray';
+import { BitMatrix } from '@zxing/library';
+import { BitArray } from '@zxing/library';
 
-import StringBuilder from '../../../core/util/StringBuilder';
-import IllegalArgumentException from '../../../core/IllegalArgumentException';
+import { ZXingStringBuilder } from '@zxing/library';
+import { IllegalArgumentException } from '@zxing/library';
 
 /**
  * @author Sean Owen
@@ -306,7 +306,7 @@ describe('BitMatrix', () => {
 
     function matrixToString(result: BitMatrix): string {
         assert.strictEqual(1, result.getHeight());
-        const builder: StringBuilder = new StringBuilder(); // result.getWidth())
+        const builder: ZXingStringBuilder = new ZXingStringBuilder(); // result.getWidth())
         for (let i: number /*int*/ = 0; i < result.getWidth(); i++) {
             builder.append(result.get(i, 0) ? '1' : '0');
         }

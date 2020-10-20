@@ -18,10 +18,10 @@
 
 import * as assert from 'assert';
 
-import StringUtils from '../../../core/common/StringUtils';
-import CharacterSetECI from '../../../core/common/CharacterSetECI';
+import { StringUtils } from '@zxing/library';
+import { CharacterSetECI } from '@zxing/library';
 
-/*import java.nio.charset.Charset;*/
+/*import java.nio.charset.ZXingCharset;*/
 
 describe('StringUtils', () => {
 
@@ -43,9 +43,9 @@ describe('StringUtils', () => {
     });
 
     function doTest(bytes: Uint8Array, charsetName: string): void {
-        // const charset: Charset = Charset.forName(charsetName);
+        // const charset: ZXingCharset = ZXingCharset.forName(charsetName);
         const guessedName: string = StringUtils.guessEncoding(bytes, null);
-        // const guessedEncoding: Charset = Charset.forName(guessedName);
+        // const guessedEncoding: ZXingCharset = ZXingCharset.forName(guessedName);
         // assert.strictEqual(guessedEncoding, charset)
         assert.strictEqual(guessedName, charsetName);
     }
@@ -59,8 +59,8 @@ describe('StringUtils', () => {
      */
     // funtion main(String[] args): void {
     //   const text: string = args[0]
-    //   const charset: Charset = Charset.forName(args[1]);
-    //   const declaration = new StringBuilder()
+    //   const charset: ZXingCharset = ZXingCharset.forName(args[1]);
+    //   const declaration = new ZXingStringBuilder()
     //   declaration.append("Uint8Array.from([")
     //   for (byte b : text.getBytes(charset)) {
     //     declaration.append("/*(byte)*/ 0x")
