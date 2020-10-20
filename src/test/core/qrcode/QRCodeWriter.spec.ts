@@ -18,14 +18,14 @@
 
 import * as assert from 'assert';
 
-import BarcodeFormat from '../../../core/BarcodeFormat';
-import EncodeHintType from '../../../core/EncodeHintType';
-import Writer from '../../../core/Writer';
-import BitMatrix from '../../../core/common/BitMatrix';
-import ErrorCorrectionLevel from '../../../core/qrcode/decoder/ErrorCorrectionLevel';
+import { BarcodeFormat } from '@zxing/library';
+import { EncodeHintType } from '@zxing/library';
+import { Writer } from '@zxing/library';
+import { BitMatrix } from '@zxing/library';
+import { QRCodeDecoderErrorCorrectionLevel } from '@zxing/library';
 import SharpImage from '../util/SharpImage';
-import QRCodeWriter from '../../../core/qrcode/QRCodeWriter';
-import StringEncoding from '../../../core/util/StringEncoding';
+import { QRCodeWriter } from '@zxing/library';
+import { ZXingStringEncoding } from '@zxing/library';
 import { createCustomEncoder } from '../util/textEncodingFactory';
 
 const path = require('path');
@@ -44,7 +44,7 @@ const path = require('path');
  * @author dswitkin@google.com (Daniel Switkin) - ported and expanded from C++
  */
 describe('QRCodeWriter', () => {
-    StringEncoding.customEncoder = (b, e) => createCustomEncoder(e).encode(b);
+    ZXingStringEncoding.customEncoder = (b, e) => createCustomEncoder(e).encode(b);
 
     const BASE_IMAGE_PATH = 'src/test/resources/golden/qrcode/';
 
@@ -93,7 +93,7 @@ describe('QRCodeWriter', () => {
 
     async function compareToGoldenFile(
         contents: string,
-        ecLevel: ErrorCorrectionLevel,
+        ecLevel: QRCodeDecoderErrorCorrectionLevel,
         resolution: number /*int*/,
         fileName: string
     ): Promise<void> {
@@ -108,7 +108,7 @@ describe('QRCodeWriter', () => {
             assert.ok(false, err);
         }
 
-        const hints = new Map<EncodeHintType, ErrorCorrectionLevel>();
+        const hints = new Map<EncodeHintType, QRCodeDecoderErrorCorrectionLevel>();
         hints.set(EncodeHintType.ERROR_CORRECTION, ecLevel);
         const writer: Writer = new QRCodeWriter();
         const generatedResult: BitMatrix = writer.encode(
@@ -130,7 +130,7 @@ describe('QRCodeWriter', () => {
     it('testRegressionTest', () => {
         compareToGoldenFile(
             'http://www.google.com/',
-            ErrorCorrectionLevel.M,
+            QRCodeDecoderErrorCorrectionLevel.M,
             99,
             'renderer-test-01.png'
         );

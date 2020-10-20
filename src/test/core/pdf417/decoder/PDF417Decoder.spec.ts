@@ -18,15 +18,15 @@
 
 // import com.google.zxing.FormatException;
 // import com.google.zxing.pdf417.PDF417ResultMetadata;
-import PDF417ResultMetadata from '../../../../core/pdf417/PDF417ResultMetadata';
+import { PDF417ResultMetadata } from '@zxing/library';
 // import org.junit.Assert;
-import { assertEquals, assertFalse, assertTrue, assertNull } from '../../util/AssertUtils';
+import { assertEquals, assertFalse, assertTrue, assertNull } from '../../../core/util/AssertUtils';
 // import org.junit.Test;
 
-import DecodedBitStreamParser from '../../../../core/pdf417/decoder/DecodedBitStreamParser';
+import { PDF417DecodedBitStreamParser } from '@zxing/library';
 
 /**
- * Tests {@link DecodedBitStreamParser}.
+ * Tests {@link PDF417DecodedBitStreamParser}.
  */
 // public class PDF417DecoderTestCase extends Assert {
 
@@ -44,7 +44,7 @@ describe('PDF417DecoderTestCase', () => {
       // we should never reach these
       1000, 1000, 1000]);
 
-    DecodedBitStreamParser.decodeMacroBlock(sampleCodes, 2, resultMetadata);
+    PDF417DecodedBitStreamParser.decodeMacroBlock(sampleCodes, 2, resultMetadata);
 
     assertEquals(0, resultMetadata.getSegmentIndex());
     assertEquals('ARBX', resultMetadata.getFileId());
@@ -73,7 +73,7 @@ describe('PDF417DecoderTestCase', () => {
       // we should never reach these
       1000, 1000, 1000]);
 
-    DecodedBitStreamParser.decodeMacroBlock(sampleCodes, 2, resultMetadata);
+    PDF417DecodedBitStreamParser.decodeMacroBlock(sampleCodes, 2, resultMetadata);
 
     assertEquals(3, resultMetadata.getSegmentIndex());
     assertEquals('ARBX', resultMetadata.getFileId());
@@ -99,7 +99,7 @@ describe('PDF417DecoderTestCase', () => {
       493, 72, 780, 699, 780, 493, 755, 84, 198, 628, 368, 156, 198, 809, 19, 113]);
     const resultMetadata = new PDF417ResultMetadata();
 
-    DecodedBitStreamParser.decodeMacroBlock(sampleCodes, 3, resultMetadata);
+    PDF417DecodedBitStreamParser.decodeMacroBlock(sampleCodes, 3, resultMetadata);
 
     assertEquals(0, resultMetadata.getSegmentIndex());
     assertEquals('AAIMAVC ', resultMetadata.getFileId());
@@ -120,7 +120,7 @@ describe('PDF417DecoderTestCase', () => {
       6, 1, 500, 13, 0]);
     const resultMetadata = new PDF417ResultMetadata();
 
-    DecodedBitStreamParser.decodeMacroBlock(sampleCodes, 3, resultMetadata);
+    PDF417DecodedBitStreamParser.decodeMacroBlock(sampleCodes, 3, resultMetadata);
 
     assertEquals(0, resultMetadata.getSegmentIndex());
     assertEquals('AAIMAVC ', resultMetadata.getFileId());

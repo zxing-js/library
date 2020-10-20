@@ -18,9 +18,9 @@
 // package com.google.zxing.oned;
 
 import * as assert from 'assert';
-import Code39Reader from '../../../core/oned/Code39Reader';
-import BitMatrix from '../../../core/common/BitMatrix';
-import BitArray from '../../../core/common/BitArray';
+import { Code39Reader } from '@zxing/library';
+import { BitMatrix } from '@zxing/library';
+import { BitArray } from '@zxing/library';
 
 function doTest(expectedResult: string, encodedResult: string): void {
     const sut = new Code39Reader(false, true);

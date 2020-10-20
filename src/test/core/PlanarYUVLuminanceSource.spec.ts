@@ -18,8 +18,8 @@
 
 import * as assert from 'assert';
 import AssertUtils from './util/AssertUtils';
-import PlanarYUVLuminanceSource from '../../core/PlanarYUVLuminanceSource';
-import System from '../../core/util/System';
+import { PlanarYUVLuminanceSource } from '@zxing/library';
+import { ZXingSystem } from '@zxing/library';
 
 describe('PlanarYUVLuminanceSource', () => {
 
@@ -36,7 +36,7 @@ describe('PlanarYUVLuminanceSource', () => {
     const ROWS: number /*int*/ = 4;
     const Y = new Uint8ClampedArray(COLS * ROWS);
 
-    System.arraycopy(YUV, 0, Y, 0, Y.length);
+    ZXingSystem.arraycopy(YUV, 0, Y, 0, Y.length);
 
     it('testNoCrop', () => {
         const source = new PlanarYUVLuminanceSource(YUV, COLS, ROWS, 0, 0, COLS, ROWS, false);

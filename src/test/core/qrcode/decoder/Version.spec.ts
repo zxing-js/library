@@ -18,8 +18,8 @@
 
 import * as assert from 'assert';
 
-import ErrorCorrectionLevel from '../../../../core/qrcode/decoder/ErrorCorrectionLevel';
-import Version from '../../../../core/qrcode/decoder/Version';
+import { QRCodeDecoderErrorCorrectionLevel } from '@zxing/library';
+import { QRCodeVersion } from '@zxing/library';
 
 /**
  * @author Sean Owen
@@ -28,17 +28,17 @@ describe('Version', () => {
 
     it('testVersionForNumber', () => {
         try {
-            Version.getVersionForNumber(0);
+            QRCodeVersion.getVersionForNumber(0);
             assert.ok(false, 'Should have thrown an exception');
         } catch (ex) {
             // good for IllegalArgumentException
         }
         for (let i: number /*int*/ = 1; i <= 40; i++) {
-            checkVersion(Version.getVersionForNumber(i), i, 4 * i + 17);
+            checkVersion(QRCodeVersion.getVersionForNumber(i), i, 4 * i + 17);
         }
     });
 
-    function checkVersion(version: Version, versionNumber: number /*int*/, dimension: number /*int*/): void {
+    function checkVersion(version: QRCodeVersion, versionNumber: number /*int*/, dimension: number /*int*/): void {
 
         assert.strictEqual(null !== version, true);
         assert.strictEqual(version.getVersionNumber(), versionNumber);
@@ -49,16 +49,16 @@ describe('Version', () => {
         }
 
         assert.strictEqual(version.getDimensionForVersion(), dimension);
-        assert.strictEqual(null !== version.getECBlocksForLevel(ErrorCorrectionLevel.H), true);
-        assert.strictEqual(null !== version.getECBlocksForLevel(ErrorCorrectionLevel.L), true);
-        assert.strictEqual(null !== version.getECBlocksForLevel(ErrorCorrectionLevel.M), true);
-        assert.strictEqual(null !== version.getECBlocksForLevel(ErrorCorrectionLevel.Q), true);
+        assert.strictEqual(null !== version.getECBlocksForLevel(QRCodeDecoderErrorCorrectionLevel.H), true);
+        assert.strictEqual(null !== version.getECBlocksForLevel(QRCodeDecoderErrorCorrectionLevel.L), true);
+        assert.strictEqual(null !== version.getECBlocksForLevel(QRCodeDecoderErrorCorrectionLevel.M), true);
+        assert.strictEqual(null !== version.getECBlocksForLevel(QRCodeDecoderErrorCorrectionLevel.Q), true);
         assert.strictEqual(null !== version.buildFunctionPattern(), true);
     }
 
     it('testGetProvisionalVersionForDimension', () => {
         for (let i: number /*int*/ = 1; i <= 40; i++) {
-            assert.strictEqual(Version.getProvisionalVersionForDimension(4 * i + 17).getVersionNumber(), i);
+            assert.strictEqual(QRCodeVersion.getProvisionalVersionForDimension(4 * i + 17).getVersionNumber(), i);
         }
     });
 
@@ -73,7 +73,7 @@ describe('Version', () => {
     });
 
     function doTestVersion(expectedVersion: number /*int*/, mask: number /*int*/): void {
-        const version: Version = Version.decodeVersionInformation(mask);
+        const version: QRCodeVersion = QRCodeVersion.decodeVersionInformation(mask);
         assert.strictEqual(null !== version, true);
         assert.strictEqual(version.getVersionNumber(), expectedVersion);
     }
