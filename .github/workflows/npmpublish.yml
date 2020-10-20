@@ -39,8 +39,8 @@ jobs:
 
       - name: Build the package
         run: |
-          npm pack dist
-          mv dist-*.tgz package.tgz
+          npm pack dist/
+          mv zxing-library-*.tgz package.tgz
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v1
