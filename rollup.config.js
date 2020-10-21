@@ -13,9 +13,6 @@ export default {
     format: 'umd',
     name: 'ZXing',
     sourcemap: true,
-    file: 'dist/umd/index.js',
-    globals: {
-      '@zxing/library': 'ZXing',
-    },
+    file: 'dist/umd/index.js'
   },
 };
