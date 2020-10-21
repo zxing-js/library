@@ -44,8 +44,8 @@
   "module": "./esm/index.js",
   "typings": "./esm/index.d.ts",
   "esnext": "./esm/index.js",
-  "browser": "dist/umd/index.js",
-  "browser:min": "dist/umd/index.min.js",
+  "browser": "./umd/index.js",
+  "browser:min": "./umd/index.min.js",
   "scripts": {
     "lint": "yarn tslint --project .",
     "clean": "yarn shx rm -rf dist output",
