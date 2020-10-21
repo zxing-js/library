@@ -97,7 +97,6 @@
     "shx": "0.3.2",
     "sinon": "^7.2.7",
     "terser": "^5.3.7",
-    "ts-mocha": "^7.0.0",
     "ts-node": "^9.0.0",
     "tsconfig-paths": "^3.9.0",
     "tslint": "^6.1.3",
