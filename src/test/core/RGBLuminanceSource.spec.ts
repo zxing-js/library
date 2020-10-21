@@ -18,8 +18,8 @@
 
 import * as assert from 'assert';
 import AssertUtils from './util/AssertUtils';
-import LuminanceSource from '../../core/LuminanceSource';
-import RGBLuminanceSource from '../../core/RGBLuminanceSource';
+import { LuminanceSource } from '@zxing/library';
+import { RGBLuminanceSource } from '@zxing/library';
 
 describe('RGBLuminanceSource', () => {
 

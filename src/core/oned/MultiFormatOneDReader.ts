@@ -36,7 +36,7 @@ export default class MultiFormatOneDReader extends OneDReader {
 
     private readers: OneDReader[] = [];
 
-    public constructor(hints: Map<DecodeHintType, any>) {
+    public constructor(hints?: Map<DecodeHintType, any>) {
         super();
         const possibleFormats = !hints ? null : <BarcodeFormat[]>hints.get(DecodeHintType.POSSIBLE_FORMATS);
         const useCode39CheckDigit = hints && hints.get(DecodeHintType.ASSUME_CODE_39_CHECK_DIGIT) !== undefined;

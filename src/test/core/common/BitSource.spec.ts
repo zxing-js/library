@@ -17,7 +17,7 @@
 /*package com.google.zxing.common;*/
 
 import * as assert from 'assert';
-import BitSource from '../../../core/common/BitSource';
+import { BitSource } from '@zxing/library';
 
 /**
  * @author Sean Owen

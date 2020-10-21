@@ -66,6 +66,10 @@ function getBigIntConstructor(): BigIntConstructor {
     return global['BigInt'] || null;
   }
 
+  if (typeof self !== 'undefined') {
+    return self['BigInt'] || null;
+  }
+
   throw new Error('Can\'t search globals for BigInt!');
 }
 
