@@ -23,6 +23,7 @@ import OneDReader from './OneDReader';
 import UPCEANReader from './UPCEANReader';
 import EAN13Reader from './EAN13Reader';
 import EAN8Reader from './EAN8Reader';
+import UPCAReader from './UPCAReader';
 import NotFoundException from '../NotFoundException';
 
 /**
@@ -40,6 +41,10 @@ export default class MultiFormatUPCEANReader extends OneDReader {
         let possibleFormats = hints == null ? null : <BarcodeFormat[]>hints.get(DecodeHintType.POSSIBLE_FORMATS);
         let readers: UPCEANReader[] = [];
         if (possibleFormats != null) {
+            
+            if (possibleFormats.indexOf(BarcodeFormat.UPC_A) > -1) {
+                readers.push(new UPCAReader());
+            }
             if (possibleFormats.indexOf(BarcodeFormat.EAN_13) > -1) {
                 readers.push(new EAN13Reader());
             }
@@ -51,6 +56,7 @@ export default class MultiFormatUPCEANReader extends OneDReader {
         }
 
         if (readers.length === 0) {
+            readers.push(new UPCAReader());
             readers.push(new EAN13Reader());
             readers.push(new EAN8Reader());
             // todo add UPC_A, UPC_E

@@ -43,7 +43,8 @@ export default class MultiFormatOneDReader extends OneDReader {
 
         if (possibleFormats) {
             if (possibleFormats.includes(BarcodeFormat.EAN_13) ||
-                possibleFormats.includes(BarcodeFormat.EAN_8)) {
+                possibleFormats.includes(BarcodeFormat.EAN_8)||
+                possibleFormats.includes(BarcodeFormat.UPC_A)) {
                 this.readers.push(new MultiFormatUPCEANReader(hints));
             }
             // if (possibleFormats.includes(BarcodeFormat.EAN_13) ||
