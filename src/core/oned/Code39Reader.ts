@@ -54,7 +54,7 @@ export default class Code39Reader extends OneDReader {
   private usingCheckDigit: boolean;
   private extendedMode: boolean;
   private decodeRowResult: string;
-  private counters: number[];
+  private counters: Int32Array;
 
   /**
    * Creates a reader that assumes all encoded data is data, and does not treat the final
@@ -90,7 +90,7 @@ export default class Code39Reader extends OneDReader {
     this.usingCheckDigit = usingCheckDigit;
     this.extendedMode = extendedMode;
     this.decodeRowResult = '';
-    this.counters = new Array<number>(9);
+    this.counters = new Int32Array(9);
   }
 
   public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
@@ -170,7 +170,7 @@ export default class Code39Reader extends OneDReader {
 
   }
 
-  private static findAsteriskPattern(row: BitArray, counters: number[]): number[] {
+  private static findAsteriskPattern(row: BitArray, counters: Int32Array): number[] {
     let width = row.getSize();
     let rowOffset = row.getNextSet(0);
 
@@ -206,7 +206,7 @@ export default class Code39Reader extends OneDReader {
 
   // For efficiency, returns -1 on failure. Not throwing here saved as many as 700 exceptions
   // per image when using some of our blackbox images.
-  private static toNarrowWidePattern(counters: number[]): number {
+  private static toNarrowWidePattern(counters: Int32Array): number {
     let numCounters = counters.length;
     let maxNarrowCounter = 0;
     let wideCounters: number;

@@ -24,16 +24,16 @@ export default class RSS14Reader extends AbstractRSSReader {
     private static readonly OUTSIDE_ODD_WIDEST: number[] = [8, 6, 4, 3, 1];
     private static readonly INSIDE_ODD_WIDEST: number[] = [2, 4, 6, 8];
 
-    private static readonly FINDER_PATTERNS: number[][] = [
-        [ 3, 8, 2, 1 ],
-        [ 3, 5, 5, 1 ],
-        [ 3, 3, 7, 1 ],
-        [ 3, 1, 9, 1 ],
-        [ 2, 7, 4, 1 ],
-        [ 2, 5, 6, 1 ],
-        [ 2, 3, 8, 1 ],
-        [ 1, 5, 7, 1 ],
-        [ 1, 3, 9, 1 ],
+    private static readonly FINDER_PATTERNS: Int32Array[] = [
+        Int32Array.from([ 3, 8, 2, 1 ]),
+        Int32Array.from([ 3, 5, 5, 1 ]),
+        Int32Array.from([ 3, 3, 7, 1 ]),
+        Int32Array.from([ 3, 1, 9, 1 ]),
+        Int32Array.from([ 2, 7, 4, 1 ]),
+        Int32Array.from([ 2, 5, 6, 1 ]),
+        Int32Array.from([ 2, 3, 8, 1 ]),
+        Int32Array.from([ 1, 5, 7, 1 ]),
+        Int32Array.from([ 1, 3, 9, 1 ]),
     ];
 
     private readonly possibleLeftPairs: Pair[] = [];
@@ -292,13 +292,13 @@ export default class RSS14Reader extends AbstractRSSReader {
             firstElementStart--;
         }
         firstElementStart++;
-        let firstCounter = startEnd[0] - firstElementStart;
+        const firstCounter = startEnd[0] - firstElementStart;
         // Make 'counters' hold 1-4
-        let counters = this.getDecodeFinderCounters();
-        let copy = new Array<number>(counters.length);
+        const counters = this.getDecodeFinderCounters();
+        const copy = new Int32Array(counters.length);
         System.arraycopy(counters, 0, copy, 1, counters.length - 1);
         copy[0] = firstCounter;
-        let value = this.parseFinderValue(copy, RSS14Reader.FINDER_PATTERNS);
+        const value = this.parseFinderValue(copy, RSS14Reader.FINDER_PATTERNS);
         let start = firstElementStart;
         let end = startEnd[1];
         if (right) {

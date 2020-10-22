@@ -39,27 +39,27 @@ export default class ITFReader extends OneDReader {
     private static w = 2; // Pixel width of a 2x wide line
     private static N = 1; // Pixed width of a narrow line
 
-    private static PATTERNS: number[][] = [
-        [1, 1, 2, 2, 1], // 0
-        [2, 1, 1, 1, 2], // 1
-        [1, 2, 1, 1, 2], // 2
-        [2, 2, 1, 1, 1], // 3
-        [1, 1, 2, 1, 2], // 4
-        [2, 1, 2, 1, 1], // 5
-        [1, 2, 2, 1, 1], // 6
-        [1, 1, 1, 2, 2], // 7
-        [2, 1, 1, 2, 1], // 8
-        [1, 2, 1, 2, 1], // 9
-        [1, 1, 3, 3, 1], // 0
-        [3, 1, 1, 1, 3], // 1
-        [1, 3, 1, 1, 3], // 2
-        [3, 3, 1, 1, 1], // 3
-        [1, 1, 3, 1, 3], // 4
-        [3, 1, 3, 1, 1], // 5
-        [1, 3, 3, 1, 1], // 6
-        [1, 1, 1, 3, 3], // 7
-        [3, 1, 1, 3, 1], // 8
-        [1, 3, 1, 3, 1]  // 9
+    private static PATTERNS: Int32Array[] = [
+        Int32Array.from([1, 1, 2, 2, 1]), // 0
+        Int32Array.from([2, 1, 1, 1, 2]), // 1
+        Int32Array.from([1, 2, 1, 1, 2]), // 2
+        Int32Array.from([2, 2, 1, 1, 1]), // 3
+        Int32Array.from([1, 1, 2, 1, 2]), // 4
+        Int32Array.from([2, 1, 2, 1, 1]), // 5
+        Int32Array.from([1, 2, 2, 1, 1]), // 6
+        Int32Array.from([1, 1, 1, 2, 2]), // 7
+        Int32Array.from([2, 1, 1, 2, 1]), // 8
+        Int32Array.from([1, 2, 1, 2, 1]), // 9
+        Int32Array.from([1, 1, 3, 3, 1]), // 0
+        Int32Array.from([3, 1, 1, 1, 3]), // 1
+        Int32Array.from([1, 3, 1, 1, 3]), // 2
+        Int32Array.from([3, 3, 1, 1, 1]), // 3
+        Int32Array.from([1, 1, 3, 1, 3]), // 4
+        Int32Array.from([3, 1, 3, 1, 1]), // 5
+        Int32Array.from([1, 3, 3, 1, 1]), // 6
+        Int32Array.from([1, 1, 1, 3, 3]), // 7
+        Int32Array.from([3, 1, 1, 3, 1]), // 8
+        Int32Array.from([1, 3, 1, 3, 1])  // 9
     ];
 
     private static  MAX_AVG_VARIANCE = 0.38;
@@ -79,10 +79,10 @@ export default class ITFReader extends OneDReader {
      * Note: The end pattern is reversed because the row is reversed before
      * searching for the END_PATTERN
      *!/*/
-    private static START_PATTERN = [1, 1, 1, 1];
-    private static END_PATTERN_REVERSED: number[][] = [
-        [1, 1, 2], // 2x
-        [1, 1, 3]  // 3x
+    private static START_PATTERN = Int32Array.from([1, 1, 1, 1]);
+    private static END_PATTERN_REVERSED: Int32Array[] = [
+        Int32Array.from([1, 1, 2]), // 2x
+        Int32Array.from([1, 1, 3])  // 3x
     ];
 
     // See ITFWriter.PATTERNS
@@ -169,9 +169,9 @@ export default class ITFReader extends OneDReader {
         // Therefore, need to scan 10 lines and then
         // split these into two arrays
 
-        let counterDigitPair: number[] = new Array(10); // 10
-        let counterBlack: number[] = new Array(5); // 5
-        let counterWhite: number[] = new Array(5); // 5
+        let counterDigitPair: Int32Array = new Int32Array(10); // 10
+        let counterBlack: Int32Array = new Int32Array(5); // 5
+        let counterWhite: Int32Array = new Int32Array(5); // 5
 
         counterDigitPair.fill(0);
         counterBlack.fill(0);
@@ -330,11 +330,11 @@ export default class ITFReader extends OneDReader {
     private static findGuardPattern(
         row: BitArray,
         rowOffset: number,
-        pattern: number[]
+        pattern: Int32Array
     ): number[] {
 
         let patternLength: number = pattern.length;
-        let counters: number[] = new Array(patternLength);
+        let counters: Int32Array = new Int32Array(patternLength);
         let width: number = row.getSize();
         let isWhite: boolean = false;
 
@@ -374,7 +374,7 @@ export default class ITFReader extends OneDReader {
      * @return The decoded digit
      * @throws NotFoundException if digit cannot be decoded
      *!/*/
-    private static decodeDigit(counters: number[]): number {
+    private static decodeDigit(counters: Int32Array): number {
 
         let bestVariance: number = ITFReader.MAX_AVG_VARIANCE; // worst variance we'll accept
         let bestMatch: number = -1;

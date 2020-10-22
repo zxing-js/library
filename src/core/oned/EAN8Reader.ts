@@ -25,15 +25,15 @@ import UPCEANReader from './UPCEANReader';
  * @author Sean Owen
  */
 export default class EAN8Reader extends UPCEANReader {
-    private decodeMiddleCounters: number[];
+    private decodeMiddleCounters: Int32Array;
 
     public constructor() {
         super();
-        this.decodeMiddleCounters = [0, 0, 0, 0];
+        this.decodeMiddleCounters = Int32Array.from([0, 0, 0, 0]);
     }
 
-    public decodeMiddle(row: BitArray, startRange: number[], resultString: string) {
-        let counters = this.decodeMiddleCounters;
+    public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: string) {
+        const counters = this.decodeMiddleCounters;
         counters[0] = 0;
         counters[1] = 0;
         counters[2] = 0;
@@ -50,7 +50,7 @@ export default class EAN8Reader extends UPCEANReader {
             }
         }
 
-        let middleRange = UPCEANReader.findGuardPattern(row, rowOffset, true, UPCEANReader.MIDDLE_PATTERN, new Array(UPCEANReader.MIDDLE_PATTERN.length).fill(0));
+        let middleRange = UPCEANReader.findGuardPattern(row, rowOffset, true, UPCEANReader.MIDDLE_PATTERN, new Int32Array(UPCEANReader.MIDDLE_PATTERN.length).fill(0));
         rowOffset = middleRange[1];
 
         for (let x = 0; x < 4 && rowOffset < end; x++) {
