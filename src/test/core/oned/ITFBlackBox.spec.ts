@@ -17,8 +17,8 @@
 
 // package com.google.zxing.oned;
 
-import BarcodeFormat from '../../../core/BarcodeFormat';
-import MultiFormatReader from '../../../core/MultiFormatReader';
+import { BarcodeFormat } from '@zxing/library';
+import { MultiFormatReader } from '@zxing/library';
 import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 
 /**

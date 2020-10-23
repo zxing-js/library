@@ -1,5 +1,6 @@
 import * as sharp from 'sharp';
-import BitMatrix from '../../../core/common/BitMatrix';
+
+import { BitMatrix } from '@zxing/library';
 
 
 export default class SharpImage {

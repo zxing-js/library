@@ -17,10 +17,12 @@
 /*package com.google.zxing.common;*/
 
 import * as assert from 'assert';
-import BitArray from '../../../core/common/BitArray';
-import BitMatrix from '../../../core/common/BitMatrix';
-import IllegalArgumentException from '../../../core/IllegalArgumentException';
 import AssertUtils from '../util/AssertUtils';
+import { BitMatrix } from '@zxing/library';
+import { BitArray } from '@zxing/library';
+
+import { ZXingStringBuilder } from '@zxing/library';
+import { IllegalArgumentException } from '@zxing/library';
 
 
 /**
@@ -284,13 +286,32 @@ describe('BitMatrix', () => {
     testXOR(fullMatrix, centerMatrix, invertedCenterMatrix);
     testXOR(fullMatrix, fullMatrix, emptyMatrix);
 
-    try {
-      emptyMatrix.clone().xor(badMatrix);
-      assert.ok(false);
-    } catch (ex) {
-      if (!(ex instanceof IllegalArgumentException)) {
-        assert.ok(false);
-      }
+        try {
+            emptyMatrix.clone().xor(badMatrix);
+            assert.ok(false);
+        } catch (ex) {
+            if (!(ex instanceof IllegalArgumentException)) {
+                assert.ok(false);
+            }
+        }
+
+        try {
+            badMatrix.clone().xor(emptyMatrix);
+            assert.ok(false);
+        } catch (ex) {
+            if (!(ex instanceof IllegalArgumentException)) {
+                assert.ok(false);
+            }
+        }
+    });
+
+    function matrixToString(result: BitMatrix): string {
+        assert.strictEqual(1, result.getHeight());
+        const builder: ZXingStringBuilder = new ZXingStringBuilder(); // result.getWidth())
+        for (let i: number /*int*/ = 0; i < result.getWidth(); i++) {
+            builder.append(result.get(i, 0) ? '1' : '0');
+        }
+        return builder.toString();
     }
 
     try {

@@ -18,20 +18,20 @@
 
 import * as assert from 'assert';
 
-import ErrorCorrectionLevel from '../../../../core/qrcode/decoder/ErrorCorrectionLevel';
+import { QRCodeDecoderErrorCorrectionLevel } from '@zxing/library';
 
 /**
  * @author Sean Owen
  */
-describe('ErrorCorrectionLevel', () => {
+describe('QRCodeDecoderErrorCorrectionLevel', () => {
 
     it('testForBits', () => {
-        assert.strictEqual(ErrorCorrectionLevel.M.equals(ErrorCorrectionLevel.forBits(0)), true);
-        assert.strictEqual(ErrorCorrectionLevel.L.equals(ErrorCorrectionLevel.forBits(1)), true);
-        assert.strictEqual(ErrorCorrectionLevel.H.equals(ErrorCorrectionLevel.forBits(2)), true);
-        assert.strictEqual(ErrorCorrectionLevel.Q.equals(ErrorCorrectionLevel.forBits(3)), true);
+        assert.strictEqual(QRCodeDecoderErrorCorrectionLevel.M.equals(QRCodeDecoderErrorCorrectionLevel.forBits(0)), true);
+        assert.strictEqual(QRCodeDecoderErrorCorrectionLevel.L.equals(QRCodeDecoderErrorCorrectionLevel.forBits(1)), true);
+        assert.strictEqual(QRCodeDecoderErrorCorrectionLevel.H.equals(QRCodeDecoderErrorCorrectionLevel.forBits(2)), true);
+        assert.strictEqual(QRCodeDecoderErrorCorrectionLevel.Q.equals(QRCodeDecoderErrorCorrectionLevel.forBits(3)), true);
         try {
-            ErrorCorrectionLevel.forBits(4);
+            QRCodeDecoderErrorCorrectionLevel.forBits(4);
             assert.ok(false, 'Should have thrown an exception');
         } catch (ex) {
             // good for IllegalArgumentException

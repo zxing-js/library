@@ -37,114 +37,115 @@ import OneDReader from './OneDReader';
  */
 export default class Code128Reader extends OneDReader {
 
-  private static CODE_PATTERNS: number[][] = [
-    [2, 1, 2, 2, 2, 2],
-    [2, 2, 2, 1, 2, 2],
-    [2, 2, 2, 2, 2, 1],
-    [1, 2, 1, 2, 2, 3],
-    [1, 2, 1, 3, 2, 2],
-    [1, 3, 1, 2, 2, 2],
-    [1, 2, 2, 2, 1, 3],
-    [1, 2, 2, 3, 1, 2],
-    [1, 3, 2, 2, 1, 2],
-    [2, 2, 1, 2, 1, 3],
-    [2, 2, 1, 3, 1, 2],
-    [2, 3, 1, 2, 1, 2],
-    [1, 1, 2, 2, 3, 2],
-    [1, 2, 2, 1, 3, 2],
-    [1, 2, 2, 2, 3, 1],
-    [1, 1, 3, 2, 2, 2],
-    [1, 2, 3, 1, 2, 2],
-    [1, 2, 3, 2, 2, 1],
-    [2, 2, 3, 2, 1, 1],
-    [2, 2, 1, 1, 3, 2],
-    [2, 2, 1, 2, 3, 1],
-    [2, 1, 3, 2, 1, 2],
-    [2, 2, 3, 1, 1, 2],
-    [3, 1, 2, 1, 3, 1],
-    [3, 1, 1, 2, 2, 2],
-    [3, 2, 1, 1, 2, 2],
-    [3, 2, 1, 2, 2, 1],
-    [3, 1, 2, 2, 1, 2],
-    [3, 2, 2, 1, 1, 2],
-    [3, 2, 2, 2, 1, 1],
-    [2, 1, 2, 1, 2, 3],
-    [2, 1, 2, 3, 2, 1],
-    [2, 3, 2, 1, 2, 1],
-    [1, 1, 1, 3, 2, 3],
-    [1, 3, 1, 1, 2, 3],
-    [1, 3, 1, 3, 2, 1],
-    [1, 1, 2, 3, 1, 3],
-    [1, 3, 2, 1, 1, 3],
-    [1, 3, 2, 3, 1, 1],
-    [2, 1, 1, 3, 1, 3],
-    [2, 3, 1, 1, 1, 3],
-    [2, 3, 1, 3, 1, 1],
-    [1, 1, 2, 1, 3, 3],
-    [1, 1, 2, 3, 3, 1],
-    [1, 3, 2, 1, 3, 1],
-    [1, 1, 3, 1, 2, 3],
-    [1, 1, 3, 3, 2, 1],
-    [1, 3, 3, 1, 2, 1],
-    [3, 1, 3, 1, 2, 1],
-    [2, 1, 1, 3, 3, 1],
-    [2, 3, 1, 1, 3, 1],
-    [2, 1, 3, 1, 1, 3],
-    [2, 1, 3, 3, 1, 1],
-    [2, 1, 3, 1, 3, 1],
-    [3, 1, 1, 1, 2, 3],
-    [3, 1, 1, 3, 2, 1],
-    [3, 3, 1, 1, 2, 1],
-    [3, 1, 2, 1, 1, 3],
-    [3, 1, 2, 3, 1, 1],
-    [3, 3, 2, 1, 1, 1],
-    [3, 1, 4, 1, 1, 1],
-    [2, 2, 1, 4, 1, 1],
-    [4, 3, 1, 1, 1, 1],
-    [1, 1, 1, 2, 2, 4],
-    [1, 1, 1, 4, 2, 2],
-    [1, 2, 1, 1, 2, 4],
-    [1, 2, 1, 4, 2, 1],
-    [1, 4, 1, 1, 2, 2],
-    [1, 4, 1, 2, 2, 1],
-    [1, 1, 2, 2, 1, 4],
-    [1, 1, 2, 4, 1, 2],
-    [1, 2, 2, 1, 1, 4],
-    [1, 2, 2, 4, 1, 1],
-    [1, 4, 2, 1, 1, 2],
-    [1, 4, 2, 2, 1, 1],
-    [2, 4, 1, 2, 1, 1],
-    [2, 2, 1, 1, 1, 4],
-    [4, 1, 3, 1, 1, 1],
-    [2, 4, 1, 1, 1, 2],
-    [1, 3, 4, 1, 1, 1],
-    [1, 1, 1, 2, 4, 2],
-    [1, 2, 1, 1, 4, 2],
-    [1, 2, 1, 2, 4, 1],
-    [1, 1, 4, 2, 1, 2],
-    [1, 2, 4, 1, 1, 2],
-    [1, 2, 4, 2, 1, 1],
-    [4, 1, 1, 2, 1, 2],
-    [4, 2, 1, 1, 1, 2],
-    [4, 2, 1, 2, 1, 1],
-    [2, 1, 2, 1, 4, 1],
-    [2, 1, 4, 1, 2, 1],
-    [4, 1, 2, 1, 2, 1],
-    [1, 1, 1, 1, 4, 3],
-    [1, 1, 1, 3, 4, 1],
-    [1, 3, 1, 1, 4, 1],
-    [1, 1, 4, 1, 1, 3],
-    [1, 1, 4, 3, 1, 1],
-    [4, 1, 1, 1, 1, 3],
-    [4, 1, 1, 3, 1, 1],
-    [1, 1, 3, 1, 4, 1],
-    [1, 1, 4, 1, 3, 1],
-    [3, 1, 1, 1, 4, 1],
-    [4, 1, 1, 1, 3, 1],
-    [2, 1, 1, 4, 1, 2],
-    [2, 1, 1, 2, 1, 4],
-    [2, 1, 1, 2, 3, 2],
-    [2, 3, 3, 1, 1, 1, 2]];
+    private static CODE_PATTERNS: Int32Array[] = [
+        Int32Array.from([2, 1, 2, 2, 2, 2]),
+        Int32Array.from([2, 2, 2, 1, 2, 2]),
+        Int32Array.from([2, 2, 2, 2, 2, 1]),
+        Int32Array.from([1, 2, 1, 2, 2, 3]),
+        Int32Array.from([1, 2, 1, 3, 2, 2]),
+        Int32Array.from([1, 3, 1, 2, 2, 2]),
+        Int32Array.from([1, 2, 2, 2, 1, 3]),
+        Int32Array.from([1, 2, 2, 3, 1, 2]),
+        Int32Array.from([1, 3, 2, 2, 1, 2]),
+        Int32Array.from([2, 2, 1, 2, 1, 3]),
+        Int32Array.from([2, 2, 1, 3, 1, 2]),
+        Int32Array.from([2, 3, 1, 2, 1, 2]),
+        Int32Array.from([1, 1, 2, 2, 3, 2]),
+        Int32Array.from([1, 2, 2, 1, 3, 2]),
+        Int32Array.from([1, 2, 2, 2, 3, 1]),
+        Int32Array.from([1, 1, 3, 2, 2, 2]),
+        Int32Array.from([1, 2, 3, 1, 2, 2]),
+        Int32Array.from([1, 2, 3, 2, 2, 1]),
+        Int32Array.from([2, 2, 3, 2, 1, 1]),
+        Int32Array.from([2, 2, 1, 1, 3, 2]),
+        Int32Array.from([2, 2, 1, 2, 3, 1]),
+        Int32Array.from([2, 1, 3, 2, 1, 2]),
+        Int32Array.from([2, 2, 3, 1, 1, 2]),
+        Int32Array.from([3, 1, 2, 1, 3, 1]),
+        Int32Array.from([3, 1, 1, 2, 2, 2]),
+        Int32Array.from([3, 2, 1, 1, 2, 2]),
+        Int32Array.from([3, 2, 1, 2, 2, 1]),
+        Int32Array.from([3, 1, 2, 2, 1, 2]),
+        Int32Array.from([3, 2, 2, 1, 1, 2]),
+        Int32Array.from([3, 2, 2, 2, 1, 1]),
+        Int32Array.from([2, 1, 2, 1, 2, 3]),
+        Int32Array.from([2, 1, 2, 3, 2, 1]),
+        Int32Array.from([2, 3, 2, 1, 2, 1]),
+        Int32Array.from([1, 1, 1, 3, 2, 3]),
+        Int32Array.from([1, 3, 1, 1, 2, 3]),
+        Int32Array.from([1, 3, 1, 3, 2, 1]),
+        Int32Array.from([1, 1, 2, 3, 1, 3]),
+        Int32Array.from([1, 3, 2, 1, 1, 3]),
+        Int32Array.from([1, 3, 2, 3, 1, 1]),
+        Int32Array.from([2, 1, 1, 3, 1, 3]),
+        Int32Array.from([2, 3, 1, 1, 1, 3]),
+        Int32Array.from([2, 3, 1, 3, 1, 1]),
+        Int32Array.from([1, 1, 2, 1, 3, 3]),
+        Int32Array.from([1, 1, 2, 3, 3, 1]),
+        Int32Array.from([1, 3, 2, 1, 3, 1]),
+        Int32Array.from([1, 1, 3, 1, 2, 3]),
+        Int32Array.from([1, 1, 3, 3, 2, 1]),
+        Int32Array.from([1, 3, 3, 1, 2, 1]),
+        Int32Array.from([3, 1, 3, 1, 2, 1]),
+        Int32Array.from([2, 1, 1, 3, 3, 1]),
+        Int32Array.from([2, 3, 1, 1, 3, 1]),
+        Int32Array.from([2, 1, 3, 1, 1, 3]),
+        Int32Array.from([2, 1, 3, 3, 1, 1]),
+        Int32Array.from([2, 1, 3, 1, 3, 1]),
+        Int32Array.from([3, 1, 1, 1, 2, 3]),
+        Int32Array.from([3, 1, 1, 3, 2, 1]),
+        Int32Array.from([3, 3, 1, 1, 2, 1]),
+        Int32Array.from([3, 1, 2, 1, 1, 3]),
+        Int32Array.from([3, 1, 2, 3, 1, 1]),
+        Int32Array.from([3, 3, 2, 1, 1, 1]),
+        Int32Array.from([3, 1, 4, 1, 1, 1]),
+        Int32Array.from([2, 2, 1, 4, 1, 1]),
+        Int32Array.from([4, 3, 1, 1, 1, 1]),
+        Int32Array.from([1, 1, 1, 2, 2, 4]),
+        Int32Array.from([1, 1, 1, 4, 2, 2]),
+        Int32Array.from([1, 2, 1, 1, 2, 4]),
+        Int32Array.from([1, 2, 1, 4, 2, 1]),
+        Int32Array.from([1, 4, 1, 1, 2, 2]),
+        Int32Array.from([1, 4, 1, 2, 2, 1]),
+        Int32Array.from([1, 1, 2, 2, 1, 4]),
+        Int32Array.from([1, 1, 2, 4, 1, 2]),
+        Int32Array.from([1, 2, 2, 1, 1, 4]),
+        Int32Array.from([1, 2, 2, 4, 1, 1]),
+        Int32Array.from([1, 4, 2, 1, 1, 2]),
+        Int32Array.from([1, 4, 2, 2, 1, 1]),
+        Int32Array.from([2, 4, 1, 2, 1, 1]),
+        Int32Array.from([2, 2, 1, 1, 1, 4]),
+        Int32Array.from([4, 1, 3, 1, 1, 1]),
+        Int32Array.from([2, 4, 1, 1, 1, 2]),
+        Int32Array.from([1, 3, 4, 1, 1, 1]),
+        Int32Array.from([1, 1, 1, 2, 4, 2]),
+        Int32Array.from([1, 2, 1, 1, 4, 2]),
+        Int32Array.from([1, 2, 1, 2, 4, 1]),
+        Int32Array.from([1, 1, 4, 2, 1, 2]),
+        Int32Array.from([1, 2, 4, 1, 1, 2]),
+        Int32Array.from([1, 2, 4, 2, 1, 1]),
+        Int32Array.from([4, 1, 1, 2, 1, 2]),
+        Int32Array.from([4, 2, 1, 1, 1, 2]),
+        Int32Array.from([4, 2, 1, 2, 1, 1]),
+        Int32Array.from([2, 1, 2, 1, 4, 1]),
+        Int32Array.from([2, 1, 4, 1, 2, 1]),
+        Int32Array.from([4, 1, 2, 1, 2, 1]),
+        Int32Array.from([1, 1, 1, 1, 4, 3]),
+        Int32Array.from([1, 1, 1, 3, 4, 1]),
+        Int32Array.from([1, 3, 1, 1, 4, 1]),
+        Int32Array.from([1, 1, 4, 1, 1, 3]),
+        Int32Array.from([1, 1, 4, 3, 1, 1]),
+        Int32Array.from([4, 1, 1, 1, 1, 3]),
+        Int32Array.from([4, 1, 1, 3, 1, 1]),
+        Int32Array.from([1, 1, 3, 1, 4, 1]),
+        Int32Array.from([1, 1, 4, 1, 3, 1]),
+        Int32Array.from([3, 1, 1, 1, 4, 1]),
+        Int32Array.from([4, 1, 1, 1, 3, 1]),
+        Int32Array.from([2, 1, 1, 4, 1, 2]),
+        Int32Array.from([2, 1, 1, 2, 1, 4]),
+        Int32Array.from([2, 1, 1, 2, 3, 2]),
+        Int32Array.from([2, 3, 3, 1, 1, 1, 2]),
+      ];
 
   private static MAX_AVG_VARIANCE = 0.25;
   private static MAX_INDIVIDUAL_VARIANCE = 0.7;
@@ -166,15 +167,15 @@ export default class Code128Reader extends OneDReader {
   private static CODE_START_C = 105;
   private static CODE_STOP = 106;
 
-  private static findStartPattern(row: BitArray): number[] {
+  private static findStartPattern(row: BitArray): Int32Array {
     const width = row.getSize();
     const rowOffset = row.getNextSet(0);
 
-    let counterPosition = 0;
-    const counters = [0, 0, 0, 0, 0, 0];
-    let patternStart = rowOffset;
-    let isWhite = false;
-    const patternLength = 6;
+        let counterPosition = 0;
+        let counters = Int32Array.from([0, 0, 0, 0, 0, 0]);
+        let patternStart = rowOffset;
+        let isWhite = false;
+        const patternLength = 6;
 
     for (let i = rowOffset; i < width; i++) {
       if (row.get(i) !== isWhite) {
@@ -194,11 +195,11 @@ export default class Code128Reader extends OneDReader {
           // Look for whitespace before start pattern, >= 50% of width of start pattern
           if (bestMatch >= 0 &&
             row.isRange(Math.max(0, patternStart - (i - patternStart) / 2), patternStart, false)) {
-            return [patternStart, i, bestMatch];
+            return Int32Array.from([patternStart, i, bestMatch]);
           }
           patternStart += counters[0] + counters[1];
 
-          counters.splice(0, 2);
+          counters = counters.slice(2, counters.length - 1);
           counters[counterPosition - 1] = 0;
           counters[counterPosition] = 0;
           counterPosition--;
@@ -212,7 +213,7 @@ export default class Code128Reader extends OneDReader {
     throw new NotFoundException();
   }
 
-  private static decodeCode(row: BitArray, counters: number[], rowOffset: number): number {
+  private static decodeCode(row: BitArray, counters: Int32Array, rowOffset: number): number {
     OneDReader.recordPattern(row, rowOffset, counters);
     let bestVariance = Code128Reader.MAX_AVG_VARIANCE; // worst variance we'll accept
     let bestMatch = -1;
@@ -264,7 +265,7 @@ export default class Code128Reader extends OneDReader {
 
     let lastStart = startPatternInfo[0];
     let nextStart = startPatternInfo[1];
-    const counters: number[] = [0, 0, 0, 0, 0, 0];
+    const counters: Int32Array = Int32Array.from([0, 0, 0, 0, 0, 0]);
 
     let lastCode = 0;
     let code = 0;

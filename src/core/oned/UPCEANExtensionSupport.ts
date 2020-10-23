@@ -21,10 +21,10 @@ import UPCEANExtension2Support from './UPCEANExtension2Support';
 import Result from '../Result';
 
 export default class UPCEANExtensionSupport {
-    private static EXTENSION_START_PATTERN = [1, 1, 2];
+    private static EXTENSION_START_PATTERN = Int32Array.from([1, 1, 2]);
 
     static decodeRow(rowNumber: number, row: BitArray, rowOffset: number): Result {
-        let extensionStartRange = AbstractUPCEANReader.findGuardPattern(row, rowOffset, false, this.EXTENSION_START_PATTERN, new Array(this.EXTENSION_START_PATTERN.length).fill(0));
+        let extensionStartRange = AbstractUPCEANReader.findGuardPattern(row, rowOffset, false, this.EXTENSION_START_PATTERN, new Int32Array(this.EXTENSION_START_PATTERN.length).fill(0));
         try {
             // return null;
             let fiveSupport = new UPCEANExtension5Support();

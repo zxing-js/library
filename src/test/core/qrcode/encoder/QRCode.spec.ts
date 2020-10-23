@@ -17,35 +17,35 @@
 /*package com.google.zxing.qrcode.encoder;*/
 
 import * as assert from 'assert';
-import ErrorCorrectionLevel from '../../../../core/qrcode/decoder/ErrorCorrectionLevel';
-import Mode from '../../../../core/qrcode/decoder/Mode';
-import Version from '../../../../core/qrcode/decoder/Version';
-import QRCode from '../../../../core/qrcode/encoder/QRCode';
-import ByteMatrix from '../../../../core/qrcode/encoder/ByteMatrix';
+import { QRCodeDecoderErrorCorrectionLevel } from '@zxing/library';
+import { QRCodeMode } from '@zxing/library';
+import { QRCodeVersion } from '@zxing/library';
+import { QRCodeEncoderQRCode } from '@zxing/library';
+import { QRCodeByteMatrix } from '@zxing/library';
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator
  * @author mysen@google.com (Chris Mysen) - ported from C++
  */
-describe('QRCode', () => {
+describe('QRCodeEncoderQRCode', () => {
 
     it('test', () => {
-        const qrCode = new QRCode();
+        const qrCode = new QRCodeEncoderQRCode();
 
         // First, test simple setters and getters.
         // We use numbers of version 7-H.
-        qrCode.setMode(Mode.BYTE);
-        qrCode.setECLevel(ErrorCorrectionLevel.H);
-        qrCode.setVersion(Version.getVersionForNumber(7));
+        qrCode.setMode(QRCodeMode.BYTE);
+        qrCode.setECLevel(QRCodeDecoderErrorCorrectionLevel.H);
+        qrCode.setVersion(QRCodeVersion.getVersionForNumber(7));
         qrCode.setMaskPattern(3);
 
-        assert.strictEqual(Mode.BYTE.equals(qrCode.getMode()), true);
-        assert.strictEqual(ErrorCorrectionLevel.H.equals(qrCode.getECLevel()), true);
+        assert.strictEqual(QRCodeMode.BYTE.equals(qrCode.getMode()), true);
+        assert.strictEqual(QRCodeDecoderErrorCorrectionLevel.H.equals(qrCode.getECLevel()), true);
         assert.strictEqual(qrCode.getVersion().getVersionNumber(), 7);
         assert.strictEqual(qrCode.getMaskPattern(), 3);
 
         // Prepare the matrix.
-        const matrix = new ByteMatrix(45, 45);
+        const matrix = new QRCodeByteMatrix(45, 45);
         // Just set bogus zero/one values.
         for (let y: number /*int*/ = 0; y < 45; ++y) {
             for (let x: number /*int*/ = 0; x < 45; ++x) {
@@ -59,7 +59,7 @@ describe('QRCode', () => {
     });
 
     it('testToString1', () => {
-        const qrCode = new QRCode();
+        const qrCode = new QRCodeEncoderQRCode();
         const expected: string =
             '<<\n' +
             ' mode: null\n' +
@@ -72,12 +72,12 @@ describe('QRCode', () => {
     });
 
     it('testToString2', () => {
-        const qrCode = new QRCode();
-        qrCode.setMode(Mode.BYTE);
-        qrCode.setECLevel(ErrorCorrectionLevel.H);
-        qrCode.setVersion(Version.getVersionForNumber(1));
+        const qrCode = new QRCodeEncoderQRCode();
+        qrCode.setMode(QRCodeMode.BYTE);
+        qrCode.setECLevel(QRCodeDecoderErrorCorrectionLevel.H);
+        qrCode.setVersion(QRCodeVersion.getVersionForNumber(1));
         qrCode.setMaskPattern(3);
-        const matrix = new ByteMatrix(21, 21);
+        const matrix = new QRCodeByteMatrix(21, 21);
         for (let y: number /*int*/ = 0; y < 21; ++y) {
             for (let x: number /*int*/ = 0; x < 21; ++x) {
                 matrix.setNumber(x, y, (y + x) % 2);
@@ -116,10 +116,10 @@ describe('QRCode', () => {
     });
 
     it('testIsValidMaskPattern', () => {
-        assert.strictEqual(QRCode.isValidMaskPattern(-1), false);
-        assert.strictEqual(QRCode.isValidMaskPattern(0), true);
-        assert.strictEqual(QRCode.isValidMaskPattern(7), true);
-        assert.strictEqual(QRCode.isValidMaskPattern(8), false);
+        assert.strictEqual(QRCodeEncoderQRCode.isValidMaskPattern(-1), false);
+        assert.strictEqual(QRCodeEncoderQRCode.isValidMaskPattern(0), true);
+        assert.strictEqual(QRCodeEncoderQRCode.isValidMaskPattern(7), true);
+        assert.strictEqual(QRCodeEncoderQRCode.isValidMaskPattern(8), false);
     });
 
 });

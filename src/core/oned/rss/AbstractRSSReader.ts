@@ -12,30 +12,30 @@ export default abstract class AbstractRSSReader extends OneDReader {
   private static readonly MIN_FINDER_PATTERN_RATIO: number = 9.5 / 12.0;
   private static readonly MAX_FINDER_PATTERN_RATIO: number = 12.5 / 14.0;
 
-  private readonly decodeFinderCounters: number[];
-  private readonly dataCharacterCounters: number[];
-  private readonly oddRoundingErrors: number[];
-  private readonly evenRoundingErrors: number[];
-  private readonly oddCounts: number[];
-  private readonly evenCounts: number[];
+    private readonly decodeFinderCounters: Int32Array;
+    private readonly dataCharacterCounters: Int32Array;
+    private readonly oddRoundingErrors: number[];
+    private readonly evenRoundingErrors: number[];
+    private readonly oddCounts: number[];
+    private readonly evenCounts: number[];
 
-  public constructor() {
-    super();
-    this.decodeFinderCounters = new Array<number>(4);
-    this.dataCharacterCounters = new Array<number>(8);
-    this.oddRoundingErrors = new Array<number>(4);
-    this.evenRoundingErrors = new Array<number>(4);
-    this.oddCounts = new Array<number>(this.dataCharacterCounters.length / 2);
-    this.evenCounts = new Array<number>(this.dataCharacterCounters.length / 2);
-  }
+    public constructor() {
+        super();
+        this.decodeFinderCounters = new Int32Array(4);
+        this.dataCharacterCounters = new Int32Array(8);
+        this.oddRoundingErrors = new Array<number>(4);
+        this.evenRoundingErrors = new Array<number>(4);
+        this.oddCounts = new Array<number>(this.dataCharacterCounters.length / 2);
+        this.evenCounts = new Array<number>(this.dataCharacterCounters.length / 2);
+    }
 
-  protected getDecodeFinderCounters(): number[] {
-    return this.decodeFinderCounters;
-  }
+    protected getDecodeFinderCounters(): Int32Array {
+        return this.decodeFinderCounters;
+    }
 
-  protected getDataCharacterCounters(): number[] {
-    return this.dataCharacterCounters;
-  }
+    protected getDataCharacterCounters(): Int32Array {
+        return this.dataCharacterCounters;
+    }
 
   protected getOddRoundingErrors(): number[] {
     return this.oddRoundingErrors;
@@ -53,7 +53,7 @@ export default abstract class AbstractRSSReader extends OneDReader {
     return this.evenCounts;
   }
 
-  protected parseFinderValue(counters: number[], finderPatterns: number[][]): number {
+  protected parseFinderValue(counters: Int32Array, finderPatterns: Int32Array[]): number {
     for (let value = 0; value < finderPatterns.length; value++) {
       if (OneDReader.patternMatchVariance(counters, finderPatterns[value], AbstractRSSReader.MAX_INDIVIDUAL_VARIANCE) < AbstractRSSReader.MAX_AVG_VARIANCE) {
         return value;
@@ -95,7 +95,7 @@ export default abstract class AbstractRSSReader extends OneDReader {
     array[index]--;
   }
 
-  protected static isFinderPattern(counters: number[]): boolean {
+  protected static isFinderPattern(counters: Int32Array): boolean {
     let firstTwoSum = counters[0] + counters[1];
     let sum = firstTwoSum + counters[2] + counters[3];
     let ratio = firstTwoSum / sum;

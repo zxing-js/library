@@ -16,13 +16,13 @@
 
 // package com.google.zxing.pdf417;
 
-import BarcodeFormat from '../../../core/BarcodeFormat';
-import MultiFormatReader from '../../../core/MultiFormatReader';
+import { BarcodeFormat } from '@zxing/library';
+import { MultiFormatReader } from '@zxing/library';
 import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
-import { TextDecoder } from '@sinonjs/text-encoding';
-import StringEncoding from '../../../core/util/StringEncoding';
+import { TextDecoder } from '@zxing/text-encoding';
+import { ZXingStringEncoding } from '@zxing/library';
 
-StringEncoding.customDecoder = (b, e) => new TextDecoder(e, { NONSTANDARD_allowLegacyEncoding: true }).decode(b);
+ZXingStringEncoding.customDecoder = (b, e) => new TextDecoder(e).decode(b);
 
 /**
  * This test contains 480x240 images captured from an Android device at preview resolution.

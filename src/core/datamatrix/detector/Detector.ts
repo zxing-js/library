@@ -1,9 +1,9 @@
 import BitMatrix from '../../common/BitMatrix';
-import MathUtils from '../../common/detector/MathUtils';
 import WhiteRectangleDetector from '../../common/detector/WhiteRectangleDetector';
 import DetectorResult from '../../common/DetectorResult';
 import GridSamplerInstance from '../../common/GridSamplerInstance';
 import NotFoundException from '../../NotFoundException';
+import { float, int } from '../../../customTypings';
 import ResultPoint from '../../ResultPoint';
 
 
@@ -36,7 +36,7 @@ export default class Detector {
 
   constructor(image: BitMatrix) {
     this.image = image;
-    this.rectangleDetector = new WhiteRectangleDetector(image);
+    this.rectangleDetector = new WhiteRectangleDetector(this.image);
   }
 
   /**
@@ -47,307 +47,305 @@ export default class Detector {
    */
   public detect(): DetectorResult {
 
+
     const cornerPoints = this.rectangleDetector.detect();
-    const pointA = cornerPoints[0];
-    const pointB = cornerPoints[1];
-    const pointC = cornerPoints[2];
-    const pointD = cornerPoints[3];
 
-    // Point A and D are across the diagonal from one another,
-    // as are B and C. Figure out which are the solid black lines
-    // by counting transitions
-    const transitions: any[] = [];
-    transitions.push(this.transitionsBetween(pointA, pointB));
-    transitions.push(this.transitionsBetween(pointA, pointC));
-    transitions.push(this.transitionsBetween(pointB, pointD));
-    transitions.push(this.transitionsBetween(pointC, pointD));
-    transitions.sort(ResultPointsAndTransitions.resultPointsAndTransitionsComparator);
-
-    // Sort by number of transitions. First two will be the two solid sides; last two
-    // will be the two alternating black/white sides
-    const lSideOne = transitions[0];
-    const lSideTwo = transitions[1];
-
-    // Figure out which point is their intersection by tallying up the number of times we see the
-    // endpoints in the four endpoints. One will show up twice.
-    const pointCount = new Map<ResultPoint, number>();
-    Detector.increment(pointCount, lSideOne.getFrom());
-    Detector.increment(pointCount, lSideOne.getTo());
-    Detector.increment(pointCount, lSideTwo.getFrom());
-    Detector.increment(pointCount, lSideTwo.getTo());
-
-    let maybeTopLeft: ResultPoint | null = null;
-    let bottomLeft: ResultPoint | null = null;
-    let maybeBottomRight: ResultPoint | null = null;
-    for (let [point, value] of Array.from(pointCount.entries())) {
-      if (value === 2) {
-        bottomLeft = point; // this is definitely the bottom left, then -- end of two L sides
-      } else {
-        // Otherwise it's either top left or bottom right -- just assign the two arbitrarily now
-        if (maybeTopLeft == null) {
-          maybeTopLeft = point;
-        } else {
-          maybeBottomRight = point;
-        }
-      }
+    let points = this.detectSolid1(cornerPoints);
+    points = this.detectSolid2(points);
+    points[3] = this.correctTopRight(points);
+    if (!points[3]) {
+       throw new NotFoundException();
     }
+    points = this.shiftToModuleCenter(points);
 
-    if (maybeTopLeft == null || bottomLeft == null || maybeBottomRight == null) {
-      throw new NotFoundException();
-    }
+    const topLeft = points[0];
+    const bottomLeft = points[1];
+    const bottomRight = points[2];
+    const topRight = points[3];
 
-    // Bottom left is correct but top left and bottom right might be switched
-    const corners = [maybeTopLeft, bottomLeft, maybeBottomRight];
-    // Use the dot product trick to sort them out
-    ResultPoint.orderBestPatterns(corners);
-
-    // Now we know which is which:
-    const bottomRight = corners[0];
-    bottomLeft = corners[1];
-    const topLeft = corners[2];
-
-    // Which point didn't we find in relation to the "L" sides? that's the top right corner
-    let topRight;
-    if (!pointCount.has(pointA)) {
-      topRight = pointA;
-    } else if (!pointCount.has(pointB)) {
-      topRight = pointB;
-    } else if (!pointCount.has(pointC)) {
-      topRight = pointC;
-    } else {
-      topRight = pointD;
-    }
-
-    // Next determine the dimension by tracing along the top or right side and counting black/white
-    // transitions. Since we start inside a black module, we should see a number of transitions
-    // equal to 1 less than the code dimension. Well, actually 2 less, because we are going to
-    // end on a black module:
-
-    // The top right point is actually the corner of a module, which is one of the two black modules
-    // adjacent to the white module at the top right. Tracing to that corner from either the top left
-    // or bottom right should work here.
-
-    let dimensionTop = this.transitionsBetween(topLeft, topRight).getTransitions();
-    let dimensionRight = this.transitionsBetween(bottomRight, topRight).getTransitions();
-
+    let dimensionTop = this.transitionsBetween(topLeft, topRight) + 1;
+    let dimensionRight = this.transitionsBetween(bottomRight, topRight) + 1;
     if ((dimensionTop & 0x01) === 1) {
-      // it can't be odd, so, round... up?
-      dimensionTop++;
+      dimensionTop += 1;
     }
-    dimensionTop += 2;
-
     if ((dimensionRight & 0x01) === 1) {
-      // it can't be odd, so, round... up?
-      dimensionRight++;
+      dimensionRight += 1;
     }
-    dimensionRight += 2;
 
-    let bits: BitMatrix;
-    let correctedTopRight: ResultPoint;
-
-    // Rectangular symbols are 6x16, 6x28, 10x24, 10x32, 14x32, or 14x44. If one dimension is more
-    // than twice the other, it's certainly rectangular, but to cut a bit more slack we accept it as
-    // rectangular if the bigger side is at least 7/4 times the other:
-    if (4 * dimensionTop >= 7 * dimensionRight || 4 * dimensionRight >= 7 * dimensionTop) {
-      // The matrix is rectangular
-
-      correctedTopRight =
-        this.correctTopRightRectangular(bottomLeft, bottomRight, topLeft, topRight, dimensionTop, dimensionRight);
-      if (correctedTopRight == null) {
-        correctedTopRight = topRight;
-      }
-
-      dimensionTop = this.transitionsBetween(topLeft, correctedTopRight).getTransitions();
-      dimensionRight = this.transitionsBetween(bottomRight, correctedTopRight).getTransitions();
-
-      if ((dimensionTop & 0x01) === 1) {
-        // it can't be odd, so, round... up?
-        dimensionTop++;
-      }
-
-      if ((dimensionRight & 0x01) === 1) {
-        // it can't be odd, so, round... up?
-        dimensionRight++;
-      }
-
-      bits = Detector.sampleGrid(this.image, topLeft, bottomLeft, bottomRight, correctedTopRight, dimensionTop, dimensionRight);
-
-    } else {
+    if (4 * dimensionTop < 7 * dimensionRight && 4 * dimensionRight < 7 * dimensionTop) {
       // The matrix is square
-
-      const dimension = Math.min(dimensionRight, dimensionTop);
-      // correct top right point to match the white module
-      correctedTopRight = this.correctTopRight(bottomLeft, bottomRight, topLeft, topRight, dimension);
-      if (correctedTopRight == null) {
-        correctedTopRight = topRight;
-      }
-
-      // Redetermine the dimension using the corrected top right point
-      let dimensionCorrected = Math.max(this.transitionsBetween(topLeft, correctedTopRight).getTransitions(),
-        this.transitionsBetween(bottomRight, correctedTopRight).getTransitions());
-      dimensionCorrected++;
-      if ((dimensionCorrected & 0x01) === 1) {
-        dimensionCorrected++;
-      }
-
-      bits = Detector.sampleGrid(this.image,
-        topLeft,
-        bottomLeft,
-        bottomRight,
-        correctedTopRight,
-        dimensionCorrected,
-        dimensionCorrected);
+      dimensionTop = dimensionRight = Math.max(dimensionTop, dimensionRight);
     }
-    return new DetectorResult(bits, [topLeft, bottomLeft, bottomRight, correctedTopRight]);
+
+    let bits = Detector.sampleGrid(this.image,
+                                topLeft,
+                                bottomLeft,
+                                bottomRight,
+                                topRight,
+                                dimensionTop,
+                                dimensionRight);
+
+    return new DetectorResult(bits, [topLeft, bottomLeft, bottomRight, topRight]);
+  }
+
+  private static shiftPoint(point: ResultPoint, to: ResultPoint, div: float): ResultPoint {
+    let x = (to.getX() - point.getX()) / (div + 1);
+    let y = (to.getY() - point.getY()) / (div + 1);
+    return new ResultPoint(point.getX() + x, point.getY() + y);
+  }
+
+  private static moveAway(point: ResultPoint, fromX: float, fromY: float): ResultPoint {
+    let x = point.getX();
+    let y = point.getY();
+
+    if (x < fromX) {
+      x -= 1;
+    } else {
+      x += 1;
+    }
+
+    if (y < fromY) {
+      y -= 1;
+    } else {
+      y += 1;
+    }
+
+    return new ResultPoint(x, y);
   }
 
   /**
-   * Calculates the position of the white top right module using the output of the rectangle detector
-   * for a rectangular matrix
+   * Detect a solid side which has minimum transition.
    */
-  private correctTopRightRectangular(bottomLeft: ResultPoint,
-    bottomRight: ResultPoint,
-    topLeft: ResultPoint,
-    topRight: ResultPoint,
-    dimensionTop: number,
-    dimensionRight: number): ResultPoint {
+  private detectSolid1(cornerPoints: ResultPoint[]): ResultPoint[] {
+    // 0  2
+    // 1  3
+    let pointA = cornerPoints[0];
+    let pointB = cornerPoints[1];
+    let pointC = cornerPoints[3];
+    let pointD = cornerPoints[2];
 
-    let corr = Detector.distance(bottomLeft, bottomRight) / dimensionTop;
-    let norm = Detector.distance(topLeft, topRight);
-    let cos = (topRight.getX() - topLeft.getX()) / norm;
-    let sin = (topRight.getY() - topLeft.getY()) / norm;
+    let trAB = this.transitionsBetween(pointA, pointB);
+    let trBC = this.transitionsBetween(pointB, pointC);
+    let trCD = this.transitionsBetween(pointC, pointD);
+    let trDA = this.transitionsBetween(pointD, pointA);
 
-    const c1 = new ResultPoint(topRight.getX() + corr * cos, topRight.getY() + corr * sin);
-
-    corr = Detector.distance(bottomLeft, topLeft) / dimensionRight;
-    norm = Detector.distance(bottomRight, topRight);
-    cos = (topRight.getX() - bottomRight.getX()) / norm;
-    sin = (topRight.getY() - bottomRight.getY()) / norm;
-
-    const c2 = new ResultPoint(topRight.getX() + corr * cos, topRight.getY() + corr * sin);
-
-    if (!this.isValid(c1)) {
-      if (this.isValid(c2)) {
-        return c2;
-      }
-      return null;
+    // 0..3
+    // :  :
+    // 1--2
+    let min = trAB;
+    let points = [pointD, pointA, pointB, pointC];
+    if (min > trBC) {
+      min = trBC;
+      points[0] = pointA;
+      points[1] = pointB;
+      points[2] = pointC;
+      points[3] = pointD;
     }
-    if (!this.isValid(c2)) {
-      return c1;
+    if (min > trCD) {
+      min = trCD;
+      points[0] = pointB;
+      points[1] = pointC;
+      points[2] = pointD;
+      points[3] = pointA;
+    }
+    if (min > trDA) {
+      points[0] = pointC;
+      points[1] = pointD;
+      points[2] = pointA;
+      points[3] = pointB;
     }
 
-    const l1 = Math.abs(dimensionTop - this.transitionsBetween(topLeft, c1).getTransitions()) +
-      Math.abs(dimensionRight - this.transitionsBetween(bottomRight, c1).getTransitions());
-    const l2 = Math.abs(dimensionTop - this.transitionsBetween(topLeft, c2).getTransitions()) +
-      Math.abs(dimensionRight - this.transitionsBetween(bottomRight, c2).getTransitions());
-
-    if (l1 <= l2) {
-      return c1;
-    }
-
-    return c2;
+    return points;
   }
 
   /**
-   * Calculates the position of the white top right module using the output of the rectangle detector
-   * for a square matrix
+   * Detect a second solid side next to first solid side.
    */
-  private correctTopRight(bottomLeft: ResultPoint,
-    bottomRight: ResultPoint,
-    topLeft: ResultPoint,
-    topRight: ResultPoint,
-    dimension: number): ResultPoint {
+  private detectSolid2(points: ResultPoint[]): ResultPoint[] {
+    // A..D
+    // :  :
+    // B--C
+    let pointA = points[0];
+    let pointB = points[1];
+    let pointC = points[2];
+    let pointD = points[3];
 
-    let corr = Detector.distance(bottomLeft, bottomRight) / dimension;
-    let norm = Detector.distance(topLeft, topRight);
-    let cos = (topRight.getX() - topLeft.getX()) / norm;
-    let sin = (topRight.getY() - topLeft.getY()) / norm;
+    // Transition detection on the edge is not stable.
+    // To safely detect, shift the points to the module center.
+    let tr = this.transitionsBetween(pointA, pointD);
+    let pointBs = Detector.shiftPoint(pointB, pointC, (tr + 1) * 4);
+    let pointCs = Detector.shiftPoint(pointC, pointB, (tr + 1) * 4);
+    let trBA = this.transitionsBetween(pointBs, pointA);
+    let trCD = this.transitionsBetween(pointCs, pointD);
 
-    const c1 = new ResultPoint(topRight.getX() + corr * cos, topRight.getY() + corr * sin);
+    // 0..3
+    // |  :
+    // 1--2
+    if (trBA < trCD) {
+      // solid sides: A-B-C
+      points[0] = pointA;
+      points[1] = pointB;
+      points[2] = pointC;
+      points[3] = pointD;
+    } else {
+      // solid sides: B-C-D
+      points[0] = pointB;
+      points[1] = pointC;
+      points[2] = pointD;
+      points[3] = pointA;
+    }
 
-    corr = Detector.distance(bottomLeft, topLeft) / dimension;
-    norm = Detector.distance(bottomRight, topRight);
-    cos = (topRight.getX() - bottomRight.getX()) / norm;
-    sin = (topRight.getY() - bottomRight.getY()) / norm;
+    return points;
+  }
 
-    const c2 = new ResultPoint(topRight.getX() + corr * cos, topRight.getY() + corr * sin);
+  /**
+   * Calculates the corner position of the white top right module.
+   */
+  private correctTopRight(points: ResultPoint[]): ResultPoint {
+    // A..D
+    // |  :
+    // B--C
+    let pointA = points[0];
+    let pointB = points[1];
+    let pointC = points[2];
+    let pointD = points[3];
 
-    if (!this.isValid(c1)) {
-      if (this.isValid(c2)) {
-        return c2;
+    // shift points for safe transition detection.
+    let trTop = this.transitionsBetween(pointA, pointD);
+    let trRight = this.transitionsBetween(pointB, pointD);
+    let pointAs = Detector.shiftPoint(pointA, pointB, (trRight + 1) * 4);
+    let pointCs = Detector.shiftPoint(pointC, pointB, (trTop + 1) * 4);
+
+    trTop = this.transitionsBetween(pointAs, pointD);
+    trRight = this.transitionsBetween(pointCs, pointD);
+
+    let candidate1 = new ResultPoint(
+      pointD.getX() + (pointC.getX() - pointB.getX()) / (trTop + 1),
+      pointD.getY() + (pointC.getY() - pointB.getY()) / (trTop + 1));
+      let candidate2 = new ResultPoint(
+      pointD.getX() + (pointA.getX() - pointB.getX()) / (trRight + 1),
+      pointD.getY() + (pointA.getY() - pointB.getY()) / (trRight + 1));
+
+    if (!this.isValid(candidate1)) {
+      if (this.isValid(candidate2)) {
+        return candidate2;
       }
       return null;
     }
-    if (!this.isValid(c2)) {
-      return c1;
+    if (!this.isValid(candidate2)) {
+      return candidate1;
     }
 
-    const l1 = Math.abs(this.transitionsBetween(topLeft, c1).getTransitions() -
-      this.transitionsBetween(bottomRight, c1).getTransitions());
-    const l2 = Math.abs(this.transitionsBetween(topLeft, c2).getTransitions() -
-      this.transitionsBetween(bottomRight, c2).getTransitions());
+    let sumc1 = this.transitionsBetween(pointAs, candidate1) + this.transitionsBetween(pointCs, candidate1);
+    let sumc2 = this.transitionsBetween(pointAs, candidate2) + this.transitionsBetween(pointCs, candidate2);
 
-    return l1 <= l2 ? c1 : c2;
+    if (sumc1 > sumc2) {
+      return candidate1;
+    } else {
+      return candidate2;
+    }
+  }
+
+  /**
+   * Shift the edge points to the module center.
+   */
+  private shiftToModuleCenter(points: ResultPoint[]): ResultPoint[] {
+    // A..D
+    // |  :
+    // B--C
+    let pointA = points[0];
+    let pointB = points[1];
+    let pointC = points[2];
+    let pointD = points[3];
+
+    // calculate pseudo dimensions
+    let dimH = this.transitionsBetween(pointA, pointD) + 1;
+    let dimV = this.transitionsBetween(pointC, pointD) + 1;
+
+    // shift points for safe dimension detection
+    let pointAs = Detector.shiftPoint(pointA, pointB, dimV * 4);
+    let pointCs = Detector.shiftPoint(pointC, pointB, dimH * 4);
+
+    //  calculate more precise dimensions
+    dimH = this.transitionsBetween(pointAs, pointD) + 1;
+    dimV = this.transitionsBetween(pointCs, pointD) + 1;
+    if ((dimH & 0x01) === 1) {
+      dimH += 1;
+    }
+    if ((dimV & 0x01) === 1) {
+      dimV += 1;
+    }
+
+    // WhiteRectangleDetector returns points inside of the rectangle.
+    // I want points on the edges.
+    let centerX = (pointA.getX() + pointB.getX() + pointC.getX() + pointD.getX()) / 4;
+    let centerY = (pointA.getY() + pointB.getY() + pointC.getY() + pointD.getY()) / 4;
+    pointA = Detector.moveAway(pointA, centerX, centerY);
+    pointB = Detector.moveAway(pointB, centerX, centerY);
+    pointC = Detector.moveAway(pointC, centerX, centerY);
+    pointD = Detector.moveAway(pointD, centerX, centerY);
+
+    let pointBs: ResultPoint;
+    let pointDs: ResultPoint;
+
+    // shift points to the center of each modules
+    pointAs = Detector.shiftPoint(pointA, pointB, dimV * 4);
+    pointAs = Detector.shiftPoint(pointAs, pointD, dimH * 4);
+    pointBs = Detector.shiftPoint(pointB, pointA, dimV * 4);
+    pointBs = Detector.shiftPoint(pointBs, pointC, dimH * 4);
+    pointCs = Detector.shiftPoint(pointC, pointD, dimV * 4);
+    pointCs = Detector.shiftPoint(pointCs, pointB, dimH * 4);
+    pointDs = Detector.shiftPoint(pointD, pointC, dimV * 4);
+    pointDs = Detector.shiftPoint(pointDs, pointA, dimH * 4);
+
+    return [pointAs, pointBs, pointCs, pointDs];
   }
 
   private isValid(p: ResultPoint): boolean {
     return p.getX() >= 0 && p.getX() < this.image.getWidth() && p.getY() > 0 && p.getY() < this.image.getHeight();
   }
 
-  private static distance(a: ResultPoint, b: ResultPoint): number {
-    return MathUtils.round(ResultPoint.distance(a, b));
-  }
-
-  /**
-   * Increments the Integer associated with a key by one.
-   */
-  private static increment(table: Map<ResultPoint, number>, key: ResultPoint): void {
-    const value = table.get(key);
-    table.set(key, value == null ? 1 : value + 1);
-  }
-
   private static sampleGrid(image: BitMatrix,
-    topLeft: ResultPoint,
-    bottomLeft: ResultPoint,
-    bottomRight: ResultPoint,
-    topRight: ResultPoint,
-    dimensionX: number,
-    dimensionY: number): BitMatrix {
+                                      topLeft: ResultPoint,
+                                      bottomLeft: ResultPoint,
+                                      bottomRight: ResultPoint,
+                                      topRight: ResultPoint,
+                                      dimensionX: int,
+                                      dimensionY: int): BitMatrix {
 
     const sampler = GridSamplerInstance.getInstance();
 
     return sampler.sampleGrid(image,
-      dimensionX,
-      dimensionY,
-      0.5,
-      0.5,
-      dimensionX - 0.5,
-      0.5,
-      dimensionX - 0.5,
-      dimensionY - 0.5,
-      0.5,
-      dimensionY - 0.5,
-      topLeft.getX(),
-      topLeft.getY(),
-      topRight.getX(),
-      topRight.getY(),
-      bottomRight.getX(),
-      bottomRight.getY(),
-      bottomLeft.getX(),
-      bottomLeft.getY()
-    );
+                              dimensionX,
+                              dimensionY,
+                              0.5,
+                              0.5,
+                              dimensionX - 0.5,
+                              0.5,
+                              dimensionX - 0.5,
+                              dimensionY - 0.5,
+                              0.5,
+                              dimensionY - 0.5,
+                              topLeft.getX(),
+                              topLeft.getY(),
+                              topRight.getX(),
+                              topRight.getY(),
+                              bottomRight.getX(),
+                              bottomRight.getY(),
+                              bottomLeft.getX(),
+                              bottomLeft.getY());
   }
 
   /**
    * Counts the number of black/white transitions between two points, using something like Bresenham's algorithm.
    */
-  private transitionsBetween(from: ResultPoint, to: ResultPoint): ResultPointsAndTransitions {
+  private transitionsBetween(from: ResultPoint, to: ResultPoint): int {
     // See QR Code Detector, sizeOfBlackWhiteBlackRun()
-    let fromX = from.getX() | 0;
-    let fromY = from.getY() | 0;
-    let toX = to.getX() | 0;
-    let toY = to.getY() | 0;
-    const steep = Math.abs(toY - fromY) > Math.abs(toX - fromX);
+    let fromX = Math.trunc(from.getX());
+    let fromY = Math.trunc(from.getY());
+    let toX = Math.trunc(to.getX());
+    let toY = Math.trunc(to.getY());
+    let steep: boolean = Math.abs(toY - fromY) > Math.abs(toX - fromX);
     if (steep) {
       let temp = fromX;
       fromX = fromY;
@@ -357,15 +355,15 @@ export default class Detector {
       toY = temp;
     }
 
-    const dx = Math.abs(toX - fromX);
-    const dy = Math.abs(toY - fromY);
+    let dx = Math.abs(toX - fromX);
+    let dy = Math.abs(toY - fromY);
     let error = -dx / 2;
-    const ystep = fromY < toY ? 1 : -1;
-    const xstep = fromX < toX ? 1 : -1;
+    let ystep = fromY < toY ? 1 : -1;
+    let xstep = fromX < toX ? 1 : -1;
     let transitions = 0;
-    let inBlack = this.image.get(steep ? fromY : fromX, steep ? fromX : fromY);
-    for (let x = fromX, y = fromY; x !== toX; x += xstep) {
-      const isBlack = this.image.get(steep ? y : x, steep ? x : y);
+    let inBlack: boolean = this.image.get(steep ? fromY : fromX, steep ? fromX : fromY);
+    for (let x: int = fromX, y = fromY; x !== toX; x += xstep) {
+      let isBlack: boolean = this.image.get(steep ? y : x, steep ? x : y);
       if (isBlack !== inBlack) {
         transitions++;
         inBlack = isBlack;
@@ -379,48 +377,6 @@ export default class Detector {
         error -= dx;
       }
     }
-    return new ResultPointsAndTransitions(from, to, transitions);
-  }
-
-  /**
-   * Simply encapsulates two points and a number of transitions between them.
-   */
-
-  /**
-   * Orders ResultPointsAndTransitions by number of transitions, ascending.
-   */
-}
-
-class ResultPointsAndTransitions {
-
-  private from: ResultPoint;
-  private to: ResultPoint;
-  private transitions: number;
-
-  constructor(from: ResultPoint, to: ResultPoint, transitions: number) {
-    this.from = from;
-    this.to = to;
-    this.transitions = transitions;
-  }
-
-  getFrom(): ResultPoint {
-    return this.from;
-  }
-
-  getTo(): ResultPoint {
-    return this.to;
-  }
-
-  getTransitions(): number {
-    return this.transitions;
-  }
-
-  // @Override
-  public toString() {
-    return this.from + '/' + this.to + '/' + this.transitions;
-  }
-
-  public static resultPointsAndTransitionsComparator(o1: ResultPointsAndTransitions, o2: ResultPointsAndTransitions): number {
-    return o1.getTransitions() - o2.getTransitions();
+    return transitions;
   }
 }

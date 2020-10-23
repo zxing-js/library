@@ -152,7 +152,7 @@ const reader = new MultiFormatReader();
 
 reader.setHints(hints);
 
-const luminanceSource = new RGBLuminanceSource(imgWidth, imgHeight, imgByteArray);
+const luminanceSource = new RGBLuminanceSource(imgByteArray, imgWidth, imgHeight);
 const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
 
 reader.decode(binaryBitmap);

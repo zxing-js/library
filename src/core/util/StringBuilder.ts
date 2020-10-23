@@ -1,6 +1,6 @@
 import CharacterSetECI from '../common/CharacterSetECI';
 import StringEncoding from './StringEncoding';
-import { int } from '../../customTypings';
+import { int, char } from '../../customTypings';
 import StringUtils from '../common/StringUtils';
 
 
@@ -24,6 +24,13 @@ export default class StringBuilder {
     } else {
       // correctly converts from UTF-8, but not other encodings
       this.value += String.fromCharCode(s);
+    }
+    return this;
+  }
+
+  public appendChars(str: char[] | string[], offset: int, len: int): StringBuilder {
+    for (let i = offset; offset < offset + len; i++) {
+      this.append(str[i]);
     }
     return this;
   }

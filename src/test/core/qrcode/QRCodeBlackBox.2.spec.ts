@@ -16,14 +16,14 @@
 
 /*package com.google.zxing.qrcode;*/
 
-import BarcodeFormat from '../../../core/BarcodeFormat';
-import MultiFormatReader from '../../../core/MultiFormatReader';
+import { BarcodeFormat } from '@zxing/library';
+import { MultiFormatReader } from '@zxing/library';
 import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
-import { TextDecoder, TextEncoder } from '@sinonjs/text-encoding';
-import StringEncoding from '../../../core/util/StringEncoding';
+import { TextDecoder, TextEncoder } from '@zxing/text-encoding';
+import { ZXingStringEncoding } from '@zxing/library';
 
-StringEncoding.customDecoder = (b, e) => new TextDecoder(e, { NONSTANDARD_allowLegacyEncoding: true }).decode(b);
-StringEncoding.customEncoder = (b, e) => new TextEncoder(e, { NONSTANDARD_allowLegacyEncoding: true }).encode(b);
+ZXingStringEncoding.customDecoder = (b, e) => new TextDecoder(e).decode(b);
+ZXingStringEncoding.customEncoder = (b, e) => new TextEncoder(e, { NONSTANDARD_allowLegacyEncoding: true }).encode(b);
 
 /**
  * @author Sean Owen

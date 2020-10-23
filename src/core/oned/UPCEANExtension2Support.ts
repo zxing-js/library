@@ -27,11 +27,11 @@ import NotFoundException from '../NotFoundException';
  * @see UPCEANExtension5Support
  */
 export default class UPCEANExtension2Support {
-    private decodeMiddleCounters = [0, 0, 0, 0];
+    private decodeMiddleCounters = Int32Array.from([0, 0, 0, 0]);
     private decodeRowStringBuffer = '';
 
 
-    public decodeRow(rowNumber: number, row: BitArray, extensionStartRange: number[]) {
+    public decodeRow(rowNumber: number, row: BitArray, extensionStartRange: Int32Array) {
         let result = this.decodeRowStringBuffer;
         let end = this.decodeMiddle(row, extensionStartRange, result);
 
@@ -52,7 +52,7 @@ export default class UPCEANExtension2Support {
         return extensionResult;
     }
 
-    public decodeMiddle(row: BitArray, startRange: number[], resultString: string) {
+    public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: string) {
         let counters = this.decodeMiddleCounters;
         counters[0] = 0;
         counters[1] = 0;

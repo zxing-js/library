@@ -37,22 +37,18 @@ export default class MultiFormatOneDReader extends OneDReader {
 
   private readers: OneDReader[] = [];
 
-  public constructor(hints: Map<DecodeHintType, any>) {
+  public constructor(hints?: Map<DecodeHintType, any>) {
     super();
     const possibleFormats = !hints ? null : <BarcodeFormat[]>hints.get(DecodeHintType.POSSIBLE_FORMATS);
     const useCode39CheckDigit = hints && hints.get(DecodeHintType.ASSUME_CODE_39_CHECK_DIGIT) !== undefined;
 
     if (possibleFormats) {
       if (possibleFormats.includes(BarcodeFormat.EAN_13) ||
-        possibleFormats.includes(BarcodeFormat.EAN_8)) {
+        possibleFormats.includes(BarcodeFormat.UPC_A) ||
+        possibleFormats.includes(BarcodeFormat.EAN_8) ||
+        possibleFormats.includes(BarcodeFormat.UPC_E)) {
         this.readers.push(new MultiFormatUPCEANReader(hints));
       }
-      // if (possibleFormats.includes(BarcodeFormat.EAN_13) ||
-      //     possibleFormats.includes(BarcodeFormat.UPC_A) ||
-      //     possibleFormats.includes(BarcodeFormat.EAN_8) ||
-      //     possibleFormats.includes(BarcodeFormat.UPC_E)) {
-      //   readers.push(new MultiFormatUPCEANReader(hints));
-      // }
       if (possibleFormats.includes(BarcodeFormat.CODE_39)) {
         this.readers.push(new Code39Reader(useCode39CheckDigit));
       }
@@ -76,7 +72,7 @@ export default class MultiFormatOneDReader extends OneDReader {
       }
     }
     if (this.readers.length === 0) {
-      // this.readers.push(new MultiFormatUPCEANReader(hints));
+      this.readers.push(new MultiFormatUPCEANReader(hints));
       this.readers.push(new Code39Reader());
       // this.readers.push(new CodaBarReader());
       // this.readers.push(new Code93Reader());

@@ -31,13 +31,13 @@ export default class RSSExpandedReader extends AbstractRSSReader {
   private static readonly EVEN_TOTAL_SUBSET = [4, 20, 52, 104, 204];
   private static readonly GSUM = [0, 348, 1388, 2948, 3988];
 
-  private static readonly FINDER_PATTERNS = [
-    [1, 8, 4, 1], // A
-    [3, 6, 4, 1], // B
-    [3, 4, 6, 1], // C
-    [3, 2, 8, 1], // D
-    [2, 6, 5, 1], // E
-    [2, 2, 9, 1]  // F
+  private static readonly  FINDER_PATTERNS = [
+    Int32Array.from([1, 8, 4, 1]), // A
+    Int32Array.from([3, 6, 4, 1]), // B
+    Int32Array.from([3, 4, 6, 1]), // C
+    Int32Array.from([3, 2, 8, 1]), // D
+    Int32Array.from([2, 6, 5, 1]), // E
+    Int32Array.from([2, 2, 9, 1])  // F
   ];
 
   private static readonly WEIGHTS = [

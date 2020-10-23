@@ -16,21 +16,19 @@
 
 /*package com.google.zxing.common;*/
 
-import * as fs from 'fs';
-import * as path from 'path';
-import BarcodeFormat from '../../../core/BarcodeFormat';
-import BinaryBitmap from '../../../core/BinaryBitmap';
-import HybridBinarizer from '../../../core/common/HybridBinarizer';
-import DecodeHintType from '../../../core/DecodeHintType';
-import LuminanceSource from '../../../core/LuminanceSource';
-import Reader from '../../../core/Reader';
-import Result from '../../../core/Result';
-import ResultMetadataType from '../../../core/ResultMetadataType';
-import StringEncoding from '../../../core/util/StringEncoding';
-import TestResult from '../common/TestResult';
-import SharpImageLuminanceSource from '../SharpImageLuminanceSource';
 import { assertEquals } from '../util/AssertUtils';
 import SharpImage from '../util/SharpImage';
+import SharpImageLuminanceSource from '../SharpImageLuminanceSource';
+import { BarcodeFormat } from '@zxing/library';
+import { BinaryBitmap } from '@zxing/library';
+import { DecodeHintType } from '@zxing/library';
+import { LuminanceSource } from '@zxing/library';
+import { Reader } from '@zxing/library';
+import { Result } from '@zxing/library';
+import { ResultMetadataType } from '@zxing/library';
+import TestResult from '../common/TestResult';
+import { HybridBinarizer } from '@zxing/library';
+import { ZXingStringEncoding } from '@zxing/library';
 
 
 /*import javax.imageio.ImageIO;*/
@@ -42,8 +40,8 @@ import SharpImage from '../util/SharpImage';
 /*import java.awt.image.BufferedImageOp;*/
 /*import java.io.BufferedReader;*/
 /*import java.io.IOException;*/
-/*import java.nio.charset.Charset;*/
-/*import java.nio.charset.StandardCharsets;*/
+/*import java.nio.charset.ZXingCharset;*/
+/*import java.nio.charset.ZXingStandardCharsets;*/
 /*import java.nio.file.DirectoryStream;*/
 /*import java.nio.file.Files;*/
 /*import java.nio.file.Path;*/
@@ -416,7 +414,7 @@ abstract class AbstractBlackBoxSpec {
    */
   protected static readBinFileAsString(file: string): string {
     const bufferContents: Buffer = fs.readFileSync(file);
-    const stringContents = StringEncoding.decode(new Uint8Array(bufferContents), 'iso-8859-1');
+    const stringContents = ZXingStringEncoding.decode(new Uint8Array(bufferContents), 'iso-8859-1');
     if (stringContents.endsWith('\n')) {
       console.warn('contents: string of file ' + file + ' end with a newline. ' +
         'This may not be intended and cause a test failure');
