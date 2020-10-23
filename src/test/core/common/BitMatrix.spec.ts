@@ -286,32 +286,31 @@ describe('BitMatrix', () => {
     testXOR(fullMatrix, centerMatrix, invertedCenterMatrix);
     testXOR(fullMatrix, fullMatrix, emptyMatrix);
 
-        try {
-            emptyMatrix.clone().xor(badMatrix);
-            assert.ok(false);
-        } catch (ex) {
-            if (!(ex instanceof IllegalArgumentException)) {
-                assert.ok(false);
-            }
-        }
+    try {
+      emptyMatrix.clone().xor(badMatrix);
+      assert.ok(false);
+    } catch (ex) {
+      if (!(ex instanceof IllegalArgumentException)) {
+        assert.ok(false);
+      }
+    }
 
-        try {
-            badMatrix.clone().xor(emptyMatrix);
-            assert.ok(false);
-        } catch (ex) {
-            if (!(ex instanceof IllegalArgumentException)) {
-                assert.ok(false);
-            }
-        }
-    });
+    try {
+      badMatrix.clone().xor(emptyMatrix);
+      assert.ok(false);
+    } catch (ex) {
+      if (!(ex instanceof IllegalArgumentException)) {
+        assert.ok(false);
+      }
+    }
 
     function matrixToString(result: BitMatrix): string {
-        assert.strictEqual(1, result.getHeight());
-        const builder: ZXingStringBuilder = new ZXingStringBuilder(); // result.getWidth())
-        for (let i: number /*int*/ = 0; i < result.getWidth(); i++) {
-            builder.append(result.get(i, 0) ? '1' : '0');
-        }
-        return builder.toString();
+      assert.strictEqual(1, result.getHeight());
+      const builder: ZXingStringBuilder = new ZXingStringBuilder(); // result.getWidth())
+      for (let i: number /*int*/ = 0; i < result.getWidth(); i++) {
+        builder.append(result.get(i, 0) ? '1' : '0');
+      }
+      return builder.toString();
     }
 
     try {
