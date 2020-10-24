@@ -40,6 +40,8 @@ import { int } from 'src/customTypings';
  * @author sam2332 (Sam Rudloff)
  *
  * @source https://github.com/zxing/zxing/blob/3c96923276dd5785d58eb970b6ba3f80d36a9505/core/src/main/java/com/google/zxing/oned/UPCAReader.java
+ *
+ * @experimental
  */
 export default class UPCAReader extends UPCEANReader {
 
