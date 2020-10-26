@@ -293,8 +293,10 @@ export default class ITFReader extends OneDReader {
 
       try {
         endPattern = ITFReader.findGuardPattern(row, endStart, ITFReader.END_PATTERN_REVERSED[0]);
-      } catch (NotFoundException) {
-        endPattern = ITFReader.findGuardPattern(row, endStart, ITFReader.END_PATTERN_REVERSED[1]);
+      } catch (error) {
+        if (error instanceof NotFoundException) {
+          endPattern = ITFReader.findGuardPattern(row, endStart, ITFReader.END_PATTERN_REVERSED[1]);
+        }
       }
 
       // The start & end patterns must be pre/post fixed by a quiet zone. This

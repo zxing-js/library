@@ -124,12 +124,14 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     while (!done) {
       try {
         this.pairs.push(this.retrieveNextPair(row, this.pairs, rowNumber));
-      } catch (NotFoundException) {
-        if (!this.pairs.length) {
-          throw new NotFoundException();
+      } catch (error) {
+        if (error instanceof NotFoundException) {
+          if (!this.pairs.length) {
+            throw new NotFoundException();
+          }
+          // exit this loop when retrieveNextPair() fails and throws
+          done = true;
         }
-        // exit this loop when retrieveNextPair() fails and throws
-        done = true;
       }
     }
 
