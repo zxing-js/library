@@ -1,18 +1,17 @@
-import Reader from '../Reader';
-import ResultPoint from '../ResultPoint';
-import Decoder from './decoder/Decoder';
-import Result from '../Result';
 import BarcodeFormat from '../BarcodeFormat';
 import BinaryBitmap from '../BinaryBitmap';
-import DecodeHintType from '../DecodeHintType';
-import ResultMetadataType from '../ResultMetadataType';
 import BitMatrix from '../common/BitMatrix';
 import DecoderResult from '../common/DecoderResult';
-import DetectorResult from '../common/DetectorResult';
+import DecodeHintType from '../DecodeHintType';
+import NotFoundException from '../NotFoundException';
+import Reader from '../Reader';
+import Result from '../Result';
+import ResultMetadataType from '../ResultMetadataType';
+import ResultPoint from '../ResultPoint';
+import System from '../util/System';
+import Decoder from './decoder/Decoder';
 import Detector from './detector/Detector';
 
-import System from '../util/System';
-import NotFoundException from '../NotFoundException';
 
 /*
  * Copyright 2007 ZXing authors

@@ -1,6 +1,7 @@
 import DecodedObject from './DecodedObject';
-export default class DecodedChar extends DecodedObject{
-  private readonly value: string
+
+export default class DecodedChar extends DecodedObject {
+  private readonly value: string;
   static readonly FNC1 = '$';
 
   constructor(newPosition: number, value: string) {
@@ -8,10 +9,10 @@ export default class DecodedChar extends DecodedObject{
     this.value = value;
   }
 
-  getValue(): string{
+  getValue(): string {
     return this.value;
   }
-  isFNC1():boolean {
+  isFNC1(): boolean {
     return this.value === DecodedChar.FNC1;
   }
 

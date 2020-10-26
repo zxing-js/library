@@ -1,17 +1,11 @@
-import DecodeHintType from '../../DecodeHintType';
-import ResultPoint from '../../ResultPoint';
-import ResultPointCallback from '../../ResultPointCallback';
 import BitMatrix from '../../common/BitMatrix';
-import DetectorResult from '../../common/DetectorResult';
-import GridSampler from '../../common/GridSampler';
-import GridSamplerInstance from '../../common/GridSamplerInstance';
-import PerspectiveTransform from '../../common/PerspectiveTransform';
-import MathUtils from '../../common/detector/MathUtils';
-import Version from '../decoder/Version';
 import WhiteRectangleDetector from '../../common/detector/WhiteRectangleDetector';
-
+import DetectorResult from '../../common/DetectorResult';
+import GridSamplerInstance from '../../common/GridSamplerInstance';
 import NotFoundException from '../../NotFoundException';
 import { float, int } from '../../../customTypings';
+import ResultPoint from '../../ResultPoint';
+
 
 /*
  * Copyright 2008 ZXing authors

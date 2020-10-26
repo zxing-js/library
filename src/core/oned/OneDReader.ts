@@ -180,7 +180,7 @@ export default abstract class OneDReader implements Reader {
      * @throws NotFoundException if counters cannot be filled entirely from row before running out
      *  of pixels
      */
-    protected static recordPattern(row: BitArray, start: number, counters: number[]): void {
+    protected static recordPattern(row: BitArray, start: number, counters: Int32Array): void {
         const numCounters = counters.length;
         for (let index = 0; index < numCounters; index++)
             counters[index] = 0;
@@ -214,7 +214,7 @@ export default abstract class OneDReader implements Reader {
         }
     }
 
-    protected static recordPatternInReverse(row: BitArray, start: number, counters: number[]): void {
+    protected static recordPatternInReverse(row: BitArray, start: number, counters: Int32Array): void {
         // This could be more efficient I guess
         let numTransitionsLeft = counters.length;
         let last = row.get(start);
@@ -241,7 +241,7 @@ export default abstract class OneDReader implements Reader {
      * @param maxIndividualVariance The most any counter can differ before we give up
      * @return ratio of total variance between counters and pattern compared to total pattern size
      */
-    protected static patternMatchVariance(counters: number[], pattern: number[], maxIndividualVariance: number): number {
+    protected static patternMatchVariance(counters: Int32Array, pattern: Int32Array, maxIndividualVariance: number): number {
         const numCounters = counters.length;
         let total = 0;
         let patternLength = 0;
