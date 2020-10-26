@@ -30,8 +30,6 @@ import TestResult from '../common/TestResult';
 import { HybridBinarizer } from '@zxing/library';
 import { ZXingStringEncoding } from '@zxing/library';
 
-import * as fs from 'fs';
-import * as path from 'path';
 
 /*import javax.imageio.ImageIO;*/
 /*import java.awt.Graphics;*/
