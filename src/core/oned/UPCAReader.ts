@@ -40,6 +40,8 @@ import { int } from 'src/customTypings';
  * @author sam2332 (Sam Rudloff)
  *
  * @source https://github.com/zxing/zxing/blob/3c96923276dd5785d58eb970b6ba3f80d36a9505/core/src/main/java/com/google/zxing/oned/UPCAReader.java
+ *
+ * @experimental
  */
 export default class UPCAReader extends UPCEANReader {
 
@@ -68,7 +70,7 @@ export default class UPCAReader extends UPCEANReader {
 
   public maybeReturnResult(result: Result) {
     let text = result.getText();
-    if (text.charAt(0) == '0') {
+    if (text.charAt(0) === '0') {
       let upcaResult = new Result(text.substring(1), null, null, result.getResultPoints(), BarcodeFormat.UPC_A);
       if (result.getResultMetadata() != null) {
         upcaResult.putAllMetadata(result.getResultMetadata());

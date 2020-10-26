@@ -36,6 +36,8 @@ import { int, char } from 'src/customTypings';
  * @author Sean Owen
  *
  * @source https://github.com/zxing/zxing/blob/3c96923276dd5785d58eb970b6ba3f80d36a9505/core/src/main/java/com/google/zxing/oned/UPCEReader.java
+ *
+ * @experimental
  */
 export default /* final */ class UPCEReader extends UPCEANReader {
 
