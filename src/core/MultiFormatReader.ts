@@ -69,7 +69,7 @@ export default class MultiFormatReader implements Reader {
      * @throws NotFoundException Any errors which occurred
      */
     /*@Override*/
-    public decode(image: BinaryBitmap, hints?: Map<DecodeHintType, any>): Result {
+    public decode(image: BinaryBitmap, hints?: Map<DecodeHintType, any> | null): Result {
         this.setHints(hints);
         return this.decodeInternal(image);
     }

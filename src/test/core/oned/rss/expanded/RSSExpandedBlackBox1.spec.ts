@@ -26,8 +26,8 @@
 
 // package com.google.zxing.oned;
 
-import BarcodeFormat from '../../../../../core/BarcodeFormat';
-import MultiFormatReader from '../../../../../core/MultiFormatReader';
+import { BarcodeFormat } from '@zxing/library';
+import { MultiFormatReader } from '@zxing/library';
 import AbstractBlackBoxSpec from '../../../common/AbstractBlackBox';
 
 /**
@@ -43,8 +43,8 @@ class RSSExpandedBlackBox1Spec extends AbstractBlackBoxSpec {
 }
 
 describe('RSSExpandedBlackBox1Spec', () => {
-  it('testBlackBox', done => {
+  it('testBlackBox', () => {
     const test = new RSSExpandedBlackBox1Spec();
-    return test.testBlackBox(done);
+    return test.testBlackBox();
   });
 });
