@@ -21,7 +21,7 @@ import Result from '../Result';
 import OneDReader from './OneDReader';
 import NotFoundException from '../NotFoundException';
 import FormatException from '../FormatException';
-import { int } from 'src/customTypings';
+import { int } from '../../customTypings';
 
 /**
  * <p>Encapsulates functionality and implementation that is common to UPC and EAN families
