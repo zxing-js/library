@@ -43,7 +43,7 @@
   "main": "./cjs/index.js",
   "module": "./esm/index.js",
   "typings": "./esm/index.d.ts",
-  "esnext": "./esm/index.js",
+  "esnext": "./es2015/index.js",
   "browser": "./umd/index.js",
   "browser:min": "./umd/index.min.js",
   "scripts": {
