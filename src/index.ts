@@ -19,6 +19,7 @@ export { default as BarcodeFormat } from './core/BarcodeFormat';
 export { default as Binarizer } from './core/Binarizer';
 export { default as BinaryBitmap } from './core/BinaryBitmap';
 export { default as DecodeHintType } from './core/DecodeHintType';
+export { default as ImageDataLuminanceSource } from './core/ImageDataLuminanceSource';
 export { default as InvertedLuminanceSource } from './core/InvertedLuminanceSource';
 export { default as LuminanceSource } from './core/LuminanceSource';
 export { default as MultiFormatReader } from './core/MultiFormatReader';
