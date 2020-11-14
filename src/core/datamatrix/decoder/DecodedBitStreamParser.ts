@@ -55,8 +55,8 @@ export default class DecodedBitStreamParser {
   ];
 
   private static C40_SHIFT2_SET_CHARS: string[] = [
-    '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*',  '+', ',', '-', '.',
-    '/', ':', ';', '<', '=', '>', '?',  '@', '[', '\\', ']', '^', '_'
+    '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.',
+    '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_'
   ];
 
   /**
@@ -74,10 +74,10 @@ export default class DecodedBitStreamParser {
 
   private static TEXT_SHIFT3_SET_CHARS: string[] = [
     '`', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-    'O',  'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '{', '|', '}', '~', String.fromCharCode(127)
+    'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '{', '|', '}', '~', String.fromCharCode(127)
   ];
 
-  static decode(bytes:  Uint8Array): DecoderResult {
+  static decode(bytes: Uint8Array): DecoderResult {
     const bits = new BitSource(bytes);
     const result = new StringBuilder();
     const resultTrailer = new StringBuilder();
@@ -119,8 +119,8 @@ export default class DecodedBitStreamParser {
    * See ISO 16022:2006, 5.2.3 and Annex C, Table C.2
    */
   private static decodeAsciiSegment(bits: BitSource,
-                                         result: StringBuilder,
-                                         resultTrailer: StringBuilder): Mode {
+    result: StringBuilder,
+    resultTrailer: StringBuilder): Mode {
     let upperShift = false;
     do {
       let oneByte = bits.readBits(8);
@@ -258,7 +258,7 @@ export default class DecodedBitStreamParser {
                   upperShift = true;
                   break;
                 default:
-                throw new FormatException();
+                  throw new FormatException();
               }
             }
             shift = 0;
@@ -348,7 +348,7 @@ export default class DecodedBitStreamParser {
                   upperShift = true;
                   break;
                 default:
-                throw new FormatException();
+                  throw new FormatException();
               }
             }
             shift = 0;
@@ -368,7 +368,7 @@ export default class DecodedBitStreamParser {
             }
             break;
           default:
-          throw new FormatException();
+            throw new FormatException();
         }
       }
     } while (bits.available() > 0);
@@ -378,7 +378,7 @@ export default class DecodedBitStreamParser {
    * See ISO 16022:2006, 5.2.7
    */
   private static decodeAnsiX12Segment(bits: BitSource,
-                                           result: StringBuilder): void {
+    result: StringBuilder): void {
     // Three ANSI X12 values are encoded in a 16-bit value as
     // (1600 * C1) + (40 * C2) + C3 + 1
 
@@ -469,8 +469,8 @@ export default class DecodedBitStreamParser {
    * See ISO 16022:2006, 5.2.9 and Annex B, B.2
    */
   private static decodeBase256Segment(bits: BitSource,
-                                           result: StringBuilder,
-                                           byteSegments: Uint8Array[]): void {
+    result: StringBuilder,
+    byteSegments: Uint8Array[]): void {
     // Figure out how long the Base 256 Segment is.
     let codewordPosition = 1 + bits.getByteOffset(); // position is 1-indexed
     const d1 = this.unrandomize255State(bits.readBits(8), codewordPosition++);
@@ -509,7 +509,7 @@ export default class DecodedBitStreamParser {
    * See ISO 16022:2006, Annex B, B.2
    */
   private static unrandomize255State(randomizedBase256Codeword: number,
-                                          base256CodewordPosition: number): number {
+    base256CodewordPosition: number): number {
     const pseudoRandomNumber = ((149 * base256CodewordPosition) % 255) + 1;
     const tempVariable = randomizedBase256Codeword - pseudoRandomNumber;
     return tempVariable >= 0 ? tempVariable : tempVariable + 256;

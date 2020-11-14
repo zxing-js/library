@@ -54,7 +54,7 @@ export default class Detector {
     points = this.detectSolid2(points);
     points[3] = this.correctTopRight(points);
     if (!points[3]) {
-       throw new NotFoundException();
+      throw new NotFoundException();
     }
     points = this.shiftToModuleCenter(points);
 
@@ -78,12 +78,12 @@ export default class Detector {
     }
 
     let bits = Detector.sampleGrid(this.image,
-                                topLeft,
-                                bottomLeft,
-                                bottomRight,
-                                topRight,
-                                dimensionTop,
-                                dimensionRight);
+      topLeft,
+      bottomLeft,
+      bottomRight,
+      topRight,
+      dimensionTop,
+      dimensionRight);
 
     return new DetectorResult(bits, [topLeft, bottomLeft, bottomRight, topRight]);
   }
@@ -222,7 +222,7 @@ export default class Detector {
     let candidate1 = new ResultPoint(
       pointD.getX() + (pointC.getX() - pointB.getX()) / (trTop + 1),
       pointD.getY() + (pointC.getY() - pointB.getY()) / (trTop + 1));
-      let candidate2 = new ResultPoint(
+    let candidate2 = new ResultPoint(
       pointD.getX() + (pointA.getX() - pointB.getX()) / (trRight + 1),
       pointD.getY() + (pointA.getY() - pointB.getY()) / (trRight + 1));
 
@@ -306,34 +306,34 @@ export default class Detector {
   }
 
   private static sampleGrid(image: BitMatrix,
-                                      topLeft: ResultPoint,
-                                      bottomLeft: ResultPoint,
-                                      bottomRight: ResultPoint,
-                                      topRight: ResultPoint,
-                                      dimensionX: int,
-                                      dimensionY: int): BitMatrix {
+    topLeft: ResultPoint,
+    bottomLeft: ResultPoint,
+    bottomRight: ResultPoint,
+    topRight: ResultPoint,
+    dimensionX: int,
+    dimensionY: int): BitMatrix {
 
     const sampler = GridSamplerInstance.getInstance();
 
     return sampler.sampleGrid(image,
-                              dimensionX,
-                              dimensionY,
-                              0.5,
-                              0.5,
-                              dimensionX - 0.5,
-                              0.5,
-                              dimensionX - 0.5,
-                              dimensionY - 0.5,
-                              0.5,
-                              dimensionY - 0.5,
-                              topLeft.getX(),
-                              topLeft.getY(),
-                              topRight.getX(),
-                              topRight.getY(),
-                              bottomRight.getX(),
-                              bottomRight.getY(),
-                              bottomLeft.getX(),
-                              bottomLeft.getY());
+      dimensionX,
+      dimensionY,
+      0.5,
+      0.5,
+      dimensionX - 0.5,
+      0.5,
+      dimensionX - 0.5,
+      dimensionY - 0.5,
+      0.5,
+      dimensionY - 0.5,
+      topLeft.getX(),
+      topLeft.getY(),
+      topRight.getX(),
+      topRight.getY(),
+      bottomRight.getX(),
+      bottomRight.getY(),
+      bottomLeft.getX(),
+      bottomLeft.getY());
   }
 
   /**

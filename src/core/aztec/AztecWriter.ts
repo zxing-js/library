@@ -97,9 +97,9 @@ export default /*public final*/ class AztecWriter implements Writer {
 
     let output: BitMatrix = new BitMatrix(outputWidth, outputHeight);
 
-    for (let inputY /*int*/ = 0, outputY = topPadding; inputY < inputHeight; inputY++ , outputY += multiple) {
+    for (let inputY /*int*/ = 0, outputY = topPadding; inputY < inputHeight; inputY++, outputY += multiple) {
       // Write the contents of this row of the barcode
-      for (let inputX /*int*/ = 0, outputX = leftPadding; inputX < inputWidth; inputX++ , outputX += multiple) {
+      for (let inputX /*int*/ = 0, outputX = leftPadding; inputX < inputWidth; inputX++, outputX += multiple) {
         if (input.get(inputX, inputY)) {
           output.setRegion(outputX, outputY, multiple, multiple);
         }

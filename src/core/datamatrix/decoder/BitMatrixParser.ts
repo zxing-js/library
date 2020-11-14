@@ -127,7 +127,7 @@ export default class BitMatrixParser {
         // Sweep downward diagonally to the left
         do {
           if ((row >= 0) && (column < numColumns) && !this.readMappingMatrix.get(column, row)) {
-             result[resultOffset++] = this.readUtah(row, column, numRows, numColumns) & 0xff;
+            result[resultOffset++] = this.readUtah(row, column, numRows, numColumns) & 0xff;
           }
           row += 2;
           column -= 2;

@@ -28,6 +28,6 @@ export default ResultPointCallback;
  */
 interface ResultPointCallback {
 
-    foundPossibleResultPoint(point: ResultPoint): void;
+  foundPossibleResultPoint(point: ResultPoint): void;
 
 }

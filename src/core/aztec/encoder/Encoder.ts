@@ -89,7 +89,7 @@ export default /*public final*/ class Encoder {
       layers = Math.abs(userSpecifiedLayers);
       if (layers > (compact ? Encoder.MAX_NB_BITS_COMPACT : Encoder.MAX_NB_BITS)) {
         throw new IllegalArgumentException(
-            StringUtils.format('Illegal value %s for layers', userSpecifiedLayers));
+          StringUtils.format('Illegal value %s for layers', userSpecifiedLayers));
       }
       totalBitsInLayer = Encoder.totalBitsInLayer(layers, compact);
       wordSize = Encoder.WORD_SIZE[layers];

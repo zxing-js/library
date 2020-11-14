@@ -66,7 +66,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
   /*final*/ static MAX_EC_CODEWORDS: int = 512;
   /*final*/ static errorCorrection: ErrorCorrection = new ErrorCorrection();
 
-  private constructor() {}
+  private constructor() { }
 
   /**
    * @TODO don't pass in minCodewordWidth and maxCodewordWidth, pass in barcode columns for start and stop pattern
@@ -407,7 +407,7 @@ export default /*public final*/ class PDF417ScanningDecoder {
 
   private static createBarcodeMatrix(detectionResult: DetectionResult): BarcodeValue[][] {
     // let barcodeMatrix: BarcodeValue[][] =
-      // new BarcodeValue[detectionResult.getBarcodeRowCount()][detectionResult.getBarcodeColumnCount() + 2];
+    // new BarcodeValue[detectionResult.getBarcodeRowCount()][detectionResult.getBarcodeColumnCount() + 2];
     let barcodeMatrix: BarcodeValue[][] =
       Array.from({ length: detectionResult.getBarcodeRowCount() }, () => new Array(detectionResult.getBarcodeColumnCount() + 2));
     for (let row /*int*/ = 0; row < barcodeMatrix.length; row++) {

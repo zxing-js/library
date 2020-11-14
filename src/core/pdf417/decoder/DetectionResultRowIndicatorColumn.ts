@@ -60,8 +60,8 @@ export default /*final*/ class DetectionResultRowIndicatorColumn extends Detecti
     let boundingBox: BoundingBox = this.getBoundingBox();
     let top: ResultPoint = this._isLeft ? boundingBox.getTopLeft() : boundingBox.getTopRight();
     let bottom: ResultPoint = this._isLeft ? boundingBox.getBottomLeft() : boundingBox.getBottomRight();
-    let firstRow: int = this.imageRowToCodewordIndex(<int> Math.trunc(top.getY()));
-    let lastRow: int = this.imageRowToCodewordIndex(<int> Math.trunc(bottom.getY()));
+    let firstRow: int = this.imageRowToCodewordIndex(<int>Math.trunc(top.getY()));
+    let lastRow: int = this.imageRowToCodewordIndex(<int>Math.trunc(bottom.getY()));
     // We need to be careful using the average row height. Barcode could be skewed so that we have smaller and
     // taller rows
     // float averageRowHeight = (lastRow - firstRow) / /*(float)*/ barcodeMetadata.getRowCount();
@@ -93,8 +93,8 @@ export default /*final*/ class DetectionResultRowIndicatorColumn extends Detecti
         currentRowHeight = 1;
         barcodeRow = codeword.getRowNumber();
       } else if (rowDifference < 0 ||
-                 codeword.getRowNumber() >= barcodeMetadata.getRowCount() ||
-                 rowDifference > codewordsRow) {
+        codeword.getRowNumber() >= barcodeMetadata.getRowCount() ||
+        rowDifference > codewordsRow) {
         codewords[codewordsRow] = null;
       } else {
         let checkedRows: int;
@@ -147,8 +147,8 @@ export default /*final*/ class DetectionResultRowIndicatorColumn extends Detecti
     let boundingBox: BoundingBox = this.getBoundingBox();
     let top: ResultPoint = this._isLeft ? boundingBox.getTopLeft() : boundingBox.getTopRight();
     let bottom: ResultPoint = this._isLeft ? boundingBox.getBottomLeft() : boundingBox.getBottomRight();
-    let firstRow: int = this.imageRowToCodewordIndex(<int> Math.trunc(top.getY()));
-    let lastRow: int = this.imageRowToCodewordIndex(<int> Math.trunc(bottom.getY()));
+    let firstRow: int = this.imageRowToCodewordIndex(<int>Math.trunc(top.getY()));
+    let lastRow: int = this.imageRowToCodewordIndex(<int>Math.trunc(bottom.getY()));
     // float averageRowHeight = (lastRow - firstRow) / /*(float)*/ barcodeMetadata.getRowCount();
     let codewords: Codeword[] = this.getCodewords();
     let barcodeRow: int = -1;
@@ -213,16 +213,16 @@ export default /*final*/ class DetectionResultRowIndicatorColumn extends Detecti
     }
     // Maybe we should check if we have ambiguous values?
     if ((barcodeColumnCount.getValue().length === 0) ||
-        (barcodeRowCountUpperPart.getValue().length === 0) ||
-        (barcodeRowCountLowerPart.getValue().length === 0) ||
-        (barcodeECLevel.getValue().length === 0) ||
-        barcodeColumnCount.getValue()[0] < 1 ||
-        barcodeRowCountUpperPart.getValue()[0] + barcodeRowCountLowerPart.getValue()[0] < PDF417Common.MIN_ROWS_IN_BARCODE ||
-        barcodeRowCountUpperPart.getValue()[0] + barcodeRowCountLowerPart.getValue()[0] > PDF417Common.MAX_ROWS_IN_BARCODE) {
+      (barcodeRowCountUpperPart.getValue().length === 0) ||
+      (barcodeRowCountLowerPart.getValue().length === 0) ||
+      (barcodeECLevel.getValue().length === 0) ||
+      barcodeColumnCount.getValue()[0] < 1 ||
+      barcodeRowCountUpperPart.getValue()[0] + barcodeRowCountLowerPart.getValue()[0] < PDF417Common.MIN_ROWS_IN_BARCODE ||
+      barcodeRowCountUpperPart.getValue()[0] + barcodeRowCountLowerPart.getValue()[0] > PDF417Common.MAX_ROWS_IN_BARCODE) {
       return null;
     }
     let barcodeMetadata: BarcodeMetadata = new BarcodeMetadata(barcodeColumnCount.getValue()[0],
-        barcodeRowCountUpperPart.getValue()[0], barcodeRowCountLowerPart.getValue()[0], barcodeECLevel.getValue()[0]);
+      barcodeRowCountUpperPart.getValue()[0], barcodeRowCountLowerPart.getValue()[0], barcodeECLevel.getValue()[0]);
     this.removeIncorrectCodewords(codewords, barcodeMetadata);
     return barcodeMetadata;
   }
@@ -252,7 +252,7 @@ export default /*final*/ class DetectionResultRowIndicatorColumn extends Detecti
           break;
         case 1:
           if (Math.trunc(rowIndicatorValue / 3) !== barcodeMetadata.getErrorCorrectionLevel() ||
-              rowIndicatorValue % 3 !== barcodeMetadata.getRowCountLowerPart()) {
+            rowIndicatorValue % 3 !== barcodeMetadata.getRowCountLowerPart()) {
             codewords[codewordRow] = null;
           }
           break;

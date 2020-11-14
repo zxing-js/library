@@ -74,12 +74,12 @@ export default /*final*/ class Codeword {
     return this.rowNumber;
   }
 
-  setRowNumber(rowNumber: int ): void {
+  setRowNumber(rowNumber: int): void {
     this.rowNumber = rowNumber;
   }
 
-//   @Override
-  public  toString(): string {
+  //   @Override
+  public toString(): string {
     return this.rowNumber + '|' + this.value;
   }
 

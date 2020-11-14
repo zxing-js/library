@@ -39,28 +39,28 @@ export default class ITFReader extends OneDReader {
   // private static w = 2; // Pixel width of a 2x wide line
   // private static N = 1; // Pixed width of a narrow line
 
-    private static PATTERNS: Int32Array[] = [
-        Int32Array.from([1, 1, 2, 2, 1]), // 0
-        Int32Array.from([2, 1, 1, 1, 2]), // 1
-        Int32Array.from([1, 2, 1, 1, 2]), // 2
-        Int32Array.from([2, 2, 1, 1, 1]), // 3
-        Int32Array.from([1, 1, 2, 1, 2]), // 4
-        Int32Array.from([2, 1, 2, 1, 1]), // 5
-        Int32Array.from([1, 2, 2, 1, 1]), // 6
-        Int32Array.from([1, 1, 1, 2, 2]), // 7
-        Int32Array.from([2, 1, 1, 2, 1]), // 8
-        Int32Array.from([1, 2, 1, 2, 1]), // 9
-        Int32Array.from([1, 1, 3, 3, 1]), // 0
-        Int32Array.from([3, 1, 1, 1, 3]), // 1
-        Int32Array.from([1, 3, 1, 1, 3]), // 2
-        Int32Array.from([3, 3, 1, 1, 1]), // 3
-        Int32Array.from([1, 1, 3, 1, 3]), // 4
-        Int32Array.from([3, 1, 3, 1, 1]), // 5
-        Int32Array.from([1, 3, 3, 1, 1]), // 6
-        Int32Array.from([1, 1, 1, 3, 3]), // 7
-        Int32Array.from([3, 1, 1, 3, 1]), // 8
-        Int32Array.from([1, 3, 1, 3, 1])  // 9
-    ];
+  private static PATTERNS: Int32Array[] = [
+    Int32Array.from([1, 1, 2, 2, 1]), // 0
+    Int32Array.from([2, 1, 1, 1, 2]), // 1
+    Int32Array.from([1, 2, 1, 1, 2]), // 2
+    Int32Array.from([2, 2, 1, 1, 1]), // 3
+    Int32Array.from([1, 1, 2, 1, 2]), // 4
+    Int32Array.from([2, 1, 2, 1, 1]), // 5
+    Int32Array.from([1, 2, 2, 1, 1]), // 6
+    Int32Array.from([1, 1, 1, 2, 2]), // 7
+    Int32Array.from([2, 1, 1, 2, 1]), // 8
+    Int32Array.from([1, 2, 1, 2, 1]), // 9
+    Int32Array.from([1, 1, 3, 3, 1]), // 0
+    Int32Array.from([3, 1, 1, 1, 3]), // 1
+    Int32Array.from([1, 3, 1, 1, 3]), // 2
+    Int32Array.from([3, 3, 1, 1, 1]), // 3
+    Int32Array.from([1, 1, 3, 1, 3]), // 4
+    Int32Array.from([3, 1, 3, 1, 1]), // 5
+    Int32Array.from([1, 3, 3, 1, 1]), // 6
+    Int32Array.from([1, 1, 1, 3, 3]), // 7
+    Int32Array.from([3, 1, 1, 3, 1]), // 8
+    Int32Array.from([1, 3, 1, 3, 1])  // 9
+  ];
 
   private static MAX_AVG_VARIANCE = 0.38;
   private static MAX_INDIVIDUAL_VARIANCE = 0.5;
@@ -73,17 +73,17 @@ export default class ITFReader extends OneDReader {
   // Stores the actual narrow line width of the image being decoded.
   private narrowLineWidth = -1;
 
-    /*/!**
-     * Start/end guard pattern.
-     *
-     * Note: The end pattern is reversed because the row is reversed before
-     * searching for the END_PATTERN
-     *!/*/
-    private static START_PATTERN = Int32Array.from([1, 1, 1, 1]);
-    private static END_PATTERN_REVERSED: Int32Array[] = [
-        Int32Array.from([1, 1, 2]), // 2x
-        Int32Array.from([1, 1, 3])  // 3x
-    ];
+  /*/!**
+   * Start/end guard pattern.
+   *
+   * Note: The end pattern is reversed because the row is reversed before
+   * searching for the END_PATTERN
+   *!/*/
+  private static START_PATTERN = Int32Array.from([1, 1, 1, 1]);
+  private static END_PATTERN_REVERSED: Int32Array[] = [
+    Int32Array.from([1, 1, 2]), // 2x
+    Int32Array.from([1, 1, 3])  // 3x
+  ];
 
   // See ITFWriter.PATTERNS
   /*
@@ -169,9 +169,9 @@ export default class ITFReader extends OneDReader {
     // Therefore, need to scan 10 lines and then
     // split these into two arrays
 
-        let counterDigitPair: Int32Array = new Int32Array(10); // 10
-        let counterBlack: Int32Array = new Int32Array(5); // 5
-        let counterWhite: Int32Array = new Int32Array(5); // 5
+    let counterDigitPair: Int32Array = new Int32Array(10); // 10
+    let counterBlack: Int32Array = new Int32Array(5); // 5
+    let counterWhite: Int32Array = new Int32Array(5); // 5
 
     counterDigitPair.fill(0);
     counterBlack.fill(0);
@@ -319,26 +319,26 @@ export default class ITFReader extends OneDReader {
     }
   }
 
-    /*
-    /!**
-     * @param row       row of black/white values to search
-     * @param rowOffset position to start search
-     * @param pattern   pattern of counts of number of black and white pixels that are
-     *                  being searched for as a pattern
-     * @return start/end horizontal offset of guard pattern, as an array of two
-     *         ints
-     * @throws NotFoundException if pattern is not found
-     *!/*/
-    private static findGuardPattern(
-        row: BitArray,
-        rowOffset: number,
-        pattern: Int32Array
-    ): number[] {
+  /*
+  /!**
+   * @param row       row of black/white values to search
+   * @param rowOffset position to start search
+   * @param pattern   pattern of counts of number of black and white pixels that are
+   *                  being searched for as a pattern
+   * @return start/end horizontal offset of guard pattern, as an array of two
+   *         ints
+   * @throws NotFoundException if pattern is not found
+   *!/*/
+  private static findGuardPattern(
+    row: BitArray,
+    rowOffset: number,
+    pattern: Int32Array
+  ): number[] {
 
-        let patternLength: number = pattern.length;
-        let counters: Int32Array = new Int32Array(patternLength);
-        let width: number = row.getSize();
-        let isWhite: boolean = false;
+    let patternLength: number = pattern.length;
+    let counters: Int32Array = new Int32Array(patternLength);
+    let width: number = row.getSize();
+    let isWhite: boolean = false;
 
     let counterPosition: number = 0;
     let patternStart: number = rowOffset;
@@ -368,15 +368,15 @@ export default class ITFReader extends OneDReader {
     throw new NotFoundException();
   }
 
-    /*/!**
-     * Attempts to decode a sequence of ITF black/white lines into single
-     * digit.
-     *
-     * @param counters the counts of runs of observed black/white/black/... values
-     * @return The decoded digit
-     * @throws NotFoundException if digit cannot be decoded
-     *!/*/
-    private static decodeDigit(counters: Int32Array): number {
+  /*/!**
+   * Attempts to decode a sequence of ITF black/white lines into single
+   * digit.
+   *
+   * @param counters the counts of runs of observed black/white/black/... values
+   * @return The decoded digit
+   * @throws NotFoundException if digit cannot be decoded
+   *!/*/
+  private static decodeDigit(counters: Int32Array): number {
 
     let bestVariance: number = ITFReader.MAX_AVG_VARIANCE; // worst variance we'll accept
     let bestMatch: number = -1;

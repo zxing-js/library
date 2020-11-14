@@ -31,7 +31,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
   private static readonly EVEN_TOTAL_SUBSET = [4, 20, 52, 104, 204];
   private static readonly GSUM = [0, 348, 1388, 2948, 3988];
 
-  private static readonly  FINDER_PATTERNS = [
+  private static readonly FINDER_PATTERNS = [
     Int32Array.from([1, 8, 4, 1]), // A
     Int32Array.from([3, 6, 4, 1]), // B
     Int32Array.from([3, 4, 6, 1]), // C
@@ -600,7 +600,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     } else {
       RSSExpandedReader.recordPattern(row, pattern.getStartEnd()[1], counters);
       // reverse it
-      for (let i = 0, j = counters.length - 1; i < j; i++ , j--) {
+      for (let i = 0, j = counters.length - 1; i < j; i++, j--) {
         let temp = counters[i];
         counters[i] = counters[j];
         counters[j] = temp;

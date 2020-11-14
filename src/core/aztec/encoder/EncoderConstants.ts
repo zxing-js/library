@@ -4,12 +4,12 @@ import SimpleToken from './SimpleToken';
 import { int } from '../../../customTypings';
 
 export const /*final*/ MODE_NAMES: String[] = [
-    'UPPER',
-    'LOWER',
-    'DIGIT',
-    'MIXED',
-    'PUNCT'
-  ];
+  'UPPER',
+  'LOWER',
+  'DIGIT',
+  'MIXED',
+  'PUNCT'
+];
 
 export const /*final*/ MODE_UPPER: int = 0; // 5 bits
 export const /*final*/ MODE_LOWER: int = 1; // 5 bits

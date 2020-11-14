@@ -137,8 +137,8 @@ export default /*final*/ class State {
       this.binaryShiftByteCount === 0 || this.binaryShiftByteCount === 31
         ? 18
         : this.binaryShiftByteCount === 62
-        ? 9
-        : 8;
+          ? 9
+          : 8;
     let result: State = new State(
       token,
       mode,

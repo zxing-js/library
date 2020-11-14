@@ -34,7 +34,7 @@ export default /*final*/ class PDF417CodewordDecoder {
   private static bSymbolTableReady: boolean = false;
 
   private static /*final float[][]*/ RATIOS_TABLE: number[][] =
-      new Array(PDF417Common.SYMBOL_TABLE.length).map(x => x = new Array(PDF417Common.BARS_IN_MODULE));
+    new Array(PDF417Common.SYMBOL_TABLE.length).map(x => x = new Array(PDF417Common.BARS_IN_MODULE));
 
   /* @note
    * this action have to be performed before first use of class
@@ -42,7 +42,7 @@ export default /*final*/ class PDF417CodewordDecoder {
    * working with 32bit float (based from Java logic)
   */
   static initialize() {
-     // Pre-computes the symbol ratio table.
+    // Pre-computes the symbol ratio table.
     for (/*int*/let i = 0; i < PDF417Common.SYMBOL_TABLE.length; i++) {
       let currentSymbol: int = PDF417Common.SYMBOL_TABLE[i];
       let currentBit: int = currentSymbol & 0x1;
@@ -63,10 +63,10 @@ export default /*final*/ class PDF417CodewordDecoder {
   }
 
   static getDecodedValue(moduleBitCount: Int32Array): int {
-   let decodedValue: int = PDF417CodewordDecoder.getDecodedCodewordValue(PDF417CodewordDecoder.sampleBitCounts(moduleBitCount));
-   if (decodedValue !== -1) {
+    let decodedValue: int = PDF417CodewordDecoder.getDecodedCodewordValue(PDF417CodewordDecoder.sampleBitCounts(moduleBitCount));
+    if (decodedValue !== -1) {
       return decodedValue;
-   }
+    }
     return PDF417CodewordDecoder.getClosestDecodedValue(moduleBitCount);
   }
 
@@ -77,8 +77,8 @@ export default /*final*/ class PDF417CodewordDecoder {
     let sumPreviousBits: int = 0;
     for (/*int*/ let i = 0; i < PDF417Common.MODULES_IN_CODEWORD; i++) {
       let sampleIndex: float =
-          bitCountSum / (2 * PDF417Common.MODULES_IN_CODEWORD) +
-          (i * bitCountSum) / PDF417Common.MODULES_IN_CODEWORD;
+        bitCountSum / (2 * PDF417Common.MODULES_IN_CODEWORD) +
+        (i * bitCountSum) / PDF417Common.MODULES_IN_CODEWORD;
       if (sumPreviousBits + moduleBitCount[bitCountIndex] <= sampleIndex) {
         sumPreviousBits += moduleBitCount[bitCountIndex];
         bitCountIndex++;
@@ -100,7 +100,7 @@ export default /*final*/ class PDF417CodewordDecoder {
         result = (result << 1) | (i % 2 === 0 ? 1 : 0);
       }
     }
-    return <int> Math.trunc(result);
+    return <int>Math.trunc(result);
   }
 
   // working with 32bit float (as in Java)
