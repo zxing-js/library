@@ -1,5 +1,5 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-    "tslint.enable": true,
-    "typescript.tsdk": "node_modules\\typescript\\lib"
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "eslint.format.enable": true
 }
