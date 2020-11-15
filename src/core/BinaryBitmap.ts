@@ -21,7 +21,7 @@
  * @author dswitkin@google.com (Daniel Switkin)
  */
 
-/*namespace com.google.zxing {*/
+/* namespace com.google.zxing { */
 
 import Binarizer from './Binarizer';
 import BitArray from './common/BitArray';
@@ -40,15 +40,15 @@ export default class BinaryBitmap {
 
   /**
    * @return The width of the bitmap.
-   */
-  public getWidth(): number /*int*/ {
+ */
+  public getWidth(): number /* int */ {
     return this.binarizer.getWidth();
   }
 
   /**
    * @return The height of the bitmap.
-   */
-  public getHeight(): number /*int*/ {
+ */
+  public getHeight(): number /* int */ {
     return this.binarizer.getHeight();
   }
 
@@ -62,8 +62,8 @@ export default class BinaryBitmap {
    *            If used, the Binarizer will call BitArray.clear(). Always use the returned object.
    * @return The array of bits for this row (true means black).
    * @throws NotFoundException if row can't be binarized
-   */
-  public getBlackRow(y: number /*int*/, row: BitArray): BitArray  /*throws NotFoundException */ {
+ */
+  public getBlackRow(y: number /* int */, row: BitArray): BitArray  /* throws NotFoundException */ {
     return this.binarizer.getBlackRow(y, row);
   }
 
@@ -75,8 +75,8 @@ export default class BinaryBitmap {
    *
    * @return The 2D array of bits for the image (true means black).
    * @throws NotFoundException if image can't be binarized to make a matrix
-   */
-  public getBlackMatrix(): BitMatrix /*throws NotFoundException*/ {
+ */
+  public getBlackMatrix(): BitMatrix /* throws NotFoundException */ {
     // The matrix is created on demand the first time it is requested, then cached. There are two
     // reasons for this:
     // 1. This work will never be done if the caller only installs 1D Reader objects, or if a
@@ -90,7 +90,7 @@ export default class BinaryBitmap {
 
   /**
    * @return Whether this bitmap can be cropped.
-   */
+ */
   public isCropSupported(): boolean {
     return this.binarizer.getLuminanceSource().isCropSupported();
   }
@@ -104,15 +104,15 @@ export default class BinaryBitmap {
    * @param width The width of the rectangle to crop.
    * @param height The height of the rectangle to crop.
    * @return A cropped version of this object.
-   */
-  public crop(left: number /*int*/, top: number /*int*/, width: number /*int*/, height: number /*int*/): BinaryBitmap {
+ */
+  public crop(left: number /* int */, top: number /* int */, width: number /* int */, height: number /* int */): BinaryBitmap {
     const newSource: LuminanceSource = this.binarizer.getLuminanceSource().crop(left, top, width, height);
     return new BinaryBitmap(this.binarizer.createBinarizer(newSource));
   }
 
   /**
    * @return Whether this bitmap supports counter-clockwise rotation.
-   */
+ */
   public isRotateSupported(): boolean {
     return this.binarizer.getLuminanceSource().isRotateSupported();
   }
@@ -122,7 +122,7 @@ export default class BinaryBitmap {
    * Only callable if {@link #isRotateSupported()} is true.
    *
    * @return A rotated version of this object.
-   */
+ */
   public rotateCounterClockwise(): BinaryBitmap {
     const newSource: LuminanceSource = this.binarizer.getLuminanceSource().rotateCounterClockwise();
     return new BinaryBitmap(this.binarizer.createBinarizer(newSource));
@@ -133,17 +133,17 @@ export default class BinaryBitmap {
    * Only callable if {@link #isRotateSupported()} is true.
    *
    * @return A rotated version of this object.
-   */
+ */
   public rotateCounterClockwise45(): BinaryBitmap {
     const newSource: LuminanceSource = this.binarizer.getLuminanceSource().rotateCounterClockwise45();
     return new BinaryBitmap(this.binarizer.createBinarizer(newSource));
   }
 
-  /*@Override*/
+  /* @Override */
   public toString(): string {
     try {
       return this.getBlackMatrix().toString();
-    } catch (e /*: NotFoundException*/) {
+    } catch (e /* : NotFoundException */) {
       return '';
     }
   }

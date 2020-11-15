@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.qrcode.encoder {*/
+/* namespace com.google.zxing.qrcode.encoder { */
 
 import EncodeHintType from '../../EncodeHintType';
 import BitArray from '../../common/BitArray';
@@ -34,10 +34,10 @@ import StringEncoding from '../../util/StringEncoding';
 import BlockPair from './BlockPair';
 import WriterException from '../../WriterException';
 
-/*import java.io.UnsupportedEncodingException;*/
-/*import java.util.ArrayList;*/
-/*import java.util.Collection;*/
-/*import java.util.Map;*/
+/* import java.io.UnsupportedEncodingException; */
+/* import java.util.ArrayList; */
+/* import java.util.Collection; */
+/* import java.util.Map; */
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator
@@ -62,7 +62,7 @@ export default class Encoder {
 
   // The mask penalty calculation is complicated.  See Table 21 of JISX0510:2004 (p.45) for details.
   // Basically it applies four rules and summate all penalties.
-  private static calculateMaskPenalty(matrix: ByteMatrix): number /*int*/ {
+  private static calculateMaskPenalty(matrix: ByteMatrix): number /* int */ {
     return MaskUtil.applyMaskPenaltyRule1(matrix)
       + MaskUtil.applyMaskPenaltyRule2(matrix)
       + MaskUtil.applyMaskPenaltyRule3(matrix)
@@ -75,14 +75,14 @@ export default class Encoder {
    * @return {@link QRCode} representing the encoded QR code
    * @throws WriterException if encoding can't succeed, because of for example invalid content
    *   or configuration
-   */
-  // public static encode(content: string, ecLevel: ErrorCorrectionLevel): QRCode /*throws WriterException*/ {
+ */
+  // public static encode(content: string, ecLevel: ErrorCorrectionLevel): QRCode /*throws WriterException */ {
   //   return encode(content, ecLevel, null)
   // }
 
   public static encode(content: string,
     ecLevel: ErrorCorrectionLevel,
-    hints: Map<EncodeHintType, any> = null): QRCode /*throws WriterException*/ {
+    hints: Map<EncodeHintType, any> = null): QRCode /* throws WriterException */ {
 
     // Determine what character encoding has been specified by the caller, if any
     let encoding: string = Encoder.DEFAULT_BYTE_MODE_ENCODING;
@@ -170,11 +170,11 @@ export default class Encoder {
    * Decides the smallest version of QR code that will contain all of the provided data.
    *
    * @throws WriterException if the data cannot fit in any version
-   */
+ */
   private static recommendVersion(ecLevel: ErrorCorrectionLevel,
     mode: Mode,
     headerBits: BitArray,
-    dataBits: BitArray): Version /*throws WriterException*/ {
+    dataBits: BitArray): Version /* throws WriterException */ {
     // Hard part: need to know version to know how many bits length takes. But need to know how many
     // bits it takes to know version. First we take a guess at version by assuming version will be
     // the minimum, 1:
@@ -189,15 +189,15 @@ export default class Encoder {
   private static calculateBitsNeeded(mode: Mode,
     headerBits: BitArray,
     dataBits: BitArray,
-    version: Version): number /*int*/ {
+    version: Version): number /* int */ {
     return headerBits.getSize() + mode.getCharacterCountBits(version) + dataBits.getSize();
   }
 
   /**
    * @return the code point of the table used in alphanumeric mode or
    *  -1 if there is no corresponding code in the table.
-   */
-  public static getAlphanumericCode(code: number /*int*/): number /*int*/ {
+ */
+  public static getAlphanumericCode(code: number /* int */): number /* int */ {
     if (code < Encoder.ALPHANUMERIC_TABLE.length) {
       return Encoder.ALPHANUMERIC_TABLE[code];
     }
@@ -211,7 +211,7 @@ export default class Encoder {
   /**
    * Choose the best mode by examining the content. Note that 'encoding' is used as a hint;
    * if it is Shift_JIS, and the input is only double-byte Kanji, then we return {@link Mode#KANJI}.
-   */
+ */
   public static chooseMode(content: string, encoding: string = null): Mode {
     if (CharacterSetECI.SJIS.getName() === encoding && this.isOnlyDoubleByteKanji(content)) {
       // Choose Kanji mode if all input are double-byte characters
@@ -242,7 +242,7 @@ export default class Encoder {
     let bytes: Uint8Array;
     try {
       bytes = StringEncoding.encode(content, CharacterSetECI.SJIS); // content.getBytes("Shift_JIS"))
-    } catch (ignored/*: UnsupportedEncodingException*/) {
+    } catch (ignored/* : UnsupportedEncodingException */) {
       return false;
     }
     const length = bytes.length;
@@ -261,7 +261,7 @@ export default class Encoder {
   private static chooseMaskPattern(bits: BitArray,
     ecLevel: ErrorCorrectionLevel,
     version: Version,
-    matrix: ByteMatrix): number /*int*/ /*throws WriterException*/ {
+    matrix: ByteMatrix): number /* int */ /* throws WriterException */ {
 
     let minPenalty = Number.MAX_SAFE_INTEGER;  // Lower penalty is better.
     let bestMaskPattern = -1;
@@ -277,7 +277,7 @@ export default class Encoder {
     return bestMaskPattern;
   }
 
-  private static chooseVersion(numInputBits: number /*int*/, ecLevel: ErrorCorrectionLevel): Version /*throws WriterException*/ {
+  private static chooseVersion(numInputBits: number /* int */, ecLevel: ErrorCorrectionLevel): Version /* throws WriterException */ {
     for (let versionNum = 1; versionNum <= 40; versionNum++) {
       const version = Version.getVersionForNumber(versionNum);
       if (Encoder.willFit(numInputBits, version, ecLevel)) {
@@ -290,8 +290,8 @@ export default class Encoder {
   /**
    * @return true if the number of input bits will fit in a code with the specified version and
    * error correction level.
-   */
-  private static willFit(numInputBits: number /*int*/, version: Version, ecLevel: ErrorCorrectionLevel): boolean {
+ */
+  private static willFit(numInputBits: number /* int */, version: Version, ecLevel: ErrorCorrectionLevel): boolean {
     // In the following comments, we use numbers of Version 7-H.
     // numBytes = 196
     const numBytes = version.getTotalCodewords();
@@ -306,8 +306,8 @@ export default class Encoder {
 
   /**
    * Terminate bits as described in 8.4.8 and 8.4.9 of JISX0510:2004 (p.24).
-   */
-  public static terminateBits(numDataBytes: number /*int*/, bits: BitArray): void /*throws WriterException*/ {
+ */
+  public static terminateBits(numDataBytes: number /* int */, bits: BitArray): void /* throws WriterException */ {
     const capacity = numDataBytes * 8;
     if (bits.getSize() > capacity) {
       throw new WriterException('data bits cannot fit in the QR Code' + bits.getSize() + ' > ' +
@@ -338,13 +338,13 @@ export default class Encoder {
    * Get number of data bytes and number of error correction bytes for block id "blockID". Store
    * the result in "numDataBytesInBlock", and "numECBytesInBlock". See table 12 in 8.5.1 of
    * JISX0510:2004 (p.30)
-   */
-  public static getNumDataBytesAndNumECBytesForBlockID(numTotalBytes: number /*int*/,
-    numDataBytes: number /*int*/,
-    numRSBlocks: number /*int*/,
-    blockID: number /*int*/,
+ */
+  public static getNumDataBytesAndNumECBytesForBlockID(numTotalBytes: number /* int */,
+    numDataBytes: number /* int */,
+    numRSBlocks: number /* int */,
+    blockID: number /* int */,
     numDataBytesInBlock: Int32Array,
-    numECBytesInBlock: Int32Array): void /*throws WriterException*/ {
+    numECBytesInBlock: Int32Array): void /* throws WriterException */ {
     if (blockID >= numRSBlocks) {
       throw new WriterException('Block ID too large');
     }
@@ -394,11 +394,11 @@ export default class Encoder {
   /**
    * Interleave "bits" with corresponding error correction bytes. On success, store the result in
    * "result". The interleave rule is complicated. See 8.6 of JISX0510:2004 (p.37) for details.
-   */
+ */
   public static interleaveWithECBytes(bits: BitArray,
-    numTotalBytes: number /*int*/,
-    numDataBytes: number /*int*/,
-    numRSBlocks: number /*int*/): BitArray /*throws WriterException*/ {
+    numTotalBytes: number /* int */,
+    numDataBytes: number /* int */,
+    numRSBlocks: number /* int */): BitArray /* throws WriterException */ {
 
     // "bits" must have "getNumDataBytes" bytes of data.
     if (bits.getSizeInBytes() !== numDataBytes) {
@@ -463,7 +463,7 @@ export default class Encoder {
     return result;
   }
 
-  public static generateECBytes(dataBytes: Uint8Array, numEcBytesInBlock: number /*int*/): Uint8Array {
+  public static generateECBytes(dataBytes: Uint8Array, numEcBytesInBlock: number /* int */): Uint8Array {
     const numDataBytes = dataBytes.length;
     const toEncode: Int32Array = new Int32Array(numDataBytes + numEcBytesInBlock); // int[numDataBytes + numEcBytesInBlock]
     for (let i = 0; i < numDataBytes; i++) {
@@ -473,14 +473,14 @@ export default class Encoder {
 
     const ecBytes = new Uint8Array(numEcBytesInBlock);
     for (let i = 0; i < numEcBytesInBlock; i++) {
-      ecBytes[i] = /*(byte) */toEncode[numDataBytes + i];
+      ecBytes[i] = /* (byte) */toEncode[numDataBytes + i];
     }
     return ecBytes;
   }
 
   /**
    * Append mode info. On success, store the result in "bits".
-   */
+ */
   public static appendModeInfo(mode: Mode, bits: BitArray): void {
     bits.appendBits(mode.getBits(), 4);
   }
@@ -488,8 +488,8 @@ export default class Encoder {
 
   /**
    * Append length info. On success, store the result in "bits".
-   */
-  public static appendLengthInfo(numLetters: number /*int*/, version: Version, mode: Mode, bits: BitArray): void /*throws WriterException*/ {
+ */
+  public static appendLengthInfo(numLetters: number /* int */, version: Version, mode: Mode, bits: BitArray): void /* throws WriterException */ {
     const numBits = mode.getCharacterCountBits(version);
     if (numLetters >= (1 << numBits)) {
       throw new WriterException(numLetters + ' is bigger than ' + ((1 << numBits) - 1));
@@ -499,11 +499,11 @@ export default class Encoder {
 
   /**
    * Append "bytes" in "mode" mode (encoding) into "bits". On success, store the result in "bits".
-   */
+ */
   public static appendBytes(content: string,
     mode: Mode,
     bits: BitArray,
-    encoding: string): void /*throws WriterException*/ {
+    encoding: string): void /* throws WriterException */ {
     switch (mode) {
       case Mode.NUMERIC:
         Encoder.appendNumericBytes(content, bits);
@@ -555,7 +555,7 @@ export default class Encoder {
     }
   }
 
-  public static appendAlphanumericBytes(content: string, bits: BitArray): void /*throws WriterException*/ {
+  public static appendAlphanumericBytes(content: string, bits: BitArray): void /* throws WriterException */ {
     const length = content.length;
     let i = 0;
     while (i < length) {
@@ -583,7 +583,7 @@ export default class Encoder {
     let bytes: Uint8Array;
     try {
       bytes = StringEncoding.encode(content, encoding);
-    } catch (uee/*: UnsupportedEncodingException*/) {
+    } catch (uee/* : UnsupportedEncodingException */) {
       throw new WriterException(uee);
     }
     for (let i = 0, length = bytes.length; i !== length; i++) {
@@ -594,14 +594,14 @@ export default class Encoder {
 
   /**
    * @throws WriterException
-   */
-  public static appendKanjiBytes(content: string, bits: BitArray): void /*throws */ {
+ */
+  public static appendKanjiBytes(content: string, bits: BitArray): void /* throws */ {
 
     let bytes: Uint8Array;
 
     try {
       bytes = StringEncoding.encode(content, CharacterSetECI.SJIS);
-    } catch (uee/*: UnsupportedEncodingException*/) {
+    } catch (uee/* : UnsupportedEncodingException */) {
       throw new WriterException(uee);
     }
 

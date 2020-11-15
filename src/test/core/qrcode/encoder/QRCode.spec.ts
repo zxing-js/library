@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode.encoder;*/
+/* package com.google.zxing.qrcode.encoder; */
 
 import * as assert from 'assert';
 import { QRCodeDecoderErrorCorrectionLevel } from '@zxing/library';
@@ -47,8 +47,8 @@ describe('QRCodeEncoderQRCode', () => {
     // Prepare the matrix.
     const matrix = new QRCodeByteMatrix(45, 45);
     // Just set bogus zero/one values.
-    for (let y: number /*int*/ = 0; y < 45; ++y) {
-      for (let x: number /*int*/ = 0; x < 45; ++x) {
+    for (let y: number /* int */ = 0; y < 45; ++y) {
+      for (let x: number /* int */ = 0; x < 45; ++x) {
         matrix.setNumber(x, y, (y + x) % 2);
       }
     }
@@ -78,8 +78,8 @@ describe('QRCodeEncoderQRCode', () => {
     qrCode.setVersion(QRCodeVersion.getVersionForNumber(1));
     qrCode.setMaskPattern(3);
     const matrix = new QRCodeByteMatrix(21, 21);
-    for (let y: number /*int*/ = 0; y < 21; ++y) {
-      for (let x: number /*int*/ = 0; x < 21; ++x) {
+    for (let y: number /* int */ = 0; y < 21; ++y) {
+      for (let x: number /* int */ = 0; x < 21; ++x) {
         matrix.setNumber(x, y, (y + x) % 2);
       }
     }

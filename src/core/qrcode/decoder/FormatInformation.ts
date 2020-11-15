@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.qrcode.decoder {*/
+/* namespace com.google.zxing.qrcode.decoder { */
 
 import ErrorCorrectionLevel from './ErrorCorrectionLevel';
 import Integer from '../../util/Integer';
@@ -33,7 +33,7 @@ export default class FormatInformation {
 
   /**
    * See ISO 18004:2006, Annex C, Table C.1
-   */
+ */
   private static FORMAT_INFO_DECODE_LOOKUP = [
     Int32Array.from([0x5412, 0x00]),
     Int32Array.from([0x5125, 0x01]),
@@ -70,16 +70,16 @@ export default class FormatInformation {
   ];
 
   private errorCorrectionLevel: ErrorCorrectionLevel;
-  private dataMask: number; /*byte*/
+  private dataMask: number; /* byte */
 
-  private constructor(formatInfo: number /*int*/) {
+  private constructor(formatInfo: number /* int */) {
     // Bits 3,4
     this.errorCorrectionLevel = ErrorCorrectionLevel.forBits((formatInfo >> 3) & 0x03);
     // Bottom 3 bits
-    this.dataMask = /*(byte) */(formatInfo & 0x07);
+    this.dataMask = /* (byte) */(formatInfo & 0x07);
   }
 
-  public static numBitsDiffering(a: number /*int*/, b: number /*int*/): number /*int*/ {
+  public static numBitsDiffering(a: number /* int */, b: number /* int */): number /* int */ {
     return Integer.bitCount(a ^ b);
   }
 
@@ -89,8 +89,8 @@ export default class FormatInformation {
    *  to establish best match
    * @return information about the format it specifies, or {@code null}
    *  if doesn't seem to match any known pattern
-   */
-  public static decodeFormatInformation(maskedFormatInfo1: number /*int*/, maskedFormatInfo2: number /*int*/): FormatInformation {
+ */
+  public static decodeFormatInformation(maskedFormatInfo1: number /* int */, maskedFormatInfo2: number /* int */): FormatInformation {
     const formatInfo = FormatInformation.doDecodeFormatInformation(maskedFormatInfo1, maskedFormatInfo2);
     if (formatInfo !== null) {
       return formatInfo;
@@ -102,7 +102,7 @@ export default class FormatInformation {
       maskedFormatInfo2 ^ FormatInformation.FORMAT_INFO_MASK_QR);
   }
 
-  private static doDecodeFormatInformation(maskedFormatInfo1: number /*int*/, maskedFormatInfo2: number /*int*/): FormatInformation {
+  private static doDecodeFormatInformation(maskedFormatInfo1: number /* int */, maskedFormatInfo2: number /* int */): FormatInformation {
     // Find the int in FORMAT_INFO_DECODE_LOOKUP with fewest bits differing
     let bestDifference = Number.MAX_SAFE_INTEGER;
     let bestFormatInfo = 0;
@@ -138,16 +138,16 @@ export default class FormatInformation {
     return this.errorCorrectionLevel;
   }
 
-  public getDataMask(): number/*byte*/ {
+  public getDataMask(): number/* byte */ {
     return this.dataMask;
   }
 
-  /*@Override*/
-  public hashCode(): number /*int*/ {
+  /* @Override */
+  public hashCode(): number /* int */ {
     return (this.errorCorrectionLevel.getBits() << 3) | this.dataMask;
   }
 
-  /*@Override*/
+  /* @Override */
   public equals(o: Object): boolean {
     if (!(o instanceof FormatInformation)) {
       return false;

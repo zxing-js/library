@@ -28,20 +28,20 @@ import { int } from '../../customTypings';
  * @author SITA Lab (kevin.osullivan@sita.aero)
  * @author Guenther Grau
  */
-export default /*public final*/ class PDF417Common {
+export default /* public final */ class PDF417Common {
 
-  public static /*final int*/ NUMBER_OF_CODEWORDS = 929;
+  public static /* final int */ NUMBER_OF_CODEWORDS = 929;
   // Maximum Codewords (Data + Error).
-  public static /*final int*/ MAX_CODEWORDS_IN_BARCODE = PDF417Common.NUMBER_OF_CODEWORDS - 1;
-  public static /*final int*/ MIN_ROWS_IN_BARCODE = 3;
-  public static /*final int*/ MAX_ROWS_IN_BARCODE = 90;
+  public static /* final int */ MAX_CODEWORDS_IN_BARCODE = PDF417Common.NUMBER_OF_CODEWORDS - 1;
+  public static /* final int */ MIN_ROWS_IN_BARCODE = 3;
+  public static /* final int */ MAX_ROWS_IN_BARCODE = 90;
   // One left row indication column + max 30 data columns + one right row indicator column
-  // public static /*final*/ MAX_CODEWORDS_IN_ROW: /*int*/ number = 32;
-  public static /*final int*/ MODULES_IN_CODEWORD = 17;
-  public static /*final int*/ MODULES_IN_STOP_PATTERN = 18;
-  public static /*final int*/ BARS_IN_MODULE = 8;
+  // public static /*final */ MAX_CODEWORDS_IN_ROW: /*int */ number = 32;
+  public static /* final int */ MODULES_IN_CODEWORD = 17;
+  public static /* final int */ MODULES_IN_STOP_PATTERN = 18;
+  public static /* final int */ BARS_IN_MODULE = 8;
 
-  private static /*final int[]*/ EMPTY_INT_ARRAY: Int32Array = new Int32Array([]);
+  private static /* final int[] */ EMPTY_INT_ARRAY: Int32Array = new Int32Array([]);
 
   private PDF417Common() {
   }
@@ -50,13 +50,13 @@ export default /*public final*/ class PDF417Common {
    * @param moduleBitCount values to sum
    * @return sum of values
    * @deprecated call {@link MathUtils#sum(int[])}
-   */
+ */
   // @Deprecated
   public static getBitCountSum(moduleBitCount: Int32Array): int {
     return MathUtils.sum(moduleBitCount);
   }
 
-  public static toIntArray(list: /*Collection<Integer>*/ int[]): Int32Array {
+  public static toIntArray(list: /* Collection<Integer> */ int[]): Int32Array {
     if (list == null || !list.length) {
       return PDF417Common.EMPTY_INT_ARRAY;
     }
@@ -71,8 +71,8 @@ export default /*public final*/ class PDF417Common {
   /**
    * @param symbol encoded symbol to translate to a codeword
    * @return the codeword corresponding to the symbol.
-   */
-  public static getCodeword(symbol: number/*int*/): number/*int*/ {
+ */
+  public static getCodeword(symbol: number/* int */): number/* int */ {
     const i = Arrays.binarySearch(PDF417Common.SYMBOL_TABLE, symbol & 0x3FFFF);
     if (i < 0) {
       return -1;
@@ -84,8 +84,8 @@ export default /*public final*/ class PDF417Common {
    * The sorted table of all possible symbols. Extracted from the PDF417
    * specification. The index of a symbol in this table corresponds to the
    * index into the codeword table.
-   */
-  public static /*final int[]*/ SYMBOL_TABLE = Int32Array.from([
+ */
+  public static /* final int[] */ SYMBOL_TABLE = Int32Array.from([
     0x1025e, 0x1027a, 0x1029e, 0x102bc, 0x102f2, 0x102f4, 0x1032e, 0x1034e, 0x1035c, 0x10396, 0x103a6, 0x103ac,
     0x10422, 0x10428, 0x10436, 0x10442, 0x10444, 0x10448, 0x10450, 0x1045e, 0x10466, 0x1046c, 0x1047a, 0x10482,
     0x1049e, 0x104a0, 0x104bc, 0x104c6, 0x104d8, 0x104ee, 0x104f2, 0x104f4, 0x10504, 0x10508, 0x10510, 0x1051e,
@@ -322,8 +322,8 @@ export default /*public final*/ class PDF417Common {
 
   /**
    * This table contains to codewords for all symbols.
-   */
-  private static /*final int[]*/ CODEWORD_TABLE = Int32Array.from([
+ */
+  private static /* final int[] */ CODEWORD_TABLE = Int32Array.from([
     2627, 1819, 2622, 2621, 1813, 1812, 2729, 2724, 2723, 2779, 2774, 2773, 902, 896, 908, 868, 865, 861, 859, 2511,
     873, 871, 1780, 835, 2493, 825, 2491, 842, 837, 844, 1764, 1762, 811, 810, 809, 2483, 807, 2482, 806, 2480, 815,
     814, 813, 812, 2484, 817, 816, 1745, 1744, 1742, 1746, 2655, 2637, 2635, 2626, 2625, 2623, 2628, 1820, 2752,

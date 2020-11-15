@@ -29,12 +29,12 @@ import { corrupt } from '../../../common/reedsolomon/ReedSolomonCorrupt';
  */
 export default abstract class AbstractErrorCorrectionSpec {
 
-  static corrupt(received: Int32Array, howMany: /*int*/number, random: Random): void {
+  static corrupt(received: Int32Array, howMany: /* int */number, random: Random): void {
     corrupt(received, howMany, random, 929);
   }
 
-  static erase(received: Int32Array, howMany: /*int*/number, random: Random): Int32Array {
-    const erased: BitSet = new Map<number, boolean>(/*received.length*/);
+  static erase(received: Int32Array, howMany: /* int */number, random: Random): Int32Array {
+    const erased: BitSet = new Map<number, boolean>(/* received.length */);
     const erasures = new Int32Array(howMany);
 
     let erasureOffset = 0;

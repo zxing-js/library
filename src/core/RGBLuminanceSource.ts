@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing {*/
+/* namespace com.google.zxing { */
 
 import './InvertedLuminanceSource'; // required because of circular dependencies between LuminanceSource and InvertedLuminanceSource
 import InvertedLuminanceSource from './InvertedLuminanceSource';
@@ -32,7 +32,7 @@ import IllegalArgumentException from './IllegalArgumentException';
  */
 export default class RGBLuminanceSource extends LuminanceSource {
 
-  // public constructor(width: number /*int*/, height: number /*int*/, const pixels: Int32Array) {
+  // public constructor(width: number /*int */, height: number /*int */, const pixels: Int32Array) {
   //   super(width, height)
 
   //   dataWidth = width
@@ -59,12 +59,12 @@ export default class RGBLuminanceSource extends LuminanceSource {
   private luminances: Uint8ClampedArray;
 
   public constructor(luminances: Uint8ClampedArray | Int32Array,
-    width: number /*int*/,
-    height: number /*int*/,
-    private dataWidth?: number /*int*/,
-    private dataHeight?: number /*int*/,
-    private left?: number /*int*/,
-    private top?: number /*int*/) {
+    width: number /* int */,
+    height: number /* int */,
+    private dataWidth?: number /* int */,
+    private dataHeight?: number /* int */,
+    private left?: number /* int */,
+    private top?: number /* int */) {
     super(width, height);
 
     if (luminances.BYTES_PER_ELEMENT === 4) {// Int32Array
@@ -76,7 +76,7 @@ export default class RGBLuminanceSource extends LuminanceSource {
         const g2 = (pixel >> 7) & 0x1fe; // 2 * green
         const b = pixel & 0xff; // blue
         // Calculate green-favouring average cheaply
-        luminancesUint8Array[offset] = /*(byte) */((r + g2 + b) / 4) & 0xFF;
+        luminancesUint8Array[offset] = /* (byte) */((r + g2 + b) / 4) & 0xFF;
       }
       this.luminances = luminancesUint8Array;
     } else {
@@ -100,8 +100,8 @@ export default class RGBLuminanceSource extends LuminanceSource {
     }
   }
 
-  /*@Override*/
-  public getRow(y: number /*int*/, row?: Uint8ClampedArray): Uint8ClampedArray {
+  /* @Override */
+  public getRow(y: number /* int */, row?: Uint8ClampedArray): Uint8ClampedArray {
     if (y < 0 || y >= this.getHeight()) {
       throw new IllegalArgumentException('Requested row is outside the image: ' + y);
     }
@@ -114,7 +114,7 @@ export default class RGBLuminanceSource extends LuminanceSource {
     return row;
   }
 
-  /*@Override*/
+  /* @Override */
   public getMatrix(): Uint8ClampedArray {
 
     const width = this.getWidth();
@@ -145,13 +145,13 @@ export default class RGBLuminanceSource extends LuminanceSource {
     return matrix;
   }
 
-  /*@Override*/
+  /* @Override */
   public isCropSupported(): boolean {
     return true;
   }
 
-  /*@Override*/
-  public crop(left: number /*int*/, top: number /*int*/, width: number /*int*/, height: number /*int*/): LuminanceSource {
+  /* @Override */
+  public crop(left: number /* int */, top: number /* int */, width: number /* int */, height: number /* int */): LuminanceSource {
     return new RGBLuminanceSource(this.luminances,
       width,
       height,

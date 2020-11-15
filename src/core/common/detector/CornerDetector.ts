@@ -35,7 +35,7 @@ export default class CornerDetector {
 
   /**
    * @throws NotFoundException if image is too small to accommodate {@code initSize}
-   */
+ */
   public constructor(image: BitMatrix, initSize: number, x: number, y: number, targetMatrixSize: number) {
     this.image = image;
     this.height = image.getHeight();
@@ -53,7 +53,7 @@ export default class CornerDetector {
 
   /**
    * @throws NotFoundException if no Data Matrix Code can be found
-   */
+ */
   public detect(): ResultPoint[] {
 
     let left = this.leftInit;
@@ -268,7 +268,7 @@ export default class CornerDetector {
    * @param fixed      value of fixed coordinate
    * @param horizontal set to true if scan must be horizontal, false if vertical
    * @return true if a black point has been found, else false.
-   */
+ */
   private containsBlackPoint(a: number, b: number, fixed: number, horizontal: boolean): boolean {
 
     if (horizontal) {

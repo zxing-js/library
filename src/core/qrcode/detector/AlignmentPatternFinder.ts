@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.qrcode.detector {*/
+/* namespace com.google.zxing.qrcode.detector { */
 
 import ResultPointCallback from '../../ResultPointCallback';
 import BitMatrix from '../../common/BitMatrix';
@@ -22,8 +22,8 @@ import AlignmentPattern from './AlignmentPattern';
 
 import NotFoundException from '../../NotFoundException';
 
-/*import java.util.ArrayList;*/
-/*import java.util.List;*/
+/* import java.util.ArrayList; */
+/* import java.util.List; */
 
 /**
  * <p>This class attempts to find alignment patterns in a QR Code. Alignment patterns look like finder
@@ -53,13 +53,13 @@ export default class AlignmentPatternFinder {
    * @param width width of region to search
    * @param height height of region to search
    * @param moduleSize estimated module size so far
-   */
+ */
   public constructor(private image: BitMatrix,
-    private startX: number /*int*/,
-    private startY: number /*int*/,
-    private width: number /*int*/,
-    private height: number /*int*/,
-    private moduleSize: number/*float*/,
+    private startX: number /* int */,
+    private startY: number /* int */,
+    private width: number /* int */,
+    private height: number /* int */,
+    private moduleSize: number/* float */,
     private resultPointCallback: ResultPointCallback) {
     this.possibleCenters = []; // new Array<any>(5))
     // TYPESCRIPTPORT: array initialization without size as the length is checked below
@@ -72,8 +72,8 @@ export default class AlignmentPatternFinder {
    *
    * @return {@link AlignmentPattern} if found
    * @throws NotFoundException if not found
-   */
-  public find(): AlignmentPattern /*throws NotFoundException*/ {
+ */
+  public find(): AlignmentPattern /* throws NotFoundException */ {
     const startX = this.startX;
     const height = this.height;
     const width = this.width;
@@ -149,8 +149,8 @@ export default class AlignmentPatternFinder {
   /**
    * Given a count of black/white/black pixels just seen and an end position,
    * figures the location of the center of this black/white/black run.
-   */
-  private static centerFromEnd(stateCount: Int32Array, end: number /*int*/): number/*float*/ {
+ */
+  private static centerFromEnd(stateCount: Int32Array, end: number /* int */): number/* float */ {
     return (end - stateCount[2]) - stateCount[1] / 2.0;
   }
 
@@ -158,10 +158,10 @@ export default class AlignmentPatternFinder {
    * @param stateCount count of black/white/black pixels just read
    * @return true iff the proportions of the counts is close enough to the 1/1/1 ratios
    *         used by alignment patterns to be considered a match
-   */
+ */
   private foundPatternCross(stateCount: Int32Array): boolean {
-    const moduleSize: number /*float*/ = this.moduleSize;
-    const maxVariance: number /*float*/ = moduleSize / 2.0;
+    const moduleSize: number /* float */ = this.moduleSize;
+    const maxVariance: number /* float */ = moduleSize / 2.0;
     for (let i = 0; i < 3; i++) {
       if (Math.abs(moduleSize - stateCount[i]) >= maxVariance) {
         return false;
@@ -180,9 +180,9 @@ export default class AlignmentPatternFinder {
    * @param maxCount maximum reasonable number of modules that should be
    * observed in any reading state, based on the results of the horizontal scan
    * @return vertical center of alignment pattern, or {@link Float#NaN} if not found
-   */
-  private crossCheckVertical(startI: number /*int*/, centerJ: number /*int*/, maxCount: number /*int*/,
-    originalStateCountTotal: number /*int*/): number/*float*/ {
+ */
+  private crossCheckVertical(startI: number /* int */, centerJ: number /* int */, maxCount: number /* int */,
+    originalStateCountTotal: number /* int */): number/* float */ {
     const image = this.image;
 
     const maxI = image.getHeight();
@@ -244,13 +244,13 @@ export default class AlignmentPatternFinder {
    * @param i row where alignment pattern may be found
    * @param j end of possible alignment pattern in row
    * @return {@link AlignmentPattern} if we have found the same pattern twice, or null if not
-   */
-  private handlePossibleCenter(stateCount: Int32Array, i: number /*int*/, j: number /*int*/): AlignmentPattern {
+ */
+  private handlePossibleCenter(stateCount: Int32Array, i: number /* int */, j: number /* int */): AlignmentPattern {
     const stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2];
-    const centerJ: number /*float*/ = AlignmentPatternFinder.centerFromEnd(stateCount, j);
-    const centerI: number /*float*/ = this.crossCheckVertical(i, /*(int) */centerJ, 2 * stateCount[1], stateCountTotal);
+    const centerJ: number /* float */ = AlignmentPatternFinder.centerFromEnd(stateCount, j);
+    const centerI: number /* float */ = this.crossCheckVertical(i, /* (int) */centerJ, 2 * stateCount[1], stateCountTotal);
     if (!isNaN(centerI)) {
-      const estimatedModuleSize: number /*float*/ = (stateCount[0] + stateCount[1] + stateCount[2]) / 3.0;
+      const estimatedModuleSize: number /* float */ = (stateCount[0] + stateCount[1] + stateCount[2]) / 3.0;
       for (const center of this.possibleCenters) {
         // Look for about the same center and module size:
         if (center.aboutEquals(estimatedModuleSize, centerI, centerJ)) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common.detector {*/
+/* namespace com.google.zxing.common.detector { */
 
 import ResultPoint from '../../ResultPoint';
 import BitMatrix from '../BitMatrix';
@@ -37,14 +37,14 @@ export default class WhiteRectangleDetector {
   private static INIT_SIZE = 10;
   private static CORR = 1;
 
-  private height: number; /*int*/
-  private width: number; /*int*/
-  private leftInit: number; /*int*/
-  private rightInit: number; /*int*/
-  private downInit: number; /*int*/
-  private upInit: number; /*int*/
+  private height: number; /* int */
+  private width: number; /* int */
+  private leftInit: number; /* int */
+  private rightInit: number; /* int */
+  private downInit: number; /* int */
+  private upInit: number; /* int */
 
-  // public constructor(private image: BitMatrix) /*throws NotFoundException*/ {
+  // public constructor(private image: BitMatrix) /*throws NotFoundException */ {
   //   this(image, INIT_SIZE, image.getWidth() / 2, image.getHeight() / 2)
   // }
 
@@ -54,8 +54,8 @@ export default class WhiteRectangleDetector {
    * @param x x position of search center
    * @param y y position of search center
    * @throws NotFoundException if image is too small to accommodate {@code initSize}
-   */
-  public constructor(private image: BitMatrix, initSize?: number /*int*/, x?: number /*int*/, y?: number /*int*/) /*throws NotFoundException*/ {
+ */
+  public constructor(private image: BitMatrix, initSize?: number /* int */, x?: number /* int */, y?: number /* int */) /* throws NotFoundException */ {
     this.height = image.getHeight();
     this.width = image.getWidth();
     if (undefined === initSize || null === initSize) {
@@ -90,8 +90,8 @@ export default class WhiteRectangleDetector {
    *         point and the last, the bottommost. The second point will be
    *         leftmost and the third, the rightmost
    * @throws NotFoundException if no Data Matrix Code can be found
-   */
-  public detect(): Array<ResultPoint> /*throws NotFoundException*/ {
+ */
+  public detect(): Array<ResultPoint> /* throws NotFoundException */ {
     let left = this.leftInit;
     let right = this.rightInit;
     let up = this.upInit;
@@ -248,10 +248,10 @@ export default class WhiteRectangleDetector {
     }
   }
 
-  private getBlackPointOnSegment(aX: number/*float*/, aY: number/*float*/, bX: number/*float*/, bY: number/*float*/): ResultPoint | null {
+  private getBlackPointOnSegment(aX: number/* float */, aY: number/* float */, bX: number/* float */, bY: number/* float */): ResultPoint | null {
     const dist = MathUtils.round(MathUtils.distance(aX, aY, bX, bY));
-    const xStep: number /*float*/ = (bX - aX) / dist;
-    const yStep: number /*float*/ = (bY - aY) / dist;
+    const xStep: number /* float */ = (bX - aX) / dist;
+    const yStep: number /* float */ = (bY - aY) / dist;
 
     const image = this.image;
 
@@ -277,7 +277,7 @@ export default class WhiteRectangleDetector {
    *         are the second and third. The first point will be the topmost
    *         point and the last, the bottommost. The second point will be
    *         leftmost and the third, the rightmost
-   */
+ */
   private centerEdges(y: ResultPoint, z: ResultPoint,
     x: ResultPoint, t: ResultPoint): Array<ResultPoint> {
 
@@ -288,14 +288,14 @@ export default class WhiteRectangleDetector {
     //   y                    y
     //
 
-    const yi: number /*float*/ = y.getX();
-    const yj: number /*float*/ = y.getY();
-    const zi: number /*float*/ = z.getX();
-    const zj: number /*float*/ = z.getY();
-    const xi: number /*float*/ = x.getX();
-    const xj: number /*float*/ = x.getY();
-    const ti: number /*float*/ = t.getX();
-    const tj: number /*float*/ = t.getY();
+    const yi: number /* float */ = y.getX();
+    const yj: number /* float */ = y.getY();
+    const zi: number /* float */ = z.getX();
+    const zj: number /* float */ = z.getY();
+    const xi: number /* float */ = x.getX();
+    const xj: number /* float */ = x.getY();
+    const ti: number /* float */ = t.getX();
+    const tj: number /* float */ = t.getY();
 
     const CORR = WhiteRectangleDetector.CORR;
 
@@ -322,8 +322,8 @@ export default class WhiteRectangleDetector {
    * @param fixed      value of fixed coordinate
    * @param horizontal set to true if scan must be horizontal, false if vertical
    * @return true if a black point has been found, else false.
-   */
-  private containsBlackPoint(a: number /*int*/, b: number /*int*/, fixed: number /*int*/, horizontal: boolean): boolean {
+ */
+  private containsBlackPoint(a: number /* int */, b: number /* int */, fixed: number /* int */, horizontal: boolean): boolean {
 
     const image = this.image;
 

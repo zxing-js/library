@@ -44,27 +44,27 @@ import { float, int } from '../../../customTypings';
  * @author dswitkin@google.com (Daniel Switkin)
  * @author Guenther Grau
  */
-export default /*public*/ /*final*/ class Detector {
+export default /* public */ /* final */ class Detector {
 
-  private static /*final*/ INDEXES_START_PATTERN = Int32Array.from([0, 4, 1, 5]);
-  private static /*final*/ INDEXES_STOP_PATTERN = Int32Array.from([6, 2, 7, 3]);
-  private static /*final*/ MAX_AVG_VARIANCE: float = /*0.42f*/ 0.42;
-  private static /*final*/ MAX_INDIVIDUAL_VARIANCE: float = /*0.8f*/ 0.8;
+  private static /* final */ INDEXES_START_PATTERN = Int32Array.from([0, 4, 1, 5]);
+  private static /* final */ INDEXES_STOP_PATTERN = Int32Array.from([6, 2, 7, 3]);
+  private static /* final */ MAX_AVG_VARIANCE: float = /* 0.42f */ 0.42;
+  private static /* final */ MAX_INDIVIDUAL_VARIANCE: float = /* 0.8f */ 0.8;
 
   // B S B S B S B S Bar/Space pattern
   // 11111111 0 1 0 1 0 1 000
-  private static /*final*/ START_PATTERN = Int32Array.from([8, 1, 1, 1, 1, 1, 1, 3]);
+  private static /* final */ START_PATTERN = Int32Array.from([8, 1, 1, 1, 1, 1, 1, 3]);
   // 1111111 0 1 000 1 0 1 00 1
-  private static /*final*/ STOP_PATTERN = Int32Array.from([7, 1, 1, 3, 1, 1, 1, 2, 1]);
-  private static /*final*/ MAX_PIXEL_DRIFT: /*int*/ number = 3;
-  private static /*final*/ MAX_PATTERN_DRIFT: /*int*/ number = 5;
+  private static /* final */ STOP_PATTERN = Int32Array.from([7, 1, 1, 3, 1, 1, 1, 2, 1]);
+  private static /* final */ MAX_PIXEL_DRIFT: /* int */ number = 3;
+  private static /* final */ MAX_PATTERN_DRIFT: /* int */ number = 5;
   // if we set the value too low, then we don't detect the correct height of the bar if the start patterns are damaged.
   // if we set the value too high, then we might detect the start pattern from a neighbor barcode.
-  private static /*final*/ SKIPPED_ROW_COUNT_MAX: /*int*/ number = 25;
+  private static /* final */ SKIPPED_ROW_COUNT_MAX: /* int */ number = 25;
   // A PDF471 barcode should have at least 3 rows, with each row being >= 3 times the module width. Therefore it should be at least
   // 9 pixels tall. To be conservative, we use about half the size to ensure we don't miss it.
-  private static /*final*/ ROW_STEP: /*int*/ number = 5;
-  private static /*final*/ BARCODE_MIN_HEIGHT: /*int*/ number = 10;
+  private static /* final */ ROW_STEP: /* int */ number = 5;
+  private static /* final */ BARCODE_MIN_HEIGHT: /* int */ number = 10;
 
   /**
    * <p>Detects a PDF417 Code in an image. Only checks 0 and 180 degree rotations.</p>
@@ -75,7 +75,7 @@ export default /*public*/ /*final*/ class Detector {
    * be found and returned
    * @return {@link PDF417DetectorResult} encapsulating results of detecting a PDF417 code
    * @throws NotFoundException if no PDF417 Code can be found
-   */
+ */
   public static detectMultiple(image: BinaryBitmap, hints: Map<DecodeHintType, any>, multiple: boolean): PDF417DetectorResult {
     // TODO detection improvement, tryHarder could try several different luminance thresholds/blackpoints or even
     // different binarizers
@@ -98,7 +98,7 @@ export default /*public*/ /*final*/ class Detector {
    * be found and returned
    * @param bitMatrix bit matrix to detect barcodes in
    * @return List of ResultPoint arrays containing the coordinates of found barcodes
-   */
+ */
   private static detect(multiple: boolean, bitMatrix: BitMatrix): Array<ResultPoint[]> {
     const barcodeCoordinates = new Array<ResultPoint[]>();
     let row = 0;
@@ -159,8 +159,8 @@ export default /*public*/ /*final*/ class Detector {
    *           vertices[5] x, y bottom left codeword area
    *           vertices[6] x, y top right codeword area
    *           vertices[7] x, y bottom right codeword area
-   */
-  private static findVertices(matrix: BitMatrix, startRow: /*int*/ number, startColumn: /*int*/ number): ResultPoint[] {
+ */
+  private static findVertices(matrix: BitMatrix, startRow: /* int */ number, startColumn: /* int */ number): ResultPoint[] {
     const height = matrix.getHeight();
     const width = matrix.getWidth();
 
@@ -185,10 +185,10 @@ export default /*public*/ /*final*/ class Detector {
   }
 
   private static findRowsWithPattern(matrix: BitMatrix,
-    height: /*int*/ number,
-    width: /*int*/ number,
-    startRow: /*int*/ number,
-    startColumn: /*int*/ number,
+    height: /* int */ number,
+    width: /* int */ number,
+    startRow: /* int */ number,
+    startColumn: /* int */ number,
     pattern: Int32Array): ResultPoint[] {
     // const result = new ResultPoint[4];
     const result = new Array<ResultPoint>(4);
@@ -255,11 +255,11 @@ export default /*public*/ /*final*/ class Detector {
    *                 being searched for as a pattern
    * @param counters array of counters, as long as pattern, to re-use
    * @return start/end horizontal offset of guard pattern, as an array of two ints.
-   */
+ */
   private static findGuardPattern(matrix: BitMatrix,
-    column: /*int*/ number,
-    row: /*int*/ number,
-    width: /*int*/ number,
+    column: /* int */ number,
+    row: /* int */ number,
+    width: /* int */ number,
     whiteFirst: boolean,
     pattern: Int32Array,
     counters: Int32Array): Int32Array {
@@ -312,7 +312,7 @@ export default /*public*/ /*final*/ class Detector {
    * @param pattern expected pattern
    * @param maxIndividualVariance The most any counter can differ before we give up
    * @return ratio of total variance between counters and pattern compared to total pattern size
-   */
+ */
   private static patternMatchVariance(counters: Int32Array, pattern: Int32Array, maxIndividualVariance: float): float {
     let numCounters = counters.length;
     let total = 0;
@@ -324,7 +324,7 @@ export default /*public*/ /*final*/ class Detector {
     if (total < patternLength) {
       // If we don't even have one pixel per unit of bar width, assume this
       // is too small to reliably match, so fail:
-      return /*Float.POSITIVE_INFINITY*/ Infinity;
+      return /* Float.POSITIVE_INFINITY */ Infinity;
     }
     // We're going to fake floating-point math in integers. We just need to use more bits.
     // Scale up patternLength so that intermediate values below like scaledCounter will have
@@ -338,7 +338,7 @@ export default /*public*/ /*final*/ class Detector {
       let scaledPattern = pattern[x] * unitBarWidth;
       let variance = counter > scaledPattern ? counter - scaledPattern : scaledPattern - counter;
       if (variance > maxIndividualVariance) {
-        return /*Float.POSITIVE_INFINITY*/ Infinity;
+        return /* Float.POSITIVE_INFINITY */ Infinity;
       }
       totalVariance += variance;
     }

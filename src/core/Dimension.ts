@@ -16,27 +16,27 @@
 
 import IllegalArgumentException from './IllegalArgumentException';
 
-/*namespace com.google.zxing {*/
+/* namespace com.google.zxing { */
 
 /**
  * Simply encapsulates a width and height.
  */
 export default class Dimension {
-  public constructor(private width: number /*int*/, private height: number /*int*/) {
+  public constructor(private width: number /* int */, private height: number /* int */) {
     if (width < 0 || height < 0) {
       throw new IllegalArgumentException();
     }
   }
 
-  public getWidth(): number /*int*/ {
+  public getWidth(): number /* int */ {
     return this.width;
   }
 
-  public getHeight(): number /*int*/ {
+  public getHeight(): number /* int */ {
     return this.height;
   }
 
-  /*@Override*/
+  /* @Override */
   public equals(other: any): boolean {
     if (other instanceof Dimension) {
       const d = <Dimension>other;
@@ -45,12 +45,12 @@ export default class Dimension {
     return false;
   }
 
-  /*@Override*/
-  public hashCode(): number /*int*/ {
+  /* @Override */
+  public hashCode(): number /* int */ {
     return this.width * 32713 + this.height;
   }
 
-  /*@Override*/
+  /* @Override */
   public toString(): string {
     return this.width + 'x' + this.height;
   }

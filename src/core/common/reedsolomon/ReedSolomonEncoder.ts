@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common.reedsolomon {*/
+/* namespace com.google.zxing.common.reedsolomon { */
 
-/*import java.util.ArrayList;*/
-/*import java.util.List;*/
+/* import java.util.ArrayList; */
+/* import java.util.List; */
 
 import GenericGF from './GenericGF';
 import GenericGFPoly from './GenericGFPoly';
@@ -43,14 +43,14 @@ export default class ReedSolomonEncoder {
    * element of arrays that are encoded/decoded).
    * @param field A galois field with a number of elements equal to the size
    * of the alphabet of symbols to encode.
-   */
+ */
   public constructor(field: GenericGF) {
     this.field = field;
     this.cachedGenerators = [];
     this.cachedGenerators.push(new GenericGFPoly(field, Int32Array.from([1])));
   }
 
-  private buildGenerator(degree: number /*int*/): GenericGFPoly {
+  private buildGenerator(degree: number /* int */): GenericGFPoly {
     const cachedGenerators = this.cachedGenerators;
     if (degree >= cachedGenerators.length) {
       let lastGenerator = cachedGenerators[cachedGenerators.length - 1];
@@ -83,8 +83,8 @@ export default class ReedSolomonEncoder {
    * be more or fewer than 256 symbols being encoded, as determined by the number of
    * elements in the Galois Field passed as a constructor to this object.
    * @throws IllegalArgumentException thrown in response to validation errros.
-   */
-  public encode(toEncode: Int32Array, ecBytes: number /*int*/): void {
+ */
+  public encode(toEncode: Int32Array, ecBytes: number /* int */): void {
     if (ecBytes === 0) {
       throw new IllegalArgumentException('No error correction bytes');
     }

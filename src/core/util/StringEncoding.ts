@@ -9,18 +9,18 @@ export default class StringEncoding {
   /**
    * Allows the user to set a custom decoding function
    * so more encoding formats the native ones can be supported.
-   */
+ */
   public static customDecoder: (bytes: Uint8Array, encodingName: string) => string;
 
   /**
    * Allows the user to set a custom encoding function
    * so more encoding formats the native ones can be supported.
-   */
+ */
   public static customEncoder: (s: string, encodingName: string) => Uint8Array;
 
   /**
    * Decodes some Uint8Array to a string format.
-   */
+ */
   public static decode(bytes: Uint8Array, encoding: string | CharacterSetECI): string {
 
     const encodingName = this.encodingName(encoding);
@@ -42,14 +42,14 @@ export default class StringEncoding {
    * once Node TextDecoder doesn't support all encoding formats.
    *
    * @param encodingName
-   */
+ */
   private static shouldDecodeOnFallback(encodingName: string): boolean {
     return !StringEncoding.isBrowser() && encodingName === 'ISO-8859-1';
   }
 
   /**
    * Encodes some string into a Uint8Array.
-   */
+ */
   public static encode(s: string, encoding: string | CharacterSetECI): Uint8Array {
 
     const encodingName = this.encodingName(encoding);
@@ -73,7 +73,7 @@ export default class StringEncoding {
 
   /**
    * Returns the string value from some encoding character set.
-   */
+ */
   public static encodingName(encoding: string | CharacterSetECI): string {
     return typeof encoding === 'string'
       ? encoding
@@ -82,7 +82,7 @@ export default class StringEncoding {
 
   /**
    * Returns character set from some encoding character set.
-   */
+ */
   public static encodingCharacterSet(encoding: string | CharacterSetECI): CharacterSetECI {
 
     if (encoding instanceof CharacterSetECI) {
@@ -94,7 +94,7 @@ export default class StringEncoding {
 
   /**
    * Runs a fallback for the native decoding funcion.
-   */
+ */
   private static decodeFallback(bytes: Uint8Array, encoding: string | CharacterSetECI): string {
 
     const characterSet = this.encodingCharacterSet(encoding);
@@ -134,7 +134,7 @@ export default class StringEncoding {
    * Runs a fallback for the native encoding funcion.
    *
    * @see https://stackoverflow.com/a/17192845/4367683
-   */
+ */
   private static encodeFallback(s: string): Uint8Array {
 
     const encodedURIstring = btoa(unescape(encodeURIComponent(s)));

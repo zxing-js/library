@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common.reedsolomon {*/
+/* namespace com.google.zxing.common.reedsolomon { */
 
 // import GenericGF from './GenericGF';
 import AbstractGenericGF from './AbstractGenericGF';
@@ -39,29 +39,29 @@ export default abstract class AbstractGenericGFPoly {
 
   /**
    * @return degree of this polynomial
-   */
+ */
   public getDegree(): number {
     return this.coefficients.length - 1;
   }
 
   /**
    * @return true iff this polynomial is the monomial "0"
-   */
+ */
   public isZero(): boolean {
     return this.coefficients[0] === 0;
   }
 
   /**
    * @return coefficient of x^degree term in this polynomial
-   */
-  public getCoefficient(degree: number /*int*/): number {
+ */
+  public getCoefficient(degree: number /* int */): number {
     return this.coefficients[this.coefficients.length - 1 - degree];
   }
 
   /**
    * @return evaluation of this polynomial at a given point
-   */
-  public evaluateAt(a: number /*int*/): number {
+ */
+  public evaluateAt(a: number /* int */): number {
     if (a === 0) {
       // Just return the x^0 coefficient
       return this.getCoefficient(0);
@@ -90,13 +90,13 @@ export default abstract class AbstractGenericGFPoly {
 
   public abstract multiply(other: AbstractGenericGFPoly): AbstractGenericGFPoly;
 
-  public abstract multiplyScalar(scalar: number /*int*/): AbstractGenericGFPoly;
+  public abstract multiplyScalar(scalar: number /* int */): AbstractGenericGFPoly;
 
-  public abstract multiplyByMonomial(degree: number /*int*/, coefficient: number /*int*/): AbstractGenericGFPoly;
+  public abstract multiplyByMonomial(degree: number /* int */, coefficient: number /* int */): AbstractGenericGFPoly;
 
   public abstract divide(other: AbstractGenericGFPoly): AbstractGenericGFPoly[];
 
-  /*@Override*/
+  /* @Override */
   public toString(): string {
     let result = '';
     for (let degree = this.getDegree(); degree >= 0; degree--) {

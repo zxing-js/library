@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common {*/
+/* namespace com.google.zxing.common { */
 
 import BitMatrix from './BitMatrix';
 import PerspectiveTransform from './PerspectiveTransform';
@@ -66,27 +66,27 @@ abstract class GridSampler {
    *
    * @throws NotFoundException if image can't be sampled, for example, if the transformation defined
    *   by the given points is invalid or results in sampling outside the image boundaries
-   */
+ */
   public abstract sampleGrid(
     image: BitMatrix,
-    dimensionX: number /*int*/,
-    dimensionY: number /*int*/,
-    p1ToX: number/*float*/, p1ToY: number/*float*/,
-    p2ToX: number/*float*/, p2ToY: number/*float*/,
-    p3ToX: number/*float*/, p3ToY: number/*float*/,
-    p4ToX: number/*float*/, p4ToY: number/*float*/,
-    p1FromX: number/*float*/, p1FromY: number/*float*/,
-    p2FromX: number/*float*/, p2FromY: number/*float*/,
-    p3FromX: number/*float*/, p3FromY: number/*float*/,
-    p4FromX: number/*float*/, p4FromY: number/*float*/
-  ): BitMatrix; /*throws NotFoundException*/
+    dimensionX: number /* int */,
+    dimensionY: number /* int */,
+    p1ToX: number/* float */, p1ToY: number/* float */,
+    p2ToX: number/* float */, p2ToY: number/* float */,
+    p3ToX: number/* float */, p3ToY: number/* float */,
+    p4ToX: number/* float */, p4ToY: number/* float */,
+    p1FromX: number/* float */, p1FromY: number/* float */,
+    p2FromX: number/* float */, p2FromY: number/* float */,
+    p3FromX: number/* float */, p3FromY: number/* float */,
+    p4FromX: number/* float */, p4FromY: number/* float */
+  ): BitMatrix; /* throws NotFoundException */
 
   public abstract sampleGridWithTransform(
     image: BitMatrix,
-    dimensionX: number /*int*/,
-    dimensionY: number /*int*/,
+    dimensionX: number /* int */,
+    dimensionY: number /* int */,
     transform: PerspectiveTransform
-  ): BitMatrix; /*throws NotFoundException*/
+  ): BitMatrix; /* throws NotFoundException */
 
   /**
    * <p>Checks a set of points that have been transformed to sample points on an image against
@@ -102,14 +102,14 @@ abstract class GridSampler {
    * @param image image into which the points should map
    * @param points actual points in x1,y1,...,xn,yn form
    * @throws NotFoundException if an endpoint is lies outside the image boundaries
-   */
+ */
   protected static checkAndNudgePoints(
     image: BitMatrix,
     points: Float32Array
-  ): void /*throws NotFoundException*/ {
+  ): void /* throws NotFoundException */ {
 
-    const width: number /*int*/ = image.getWidth();
-    const height: number /*int*/ = image.getHeight();
+    const width: number /* int */ = image.getWidth();
+    const height: number /* int */ = image.getHeight();
 
     // Check and nudge points from start until we see some that are OK:
     let nudged: boolean = true;

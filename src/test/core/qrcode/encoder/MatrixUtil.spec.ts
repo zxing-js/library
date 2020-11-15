@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode.encoder;*/
+/* package com.google.zxing.qrcode.encoder; */
 
 import * as assert from 'assert';
 import { BitArray } from '@zxing/library';

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing {*/
+/* namespace com.google.zxing { */
 
 import ResultPoint from './ResultPoint';
 

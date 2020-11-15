@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing;*/
+/* package com.google.zxing; */
 
-/*import java.awt.Graphics2D;*/
-/*import java.awt.geom.AffineTransform;*/
-/*import java.awt.image.BufferedImage;*/
-/*import java.awt.image.WritableRaster;*/
+/* import java.awt.Graphics2D; */
+/* import java.awt.geom.AffineTransform; */
+/* import java.awt.image.BufferedImage; */
+/* import java.awt.image.WritableRaster; */
 
 import SharpImage from './util/SharpImage';
 import { LuminanceSource } from '@zxing/library';
@@ -45,8 +45,8 @@ export default class SharpImageLuminanceSource extends LuminanceSource {
     //   this.height = image.getHeight()
     // }
 
-    // const sourceWidth: number /*int*/ = image.getWidth()
-    // const sourceHeight: number /*int*/ = image.getHeight()
+    // const sourceWidth: number /*int */ = image.getWidth()
+    // const sourceHeight: number /*int */ = image.getHeight()
     // if (left + width > sourceWidth || top + height > sourceHeight) {
     //   throw new IllegalArgumentException("Crop rectangle does not fit within image data.")
     // }
@@ -58,13 +58,13 @@ export default class SharpImageLuminanceSource extends LuminanceSource {
     // image.grayscale()
   }
 
-  public getRow(y: number /*int*/, row: Uint8ClampedArray): Uint8ClampedArray {
+  public getRow(y: number /* int */, row: Uint8ClampedArray): Uint8ClampedArray {
     if (y < 0 || y >= this.image.getHeight()) {
       throw new IllegalArgumentException('Requested row is outside the image: ' + y);
     }
-    const width: number /*int*/ = this.image.getWidth();
+    const width: number /* int */ = this.image.getWidth();
     if (row === null || row.length < width) {
-      row = new Uint8ClampedArray(width); /*Int8Array(width)*/
+      row = new Uint8ClampedArray(width); /* Int8Array(width) */
     }
     // The underlying raster of image consists of bytes with the luminance values
     this.image.getRow(y, row);
@@ -79,7 +79,7 @@ export default class SharpImageLuminanceSource extends LuminanceSource {
     return true;
   }
 
-  public crop(left: number /*int*/, top: number /*int*/, width: number /*int*/, height: number /*int*/): LuminanceSource {
+  public crop(left: number /* int */, top: number /* int */, width: number /* int */, height: number /* int */): LuminanceSource {
     super.crop(left, top, width, height);
     return this;
   }
@@ -88,7 +88,7 @@ export default class SharpImageLuminanceSource extends LuminanceSource {
    * This is always true, since the image is a gray-scale image.
    *
    * @return true
-   */
+ */
   public isRotateSupported(): boolean {
     return true;
   }

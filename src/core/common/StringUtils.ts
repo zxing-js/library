@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common {*/
+/* namespace com.google.zxing.common { */
 
-/*import java.nio.charset.Charset;*/
-/*import java.util.Map;*/
+/* import java.nio.charset.Charset; */
+/* import java.util.Map; */
 
 import DecodeHintType from '../DecodeHintType';
 import CharacterSetECI from './CharacterSetECI';
@@ -57,7 +57,7 @@ export default class StringUtils {
    * @return name of guessed encoding; at the moment will only guess one of:
    *  {@link #SHIFT_JIS}, {@link #UTF8}, {@link #ISO88591}, or the platform
    *  default encoding if none of these can possibly be correct
-   */
+ */
   public static guessEncoding(bytes: Uint8Array, hints: Map<DecodeHintType, any>): string {
     if (hints !== null && hints !== undefined && undefined !== hints.get(DecodeHintType.CHARACTER_SET)) {
       return hints.get(DecodeHintType.CHARACTER_SET).toString();
@@ -86,9 +86,9 @@ export default class StringUtils {
     let isoHighOther = 0;
 
     const utf8bom = bytes.length > 3 &&
-      bytes[0] === /*(byte) */0xEF &&
-      bytes[1] === /*(byte) */0xBB &&
-      bytes[2] === /*(byte) */0xBF;
+      bytes[0] === /* (byte) */0xEF &&
+      bytes[1] === /* (byte) */0xBB &&
+      bytes[2] === /* (byte) */0xBF;
 
     for (let i = 0;
       i < length && (canBeISO88591 || canBeShiftJIS || canBeUTF8);
@@ -224,7 +224,7 @@ export default class StringUtils {
    *
    * @param append The new string to append.
    * @param args Argumets values to be formated.
-   */
+ */
   public static format(append: string, ...args: any[]) {
 
     let i = -1;
@@ -265,21 +265,21 @@ export default class StringUtils {
 
   /**
    *
-   */
+ */
   public static getBytes(str: string, encoding: CharacterSetECI): Uint8Array {
     return StringEncoding.encode(str, encoding);
   }
 
   /**
    * Returns the charcode at the specified index or at index zero.
-   */
+ */
   public static getCharCode(str: string, index = 0): int {
     return str.charCodeAt(index);
   }
 
   /**
    * Returns char for given charcode
-   */
+ */
   public static getCharAt(charCode: number): string {
     return String.fromCharCode(charCode);
   }

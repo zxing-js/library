@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.oned {*/
+/* namespace com.google.zxing.oned { */
 
 import BarcodeFormat from '../BarcodeFormat';
 import BinaryBitmap from '../BinaryBitmap';

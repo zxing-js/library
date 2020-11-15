@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.qrcode.decoder {*/
+/* namespace com.google.zxing.qrcode.decoder { */
 
 import Version from './Version';
 import ECBlocks from './ECBlocks';
@@ -32,7 +32,7 @@ import IllegalArgumentException from '../../IllegalArgumentException';
  */
 export default class DataBlock {
 
-  private constructor(private numDataCodewords: number /*int*/, private codewords: Uint8Array) { }
+  private constructor(private numDataCodewords: number /* int */, private codewords: Uint8Array) { }
 
   /**
    * <p>When QR Codes use multiple data blocks, they are actually interleaved.
@@ -44,7 +44,7 @@ export default class DataBlock {
    * @param ecLevel error-correction level of the QR Code
    * @return DataBlocks containing original bytes, "de-interleaved" from representation in the
    *         QR Code
-   */
+ */
   public static getDataBlocks(rawCodewords: Uint8Array,
     version: Version,
     ecLevel: ErrorCorrectionLevel): DataBlock[] {
@@ -113,7 +113,7 @@ export default class DataBlock {
     return result;
   }
 
-  public getNumDataCodewords(): number /*int*/ {
+  public getNumDataCodewords(): number /* int */ {
     return this.numDataCodewords;
   }
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.common.reedsolomon;*/
+/* package com.google.zxing.common.reedsolomon; */
 
 import * as assert from 'assert';
 import { ZXingStringBuilder } from '@zxing/library';
@@ -24,7 +24,7 @@ import { GenericGF } from '@zxing/library';
 import { ReedSolomonEncoder } from '@zxing/library';
 import { ReedSolomonDecoder } from '@zxing/library';
 
-/*import java.util.Random;*/
+/* import java.util.Random; */
 
 import { corrupt } from './ReedSolomonCorrupt';
 
@@ -500,24 +500,24 @@ describe('ReedSolomonSpec', () => {
 
 });
 
-const DECODER_RANDOM_TEST_ITERATIONS: number /*int*/ = 3;
-const DECODER_TEST_ITERATIONS: number /*int*/ = 10;
+const DECODER_RANDOM_TEST_ITERATIONS: number /* int */ = 3;
+const DECODER_TEST_ITERATIONS: number /* int */ = 10;
 
-function testEncodeDecodeRandom(field: GenericGF, dataSize: number /*int*/, ecSize: number /*int*/): void {
+function testEncodeDecodeRandom(field: GenericGF, dataSize: number /* int */, ecSize: number /* int */): void {
 
   assert.strictEqual(dataSize > 0 && dataSize <= field.getSize() - 3, true, 'Invalid data size for ' + field);
   assert.strictEqual(ecSize > 0 && ecSize + dataSize <= field.getSize(), true, 'Invalid ECC size for ' + field);
 
   const encoder = new ReedSolomonEncoder(field);
   const message = new Int32Array(dataSize + ecSize);
-  const dataWords = new Int32Array(dataSize); /*Int32Array(dataSize)*/
-  const ecWords = new Int32Array(ecSize); /*Int32Array(ecSize)*/
+  const dataWords = new Int32Array(dataSize); /* Int32Array(dataSize) */
+  const ecWords = new Int32Array(ecSize); /* Int32Array(ecSize) */
   const random: Random = getPseudoRandom();
-  const iterations: number /*int*/ = field.getSize() > 256 ? 1 : DECODER_RANDOM_TEST_ITERATIONS;
+  const iterations: number /* int */ = field.getSize() > 256 ? 1 : DECODER_RANDOM_TEST_ITERATIONS;
 
-  for (let i: number /*int*/ = 0; i < iterations; i++) {
+  for (let i: number /* int */ = 0; i < iterations; i++) {
     // generate random data
-    for (let k: number /*int*/ = 0; k < dataSize; k++) {
+    for (let k: number /* int */ = 0; k < dataSize; k++) {
       dataWords[k] = random.next(field.getSize());
     }
     // generate ECC words
@@ -553,12 +553,12 @@ function testDecoder(field: GenericGF, dataWords: Int32Array, ecWords: Int32Arra
 
   const decoder = new ReedSolomonDecoder(field);
   const message = new Int32Array(dataWords.length + ecWords.length);
-  const maxErrors: number /*int*/ = Math.floor(ecWords.length / 2);
+  const maxErrors: number /* int */ = Math.floor(ecWords.length / 2);
   const random: Random = getPseudoRandom();
-  const iterations: number /*int*/ = field.getSize() > 256 ? 1 : DECODER_TEST_ITERATIONS;
+  const iterations: number /* int */ = field.getSize() > 256 ? 1 : DECODER_TEST_ITERATIONS;
 
-  for (let j: number /*int*/ = 0; j < iterations; j++) {
-    for (let i: number /*int*/ = 0; i < ecWords.length; i++) {
+  for (let j: number /* int */ = 0; j < iterations; j++) {
+    for (let i: number /* int */ = 0; i < ecWords.length; i++) {
 
       if (i > 10 && i < Math.floor(ecWords.length / 2) - 10) {
         // performance improvement - skip intermediate cases in long-running tests
@@ -572,7 +572,7 @@ function testDecoder(field: GenericGF, dataWords: Int32Array, ecWords: Int32Arra
 
       try {
         decoder.decode(message, ecWords.length);
-      } catch (e/*ReedSolomonException e*/) {
+      } catch (e/* ReedSolomonException e */) {
         // fail only if maxErrors exceeded
         assert.strictEqual(i > maxErrors, true,
           'Decode in ' + field + ' (' + dataWords.length + ',' + ecWords.length + ') failed at ' + i + ' errors: ' + e);
@@ -590,7 +590,7 @@ function testDecoder(field: GenericGF, dataWords: Int32Array, ecWords: Int32Arra
 }
 
 function assertDataEquals(received: Int32Array, expected: Int32Array, message: string): void {
-  for (let i: number /*int*/ = 0; i < expected.length; i++) {
+  for (let i: number /* int */ = 0; i < expected.length; i++) {
     if (expected[i] !== received[i]) {
 
       const receivedToString = arrayToString(Int32Array.from(received.subarray(0, expected.length)));
@@ -606,7 +606,7 @@ function arrayToString(data: Int32Array): String {
 
   sb.append('{');
 
-  for (let i: number /*int*/ = 0; i < data.length; i++) {
+  for (let i: number /* int */ = 0; i < data.length; i++) {
     if (i > 0) {
       sb.append(',');
     }

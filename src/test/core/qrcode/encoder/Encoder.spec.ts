@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode.encoder;*/
+/* package com.google.zxing.qrcode.encoder; */
 
 import * as assert from 'assert';
 
@@ -39,12 +39,12 @@ describe('QRCodeEncoder', () => {
 
   it('testGetAlphanumericCode', () => {
     // The first ten code points are numbers.
-    for (let i: number /*int*/ = 0; i < 10; ++i) {
+    for (let i: number /* int */ = 0; i < 10; ++i) {
       assert.strictEqual(QRCodeEncoder.getAlphanumericCode('0'.charCodeAt(0) + i), i);
     }
 
     // The next 26 code points are capital alphabet letters.
-    for (let i: number /*int*/ = 10; i < 36; ++i) {
+    for (let i: number /* int */ = 10; i < 36; ++i) {
       assert.strictEqual(QRCodeEncoder.getAlphanumericCode('A'.charCodeAt(0) + i - 10), i);
     }
 
@@ -313,7 +313,7 @@ describe('QRCodeEncoder', () => {
     // Lower letters such as 'a' cannot be encoded in MODE_ALPHANUMERIC.
     try {
       QRCodeEncoder.appendBytes('a', QRCodeMode.ALPHANUMERIC, bits, QRCodeEncoder.DEFAULT_BYTE_MODE_ENCODING);
-    } catch (we/*WriterException*/) {
+    } catch (we/* WriterException */) {
       if (we instanceof WriterException) {
         // good
       } else {
@@ -367,8 +367,8 @@ describe('QRCodeEncoder', () => {
   });
 
   it('testGetNumDataBytesAndNumECBytesForBlockID', () => {
-    const numDataBytes = new Int32Array(1); /*Int32Array(1)*/
-    const numEcBytes = new Int32Array(1); /*Int32Array(1)*/
+    const numDataBytes = new Int32Array(1); /* Int32Array(1) */
+    const numEcBytes = new Int32Array(1); /* Int32Array(1) */
     // Version 1-H.
     QRCodeEncoder.getNumDataBytesAndNumECBytesForBlockID(26, 9, 1, 0, numDataBytes, numEcBytes);
     assert.strictEqual(numDataBytes[0], 9);
@@ -421,7 +421,7 @@ describe('QRCodeEncoder', () => {
     let outArray = new Uint8Array(expected.length);
     out.toBytes(0, outArray, 0, expected.length);
     // Can't use ZXingArrays.equals(), because outArray may be longer than out.sizeInBytes()
-    for (let x: number /*int*/ = 0; x < expected.length; x++) {
+    for (let x: number /* int */ = 0; x < expected.length; x++) {
       assert.strictEqual(outArray[x], expected[x]);
     }
     // Numbers are from http://www.swetake.com/qr/qr8.html
@@ -460,7 +460,7 @@ describe('QRCodeEncoder', () => {
     assert.strictEqual(out.getSizeInBytes(), expected.length);
     outArray = new Uint8Array(expected.length);
     out.toBytes(0, outArray, 0, expected.length);
-    for (let x: number /*int*/ = 0; x < expected.length; x++) {
+    for (let x: number /* int */ = 0; x < expected.length; x++) {
       assert.strictEqual(outArray[x], expected[x]);
     }
   });
@@ -508,7 +508,7 @@ describe('QRCodeEncoder', () => {
     // Invalid data.
     try {
       QRCodeEncoder.appendAlphanumericBytes('abc', new BitArray());
-    } catch (we/*WriterException*/) {
+    } catch (we/* WriterException */) {
       // good
     }
   });
@@ -549,7 +549,7 @@ describe('QRCodeEncoder', () => {
       42, 159, 74, 221, 244, 169, 239, 150, 138, 70, 237, 85, 224, 96, 74, 219, 61
     ]);
     assert.strictEqual(ecBytes.length, expected.length);
-    for (let x: number /*int*/ = 0; x < expected.length; x++) {
+    for (let x: number /* int */ = 0; x < expected.length; x++) {
       assert.strictEqual(ecBytes[x] & 0xFF, expected[x]);
     }
     dataBytes = Uint8Array.from([67, 70, 22, 38, 54, 70, 86, 102, 118,
@@ -559,7 +559,7 @@ describe('QRCodeEncoder', () => {
       175, 80, 155, 64, 178, 45, 214, 233, 65, 209, 12, 155, 117, 31, 140, 214, 27, 187
     ]);
     assert.strictEqual(ecBytes.length, expected.length);
-    for (let x: number /*int*/ = 0; x < expected.length; x++) {
+    for (let x: number /* int */ = 0; x < expected.length; x++) {
       assert.strictEqual(ecBytes[x] & 0xFF, expected[x]);
     }
     // High-order zero coefficient case.
@@ -569,7 +569,7 @@ describe('QRCodeEncoder', () => {
       0, 3, 130, 179, 194, 0, 55, 211, 110, 79, 98, 72, 170, 96, 211, 137, 213
     ]);
     assert.strictEqual(ecBytes.length, expected.length);
-    for (let x: number /*int*/ = 0; x < expected.length; x++) {
+    for (let x: number /* int */ = 0; x < expected.length; x++) {
       assert.strictEqual(ecBytes[x] & 0xFF, expected[x]);
     }
   });
@@ -604,7 +604,7 @@ describe('QRCodeEncoder', () => {
     //     11745 bits = 1468.125 bytes are needed (i.e. cannot fit in 1468
     //     bytes).
     const builder = new ZXingStringBuilder(); // 3518)
-    for (let x: number /*int*/ = 0; x < 3518; x++) {
+    for (let x: number /* int */ = 0; x < 3518; x++) {
       builder.append('0');
     }
     QRCodeEncoder.encode(builder.toString(), QRCodeDecoderErrorCorrectionLevel.L);
@@ -613,7 +613,7 @@ describe('QRCodeEncoder', () => {
   function shiftJISString(bytes: Uint8Array): string {
     try {
       return ZXingStringEncoding.decode(bytes, CharacterSetECI.SJIS.getName());
-    } catch (uee/*UnsupportedEncodingException*/) {
+    } catch (uee/* UnsupportedEncodingException */) {
       throw new WriterException(uee.toString());
     }
   }

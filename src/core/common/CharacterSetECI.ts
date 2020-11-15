@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common {*/
+/* namespace com.google.zxing.common { */
 
 
 import FormatException from '../FormatException';
 
-/*import java.util.HashMap;*/
-/*import java.util.Map;*/
+/* import java.util.HashMap; */
+/* import java.util.Map; */
 
 export enum CharacterSetValueIdentifiers {
   Cp437,
@@ -181,11 +181,11 @@ export default class CharacterSetECI {
     }
   }
 
-  // CharacterSetECI(value: number /*int*/) {
+  // CharacterSetECI(value: number /*int */) {
   //   this(new Int32Array {value})
   // }
 
-  // CharacterSetECI(value: number /*int*/, String... otherEncodingNames) {
+  // CharacterSetECI(value: number /*int */, String... otherEncodingNames) {
   //   this.values = new Int32Array {value}
   //   this.otherEncodingNames = otherEncodingNames
   // }
@@ -195,7 +195,7 @@ export default class CharacterSetECI {
   //   this.otherEncodingNames = otherEncodingNames
   // }
 
-  public getValueIdentifier(): CharacterSetValueIdentifiers/*int*/ {
+  public getValueIdentifier(): CharacterSetValueIdentifiers/* int */ {
     return this.valueIdentifier;
   }
 
@@ -203,7 +203,7 @@ export default class CharacterSetECI {
     return this.name;
   }
 
-  public getValue(): number /*int*/ {
+  public getValue(): number /* int */ {
     return this.values[0];
   }
 
@@ -212,8 +212,8 @@ export default class CharacterSetECI {
    * @return {@code CharacterSetECI} representing ECI of given value, or null if it is legal but
    *   unsupported
    * @throws FormatException if ECI value is invalid
-   */
-  public static getCharacterSetECIByValue(value: number /*int*/): CharacterSetECI /*throws FormatException*/ {
+ */
+  public static getCharacterSetECIByValue(value: number /* int */): CharacterSetECI /* throws FormatException */ {
 
     if (value < 0 || value >= 900) {
       throw new FormatException('incorect value');
@@ -232,7 +232,7 @@ export default class CharacterSetECI {
    * @param name character set ECI encoding name
    * @return CharacterSetECI representing ECI for character encoding, or null if it is legal
    *   but unsupported
-   */
+ */
   public static getCharacterSetECIByName(name: string): CharacterSetECI {
 
     const characterSet = CharacterSetECI.NAME_TO_ECI.get(name);

@@ -36,7 +36,7 @@ export default class ExpandedRow {
 
   /**
    * Two rows are equal if they contain the same pairs in the same order.
-   */
+ */
   // @Override
   // check implementation
   public equals(o1: ExpandedRow, o2: ExpandedRow): boolean {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.common;*/
+/* package com.google.zxing.common; */
 
 import { assertEquals } from '../util/AssertUtils';
 import SharpImage from '../util/SharpImage';
@@ -31,27 +31,27 @@ import { HybridBinarizer } from '@zxing/library';
 import { ZXingStringEncoding } from '@zxing/library';
 
 
-/*import javax.imageio.ImageIO;*/
-/*import java.awt.Graphics;*/
-/*import java.awt.geom.AffineTransform;*/
-/*import java.awt.geom.RectangularShape;*/
-/*import java.awt.image.AffineTransformOp;*/
-/*import java.awt.image.BufferedImage;*/
-/*import java.awt.image.BufferedImageOp;*/
-/*import java.io.BufferedReader;*/
-/*import java.io.IOException;*/
-/*import java.nio.charset.ZXingCharset;*/
-/*import java.nio.charset.ZXingStandardCharsets;*/
-/*import java.nio.file.DirectoryStream;*/
-/*import java.nio.file.Files;*/
-/*import java.nio.file.Path;*/
-/*import java.nio.file.Paths;*/
-/*import java.util.ArrayList;*/
-/*import java.util.EnumMap;*/
-/*import java.util.List;*/
-/*import java.util.Map;*/
-/*import java.util.Properties;*/
-/*import java.util.logging.Logger;*/
+/* import javax.imageio.ImageIO; */
+/* import java.awt.Graphics; */
+/* import java.awt.geom.AffineTransform; */
+/* import java.awt.geom.RectangularShape; */
+/* import java.awt.image.AffineTransformOp; */
+/* import java.awt.image.BufferedImage; */
+/* import java.awt.image.BufferedImageOp; */
+/* import java.io.BufferedReader; */
+/* import java.io.IOException; */
+/* import java.nio.charset.ZXingCharset; */
+/* import java.nio.charset.ZXingStandardCharsets; */
+/* import java.nio.file.DirectoryStream; */
+/* import java.nio.file.Files; */
+/* import java.nio.file.Path; */
+/* import java.nio.file.Paths; */
+/* import java.util.ArrayList; */
+/* import java.util.EnumMap; */
+/* import java.util.List; */
+/* import java.util.Map; */
+/* import java.util.Properties; */
+/* import java.util.logging.Logger; */
 
 /**
  * @author Sean Owen
@@ -101,7 +101,7 @@ abstract class AbstractBlackBoxSpec {
    * @param maxTryHarderMisreads Maximum number of images which can fail due to successfully
    *                             reading the wrong contents using the try harder flag
    * @param rotation The rotation in degrees clockwise to use for this test.
-   */
+ */
   protected addTestWithMax(
     mustPassCount: number /* int */,
     tryHarderCount: number /* int */,
@@ -137,7 +137,7 @@ abstract class AbstractBlackBoxSpec {
 
   /**
    * @throws IOException
-   */
+ */
   protected getImageFiles(): Array<string> {
     assertEquals(fs.existsSync(this.testBase), true, 'Please download and install test images, and run from the \'core\' directory');
     return this.walkDirectory(this.testBase);
@@ -154,7 +154,7 @@ abstract class AbstractBlackBoxSpec {
    * @param done
    *
    * @throws IOException
-   */
+ */
   public async testBlackBox(): Promise<void> {
     try {
       await this.testBlackBoxCountingResults(true);
@@ -167,12 +167,12 @@ abstract class AbstractBlackBoxSpec {
 
   /**
    * @throws IOException
-   */
+ */
   private async testBlackBoxCountingResults(assertOnFailure: boolean): Promise<void> {
     assertEquals(this.testResults.length > 0, true);
 
     const imageFiles: Array<string> = this.getImageFiles();
-    const testCount: number /*int*/ = this.testResults.length;
+    const testCount: number /* int */ = this.testResults.length;
 
     const passedCounts = new Int32Array(testCount);
     const misreadCounts = new Int32Array(testCount);
@@ -208,13 +208,13 @@ abstract class AbstractBlackBoxSpec {
 
         const decodeIterations: Promise<void>[] = [];
 
-        for (let x: number /*int*/ = 0; x < testCount; x++) {
+        for (let x: number /* int */ = 0; x < testCount; x++) {
 
           // we run this in a separated scope so we can iterate faster
           // and run tests in parallel
           decodeIterations.push(new Promise(async resolve => {
 
-            const rotation: number /*float*/ = this.testResults[x].getRotation();
+            const rotation: number /* float */ = this.testResults[x].getRotation();
             const rotatedImage = await SharpImage.loadWithRotation(testImage, rotation);
             const source: LuminanceSource = new SharpImageLuminanceSource(rotatedImage);
             const bitmap = new BinaryBitmap(new HybridBinarizer(source));
@@ -251,16 +251,16 @@ abstract class AbstractBlackBoxSpec {
 
     // Original reference: 197.
     // Print the results of all tests first
-    let totalFound /*int*/ = 0;
-    let totalMustPass /*int*/ = 0;
-    let totalMisread /*int*/ = 0;
-    let totalMaxMisread /*int*/ = 0;
+    let totalFound /* int */ = 0;
+    let totalMustPass /* int */ = 0;
+    let totalMisread /* int */ = 0;
+    let totalMaxMisread /* int */ = 0;
 
-    for (let x: number /*int*/ = 0, length = this.testResults.length; x < length; x++) {
+    for (let x: number /* int */ = 0, length = this.testResults.length; x < length; x++) {
       const testResult: TestResult = this.testResults[x];
       console.log(`\n      Rotation ${testResult.getRotation()} degrees:`);
       console.log(`        ${passedCounts[x]} of ${imageFiles.length} images passed (${testResult.getMustPassCount()} required)`);
-      let failed: number /*int*/ = imageFiles.length - passedCounts[x];
+      let failed: number /* int */ = imageFiles.length - passedCounts[x];
       console.log(`        ${misreadCounts[x]} failed due to misreads, ${failed - misreadCounts[x]} not detected`);
       console.log(`        ${tryHarderCounts[x]} of ${imageFiles.length} images passed with try harder (${testResult.getTryHarderCount()} required)`);
       failed = imageFiles.length - tryHarderCounts[x];
@@ -271,7 +271,7 @@ abstract class AbstractBlackBoxSpec {
       totalMaxMisread += testResult.getMaxMisreads() + testResult.getMaxTryHarderMisreads();
     }
 
-    const totalTests: number /*int*/ = imageFiles.length * testCount * 2;
+    const totalTests: number /* int */ = imageFiles.length * testCount * 2;
 
     console.log(`    Decoded ${totalFound} images out of ${totalTests} (${totalFound * 100 / totalTests}%, ${totalMustPass} required)`);
 
@@ -289,7 +289,7 @@ abstract class AbstractBlackBoxSpec {
 
     // Then run through again and assert if any failed.
     if (assertOnFailure) {
-      for (let x: number /*int*/ = 0; x < testCount; x++) {
+      for (let x: number /* int */ = 0; x < testCount; x++) {
 
         const testResult = this.testResults[x];
         const label = '      Rotation ' + testResult.getRotation() + ' degrees: Too many images failed.';
@@ -304,10 +304,10 @@ abstract class AbstractBlackBoxSpec {
 
   /**
    * @throws ReaderException
-   */
+ */
   private decode(
     source: BinaryBitmap,
-    rotation: number/*float*/,
+    rotation: number/* float */,
     expectedText: string,
     expectedMetadata: Map<string, string>,
     tryHarder: boolean
@@ -327,7 +327,7 @@ abstract class AbstractBlackBoxSpec {
       const pureHints = new Map<DecodeHintType, any>(hints);
       pureHints.set(DecodeHintType.PURE_BARCODE, true);
       result = this.barcodeReader.decode(source, pureHints);
-    } catch (re/*ReaderException*/) {
+    } catch (re/* ReaderException */) {
       // continue
     }
 
@@ -399,7 +399,7 @@ abstract class AbstractBlackBoxSpec {
 
   /**
    * @throws IOException
-   */
+ */
   protected static readTextFileAsString(file: string): string {
     const stringContents: string = fs.readFileSync(file, { encoding: 'utf8' });
     if (stringContents.endsWith('\n')) {
@@ -411,7 +411,7 @@ abstract class AbstractBlackBoxSpec {
 
   /**
    * @throws IOException
-   */
+ */
   protected static readBinFileAsString(file: string): string {
     const bufferContents: Buffer = fs.readFileSync(file);
     const stringContents = ZXingStringEncoding.decode(new Uint8Array(bufferContents), 'iso-8859-1');
@@ -424,7 +424,7 @@ abstract class AbstractBlackBoxSpec {
 
   /**
    * @throws IOException
-   */
+ */
   protected static readTextFileAsMetadata(file: string): Map<string, string> {
     // TODO: read text-file as metadata.
     return null;

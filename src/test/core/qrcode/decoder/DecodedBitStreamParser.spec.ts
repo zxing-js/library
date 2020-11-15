@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode.decoder;*/
+/* package com.google.zxing.qrcode.decoder; */
 
 import * as assert from 'assert';
 import { QRCodeDecodedBitStreamParser } from '@zxing/library';
@@ -33,7 +33,7 @@ ZXingStringEncoding.customDecoder = (b, e) => new TextDecoder(e).decode(b);
  */
 describe('QRCodeDecodedBitStreamParser', () => {
 
-  it('testSimpleByteMode', () => {/*throws Exception*/
+  it('testSimpleByteMode', () => {/* throws Exception */
     const builder = new BitSourceBuilder();
     builder.write(0x04, 4); // Byte mode
     builder.write(0x03, 8); // 3 bytes
@@ -45,7 +45,7 @@ describe('QRCodeDecodedBitStreamParser', () => {
     assert.strictEqual(result, '\u00f1\u00f2\u00f3');
   });
 
-  it('testSimpleSJIS', () => {/*throws Exception*/
+  it('testSimpleSJIS', () => {/* throws Exception */
     const builder = new BitSourceBuilder();
     builder.write(0x04, 4); // Byte mode
     builder.write(0x04, 8); // 4 bytes
@@ -60,7 +60,7 @@ describe('QRCodeDecodedBitStreamParser', () => {
 
   // TYPESCRIPTPORT: CP437 not supported by TextEncoding. TODO: search for an alternative
   // See here for a possibility: https://github.com/SheetJS/js-codepage
-  it.skip('testECI', () => {/*throws Exception*/
+  it.skip('testECI', () => {/* throws Exception */
     const builder = new BitSourceBuilder();
     builder.write(0x07, 4); // ECI mode
     builder.write(0x02, 8); // ECI 2 = CP437 encoding
@@ -160,7 +160,7 @@ describe('QRCodeDecodedBitStreamParser', () => {
     assert.strictEqual(result, expected1 + expected2, encodingLabel1 + ' & ' + encodingLabel2);
   }
 
-  it('testHanzi', () => {/*throws Exception*/
+  it('testHanzi', () => {/* throws Exception */
     const builder = new BitSourceBuilder();
     builder.write(0x0D, 4); // Hanzi mode
     builder.write(0x01, 4); // Subset 1 = GB2312 encoding

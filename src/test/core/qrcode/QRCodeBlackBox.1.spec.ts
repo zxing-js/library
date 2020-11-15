@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode;*/
+/* package com.google.zxing.qrcode; */
 
 import { BarcodeFormat } from '@zxing/library';
 import { MultiFormatReader } from '@zxing/library';

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.qrcode.decoder {*/
+/* namespace com.google.zxing.qrcode.decoder { */
 
 import BitMatrix from '../../common/BitMatrix';
 
@@ -35,7 +35,7 @@ export default class Version {
   /**
      * See ISO 18004:2006 Annex D.
      * Element i represents the raw version bits that specify version i + 7
-     */
+ */
   private static VERSION_DECODE_INFO = Int32Array.from([
     0x07C94, 0x085BC, 0x09A99, 0x0A4D3, 0x0BBF6,
     0x0C762, 0x0D847, 0x0E60D, 0x0F928, 0x10B78,
@@ -47,7 +47,7 @@ export default class Version {
 
   /**
      * See ISO 18004:2006 6.5.1 Table 9
-     */
+ */
   private static VERSIONS: Version[] = [
     new Version(1, new Int32Array(0),
       new ECBlocks(7, new ECB(1, 19)),
@@ -380,9 +380,9 @@ export default class Version {
   ];
 
   private ecBlocks: ECBlocks[];
-  private totalCodewords: number; /*int*/
+  private totalCodewords: number; /* int */
 
-  private constructor(private versionNumber: number /*int*/,
+  private constructor(private versionNumber: number /* int */,
     private alignmentPatternCenters: Int32Array,
     ...ecBlocks: ECBlocks[]) {
     this.ecBlocks = ecBlocks;
@@ -395,7 +395,7 @@ export default class Version {
     this.totalCodewords = total;
   }
 
-  public getVersionNumber(): number /*int*/ {
+  public getVersionNumber(): number /* int */ {
     return this.versionNumber;
   }
 
@@ -403,11 +403,11 @@ export default class Version {
     return this.alignmentPatternCenters;
   }
 
-  public getTotalCodewords(): number /*int*/ {
+  public getTotalCodewords(): number /* int */ {
     return this.totalCodewords;
   }
 
-  public getDimensionForVersion(): number /*int*/ {
+  public getDimensionForVersion(): number /* int */ {
     return 17 + 4 * this.versionNumber;
   }
 
@@ -423,26 +423,26 @@ export default class Version {
    * @param dimension dimension in modules
    * @return Version for a QR Code of that dimension
    * @throws FormatException if dimension is not 1 mod 4
-   */
-  public static getProvisionalVersionForDimension(dimension: number /*int*/): Version /*throws FormatException */ {
+ */
+  public static getProvisionalVersionForDimension(dimension: number /* int */): Version /* throws FormatException */ {
     if (dimension % 4 !== 1) {
       throw new FormatException();
     }
     try {
       return this.getVersionForNumber((dimension - 17) / 4);
-    } catch (ignored/*: IllegalArgumentException*/) {
+    } catch (ignored/* : IllegalArgumentException */) {
       throw new FormatException();
     }
   }
 
-  public static getVersionForNumber(versionNumber: number /*int*/): Version {
+  public static getVersionForNumber(versionNumber: number /* int */): Version {
     if (versionNumber < 1 || versionNumber > 40) {
       throw new IllegalArgumentException();
     }
     return Version.VERSIONS[versionNumber - 1];
   }
 
-  public static decodeVersionInformation(versionBits: number /*int*/): Version {
+  public static decodeVersionInformation(versionBits: number /* int */): Version {
     let bestDifference = Number.MAX_SAFE_INTEGER;
     let bestVersion = 0;
     for (let i = 0; i < Version.VERSION_DECODE_INFO.length; i++) {
@@ -470,7 +470,7 @@ export default class Version {
 
   /**
    * See ISO 18004:2006 Annex E
-   */
+ */
   public buildFunctionPattern(): BitMatrix {
     const dimension = this.getDimensionForVersion();
     const bitMatrix = new BitMatrix(dimension);
@@ -510,7 +510,7 @@ export default class Version {
     return bitMatrix;
   }
 
-  /*@Override*/
+  /* @Override */
   public toString(): string {
     return '' + this.versionNumber;
   }

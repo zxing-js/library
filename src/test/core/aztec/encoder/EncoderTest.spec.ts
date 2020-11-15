@@ -476,7 +476,7 @@ describe('EncoderTest', () => {
         8 * i + (i <= 31 ? 10 : i <= 62 ? 20 : i <= 2078 ? 21 : 31);
       // Verify that we are correct about the length.
       testHighLevelEncodeString(sb.substring(0, i), expectedLength);
-      if (i != 1 && i != 32 && i != 2079) {
+      if (i !== 1 && i !== 32 && i !== 2079) {
         // The addition of an 'a' at the beginning or end gets merged into the binary code
         // in those cases where adding another binary character only adds 8 or 9 bits to the result.
         // So we exclude the border cases i=1,32,2079

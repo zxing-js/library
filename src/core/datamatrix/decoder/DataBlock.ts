@@ -44,7 +44,7 @@ export default class DataBlock {
    * @param version version of the Data Matrix Code
    * @return DataBlocks containing original bytes, "de-interleaved" from representation in the
    *         Data Matrix Code
-   */
+ */
   static getDataBlocks(rawCodewords: Int8Array,
     version: Version): DataBlock[] {
     // Figure out the number and size of data blocks used by this version

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.common;*/
+/* package com.google.zxing.common; */
 
 import * as assert from 'assert';
 import Random from '../util/Random';

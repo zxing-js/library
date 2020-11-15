@@ -13,14 +13,14 @@ export default class GridSamplerInstance {
    * an implementation that takes advantage of native platform libraries.
    *
    * @param newGridSampler The platform-specific object to install.
-   */
+ */
   public static setGridSampler(newGridSampler: GridSampler): void {
     GridSamplerInstance.gridSampler = newGridSampler;
   }
 
   /**
    * @return the current implementation of GridSampler
-   */
+ */
   public static getInstance(): GridSampler {
     return GridSamplerInstance.gridSampler;
   }

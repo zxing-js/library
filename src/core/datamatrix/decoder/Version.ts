@@ -142,7 +142,7 @@ export default class Version {
    * @param numColumns Number of columns in modules
    * @return Version for a Data Matrix Code of those dimensions
    * @throws FormatException if dimensions do correspond to a valid Data Matrix size
-   */
+ */
   public static getVersionForDimensions(numRows: number, numColumns: number): Version {
     if ((numRows & 0x01) !== 0 || (numColumns & 0x01) !== 0) {
       throw new FormatException();
@@ -164,7 +164,7 @@ export default class Version {
 
   /**
    * See ISO 16022:2006 5.5.1 Table 7
-   */
+ */
   private static buildVersions(): Version[] {
     return [
       new Version(1, 10, 10, 8, 8,

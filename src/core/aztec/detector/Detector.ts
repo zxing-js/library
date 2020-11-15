@@ -92,7 +92,7 @@ export default class Detector {
    * @param isMirror if true, image is a mirror-image of original
    * @return {@link AztecDetectorResult} encapsulating results of detecting an Aztec Code
    * @throws NotFoundException if no Aztec Code can be found
-   */
+ */
   public detectMirror(isMirror: boolean): AztecDetectorResult {
 
     // 1. Get the center of the aztec matrix
@@ -131,7 +131,7 @@ export default class Detector {
    *
    * @param bullsEyeCorners the array of bull's eye corners
    * @throws NotFoundException in case of too many errors or invalid parameters
-   */
+ */
   private extractParameters(bullsEyeCorners: ResultPoint[]): void {
     if (!this.isValidPoint(bullsEyeCorners[0]) || !this.isValidPoint(bullsEyeCorners[1]) ||
       !this.isValidPoint(bullsEyeCorners[2]) || !this.isValidPoint(bullsEyeCorners[3])) {
@@ -225,7 +225,7 @@ export default class Detector {
    * @param parameterData parameter bits
    * @param compact true if this is a compact Aztec code
    * @throws NotFoundException if the array contains too many errors
-   */
+ */
   private getCorrectedParameterData(parameterData: number, compact: boolean): number {
     let numCodewords;
     let numDataCodewords;
@@ -266,7 +266,7 @@ export default class Detector {
    * @param pCenter Center point
    * @return The corners of the bull-eye
    * @throws NotFoundException If no valid bull-eye can be found
-   */
+ */
   private getBullsEyeCorners(pCenter: Point): ResultPoint[] {
 
 
@@ -327,7 +327,7 @@ export default class Detector {
    * Finds a candidate center point of an Aztec code from an image
    *
    * @return the center point
-   */
+ */
   private getMatrixCenter(): Point {
 
     let pointA: ResultPoint;
@@ -391,7 +391,7 @@ export default class Detector {
    *
    * @param bullsEyeCorners the array of bull's eye corners
    * @return the array of aztec code corners
-   */
+ */
   private getMatrixCornerPoints(bullsEyeCorners: ResultPoint[]): ResultPoint[] {
     return this.expandSquare(bullsEyeCorners, 2 * this.nbCenterLayers, this.getDimension());
   }
@@ -400,7 +400,7 @@ export default class Detector {
    * Creates a BitMatrix by sampling the provided image.
    * topLeft, topRight, bottomRight, and bottomLeft are the centers of the squares on the
    * diagonal just outside the bull's eye.
-   */
+ */
   private sampleGrid(image: BitMatrix,
     topLeft: ResultPoint,
     topRight: ResultPoint,
@@ -433,7 +433,7 @@ export default class Detector {
    * @param p2   end point (exclusive)
    * @param size number of bits
    * @return the array of bits as an int (first bit is high-order bit of result)
-   */
+ */
   private sampleLine(p1: ResultPoint, p2: ResultPoint, size: number): number {
     let result = 0;
 
@@ -454,7 +454,7 @@ export default class Detector {
   /**
    * @return true if the border of the rectangle passed in parameter is compound of white points only
    *         or black points only
-   */
+ */
   private isWhiteOrBlackRectangle(p1: Point,
     p2: Point,
     p3: Point,
@@ -494,7 +494,7 @@ export default class Detector {
    * Gets the color of a segment
    *
    * @return 1 if segment more than 90% black, -1 if segment is more than 90% white, 0 else
-   */
+ */
   private getColor(p1: Point, p2: Point): number {
     let d = this.distancePoint(p1, p2);
     let dx = (p2.getX() - p1.getX()) / d;
@@ -526,7 +526,7 @@ export default class Detector {
 
   /**
    * Gets the coordinate of the first point with a different color in the given direction
-   */
+ */
   private getFirstDifferent(init: Point, color: boolean, dx: number, dy: number): Point {
     let x = init.getX() + dx;
     let y = init.getY() + dy;
@@ -559,7 +559,7 @@ export default class Detector {
    * @param oldSide the original length of the side of the square in the target bit matrix
    * @param newSide the new length of the size of the square in the target bit matrix
    * @return the corners of the expanded square
-   */
+ */
   private expandSquare(cornerPoints: ResultPoint[], oldSide: number, newSide: number): ResultPoint[] {
     let ratio = newSide / (2.0 * oldSide);
     let dx = cornerPoints[0].getX() - cornerPoints[2].getX();

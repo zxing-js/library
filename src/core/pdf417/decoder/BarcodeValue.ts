@@ -30,12 +30,12 @@ import { int, Collection } from '../../../customTypings';
 /**
  * @author Guenther Grau
  */
-export default /*final*/ class BarcodeValue {
-  private /*final*/ values = new Map<int, int>();
+export default /* final */ class BarcodeValue {
+  private /* final */ values = new Map<int, int>();
 
   /**
    * Add an occurrence of a value
-   */
+ */
   setValue(value: int): void {
     value = Math.trunc(value);
     let confidence: int = this.values.get(value);
@@ -49,7 +49,7 @@ export default /*final*/ class BarcodeValue {
   /**
    * Determines the maximum occurrence of a set value and returns all values which were set with this occurrence.
    * @return an array of int, containing the values with the highest occurrence, or null, if no value was set
-   */
+ */
   getValue(): Int32Array {
     let maxConfidence: int = -1;
     let result: Collection<int> = new Array<int>();

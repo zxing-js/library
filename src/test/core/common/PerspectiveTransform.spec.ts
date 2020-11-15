@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.common;*/
+/* package com.google.zxing.common; */
 
 import * as assert from 'assert';
 import { PerspectiveTransform } from '@zxing/library';
@@ -24,7 +24,7 @@ import { PerspectiveTransform } from '@zxing/library';
  */
 describe('PerspectiveTransform', () => {
 
-  const EPSILON: number /*float*/ = 1.0E-4;
+  const EPSILON: number /* float */ = 1.0E-4;
 
   it('testSquareToQuadrilateral', () => {
     const pt = PerspectiveTransform.squareToQuadrilateral(2.0, 3.0, 10.0, 4.0, 16.0, 15.0, 4.0, 9.0);
@@ -48,10 +48,10 @@ describe('PerspectiveTransform', () => {
     assertPointEquals(328.09116, 334.16385, 50.0, 50.0, pt);
   });
 
-  function assertPointEquals(expectedX: number/*float*/,
-    expectedY: number/*float*/,
-    sourceX: number/*float*/,
-    sourceY: number/*float*/,
+  function assertPointEquals(expectedX: number/* float */,
+    expectedY: number/* float */,
+    sourceX: number/* float */,
+    sourceY: number/* float */,
     pt: PerspectiveTransform) {
     const points = Float32Array.from([sourceX, sourceY]);
     pt.transformPoints(points);

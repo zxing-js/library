@@ -63,7 +63,7 @@ describe('DetectorTest', () => {
   /**
    * @Test
    * @throws Exception
-   */
+ */
   // public void testErrorInParameterLocatorZeroZero() throws Exception {
   it('testErrorInParameterLocatorZeroZero', () => {
     // Layers=1, CodeWords=1.  So the parameter info and its Reed-Solomon info
@@ -74,7 +74,7 @@ describe('DetectorTest', () => {
   /**
    * @Test
    * @throws Exception
-   */
+ */
   //   public void testErrorInParameterLocatorCompact() throws Exception {
   it('testErrorInParameterLocatorCompact', () => {
     testErrorInParameterLocator('This is an example Aztec symbol for Wikipedia.');
@@ -82,7 +82,7 @@ describe('DetectorTest', () => {
 
   /**
    * @Test
-   */
+ */
   // public void testErrorInParameterLocatorNotCompact() throws Exception {
   it('testErrorInParameterLocatorNotCompact', () => {
     const alphabet: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYabcdefghijklmnopqrstuvwxyz';
@@ -91,12 +91,12 @@ describe('DetectorTest', () => {
 
   /**
    * @throws Exception
-   */
+ */
   // Test that we can tolerate errors in the parameter locator bits
   function testErrorInParameterLocator(data: string): void {
     let aztec: AztecCode = AztecEncoder.encode(StringUtils.getBytes(data, ZXingStandardCharsets.ISO_8859_1), 25, AztecEncoder.DEFAULT_AZTEC_LAYERS);
     let random: Random = new Random(aztec.getMatrix().hashCode().toString());   // pseudo-random, but deterministic
-    let layers: /*int*/ number = aztec.getLayers();
+    let layers: /* int */ number = aztec.getLayers();
     let compact: boolean = aztec.isCompact();
     let orientationPoints: AztecPoint[] = getOrientationPoints(aztec);
     for (const isMirror of [false, true]) {
@@ -145,7 +145,7 @@ describe('DetectorTest', () => {
   }
 
   // Zooms a bit matrix so that each bit is factor x factor
-  function makeLarger(input: BitMatrix, factor: /*int*/ number): BitMatrix {
+  function makeLarger(input: BitMatrix, factor: /* int */ number): BitMatrix {
     let width: number = input.getWidth();
     let output: BitMatrix = new BitMatrix(width * factor);
     for (let inputY: number = 0; inputY < width; inputY++) {
@@ -170,8 +170,8 @@ describe('DetectorTest', () => {
   function rotateRight(input: BitMatrix): BitMatrix {
     let width: number = input.getWidth();
     let result: BitMatrix = new BitMatrix(width);
-    for (let x /*int*/ = 0; x < width; x++) {
-      for (let y /*int*/ = 0; y < width; y++) {
+    for (let x /* int */ = 0; x < width; x++) {
+      for (let y /* int */ = 0; y < width; y++) {
         if (input.get(x, y)) {
           result.set(y, width - x - 1);
         }

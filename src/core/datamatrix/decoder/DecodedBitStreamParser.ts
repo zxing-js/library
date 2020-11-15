@@ -47,7 +47,7 @@ export default class DecodedBitStreamParser {
   /**
    * See ISO 16022:2006, Annex C Table C.1
    * The C40 Basic Character Set (*'s used for placeholders for the shift values)
-   */
+ */
   private static C40_BASIC_SET_CHARS: string[] = [
     '*', '*', '*', ' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
@@ -62,7 +62,7 @@ export default class DecodedBitStreamParser {
   /**
    * See ISO 16022:2006, Annex C Table C.2
    * The Text Basic Character Set (*'s used for placeholders for the shift values)
-   */
+ */
   private static TEXT_BASIC_SET_CHARS: string[] = [
     '*', '*', '*', ' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
@@ -117,7 +117,7 @@ export default class DecodedBitStreamParser {
 
   /**
    * See ISO 16022:2006, 5.2.3 and Annex C, Table C.2
-   */
+ */
   private static decodeAsciiSegment(bits: BitSource,
     result: StringBuilder,
     resultTrailer: StringBuilder): Mode {
@@ -192,7 +192,7 @@ export default class DecodedBitStreamParser {
 
   /**
    * See ISO 16022:2006, 5.2.5 and Annex C, Table C.1
-   */
+ */
   private static decodeC40Segment(bits: BitSource, result: StringBuilder): void {
     // Three C40 values are encoded in a 16-bit value as
     // (1600 * C1) + (40 * C2) + C3 + 1
@@ -281,7 +281,7 @@ export default class DecodedBitStreamParser {
 
   /**
    * See ISO 16022:2006, 5.2.6 and Annex C, Table C.2
-   */
+ */
   private static decodeTextSegment(bits: BitSource, result: StringBuilder): void {
     // Three Text values are encoded in a 16-bit value as
     // (1600 * C1) + (40 * C2) + C3 + 1
@@ -376,7 +376,7 @@ export default class DecodedBitStreamParser {
 
   /**
    * See ISO 16022:2006, 5.2.7
-   */
+ */
   private static decodeAnsiX12Segment(bits: BitSource,
     result: StringBuilder): void {
     // Three ANSI X12 values are encoded in a 16-bit value as
@@ -436,7 +436,7 @@ export default class DecodedBitStreamParser {
 
   /**
    * See ISO 16022:2006, 5.2.8 and Annex C Table C.3
-   */
+ */
   private static decodeEdifactSegment(bits: BitSource, result: StringBuilder): void {
     do {
       // If there is only two or less bytes left then it will be encoded as ASCII
@@ -467,7 +467,7 @@ export default class DecodedBitStreamParser {
 
   /**
    * See ISO 16022:2006, 5.2.9 and Annex B, B.2
-   */
+ */
   private static decodeBase256Segment(bits: BitSource,
     result: StringBuilder,
     byteSegments: Uint8Array[]): void {
@@ -507,7 +507,7 @@ export default class DecodedBitStreamParser {
 
   /**
    * See ISO 16022:2006, Annex B, B.2
-   */
+ */
   private static unrandomize255State(randomizedBase256Codeword: number,
     base256CodewordPosition: number): number {
     const pseudoRandomNumber = ((149 * base256CodewordPosition) % 255) + 1;

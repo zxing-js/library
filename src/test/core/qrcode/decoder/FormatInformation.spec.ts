@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode.decoder;*/
+/* package com.google.zxing.qrcode.decoder; */
 
 import * as assert from 'assert';
 
@@ -26,8 +26,8 @@ import { QRCodeDecoderFormatInformation } from '@zxing/library';
  */
 describe('QRCodeDecoderFormatInformation', () => {
 
-  const MASKED_TEST_FORMAT_INFO: number /*int*/ = 0x2BED;
-  const UNMASKED_TEST_FORMAT_INFO: number /*int*/ = MASKED_TEST_FORMAT_INFO ^ 0x5412;
+  const MASKED_TEST_FORMAT_INFO: number /* int */ = 0x2BED;
+  const UNMASKED_TEST_FORMAT_INFO: number /* int */ = MASKED_TEST_FORMAT_INFO ^ 0x5412;
 
   it('testBitsDiffering', () => {
     assert.strictEqual(QRCodeDecoderFormatInformation.numBitsDiffering(1, 1), 0);
@@ -41,7 +41,7 @@ describe('QRCodeDecoderFormatInformation', () => {
     const expected =
       QRCodeDecoderFormatInformation.decodeFormatInformation(MASKED_TEST_FORMAT_INFO, MASKED_TEST_FORMAT_INFO);
     assert.strictEqual(null !== expected, true);
-    assert.strictEqual(expected.getDataMask(), /*(byte)*/ 0x07);
+    assert.strictEqual(expected.getDataMask(), /* (byte) */ 0x07);
     assert.strictEqual(QRCodeDecoderErrorCorrectionLevel.Q.equals(expected.getErrorCorrectionLevel()), true);
     // where the code forgot the mask!
     assert.strictEqual(QRCodeDecoderFormatInformation.decodeFormatInformation(UNMASKED_TEST_FORMAT_INFO, MASKED_TEST_FORMAT_INFO).equals(expected), true);

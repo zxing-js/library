@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.qrcode.encoder {*/
+/* namespace com.google.zxing.qrcode.encoder { */
 
 export default class BlockPair {
 

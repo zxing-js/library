@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode.encoder;*/
+/* package com.google.zxing.qrcode.encoder; */
 
 import * as assert from 'assert';
 import { BitArray } from '@zxing/library';
@@ -26,18 +26,18 @@ import { BitArray } from '@zxing/library';
 describe('BitVector', () => {
 
   // TYPESCRIPTPORT: cannot use long (64 bits) as we only have 53 bits in number so I will just use a string for testing purposes
-  // function getUnsignedInt(v: BitArray, index: number /*int*/): number/*long*/ {
+  // function getUnsignedInt(v: BitArray, index: number /*int */): number/*long */ {
   //   let result: number = 0
-  //   for (let i: number /*int*/ = 0, offset = index * 8; i < 32; i++) {
+  //   for (let i: number /*int */ = 0, offset = index * 8; i < 32; i++) {
   //     if (v.get(offset + i)) {
   //       result |= 1 << (31 - i)
   //     }
   //   }
   //   return result
   // }
-  function getUnsignedIntAsString(v: BitArray, index: number /*int*/): string/*long*/ {
+  function getUnsignedIntAsString(v: BitArray, index: number /* int */): string/* long */ {
     let result = '';
-    for (let i: number /*int*/ = 0, offset = index * 8; i < 32; i++) {
+    for (let i: number /* int */ = 0, offset = index * 8; i < 32; i++) {
       result = result + (v.get(offset + i) ? '1' : '0');
     }
     return ('00000000000000000000000000000000' + result).substring(result.length);

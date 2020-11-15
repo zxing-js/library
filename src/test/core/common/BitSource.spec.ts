@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.common;*/
+/* package com.google.zxing.common; */
 
 import * as assert from 'assert';
 import { BitSource } from '@zxing/library';
@@ -26,11 +26,11 @@ describe('BitSource', () => {
 
   it('testSource', () => {
     const bytes = Uint8Array.from([
-            /*(byte)*/ 1,
-            /*(byte)*/ 2,
-            /*(byte)*/ 3,
-            /*(byte)*/ 4,
-            /*(byte)*/ 5
+      /* (byte) */ 1,
+      /* (byte) */ 2,
+      /* (byte) */ 3,
+      /* (byte) */ 4,
+      /* (byte) */ 5
     ]);
 
     const source = new BitSource(bytes);

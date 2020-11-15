@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing {*/
+/* namespace com.google.zxing { */
 
 import BitMatrix from './common/BitMatrix';
 import BarcodeFormat from './BarcodeFormat';
@@ -22,7 +22,7 @@ import EncodeHintType from './EncodeHintType';
 
 export default Writer;
 
-/*import java.util.Map;*/
+/* import java.util.Map; */
 
 /**
  * The base class for all objects which encode/generate a barcode image.
@@ -40,8 +40,8 @@ interface Writer {
    * @param height The preferred height in pixels
    * @return {@link BitMatrix} representing encoded barcode image
    * @throws WriterException if contents cannot be encoded legally in a format
-   */
-  //   encode(contents: string, format: BarcodeFormat, width: number /*int*/, height: number /*int*/): BitMatrix
+ */
+  //   encode(contents: string, format: BarcodeFormat, width: number /*int */, height: number /*int */): BitMatrix
 
   /**
    * @param contents The contents to encode in the barcode
@@ -51,12 +51,12 @@ interface Writer {
    * @param hints Additional parameters to supply to the encoder
    * @return {@link BitMatrix} representing encoded barcode image
    * @throws WriterException if contents cannot be encoded legally in a format
-   */
+ */
   encode(
     contents: string,
     format: BarcodeFormat,
-    width: number /*int*/,
-    height: number /*int*/,
+    width: number /* int */,
+    height: number /* int */,
     hints: Map<EncodeHintType, any>
   ): BitMatrix;
 

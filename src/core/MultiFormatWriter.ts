@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing {*/
+/* namespace com.google.zxing { */
 
 import BitMatrix from './common/BitMatrix';
 // import DataMatrixWriter from './datamatrix/DataMatrixWriter'
@@ -35,7 +35,7 @@ import EncodeHintType from './EncodeHintType';
 
 import IllegalArgumentException from './IllegalArgumentException';
 
-/*import java.util.Map;*/
+/* import java.util.Map; */
 
 /**
  * This is a factory class which finds the appropriate Writer subclass for the BarcodeFormat
@@ -45,19 +45,19 @@ import IllegalArgumentException from './IllegalArgumentException';
  */
 export default class MultiFormatWriter implements Writer {
 
-  /*@Override*/
+  /* @Override */
   // public encode(contents: string,
   //                         format: BarcodeFormat,
-  //                         width: number /*int*/,
-  //                         height: number /*int*/): BitMatrix /*throws WriterException */ {
+  //                         width: number /*int */,
+  //                         height: number /*int */): BitMatrix /*throws WriterException */ {
   //   return encode(contents, format, width, height, null)
   // }
 
-  /*@Override*/
+  /* @Override */
   public encode(contents: string,
     format: BarcodeFormat,
-    width: number /*int*/, height: number /*int*/,
-    hints: Map<EncodeHintType, any>): BitMatrix /*throws WriterException */ {
+    width: number /* int */, height: number /* int */,
+    hints: Map<EncodeHintType, any>): BitMatrix /* throws WriterException */ {
 
     let writer: Writer;
     switch (format) {

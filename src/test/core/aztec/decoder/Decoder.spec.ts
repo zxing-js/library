@@ -40,7 +40,7 @@ describe('DecoderTest', () => {
   /**
    * @Test
    * @throws FormatException
-   */
+ */
   it('testAztecResult', () => {
     const matrix = BitMatrix.parseFromString(
       'X X X X X     X X X       X X X     X X X     \n' +
@@ -81,7 +81,7 @@ describe('DecoderTest', () => {
   /**
    * @Test(expected = FormatException.class)
    * throws FormatException
-  */
+ */
   it('testDecodeTooManyErrors', () => {
     const matrix = BitMatrix.parseFromString(''
       + 'X X . X . . . X X . . . X . . X X X . X . X X X X X . \n'
@@ -111,7 +111,7 @@ describe('DecoderTest', () => {
       + 'X . X . X . . X . X X X X X X X X . X X X X . . X X . \n'
       + 'X X X X . . . X . . X X X . X X . . X . . . . X X X . \n'
       + 'X X . X . X . . . X . X . . . . X X . X . . X X . . . \n',
-      'X ', '. ');
+    'X ', '. ');
     const r = new AztecDetectorResult(matrix, NO_POINTS, true, 16, 4);
     assertThrow(() => new AztecDecoder().decode(r), FormatException);
   });
@@ -120,7 +120,7 @@ describe('DecoderTest', () => {
    *
    * @Test(expected = FormatException.class)
    * @throws FormatException
-   */
+ */
   it('testDecodeTooManyErrors2', () => {
     const matrix = BitMatrix.parseFromString(''
       + '. X X . . X . X X . . . X . . X X X . . . X X . X X . \n'
@@ -150,14 +150,14 @@ describe('DecoderTest', () => {
       + 'X . . . X X . X . X X X X X X X X . X X X X . . X X . \n'
       + '. X X X X . . X . . X X X . X X . . X . . . . X X X . \n'
       + 'X X . . . X X . . X . X . . . . X X . X . . X . X . X \n',
-      'X ', '. ');
+    'X ', '. ');
     const r = new AztecDetectorResult(matrix, NO_POINTS, true, 16, 4);
     assertThrow(() => new AztecDecoder().decode(r), FormatException);
   });
 
   /**
    * @Test
-   */
+ */
   it('testRawBytes', () => {
     let bool0: boolean[] = [];
     let bool1: boolean[] = [true];
@@ -169,12 +169,12 @@ describe('DecoderTest', () => {
     let bool16: boolean[] = [
       false, true, true, false, false, false, true, true,
       true, true, false, false, false, false, false, true];
-    let byte0: /*byte[]*/Uint8Array = new Uint8Array([]);
-    let byte1: /*byte[]*/Uint8Array = new Uint8Array([-128]);
-    let byte7: /*byte[]*/ Uint8Array = new Uint8Array([- 86]);
-    let byte8: /*byte[]*/ Uint8Array = new Uint8Array([- 86]);
-    let byte9: /*byte[]*/ Uint8Array = new Uint8Array([- 86, -128]);
-    let byte16: /*byte[]*/ Uint8Array = new Uint8Array([99, - 63]);
+    let byte0: /* byte[] */Uint8Array = new Uint8Array([]);
+    let byte1: /* byte[] */Uint8Array = new Uint8Array([-128]);
+    let byte7: /* byte[] */ Uint8Array = new Uint8Array([- 86]);
+    let byte8: /* byte[] */ Uint8Array = new Uint8Array([- 86]);
+    let byte9: /* byte[] */ Uint8Array = new Uint8Array([- 86, -128]);
+    let byte16: /* byte[] */ Uint8Array = new Uint8Array([99, - 63]);
 
     assertArrayEquals(byte0, AztecDecoder.convertBoolArrayToByteArray(bool0));
     assertArrayEquals(byte1, AztecDecoder.convertBoolArrayToByteArray(bool1));

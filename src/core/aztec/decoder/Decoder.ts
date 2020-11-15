@@ -95,7 +95,7 @@ export default class Decoder {
    * Gets the string encoded in the aztec code bits
    *
    * @return the decoded string
-   */
+ */
   private static getEncodedData(correctedBits: boolean[]): string {
     let endIndex: number = correctedBits.length;
     let latchTable = Table.UPPER; // table most recently latched to
@@ -122,7 +122,7 @@ export default class Decoder {
             break;
           }
           const code: int = Decoder.readCode(correctedBits, index, 8);
-          result += /*(char)*/ StringUtils.castAsNonUtf8Char(code);
+          result += /* (char) */ StringUtils.castAsNonUtf8Char(code);
           index += 8;
         }
         // Go back to whatever mode we had been in
@@ -157,7 +157,7 @@ export default class Decoder {
 
   /**
    * gets the table corresponding to the char passed
-   */
+ */
   private static getTable(t: string): Table {
     switch (t) {
       case 'L':
@@ -181,7 +181,7 @@ export default class Decoder {
    *
    * @param table the table used
    * @param code the code of the character
-   */
+ */
   private static getCharacter(table: Table, code: number): string {
     switch (table) {
       case Table.UPPER:
@@ -205,7 +205,7 @@ export default class Decoder {
    *
    * @return the corrected array
    * @throws FormatException if the input contains too many errors
-   */
+ */
   private correctBits(rawbits: boolean[]): boolean[] {
     let gf: GenericGF;
     let codewordSize: number;
@@ -278,7 +278,7 @@ export default class Decoder {
    * Gets the array of bits from an Aztec Code matrix
    *
    * @return the array of bits
-   */
+ */
   private extractBits(matrix: BitMatrix): boolean[] {
     let compact = this.ddata.isCompact();
     let layers = this.ddata.getNbLayers();
@@ -331,7 +331,7 @@ export default class Decoder {
 
   /**
    * Reads a code of given length and at given index in an array of bits
-   */
+ */
   private static readCode(rawbits: boolean[], startIndex: number, length: number): number {
     let res = 0;
     for (let i = startIndex; i < startIndex + length; i++) {
@@ -345,7 +345,7 @@ export default class Decoder {
 
   /**
    * Reads a code of length 8 in an array of bits, padding with zeros
-   */
+ */
   private static readByte(rawbits: boolean[], startIndex: number): number {
     let n = rawbits.length - startIndex;
     if (n >= 8) {
@@ -356,7 +356,7 @@ export default class Decoder {
 
   /**
    * Packs a bit array into bytes, most significant bit first
-   */
+ */
   public static convertBoolArrayToByteArray(boolArr: boolean[]): Uint8Array {
     let byteArr = new Uint8Array((boolArr.length + 7) / 8);
     for (let i = 0; i < byteArr.length; i++) {

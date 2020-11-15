@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common.reedsolomon {*/
+/* namespace com.google.zxing.common.reedsolomon { */
 
 import AbstractGenericGF from './AbstractGenericGF';
 
@@ -43,7 +43,7 @@ export default class GenericGFPoly {
    * @throws IllegalArgumentException if argument is null or empty,
    * or if leading coefficient is 0 and this is not a
    * constant polynomial (that is, it is not the monomial "0")
-   */
+ */
   public constructor(field: AbstractGenericGF, coefficients: Int32Array) {
     if (coefficients.length === 0) {
       throw new IllegalArgumentException();
@@ -77,29 +77,29 @@ export default class GenericGFPoly {
 
   /**
    * @return degree of this polynomial
-   */
+ */
   public getDegree(): number {
     return this.coefficients.length - 1;
   }
 
   /**
    * @return true iff this polynomial is the monomial "0"
-   */
+ */
   public isZero(): boolean {
     return this.coefficients[0] === 0;
   }
 
   /**
    * @return coefficient of x^degree term in this polynomial
-   */
-  public getCoefficient(degree: number /*int*/): number {
+ */
+  public getCoefficient(degree: number /* int */): number {
     return this.coefficients[this.coefficients.length - 1 - degree];
   }
 
   /**
    * @return evaluation of this polynomial at a given point
-   */
-  public evaluateAt(a: number /*int*/): number {
+ */
+  public evaluateAt(a: number /* int */): number {
     if (a === 0) {
       // Just return the x^0 coefficient
       return this.getCoefficient(0);
@@ -177,7 +177,7 @@ export default class GenericGFPoly {
     return new GenericGFPoly(field, product);
   }
 
-  public multiplyScalar(scalar: number /*int*/): GenericGFPoly {
+  public multiplyScalar(scalar: number /* int */): GenericGFPoly {
     if (scalar === 0) {
       return this.field.getZero();
     }
@@ -194,7 +194,7 @@ export default class GenericGFPoly {
     return new GenericGFPoly(field, product);
   }
 
-  public multiplyByMonomial(degree: number /*int*/, coefficient: number /*int*/): GenericGFPoly {
+  public multiplyByMonomial(degree: number /* int */, coefficient: number /* int */): GenericGFPoly {
     if (degree < 0) {
       throw new IllegalArgumentException();
     }
@@ -239,7 +239,7 @@ export default class GenericGFPoly {
     return [quotient, remainder];
   }
 
-  /*@Override*/
+  /* @Override */
   public toString(): string {
     let result = '';
     for (let degree = this.getDegree(); degree >= 0; degree--) {

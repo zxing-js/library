@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode;*/
+/* package com.google.zxing.qrcode; */
 
 import * as assert from 'assert';
 
@@ -30,14 +30,14 @@ import { createCustomEncoder } from '../util/textEncodingFactory';
 
 const path = require('path');
 
-/*import javax.imageio.ImageIO;*/
-/*import java.awt.image.BufferedImage;*/
-/*import java.io.IOException;*/
-/*import java.nio.file.Files;*/
-/*import java.nio.file.Path;*/
-/*import java.nio.file.Paths;*/
-/*import java.util.EnumMap;*/
-/*import java.util.Map;*/
+/* import javax.imageio.ImageIO; */
+/* import java.awt.image.BufferedImage; */
+/* import java.io.IOException; */
+/* import java.nio.file.Files; */
+/* import java.nio.file.Path; */
+/* import java.nio.file.Paths; */
+/* import java.util.EnumMap; */
+/* import java.util.Map; */
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator
@@ -50,7 +50,7 @@ describe('QRCodeWriter', () => {
 
   it('testQRCodeWriter', () => {
     // The QR should be multiplied up to fit, with extra padding if necessary
-    const bigEnough: number /*int*/ = 256;
+    const bigEnough: number /* int */ = 256;
     const writer: Writer = new QRCodeWriter();
     let matrix: BitMatrix = writer.encode(
       'http://www.google.com/',
@@ -77,8 +77,8 @@ describe('QRCodeWriter', () => {
     assert.strictEqual(tooSmall < matrix.getHeight(), true);
 
     // We should also be able to handle non-square requests by padding them
-    const strangeWidth: number /*int*/ = 500;
-    const strangeHeight: number /*int*/ = 100;
+    const strangeWidth: number /* int */ = 500;
+    const strangeHeight: number /* int */ = 100;
     matrix = writer.encode(
       'http://www.google.com/',
       BarcodeFormat.QR_CODE,
@@ -94,7 +94,7 @@ describe('QRCodeWriter', () => {
   async function compareToGoldenFile(
     contents: string,
     ecLevel: QRCodeDecoderErrorCorrectionLevel,
-    resolution: number /*int*/,
+    resolution: number /* int */,
     fileName: string
   ): Promise<void> {
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing {*/
+/* namespace com.google.zxing { */
 
 import MathUtils from './common/detector/MathUtils';
 import Float from './util/Float';
@@ -38,7 +38,7 @@ export default class ResultPoint {
     return this.y;
   }
 
-  /*@Override*/
+  /* @Override */
   public equals(other: Object): boolean {
     if (other instanceof ResultPoint) {
       const otherPoint = <ResultPoint>other;
@@ -47,12 +47,12 @@ export default class ResultPoint {
     return false;
   }
 
-  /*@Override*/
+  /* @Override */
   public hashCode(): int {
     return 31 * Float.floatToIntBits(this.x) + Float.floatToIntBits(this.y);
   }
 
-  /*@Override*/
+  /* @Override */
   public toString(): string {
     return '(' + this.x + ',' + this.y + ')';
   }
@@ -62,7 +62,7 @@ export default class ResultPoint {
    * and BC is less than AC, and the angle between BC and BA is less than 180 degrees.
    *
    * @param patterns array of three {@code ResultPoint} to order
-   */
+ */
   public static orderBestPatterns(patterns: Array<ResultPoint>): void {
 
     // Find distances between pattern centers
@@ -107,14 +107,14 @@ export default class ResultPoint {
    * @param pattern1 first pattern
    * @param pattern2 second pattern
    * @return distance between two points
-   */
+ */
   public static distance(pattern1: ResultPoint, pattern2: ResultPoint): float {
     return MathUtils.distance(pattern1.x, pattern1.y, pattern2.x, pattern2.y);
   }
 
   /**
    * Returns the z component of the cross product between vectors BC and BA.
-   */
+ */
   private static crossProductZ(pointA: ResultPoint,
     pointB: ResultPoint,
     pointC: ResultPoint): float {

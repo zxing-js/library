@@ -19,30 +19,30 @@
 /**
  * @author Guenther Grau
  */
-export default /*public final*/ class PDF417ResultMetadata {
+export default /* public final */ class PDF417ResultMetadata {
 
-  private segmentIndex: /*int*/ number;
+  private segmentIndex: /* int */ number;
   private fileId: string;
   private lastSegment: boolean;
-  private segmentCount: /*int*/ number = -1;
+  private segmentCount: /* int */ number = -1;
   private sender: string;
   private addressee: string;
   private fileName: string;
-  private fileSize: /*long*/ number = -1;
-  private timestamp: /*long*/ number = -1;
-  private checksum: /*int*/ number = -1;
+  private fileSize: /* long */ number = -1;
+  private timestamp: /* long */ number = -1;
+  private checksum: /* int */ number = -1;
   private optionalData: Int32Array;
 
   /**
    * The Segment ID represents the segment of the whole file distributed over different symbols.
    *
    * @return File segment index
-   */
-  public getSegmentIndex(): /*int*/ number {
+ */
+  public getSegmentIndex(): /* int */ number {
     return this.segmentIndex;
   }
 
-  public setSegmentIndex(segmentIndex: /*int*/ number): void {
+  public setSegmentIndex(segmentIndex: /* int */ number): void {
     this.segmentIndex = segmentIndex;
   }
 
@@ -50,7 +50,7 @@ export default /*public final*/ class PDF417ResultMetadata {
    * Is the same for each related PDF417 symbol
    *
    * @return File ID
-   */
+ */
   public getFileId(): string {
     return this.fileId;
   }
@@ -62,7 +62,7 @@ export default /*public final*/ class PDF417ResultMetadata {
   /**
    * @return always null
    * @deprecated use dedicated already parsed fields
-   */
+ */
   //   @Deprecated
   public getOptionalData(): Int32Array {
     return this.optionalData;
@@ -71,7 +71,7 @@ export default /*public final*/ class PDF417ResultMetadata {
   /**
    * @param optionalData old optional data format as int array
    * @deprecated parse and use new fields
-   */
+ */
   //   @Deprecated
   public setOptionalData(optionalData: Int32Array): void {
     this.optionalData = optionalData;
@@ -80,7 +80,7 @@ export default /*public final*/ class PDF417ResultMetadata {
 
   /**
    * @return true if it is the last segment
-   */
+ */
   public isLastSegment(): boolean {
     return this.lastSegment;
   }
@@ -91,12 +91,12 @@ export default /*public final*/ class PDF417ResultMetadata {
 
   /**
    * @return count of segments, -1 if not set
-   */
-  public getSegmentCount(): /*int*/ number {
+ */
+  public getSegmentCount(): /* int */ number {
     return this.segmentCount;
   }
 
-  public setSegmentCount(segmentCount: number /*int*/): void {
+  public setSegmentCount(segmentCount: number /* int */): void {
     this.segmentCount = segmentCount;
   }
 
@@ -120,7 +120,7 @@ export default /*public final*/ class PDF417ResultMetadata {
    * Filename of the encoded file
    *
    * @return filename
-   */
+ */
   public getFileName(): string {
     return this.fileName;
   }
@@ -133,12 +133,12 @@ export default /*public final*/ class PDF417ResultMetadata {
    * filesize in bytes of the encoded file
    *
    * @return filesize in bytes, -1 if not set
-   */
-  public getFileSize(): /*long*/ number {
+ */
+  public getFileSize(): /* long */ number {
     return this.fileSize;
   }
 
-  public setFileSize(fileSize: number /*long*/): void {
+  public setFileSize(fileSize: number /* long */): void {
     this.fileSize = fileSize;
   }
 
@@ -146,12 +146,12 @@ export default /*public final*/ class PDF417ResultMetadata {
    * 16-bit CRC checksum using CCITT-16
    *
    * @return crc checksum, -1 if not set
-   */
-  public getChecksum(): /*int*/ number {
+ */
+  public getChecksum(): /* int */ number {
     return this.checksum;
   }
 
-  public setChecksum(checksum: number/*int*/): void {
+  public setChecksum(checksum: number/* int */): void {
     this.checksum = checksum;
   }
 
@@ -159,12 +159,12 @@ export default /*public final*/ class PDF417ResultMetadata {
    * unix epock timestamp, elapsed seconds since 1970-01-01
    *
    * @return elapsed seconds, -1 if not set
-   */
-  public getTimestamp(): /*long*/ number {
+ */
+  public getTimestamp(): /* long */ number {
     return this.timestamp;
   }
 
-  public setTimestamp(timestamp: number /*long*/): void {
+  public setTimestamp(timestamp: number /* long */): void {
     this.timestamp = timestamp;
   }
 

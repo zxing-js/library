@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing {*/
+/* namespace com.google.zxing { */
 
 import LuminanceSource from './LuminanceSource';
 import BitArray from './common/BitArray';
@@ -49,8 +49,8 @@ abstract class Binarizer {
    *            If used, the Binarizer will call BitArray.clear(). Always use the returned object.
    * @return The array of bits for this row (true means black).
    * @throws NotFoundException if row can't be binarized
-   */
-  public abstract getBlackRow(y: number/*iny*/, row: BitArray): BitArray; /*throws NotFoundException*/
+ */
+  public abstract getBlackRow(y: number/* iny */, row: BitArray): BitArray; /* throws NotFoundException */
 
   /**
    * Converts a 2D array of luminance data to 1 bit data. As above, assume this method is expensive
@@ -60,8 +60,8 @@ abstract class Binarizer {
    *
    * @return The 2D array of bits for the image (true means black).
    * @throws NotFoundException if image can't be binarized to make a matrix
-   */
-  public abstract getBlackMatrix(): BitMatrix; /*throws NotFoundException*/
+ */
+  public abstract getBlackMatrix(): BitMatrix; /* throws NotFoundException */
 
   /**
    * Creates a new object with the same type as this Binarizer implementation, but with pristine
@@ -70,14 +70,14 @@ abstract class Binarizer {
    *
    * @param source The LuminanceSource this Binarizer will operate on.
    * @return A new concrete Binarizer implementation object.
-   */
+ */
   public abstract createBinarizer(source: LuminanceSource): Binarizer;
 
-  public getWidth(): number /*int*/ {
+  public getWidth(): number /* int */ {
     return this.source.getWidth();
   }
 
-  public getHeight(): number /*int*/ {
+  public getHeight(): number /* int */ {
     return this.source.getHeight();
   }
 }

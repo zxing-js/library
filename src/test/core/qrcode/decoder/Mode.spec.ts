@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode.decoder;*/
+/* package com.google.zxing.qrcode.decoder; */
 
 import * as assert from 'assert';
 

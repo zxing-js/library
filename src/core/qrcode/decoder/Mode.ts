@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.qrcode.decoder {*/
+/* namespace com.google.zxing.qrcode.decoder { */
 
 
 import Version from './Version';
@@ -57,7 +57,7 @@ export default class Mode {
   /** See GBT 18284-2000; "Hanzi" is a transliteration of this mode name. */
   public static HANZI = new Mode(ModeValues.HANZI, 'HANZI', Int32Array.from([8, 10, 12]), 0x0D);
 
-  private constructor(private value: ModeValues, private stringValue: string, private characterCountBitsForVersions: Int32Array, private bits: number /*int*/) {
+  private constructor(private value: ModeValues, private stringValue: string, private characterCountBitsForVersions: Int32Array, private bits: number /* int */) {
     Mode.FOR_BITS.set(bits, this);
     Mode.FOR_VALUE.set(value, this);
   }
@@ -66,8 +66,8 @@ export default class Mode {
    * @param bits four bits encoding a QR Code data mode
    * @return Mode encoded by these bits
    * @throws IllegalArgumentException if bits do not correspond to a known mode
-   */
-  public static forBits(bits: number /*int*/): Mode {
+ */
+  public static forBits(bits: number /* int */): Mode {
     const mode = Mode.FOR_BITS.get(bits);
     if (undefined === mode) {
       throw new IllegalArgumentException();
@@ -79,8 +79,8 @@ export default class Mode {
    * @param version version in question
    * @return number of bits used, in this QR Code symbol {@link Version}, to encode the
    *         count of characters that will follow encoded in this Mode
-   */
-  public getCharacterCountBits(version: Version): number /*int*/ {
+ */
+  public getCharacterCountBits(version: Version): number /* int */ {
     const versionNumber = version.getVersionNumber();
 
     let offset;
@@ -96,11 +96,11 @@ export default class Mode {
     return this.characterCountBitsForVersions[offset];
   }
 
-  public getValue(): ModeValues/*int*/ {
+  public getValue(): ModeValues/* int */ {
     return this.value;
   }
 
-  public getBits(): number /*int*/ {
+  public getBits(): number /* int */ {
     return this.bits;
   }
 

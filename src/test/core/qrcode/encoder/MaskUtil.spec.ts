@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode.encoder;*/
+/* package com.google.zxing.qrcode.encoder; */
 
 import * as assert from 'assert';
 import { QRCodeByteMatrix } from '@zxing/library';
@@ -167,9 +167,9 @@ describe('QRCodeMaskUtil', () => {
     assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule4(matrix), 30);
   });
 
-  function TestGetDataMaskBitInternal(maskPattern: number /*int*/, expected: Array<Int32Array>): boolean {
-    for (let x: number /*int*/ = 0; x < 6; ++x) {
-      for (let y: number /*int*/ = 0; y < 6; ++y) {
+  function TestGetDataMaskBitInternal(maskPattern: number /* int */, expected: Array<Int32Array>): boolean {
+    for (let x: number /* int */ = 0; x < 6; ++x) {
+      for (let y: number /* int */ = 0; y < 6; ++y) {
         if ((expected[y][x] === 1) !== QRCodeMaskUtil.getDataMaskBit(maskPattern, x, y)) {
           return false;
         }

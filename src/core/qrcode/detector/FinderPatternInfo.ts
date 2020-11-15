@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.qrcode.detector {*/
+/* namespace com.google.zxing.qrcode.detector { */
 
 import FinderPattern from './FinderPattern';
 

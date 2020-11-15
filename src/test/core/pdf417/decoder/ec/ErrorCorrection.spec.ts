@@ -52,7 +52,7 @@ describe('ErrorCorrectionTestCase', () => {
   it('testOneError', () => {
 
     const random = AbstractErrorCorrectionSpec.getRandom();
-    for (let i: number /*int*/ = 0; i < PDF417_TEST_WITH_EC.length; i++) {
+    for (let i: number /* int */ = 0; i < PDF417_TEST_WITH_EC.length; i++) {
       const received: Int32Array = Int32Array.from(PDF417_TEST_WITH_EC);
       received[i] = random.nextInt(256);
       checkDecode(received);
@@ -66,7 +66,7 @@ describe('ErrorCorrectionTestCase', () => {
 
     const random: Random = AbstractErrorCorrectionSpec.getRandom();
 
-    for (let testIterations /*int*/ = 0; testIterations < 100; testIterations++) { // # iterations is kind of arbitrary
+    for (let testIterations /* int */ = 0; testIterations < 100; testIterations++) { // # iterations is kind of arbitrary
       const received: Int32Array = Int32Array.from(PDF417_TEST_WITH_EC);
       AbstractErrorCorrectionSpec.corrupt(received, MAX_ERRORS, random);
       checkDecode(received);
@@ -103,7 +103,7 @@ describe('ErrorCorrectionTestCase', () => {
     return;
 
     const random: Random = AbstractErrorCorrectionSpec.getRandom();
-    for (const test /*int*/ of PDF417_TEST) { // # iterations is kind of arbitrary
+    for (const test /* int */ of PDF417_TEST) { // # iterations is kind of arbitrary
       const received = Int32Array.from(PDF417_TEST_WITH_EC);
       const erasures = AbstractErrorCorrectionSpec.erase(received, MAX_ERASURES, random);
       checkDecode(received, erasures);
@@ -134,13 +134,13 @@ describe('ErrorCorrectionTestCase', () => {
 
 });
 
-const /*private static final int[]*/ PDF417_TEST = Int32Array.from([
+const /* private static final int[] */ PDF417_TEST = Int32Array.from([
   48, 901, 56, 141, 627, 856, 330, 69, 244, 900, 852, 169, 843, 895, 852, 895, 913, 154, 845, 778, 387, 89, 869,
   901, 219, 474, 543, 650, 169, 201, 9, 160, 35, 70, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900,
   900, 900
 ]);
 
-const /*private static final int[]*/ PDF417_TEST_WITH_EC = Int32Array.from([
+const /* private static final int[] */ PDF417_TEST_WITH_EC = Int32Array.from([
   48, 901, 56, 141, 627, 856, 330, 69, 244, 900, 852, 169, 843, 895, 852, 895, 913, 154, 845, 778, 387, 89, 869,
   901, 219, 474, 543, 650, 169, 201, 9, 160, 35, 70, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900,
   900, 900, 769, 843, 591, 910, 605, 206, 706, 917, 371, 469, 79, 718, 47, 777, 249, 262, 193, 620, 597, 477, 450,
@@ -148,20 +148,20 @@ const /*private static final int[]*/ PDF417_TEST_WITH_EC = Int32Array.from([
   322, 317, 273, 194, 917, 237, 420, 859, 340, 115, 222, 808, 866, 836, 417, 121, 833, 459, 64, 159
 ]);
 
-const /*private static final int*/ ECC_BYTES: number = PDF417_TEST_WITH_EC.length - PDF417_TEST.length;
-const /*private static final int*/ ERROR_LIMIT: number = ECC_BYTES;
-const /*private static final int*/ MAX_ERRORS: number = ERROR_LIMIT / 2;
-const /*private static final int*/ MAX_ERASURES: number = ERROR_LIMIT;
+const /* private static final int */ ECC_BYTES: number = PDF417_TEST_WITH_EC.length - PDF417_TEST.length;
+const /* private static final int */ ERROR_LIMIT: number = ECC_BYTES;
+const /* private static final int */ MAX_ERRORS: number = ERROR_LIMIT / 2;
+const /* private static final int */ MAX_ERASURES: number = ERROR_LIMIT;
 
-const /*private final ErrorCorrection*/ ec = new PDF417DecoderErrorCorrection();
+const /* private final ErrorCorrection */ ec = new PDF417DecoderErrorCorrection();
 
 /**
  *
  * @throws ChecksumException
  */
-function /*private void*/ checkDecode(received: Int32Array, erasures?: Int32Array) {
+function /* private void */ checkDecode(received: Int32Array, erasures?: Int32Array) {
   ec.decode(received, ECC_BYTES, erasures || Int32Array.from([0]));
-  for (let /*int*/ i = 0; i < PDF417_TEST.length; i++) {
+  for (let /* int */ i = 0; i < PDF417_TEST.length; i++) {
     assert.strictEqual(received[i], PDF417_TEST[i]);
   }
 }

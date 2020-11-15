@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common {*/
+/* namespace com.google.zxing.common { */
 
 import GridSampler from './GridSampler';
 import BitMatrix from './BitMatrix';
@@ -29,18 +29,18 @@ import { float } from '../../customTypings';
  */
 export default class DefaultGridSampler extends GridSampler {
 
-  /*@Override*/
+  /* @Override */
   public sampleGrid(image: BitMatrix,
-    dimensionX: number /*int*/,
-    dimensionY: number /*int*/,
-    p1ToX: number/*float*/, p1ToY: number/*float*/,
-    p2ToX: number/*float*/, p2ToY: number/*float*/,
-    p3ToX: number/*float*/, p3ToY: number/*float*/,
-    p4ToX: number/*float*/, p4ToY: number/*float*/,
-    p1FromX: number/*float*/, p1FromY: number/*float*/,
-    p2FromX: number/*float*/, p2FromY: number/*float*/,
-    p3FromX: number/*float*/, p3FromY: number/*float*/,
-    p4FromX: number/*float*/, p4FromY: number/*float*/): BitMatrix /*throws NotFoundException*/ {
+    dimensionX: number /* int */,
+    dimensionY: number /* int */,
+    p1ToX: number/* float */, p1ToY: number/* float */,
+    p2ToX: number/* float */, p2ToY: number/* float */,
+    p3ToX: number/* float */, p3ToY: number/* float */,
+    p4ToX: number/* float */, p4ToY: number/* float */,
+    p1FromX: number/* float */, p1FromY: number/* float */,
+    p2FromX: number/* float */, p2FromY: number/* float */,
+    p3FromX: number/* float */, p3FromY: number/* float */,
+    p4FromX: number/* float */, p4FromY: number/* float */): BitMatrix /* throws NotFoundException */ {
 
     const transform = PerspectiveTransform.quadrilateralToQuadrilateral(
       p1ToX, p1ToY, p2ToX, p2ToY, p3ToX, p3ToY, p4ToX, p4ToY,
@@ -49,11 +49,11 @@ export default class DefaultGridSampler extends GridSampler {
     return this.sampleGridWithTransform(image, dimensionX, dimensionY, transform);
   }
 
-  /*@Override*/
+  /* @Override */
   public sampleGridWithTransform(image: BitMatrix,
-    dimensionX: number /*int*/,
-    dimensionY: number /*int*/,
-    transform: PerspectiveTransform): BitMatrix /*throws NotFoundException*/ {
+    dimensionX: number /* int */,
+    dimensionY: number /* int */,
+    transform: PerspectiveTransform): BitMatrix /* throws NotFoundException */ {
     if (dimensionX <= 0 || dimensionY <= 0) {
       throw new NotFoundException();
     }
@@ -61,7 +61,7 @@ export default class DefaultGridSampler extends GridSampler {
     const points = new Float32Array(2 * dimensionX);
     for (let y = 0; y < dimensionY; y++) {
       const max = points.length;
-      const iValue: number /*float*/ = y + 0.5;
+      const iValue: number /* float */ = y + 0.5;
       for (let x = 0; x < max; x += 2) {
         points[x] = <float>(x / 2) + 0.5;
         points[x + 1] = iValue;
@@ -77,7 +77,7 @@ export default class DefaultGridSampler extends GridSampler {
             bits.set(x / 2, y);
           }
         }
-      } catch (aioobe/*: ArrayIndexOutOfBoundsException*/) {
+      } catch (aioobe/* : ArrayIndexOutOfBoundsException */) {
         // This feels wrong, but, sometimes if the finder patterns are misidentified, the resulting
         // transform gets "twisted" such that it maps a straight line of points to a set of points
         // whose endpoints are in bounds, but others are not. There is probably some mathematical

@@ -140,8 +140,7 @@ export default class RSS14Reader extends AbstractRSSReader {
       return new Pair(1597 * outside.getValue() + inside.getValue(),
         outside.getChecksumPortion() + 4 * inside.getChecksumPortion(),
         pattern);
-    }
-    catch (err) {
+    } catch (err) {
       return null;
     }
   }
@@ -322,28 +321,23 @@ export default class RSS14Reader extends AbstractRSSReader {
     if (outsideChar) {
       if (oddSum > 12) {
         decrementOdd = true;
-      }
-      else if (oddSum < 4) {
+      } else if (oddSum < 4) {
         incrementOdd = true;
       }
       if (evenSum > 12) {
         decrementEven = true;
-      }
-      else if (evenSum < 4) {
+      } else if (evenSum < 4) {
         incrementEven = true;
       }
-    }
-    else {
+    } else {
       if (oddSum > 11) {
         decrementOdd = true;
-      }
-      else if (oddSum < 5) {
+      } else if (oddSum < 5) {
         incrementOdd = true;
       }
       if (evenSum > 10) {
         decrementEven = true;
-      }
-      else if (evenSum < 4) {
+      } else if (evenSum < 4) {
         incrementEven = true;
       }
     }
@@ -375,8 +369,7 @@ export default class RSS14Reader extends AbstractRSSReader {
         }
         incrementEven = true;
       }
-    }
-    else if (mismatch === 0) {
+    } else if (mismatch === 0) {
       if (oddParityBad) {
         if (!evenParityBad) {
           throw new NotFoundException();
@@ -389,15 +382,13 @@ export default class RSS14Reader extends AbstractRSSReader {
           decrementOdd = true;
           incrementEven = true;
         }
-      }
-      else {
+      } else {
         if (evenParityBad) {
           throw new NotFoundException();
         }
         // Nothing to do!
       }
-    }
-    else {
+    } else {
       throw new NotFoundException();
     }
 

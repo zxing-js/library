@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing {*/
+/* namespace com.google.zxing { */
 
-/*import java.util.EnumMap;*/
-/*import java.util.Map;*/
+/* import java.util.EnumMap; */
+/* import java.util.Map; */
 import ResultPoint from './ResultPoint';
 import BarcodeFormat from './BarcodeFormat';
 import System from './util/System';
@@ -50,10 +50,10 @@ export default class Result {
 
   public constructor(private text: string,
     private rawBytes: Uint8Array,
-    private numBits: number /*int*/ = rawBytes == null ? 0 : 8 * rawBytes.length,
+    private numBits: number /* int */ = rawBytes == null ? 0 : 8 * rawBytes.length,
     private resultPoints: ResultPoint[],
     private format: BarcodeFormat,
-    private timestamp: number /*long*/ = System.currentTimeMillis()) {
+    private timestamp: number /* long */ = System.currentTimeMillis()) {
     this.text = text;
     this.rawBytes = rawBytes;
     if (undefined === numBits || null === numBits) {
@@ -73,14 +73,14 @@ export default class Result {
 
   /**
    * @return raw text encoded by the barcode
-   */
+ */
   public getText(): string {
     return this.text;
   }
 
   /**
    * @return raw bytes encoded by the barcode, if applicable, otherwise {@code null}
-   */
+ */
   public getRawBytes(): Uint8Array {
     return this.rawBytes;
   }
@@ -88,8 +88,8 @@ export default class Result {
   /**
    * @return how many bits of {@link #getRawBytes()} are valid; typically 8 times its length
    * @since 3.3.0
-   */
-  public getNumBits(): number /*int*/ {
+ */
+  public getNumBits(): number /* int */ {
     return this.numBits;
   }
 
@@ -97,14 +97,14 @@ export default class Result {
    * @return points related to the barcode in the image. These are typically points
    *         identifying finder patterns or the corners of the barcode. The exact meaning is
    *         specific to the type of barcode that was decoded.
-   */
+ */
   public getResultPoints(): Array<ResultPoint> {
     return this.resultPoints;
   }
 
   /**
    * @return {@link BarcodeFormat} representing the format of the barcode that was decoded
-   */
+ */
   public getBarcodeFormat(): BarcodeFormat {
     return this.format;
   }
@@ -113,7 +113,7 @@ export default class Result {
    * @return {@link Map} mapping {@link ResultMetadataType} keys to values. May be
    *   {@code null}. This contains optional metadata about what was detected about the barcode,
    *   like orientation.
-   */
+ */
   public getResultMetadata(): Map<ResultMetadataType, Object> {
     return this.resultMetadata;
   }
@@ -147,11 +147,11 @@ export default class Result {
     }
   }
 
-  public getTimestamp(): number/*long*/ {
+  public getTimestamp(): number/* long */ {
     return this.timestamp;
   }
 
-  /*@Override*/
+  /* @Override */
   public toString(): string {
     return this.text;
   }

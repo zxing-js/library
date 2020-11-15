@@ -49,16 +49,16 @@ import { int, Collection, char } from '../../../customTypings';
  * @author Frank Yellin
  * @author Rustam Abdullaev
  */
-export default /*public final*/ class HighLevelEncoder {
+export default /* public final */ class HighLevelEncoder {
 
   // A reverse mapping from [mode][char] to the encoding for that character
   // in that mode.  An entry of 0 indicates no mapping exists.
-  // private static /*final*/ CHAR_MAP: Int32Array[] = static_CHAR_MAP(Arrays.createInt32Array(5, 256));
+  // private static /*final */ CHAR_MAP: Int32Array[] = static_CHAR_MAP(Arrays.createInt32Array(5, 256));
 
   // A map showing the available shift codes.  (The shifts to BINARY are not
   // shown
-  // static /*final*/ SHIFT_TABLE: Int32Array[] = ShiftTable.static_SHIFT_TABLE(Arrays.createInt32Array(6, 6)); // mode shift codes, per table
-  private /*final*/ text: Uint8Array;
+  // static /*final */ SHIFT_TABLE: Int32Array[] = ShiftTable.static_SHIFT_TABLE(Arrays.createInt32Array(6, 6)); // mode shift codes, per table
+  private /* final */ text: Uint8Array;
 
   public constructor(text: Uint8Array) {
     this.text = text;
@@ -66,7 +66,7 @@ export default /*public final*/ class HighLevelEncoder {
 
   /**
    * @return text represented by this encoder encoded as a {@link BitArray}
-   */
+ */
   public encode(): BitArray {
 
     const spaceCharCode = StringUtils.getCharCode(' ');
@@ -124,7 +124,7 @@ export default /*public final*/ class HighLevelEncoder {
     index: int
   ): Collection<State> {
     const result: State[] = [];
-    for (let state /*State*/ of states) {
+    for (let state /* State */ of states) {
       this.updateStateForChar(state, index, result);
     }
     return HighLevelEncoder.simplifyStates(result);
@@ -141,7 +141,7 @@ export default /*public final*/ class HighLevelEncoder {
     let ch: char = <char>(this.text[index] & 0xff);
     let charInCurrentTable: boolean = CharMap.CHAR_MAP[state.getMode()][ch] > 0;
     let stateNoBinary: State = null;
-    for (let mode /*int*/ = 0; mode <= C.MODE_PUNCT; mode++) {
+    for (let mode /* int */ = 0; mode <= C.MODE_PUNCT; mode++) {
       let charInMode: int = CharMap.CHAR_MAP[mode][ch];
       if (charInMode > 0) {
         if (stateNoBinary == null) {
@@ -197,7 +197,7 @@ export default /*public final*/ class HighLevelEncoder {
     pairCode: int
   ): Collection<State> {
     const result: State[] = [];
-    for (let state /*State*/ of states) {
+    for (let state /* State */ of states) {
       this.updateStateForPair(state, index, pairCode, result);
     }
     return this.simplifyStates(result);

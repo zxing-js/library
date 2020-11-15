@@ -78,7 +78,7 @@
     "@zxing/text-encoding": "~0.9.0",
     "chai": "^4.2.0",
     "codacy-coverage": "^3.4.0",
-    "eslint": "^5.15.1",
+    "eslint": "^7.13.0",
     "karma": "^3.1.4",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.2.0",

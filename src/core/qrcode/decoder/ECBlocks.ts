@@ -9,15 +9,15 @@ import ECB from './ECB';
 export default class ECBlocks {
   private ecBlocks: ECB[];
 
-  public constructor(private ecCodewordsPerBlock: number /*int*/, ...ecBlocks: ECB[]) {
+  public constructor(private ecCodewordsPerBlock: number /* int */, ...ecBlocks: ECB[]) {
     this.ecBlocks = ecBlocks;
   }
 
-  public getECCodewordsPerBlock(): number /*int*/ {
+  public getECCodewordsPerBlock(): number /* int */ {
     return this.ecCodewordsPerBlock;
   }
 
-  public getNumBlocks(): number /*int*/ {
+  public getNumBlocks(): number /* int */ {
     let total = 0;
     const ecBlocks = this.ecBlocks;
     for (const ecBlock of ecBlocks) {
@@ -26,7 +26,7 @@ export default class ECBlocks {
     return total;
   }
 
-  public getTotalECCodewords(): number /*int*/ {
+  public getTotalECCodewords(): number /* int */ {
     return this.ecCodewordsPerBlock * this.getNumBlocks();
   }
 

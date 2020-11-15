@@ -26,10 +26,10 @@ import BitMatrix from '../../common/BitMatrix';
 /**
  * @author Guenther Grau
  */
-export default /*public final*/ class PDF417DetectorResult {
+export default /* public final */ class PDF417DetectorResult {
 
-  private /*final*/ bits: BitMatrix;
-  private /*final*/ points: ResultPoint[][];
+  private /* final */ bits: BitMatrix;
+  private /* final */ points: ResultPoint[][];
 
   constructor(bits: BitMatrix, points: ResultPoint[][]) {
     this.bits = bits;

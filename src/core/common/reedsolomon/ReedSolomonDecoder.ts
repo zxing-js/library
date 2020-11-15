@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common.reedsolomon {*/
+/* namespace com.google.zxing.common.reedsolomon { */
 
 import GenericGF from './GenericGF';
 import GenericGFPoly from './GenericGFPoly';
@@ -56,8 +56,8 @@ export default class ReedSolomonDecoder {
    * @param received data and error-correction codewords
    * @param twoS number of error-correction codewords available
    * @throws ReedSolomonException if decoding fails for any reason
-   */
-  public decode(received: Int32Array, twoS: number /*int*/): void /*throws ReedSolomonException*/ {
+ */
+  public decode(received: Int32Array, twoS: number /* int */): void /* throws ReedSolomonException */ {
     const field = this.field;
     const poly = new GenericGFPoly(field, received);
     const syndromeCoefficients = new Int32Array(twoS);
@@ -87,7 +87,7 @@ export default class ReedSolomonDecoder {
     }
   }
 
-  private runEuclideanAlgorithm(a: GenericGFPoly, b: GenericGFPoly, R: number /*int*/): GenericGFPoly[] {
+  private runEuclideanAlgorithm(a: GenericGFPoly, b: GenericGFPoly, R: number /* int */): GenericGFPoly[] {
     // Assume a's degree is >= b's
     if (a.getDegree() < b.getDegree()) {
       const temp = a;
@@ -143,7 +143,7 @@ export default class ReedSolomonDecoder {
     return [sigma, omega];
   }
 
-  private findErrorLocations(errorLocator: GenericGFPoly): Int32Array /*throws ReedSolomonException*/ {
+  private findErrorLocations(errorLocator: GenericGFPoly): Int32Array /* throws ReedSolomonException */ {
     // This is a direct application of Chien's search
     const numErrors = errorLocator.getDegree();
     if (numErrors === 1) { // shortcut

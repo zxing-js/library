@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common {*/
+/* namespace com.google.zxing.common { */
 
 import ResultPoint from '../ResultPoint';
 import BitMatrix from './BitMatrix';

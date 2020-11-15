@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.qrcode.decoder {*/
+/* namespace com.google.zxing.qrcode.decoder { */
 
 import ResultPoint from '../../ResultPoint';
 
@@ -31,7 +31,7 @@ export default class QRCodeDecoderMetaData {
 
   /**
    * @return true if the QR Code was mirrored.
-   */
+ */
   public isMirrored(): boolean {
     return this.mirrored;
   }
@@ -40,7 +40,7 @@ export default class QRCodeDecoderMetaData {
    * Apply the result points' order correction due to mirroring.
    *
    * @param points Array of points to apply mirror correction to.
-   */
+ */
   public applyMirroredCorrection(points: Array<ResultPoint>): void {
     if (!this.mirrored || points === null || points.length < 3) {
       return;

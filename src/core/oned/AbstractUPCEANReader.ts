@@ -40,20 +40,20 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
 
   /**
    * Start/end guard pattern.
-   */
+ */
   public static START_END_PATTERN: Int32Array = Int32Array.from([1, 1, 1]);
 
   /**
    * Pattern marking the middle of a UPC/EAN pattern, separating the two halves.
-   */
+ */
   public static MIDDLE_PATTERN: Int32Array = Int32Array.from([1, 1, 1, 1, 1]);
   /**
    * end guard pattern.
-   */
+ */
   public static END_PATTERN: Int32Array = Int32Array.from([1, 1, 1, 1, 1, 1]);
   /**
    * "Odd", or "L" patterns used to encode UPC/EAN digits.
-   */
+ */
   public static L_PATTERNS: Int32Array[] = [
     Int32Array.from([3, 2, 1, 1]), // 0
     Int32Array.from([2, 2, 2, 1]), // 1
@@ -69,7 +69,7 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
 
   /**
    * As above but also including the "even", or "G" patterns used to encode UPC/EAN digits.
-   */
+ */
   public static L_AND_G_PATTERNS: Int32Array[];
 
   protected decodeRowStringBuffer = '';
@@ -83,7 +83,7 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
       extensionReader = new UPCEANExtensionSupport();
       eanManSupport = new EANManufacturerOrgSupport();
   }
-  */
+ */
 
   static findStartGuardPattern(row: BitArray): Int32Array {
     let foundStart = false;
@@ -144,7 +144,7 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
 
   /**
    * @throws NotFoundException
-   */
+ */
   static findGuardPatternWithoutCounters(
     row: BitArray,
     rowOffset: int,
@@ -164,7 +164,7 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
    * @param counters array of counters, as long as pattern, to re-use
    * @return start/end horizontal offset of guard pattern, as an array of two ints
    * @throws NotFoundException if pattern is not found
-   */
+ */
   static findGuardPattern(row: BitArray, rowOffset: number, whiteFirst: boolean, pattern: Int32Array, counters: Int32Array): Int32Array {
     let width = row.getSize();
     rowOffset = whiteFirst ? row.getNextUnset(rowOffset) : row.getNextSet(rowOffset);
@@ -224,7 +224,7 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
    * Get the format of this decoder.
    *
    * @return The 1D format.
-   */
+ */
   public abstract getBarcodeFormat();
 
   /**
@@ -236,6 +236,6 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
    * @param resultString {@link StringBuilder} to append decoded chars to
    * @return horizontal offset of first pixel after the "middle" that was decoded
    * @throws NotFoundException if decoding could not complete successfully
-   */
-  public abstract decodeMiddle(row: BitArray, startRange: Int32Array, resultString: /*StringBuilder*/string);
+ */
+  public abstract decodeMiddle(row: BitArray, startRange: Int32Array, resultString: /* StringBuilder */string);
 }

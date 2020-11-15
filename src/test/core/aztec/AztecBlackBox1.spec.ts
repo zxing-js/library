@@ -26,7 +26,7 @@ import { AztecCodeReader } from '@zxing/library';
 /**
  * @author David Olivier
  */
-export /*public final*/ class AztecBlackBox1TestCase extends AbstractBlackBoxSpec {
+export /* public final */ class AztecBlackBox1TestCase extends AbstractBlackBoxSpec {
 
   public constructor() {
     super('src/test/resources/blackbox/aztec-1', new AztecCodeReader(), BarcodeFormat.AZTEC);

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.qrcode.detector {*/
+/* namespace com.google.zxing.qrcode.detector { */
 
 import DecodeHintType from '../../DecodeHintType';
 import ResultPoint from '../../ResultPoint';
@@ -27,12 +27,12 @@ import NotFoundException from '../../NotFoundException';
 
 import { float } from '../../../customTypings';
 
-/*import java.io.Serializable;*/
-/*import java.util.ArrayList;*/
-/*import java.util.Collections;*/
-/*import java.util.Comparator;*/
-/*import java.util.List;*/
-/*import java.util.Map;*/
+/* import java.io.Serializable; */
+/* import java.util.ArrayList; */
+/* import java.util.Collections; */
+/* import java.util.Comparator; */
+/* import java.util.List; */
+/* import java.util.Map; */
 
 /**
  * <p>This class attempts to find finder patterns in a QR Code. Finder patterns are the square
@@ -56,7 +56,7 @@ export default class FinderPatternFinder {
    * <p>Creates a finder that will search the image for three finder patterns.</p>
    *
    * @param image image to search
-   */
+ */
   // public constructor(image: BitMatrix) {
   //   this(image, null)
   // }
@@ -75,7 +75,7 @@ export default class FinderPatternFinder {
     return this.possibleCenters;
   }
 
-  public find(hints: Map<DecodeHintType, any>): FinderPatternInfo /*throws NotFoundException */ {
+  public find(hints: Map<DecodeHintType, any>): FinderPatternInfo /* throws NotFoundException */ {
     const tryHarder: boolean = (hints !== null && hints !== undefined) && undefined !== hints.get(DecodeHintType.TRY_HARDER);
     const pureBarcode: boolean = (hints !== null && hints !== undefined) && undefined !== hints.get(DecodeHintType.PURE_BARCODE);
     const image = this.image;
@@ -189,8 +189,8 @@ export default class FinderPatternFinder {
   /**
    * Given a count of black/white/black/white/black pixels just seen and an end position,
    * figures the location of the center of this run.
-   */
-  private static centerFromEnd(stateCount: Int32Array, end: number /*int*/): number/*float*/ {
+ */
+  private static centerFromEnd(stateCount: Int32Array, end: number /* int */): number/* float */ {
     return (end - stateCount[4] - stateCount[3]) - stateCount[2] / 2.0;
   }
 
@@ -198,7 +198,7 @@ export default class FinderPatternFinder {
    * @param stateCount count of black/white/black/white/black pixels just read
    * @return true iff the proportions of the counts is close enough to the 1/1/3/1/1 ratios
    *         used by finder patterns to be considered a match
-   */
+ */
   protected static foundPatternCross(stateCount: Int32Array): boolean {
     let totalModuleSize = 0;
     for (let i = 0; i < 5; i++) {
@@ -211,8 +211,8 @@ export default class FinderPatternFinder {
     if (totalModuleSize < 7) {
       return false;
     }
-    const moduleSize: number /*float*/ = totalModuleSize / 7.0;
-    const maxVariance: number /*float*/ = moduleSize / 2.0;
+    const moduleSize: number /* float */ = totalModuleSize / 7.0;
+    const maxVariance: number /* float */ = moduleSize / 2.0;
     // Allow less than 50% variance from 1-1-3-1-1 proportions
     return Math.abs(moduleSize - stateCount[0]) < maxVariance &&
       Math.abs(moduleSize - stateCount[1]) < maxVariance &&
@@ -242,8 +242,8 @@ export default class FinderPatternFinder {
    *  observed in any reading state, based on the results of the horizontal scan
    * @param originalStateCountTotal The original state count total.
    * @return true if proportions are withing expected limits
-   */
-  private crossCheckDiagonal(startI: number /*int*/, centerJ: number /*int*/, maxCount: number /*int*/, originalStateCountTotal: number /*int*/): boolean {
+ */
+  private crossCheckDiagonal(startI: number /* int */, centerJ: number /* int */, maxCount: number /* int */, originalStateCountTotal: number /* int */): boolean {
     const stateCount: Int32Array = this.getCrossCheckStateCount();
 
     // Start counting up, left from center finding black center mass
@@ -332,9 +332,9 @@ export default class FinderPatternFinder {
    * @param maxCount maximum reasonable number of modules that should be
    * observed in any reading state, based on the results of the horizontal scan
    * @return vertical center of finder pattern, or {@link Float#NaN} if not found
-   */
-  private crossCheckVertical(startI: number /*int*/, centerJ: number /*int*/, maxCount: number /*int*/,
-    originalStateCountTotal: number /*int*/): number/*float*/ {
+ */
+  private crossCheckVertical(startI: number /* int */, centerJ: number /* int */, maxCount: number /* int */,
+    originalStateCountTotal: number /* int */): number/* float */ {
     const image: BitMatrix = this.image;
 
     const maxI = image.getHeight();
@@ -404,9 +404,9 @@ export default class FinderPatternFinder {
    * <p>Like {@link #crossCheckVertical(int, int, int, int)}, and in fact is basically identical,
    * except it reads horizontally instead of vertically. This is used to cross-cross
    * check a vertical cross check and locate the real center of the alignment pattern.</p>
-   */
-  private crossCheckHorizontal(startJ: number /*int*/, centerI: number /*int*/, maxCount: number /*int*/,
-    originalStateCountTotal: number /*int*/): number/*float*/ {
+ */
+  private crossCheckHorizontal(startJ: number /* int */, centerI: number /* int */, maxCount: number /* int */,
+    originalStateCountTotal: number /* int */): number/* float */ {
     const image: BitMatrix = this.image;
 
     const maxJ = image.getWidth();
@@ -486,18 +486,18 @@ export default class FinderPatternFinder {
    * @param j end of possible finder pattern in row
    * @param pureBarcode true if in "pure barcode" mode
    * @return true if a finder pattern candidate was found this time
-   */
-  protected handlePossibleCenter(stateCount: Int32Array, i: number /*int*/, j: number /*int*/, pureBarcode: boolean): boolean {
+ */
+  protected handlePossibleCenter(stateCount: Int32Array, i: number /* int */, j: number /* int */, pureBarcode: boolean): boolean {
     const stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2] + stateCount[3] +
       stateCount[4];
-    let centerJ: number /*float*/ = FinderPatternFinder.centerFromEnd(stateCount, j);
-    let centerI: number /*float*/ = this.crossCheckVertical(i, /*(int) */Math.floor(centerJ), stateCount[2], stateCountTotal);
+    let centerJ: number /* float */ = FinderPatternFinder.centerFromEnd(stateCount, j);
+    let centerI: number /* float */ = this.crossCheckVertical(i, /* (int) */Math.floor(centerJ), stateCount[2], stateCountTotal);
     if (!isNaN(centerI)) {
       // Re-cross check
-      centerJ = this.crossCheckHorizontal(/*(int) */Math.floor(centerJ), /*(int) */Math.floor(centerI), stateCount[2], stateCountTotal);
+      centerJ = this.crossCheckHorizontal(/* (int) */Math.floor(centerJ), /* (int) */Math.floor(centerI), stateCount[2], stateCountTotal);
       if (!isNaN(centerJ) &&
-        (!pureBarcode || this.crossCheckDiagonal(/*(int) */Math.floor(centerI), /*(int) */Math.floor(centerJ), stateCount[2], stateCountTotal))) {
-        const estimatedModuleSize: number /*float*/ = stateCountTotal / 7.0;
+        (!pureBarcode || this.crossCheckDiagonal(/* (int) */Math.floor(centerI), /* (int) */Math.floor(centerJ), stateCount[2], stateCountTotal))) {
+        const estimatedModuleSize: number /* float */ = stateCountTotal / 7.0;
         let found: boolean = false;
         const possibleCenters = this.possibleCenters;
         for (let index = 0, length = possibleCenters.length; index < length; index++) {
@@ -527,8 +527,8 @@ export default class FinderPatternFinder {
    *         two finder patterns that have been located. In some cases their position will
    *         allow us to infer that the third pattern must lie below a certain point farther
    *         down in the image.
-   */
-  private findRowSkip(): number /*int*/ {
+ */
+  private findRowSkip(): number /* int */ {
     const max = this.possibleCenters.length;
     if (max <= 1) {
       return 0;
@@ -545,7 +545,7 @@ export default class FinderPatternFinder {
           // difference in the x / y coordinates of the two centers.
           // This is the case where you find top left last.
           this.hasSkipped = true;
-          return /*(int) */Math.floor((Math.abs(firstConfirmedCenter.getX() - center.getX()) -
+          return /* (int) */Math.floor((Math.abs(firstConfirmedCenter.getX() - center.getX()) -
             Math.abs(firstConfirmedCenter.getY() - center.getY())) / 2);
         }
       }
@@ -557,10 +557,10 @@ export default class FinderPatternFinder {
    * @return true iff we have found at least 3 finder patterns that have been detected
    *         at least {@link #CENTER_QUORUM} times each, and, the estimated module size of the
    *         candidates is "pretty similar"
-   */
+ */
   private haveMultiplyConfirmedCenters(): boolean {
     let confirmedCount = 0;
-    let totalModuleSize: number /*float*/ = 0.0;
+    let totalModuleSize: number /* float */ = 0.0;
     const max = this.possibleCenters.length;
     for (const pattern of this.possibleCenters) {
       if (pattern.getCount() >= FinderPatternFinder.CENTER_QUORUM) {
@@ -575,8 +575,8 @@ export default class FinderPatternFinder {
     // and that we need to keep looking. We detect this by asking if the estimated module sizes
     // vary too much. We arbitrarily say that when the total deviation from average exceeds
     // 5% of the total module size estimates, it's too much.
-    const average: number /*float*/ = totalModuleSize / max;
-    let totalDeviation: number /*float*/ = 0.0;
+    const average: number /* float */ = totalModuleSize / max;
+    let totalDeviation: number /* float */ = 0.0;
     for (const pattern of this.possibleCenters) {
       totalDeviation += Math.abs(pattern.getEstimatedModuleSize() - average);
     }
@@ -588,8 +588,8 @@ export default class FinderPatternFinder {
    *         those that have been detected at least {@link #CENTER_QUORUM} times, and whose module
    *         size differs from the average among those patterns the least
    * @throws NotFoundException if 3 such finder patterns do not exist
-   */
-  private selectBestPatterns(): FinderPattern[] /*throws NotFoundException */ {
+ */
+  private selectBestPatterns(): FinderPattern[] /* throws NotFoundException */ {
 
     const startSize = this.possibleCenters.length;
     if (startSize < 3) {
@@ -616,7 +616,7 @@ export default class FinderPatternFinder {
       possibleCenters.sort(
         /**
          * <p>Orders by furthest from average</p>
-         */
+ */
         // FurthestFromAverageComparator implements Comparator<FinderPattern>
         (center1: FinderPattern, center2: FinderPattern) => {
           const dA: float = Math.abs(center2.getEstimatedModuleSize() - average);
@@ -648,7 +648,7 @@ export default class FinderPatternFinder {
       possibleCenters.sort(
         /**
          * <p>Orders by {@link FinderPattern#getCount()}, descending.</p>
-         */
+ */
         // CenterComparator implements Comparator<FinderPattern>
         (center1: FinderPattern, center2: FinderPattern) => {
           if (center2.getCount() === center1.getCount()) {

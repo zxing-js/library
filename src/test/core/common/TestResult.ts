@@ -14,35 +14,35 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.common;*/
+/* package com.google.zxing.common; */
 
 export default class TestResult {
 
   public constructor(
-    private mustPassCount: number /*int*/,
-    private tryHarderCount: number /*int*/,
-    private maxMisreads: number /*int*/,
-    private maxTryHarderMisreads: number /*int*/,
-    private rotation: number/*float*/) {
+    private mustPassCount: number /* int */,
+    private tryHarderCount: number /* int */,
+    private maxMisreads: number /* int */,
+    private maxTryHarderMisreads: number /* int */,
+    private rotation: number/* float */) {
   }
 
-  public getMustPassCount(): number /*int*/ {
+  public getMustPassCount(): number /* int */ {
     return this.mustPassCount;
   }
 
-  public getTryHarderCount(): number /*int*/ {
+  public getTryHarderCount(): number /* int */ {
     return this.tryHarderCount;
   }
 
-  public getMaxMisreads(): number /*int*/ {
+  public getMaxMisreads(): number /* int */ {
     return this.maxMisreads;
   }
 
-  public getMaxTryHarderMisreads(): number /*int*/ {
+  public getMaxTryHarderMisreads(): number /* int */ {
     return this.maxTryHarderMisreads;
   }
 
-  public getRotation(): number/*float*/ {
+  public getRotation(): number/* float */ {
     return this.rotation;
   }
 

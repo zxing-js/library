@@ -28,7 +28,7 @@ import NotFoundException from './NotFoundException';
 import PDF417Reader from './pdf417/PDF417Reader';
 import ReaderException from './ReaderException';
 
-/*namespace com.google.zxing {*/
+/* namespace com.google.zxing { */
 
 /**
  * MultiFormatReader is a convenience class and the main entry point into the library for most uses.
@@ -52,8 +52,8 @@ export default class MultiFormatReader implements Reader {
    * @return The contents of the image
    *
    * @throws NotFoundException Any errors which occurred
-   */
-  /*@Override*/
+ */
+  /* @Override */
   // public decode(image: BinaryBitmap): Result {
   //   setHints(null)
   //   return decodeInternal(image)
@@ -67,8 +67,8 @@ export default class MultiFormatReader implements Reader {
    * @return The contents of the image
    *
    * @throws NotFoundException Any errors which occurred
-   */
-  /*@Override*/
+ */
+  /* @Override */
   public decode(image: BinaryBitmap, hints?: Map<DecodeHintType, any>): Result {
     this.setHints(hints);
     return this.decodeInternal(image);
@@ -82,7 +82,7 @@ export default class MultiFormatReader implements Reader {
    * @return The contents of the image
    *
    * @throws NotFoundException Any errors which occurred
-   */
+ */
   public decodeWithState(image: BinaryBitmap): Result {
     // Make sure to set up the default state so we don't crash
     if (this.readers === null || this.readers === undefined) {
@@ -97,12 +97,12 @@ export default class MultiFormatReader implements Reader {
    * is important for performance in continuous scan clients.
    *
    * @param hints The set of hints to use for subsequent calls to decode(image)
-   */
+ */
   public setHints(hints?: Map<DecodeHintType, any> | null): void {
     this.hints = hints;
 
     const tryHarder: boolean = hints !== null && hints !== undefined && undefined !== hints.get(DecodeHintType.TRY_HARDER);
-    /*@SuppressWarnings("unchecked")*/
+    /* @SuppressWarnings("unchecked") */
     const formats = hints === null || hints === undefined ? null : <BarcodeFormat[]>hints.get(DecodeHintType.POSSIBLE_FORMATS);
     const readers = new Array<Reader>();
     if (formats !== null && formats !== undefined) {
@@ -164,7 +164,7 @@ export default class MultiFormatReader implements Reader {
     this.readers = readers; // .toArray(new Reader[readers.size()])
   }
 
-  /*@Override*/
+  /* @Override */
   public reset(): void {
     if (this.readers !== null) {
       for (const reader of this.readers) {
@@ -175,7 +175,7 @@ export default class MultiFormatReader implements Reader {
 
   /**
    * @throws NotFoundException
-   */
+ */
   private decodeInternal(image: BinaryBitmap): Result {
 
     if (this.readers === null) {

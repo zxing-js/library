@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode.decoder;*/
+/* package com.google.zxing.qrcode.decoder; */
 
 import * as assert from 'assert';
 
@@ -33,12 +33,12 @@ describe('Version', () => {
     } catch (ex) {
       // good for IllegalArgumentException
     }
-    for (let i: number /*int*/ = 1; i <= 40; i++) {
+    for (let i: number /* int */ = 1; i <= 40; i++) {
       checkVersion(QRCodeVersion.getVersionForNumber(i), i, 4 * i + 17);
     }
   });
 
-  function checkVersion(version: QRCodeVersion, versionNumber: number /*int*/, dimension: number /*int*/): void {
+  function checkVersion(version: QRCodeVersion, versionNumber: number /* int */, dimension: number /* int */): void {
 
     assert.strictEqual(null !== version, true);
     assert.strictEqual(version.getVersionNumber(), versionNumber);
@@ -57,7 +57,7 @@ describe('Version', () => {
   }
 
   it('testGetProvisionalVersionForDimension', () => {
-    for (let i: number /*int*/ = 1; i <= 40; i++) {
+    for (let i: number /* int */ = 1; i <= 40; i++) {
       assert.strictEqual(QRCodeVersion.getProvisionalVersionForDimension(4 * i + 17).getVersionNumber(), i);
     }
   });
@@ -72,7 +72,7 @@ describe('Version', () => {
     doTestVersion(32, 0x209D5);
   });
 
-  function doTestVersion(expectedVersion: number /*int*/, mask: number /*int*/): void {
+  function doTestVersion(expectedVersion: number /* int */, mask: number /* int */): void {
     const version: QRCodeVersion = QRCodeVersion.decodeVersionInformation(mask);
     assert.strictEqual(null !== version, true);
     assert.strictEqual(version.getVersionNumber(), expectedVersion);

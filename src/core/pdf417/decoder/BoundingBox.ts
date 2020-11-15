@@ -27,17 +27,17 @@ import { int } from '../../../customTypings';
 /**
  * @author Guenther Grau
  */
-export default /*final*/ class BoundingBox {
+export default /* final */ class BoundingBox {
 
-  private /*final*/ image: BitMatrix;
-  private /*final*/ topLeft: ResultPoint;
-  private /*final*/ bottomLeft: ResultPoint;
-  private /*final*/ topRight: ResultPoint;
-  private /*final*/ bottomRight: ResultPoint;
-  private /*final*/ minX: int;
-  private /*final*/ maxX: int;
-  private /*final*/ minY: int;
-  private /*final*/ maxY: int;
+  private /* final */ image: BitMatrix;
+  private /* final */ topLeft: ResultPoint;
+  private /* final */ bottomLeft: ResultPoint;
+  private /* final */ topRight: ResultPoint;
+  private /* final */ bottomRight: ResultPoint;
+  private /* final */ minX: int;
+  private /* final */ maxX: int;
+  private /* final */ minY: int;
+  private /* final */ maxY: int;
 
   constructor(image: BitMatrix | BoundingBox,
     topLeft?: ResultPoint,
@@ -60,7 +60,7 @@ export default /*final*/ class BoundingBox {
    * @param bottomRight
    *
    * @throws NotFoundException
-   */
+ */
   private constructor_1(image: BitMatrix,
     topLeft: ResultPoint,
     bottomLeft: ResultPoint,
@@ -103,7 +103,7 @@ export default /*final*/ class BoundingBox {
 
   /**
    * @throws NotFoundException
-   */
+ */
   static merge(leftBox: BoundingBox, rightBox: BoundingBox): BoundingBox {
     if (leftBox == null) {
       return rightBox;
@@ -116,7 +116,7 @@ export default /*final*/ class BoundingBox {
 
   /**
    * @throws NotFoundException
-   */
+ */
   addMissingRows(missingStartRows: int, missingEndRows: int, isLeft: boolean): BoundingBox {
     let newTopLeft: ResultPoint = this.topLeft;
     let newBottomLeft: ResultPoint = this.bottomLeft;

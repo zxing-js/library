@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common {*/
+/* namespace com.google.zxing.common { */
 
 
 import IllegalArgumentException from '../IllegalArgumentException';
@@ -30,13 +30,13 @@ import IllegalArgumentException from '../IllegalArgumentException';
  */
 export default class BitSource {
 
-  private byteOffset: number; /*int*/
-  private bitOffset: number; /*int*/
+  private byteOffset: number; /* int */
+  private bitOffset: number; /* int */
 
   /**
    * @param bytes bytes from which this will read bits. Bits will be read from the first byte first.
    * Bits are read within a byte from most-significant to least-significant bit.
-   */
+ */
   public constructor(private bytes: Uint8Array) {
     this.byteOffset = 0;
     this.bitOffset = 0;
@@ -44,15 +44,15 @@ export default class BitSource {
 
   /**
    * @return index of next bit in current byte which would be read by the next call to {@link #readBits(int)}.
-   */
-  public getBitOffset(): number /*int*/ {
+ */
+  public getBitOffset(): number /* int */ {
     return this.bitOffset;
   }
 
   /**
    * @return index of next byte in input byte array which would be read by the next call to {@link #readBits(int)}.
-   */
-  public getByteOffset(): number /*int*/ {
+ */
+  public getByteOffset(): number /* int */ {
     return this.byteOffset;
   }
 
@@ -61,8 +61,8 @@ export default class BitSource {
    * @return int representing the bits read. The bits will appear as the least-significant
    *         bits of the int
    * @throws IllegalArgumentException if numBits isn't in [1,32] or more than is available
-   */
-  public readBits(numBits: number /*int*/): number /*int*/ {
+ */
+  public readBits(numBits: number /* int */): number /* int */ {
     if (numBits < 1 || numBits > 32 || numBits > this.available()) {
       throw new IllegalArgumentException('' + numBits);
     }
@@ -117,8 +117,8 @@ export default class BitSource {
 
   /**
    * @return number of bits that can be read successfully
-   */
-  public available(): number /*int*/ {
+ */
+  public available(): number /* int */ {
     return 8 * (this.bytes.length - this.byteOffset) - this.bitOffset;
   }
 

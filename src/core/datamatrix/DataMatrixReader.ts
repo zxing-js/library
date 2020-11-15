@@ -47,7 +47,7 @@ export default class DataMatrixReader implements Reader {
    * @throws NotFoundException if a Data Matrix code cannot be found
    * @throws FormatException if a Data Matrix code cannot be decoded
    * @throws ChecksumException if error correction fails
-   */
+ */
   // @Override
   // public Result decode(BinaryBitmap image) throws NotFoundException, ChecksumException, FormatException {
   //   return decode(image, null);
@@ -100,7 +100,7 @@ export default class DataMatrixReader implements Reader {
    * case.
    *
    * @see com.google.zxing.qrcode.QRCodeReader#extractPureBits(BitMatrix)
-   */
+ */
   private static extractPureBits(image: BitMatrix): BitMatrix {
 
     const leftTopBlack = image.getTopLeftOnBit();

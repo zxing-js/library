@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.oned {*/
+/* namespace com.google.zxing.oned { */
 
 import BinaryBitmap from '../BinaryBitmap';
 import BitArray from '../common/BitArray';
@@ -40,7 +40,7 @@ export default abstract class OneDReader implements Reader {
   public Result decode(BinaryBitmap image) throws NotFoundException, FormatException {
     return decode(image, null);
   }
-  */
+ */
 
   // Note that we don't try rotation without the try harder flag, even if rotation was supported.
   // @Override
@@ -94,7 +94,7 @@ export default abstract class OneDReader implements Reader {
    * @param hints Any hints that were requested
    * @return The contents of the decoded barcode
    * @throws NotFoundException Any spontaneous errors which occur
-   */
+ */
   private doDecode(image: BinaryBitmap, hints?: Map<DecodeHintType, any>): Result {
     const width = image.getWidth();
     const height = image.getHeight();
@@ -123,7 +123,9 @@ export default abstract class OneDReader implements Reader {
       // Estimate black point for this row and load it:
       try {
         row = image.getBlackRow(rowNumber, row);
-      } catch (ignored) { continue; }
+      } catch (ignored) {
+        continue;
+      }
 
       // While we have the image data in a BitArray, it's fairly cheap to reverse it in place to
       // handle decoding upside down barcodes.
@@ -179,7 +181,7 @@ export default abstract class OneDReader implements Reader {
    * @param counters array into which to record counts
    * @throws NotFoundException if counters cannot be filled entirely from row before running out
    *  of pixels
-   */
+ */
   protected static recordPattern(row: BitArray, start: number, counters: Int32Array): void {
     const numCounters = counters.length;
     for (let index = 0; index < numCounters; index++)
@@ -240,7 +242,7 @@ export default abstract class OneDReader implements Reader {
    * @param pattern expected pattern
    * @param maxIndividualVariance The most any counter can differ before we give up
    * @return ratio of total variance between counters and pattern compared to total pattern size
-   */
+ */
   protected static patternMatchVariance(counters: Int32Array, pattern: Int32Array, maxIndividualVariance: number): number {
     const numCounters = counters.length;
     let total = 0;
@@ -282,6 +284,6 @@ export default abstract class OneDReader implements Reader {
    * @throws NotFoundException if no potential barcode is found
    * @throws ChecksumException if a potential barcode is found but does not pass its checksum
    * @throws FormatException if a potential barcode is found but format is invalid
-   */
+ */
   public abstract decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result;
 }

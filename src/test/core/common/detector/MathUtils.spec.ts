@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.common.detector;*/
+/* package com.google.zxing.common.detector; */
 
 import * as assert from 'assert';
 import { MathUtils } from '@zxing/library';
 
 describe('MathUtils', () => {
 
-  const EPSILON: number /*float*/ = 1.0E-8;
+  const EPSILON: number /* float */ = 1.0E-8;
 
   it('testRound', () => {
     assert.strictEqual(MathUtils.round(-1.0), -1);
@@ -48,10 +48,10 @@ describe('MathUtils', () => {
   });
 
   it('testDistance', () => {
-    assert.strictEqual(Math.abs(MathUtils.distance(1.0, 2.0, 3.0, 4.0) - /*(float) */Math.sqrt(8.0)) < EPSILON, true);
+    assert.strictEqual(Math.abs(MathUtils.distance(1.0, 2.0, 3.0, 4.0) - /* (float) */Math.sqrt(8.0)) < EPSILON, true);
     assert.strictEqual(Math.abs(MathUtils.distance(1.0, 2.0, 1.0, 2.0) - 0.0) < EPSILON, true);
 
-    assert.strictEqual(Math.abs(MathUtils.distance(1, 2, 3, 4) - /*(float) */Math.sqrt(8.0)) < EPSILON, true);
+    assert.strictEqual(Math.abs(MathUtils.distance(1, 2, 3, 4) - /* (float) */Math.sqrt(8.0)) < EPSILON, true);
     assert.strictEqual(Math.abs(MathUtils.distance(1, 2, 1, 2) - 0.0) < EPSILON, true);
   });
 

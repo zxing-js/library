@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common {*/
+/* namespace com.google.zxing.common { */
 
 /**
  * <p>This class implements a perspective transform in two dimensions. Given four source and four
@@ -25,19 +25,19 @@
  */
 export default class PerspectiveTransform {
 
-  private constructor(private a11: number/*float*/, private a21: number/*float*/, private a31: number/*float*/,
-    private a12: number/*float*/, private a22: number/*float*/, private a32: number/*float*/,
-    private a13: number/*float*/, private a23: number/*float*/, private a33: number/*float*/) { }
+  private constructor(private a11: number/* float */, private a21: number/* float */, private a31: number/* float */,
+    private a12: number/* float */, private a22: number/* float */, private a32: number/* float */,
+    private a13: number/* float */, private a23: number/* float */, private a33: number/* float */) { }
 
   public static quadrilateralToQuadrilateral(
-    x0: number/*float*/, y0: number/*float*/,
-    x1: number/*float*/, y1: number/*float*/,
-    x2: number/*float*/, y2: number/*float*/,
-    x3: number/*float*/, y3: number/*float*/,
-    x0p: number/*float*/, y0p: number/*float*/,
-    x1p: number/*float*/, y1p: number/*float*/,
-    x2p: number/*float*/, y2p: number/*float*/,
-    x3p: number/*float*/, y3p: number/*float*/
+    x0: number/* float */, y0: number/* float */,
+    x1: number/* float */, y1: number/* float */,
+    x2: number/* float */, y2: number/* float */,
+    x3: number/* float */, y3: number/* float */,
+    x0p: number/* float */, y0p: number/* float */,
+    x1p: number/* float */, y1p: number/* float */,
+    x2p: number/* float */, y2p: number/* float */,
+    x3p: number/* float */, y3p: number/* float */
   ): PerspectiveTransform {
 
     const qToS = PerspectiveTransform.quadrilateralToSquare(x0, y0, x1, y1, x2, y2, x3, y3);
@@ -94,10 +94,10 @@ export default class PerspectiveTransform {
   }
 
   public static squareToQuadrilateral(
-    x0: number/*float*/, y0: number/*float*/,
-    x1: number/*float*/, y1: number/*float*/,
-    x2: number/*float*/, y2: number/*float*/,
-    x3: number/*float*/, y3: number/*float*/
+    x0: number/* float */, y0: number/* float */,
+    x1: number/* float */, y1: number/* float */,
+    x2: number/* float */, y2: number/* float */,
+    x3: number/* float */, y3: number/* float */
   ): PerspectiveTransform {
 
     const dx3 = x0 - x1 + x2 - x3;
@@ -128,10 +128,10 @@ export default class PerspectiveTransform {
   }
 
   public static quadrilateralToSquare(
-    x0: number/*float*/, y0: number/*float*/,
-    x1: number/*float*/, y1: number/*float*/,
-    x2: number/*float*/, y2: number/*float*/,
-    x3: number/*float*/, y3: number/*float*/
+    x0: number/* float */, y0: number/* float */,
+    x1: number/* float */, y1: number/* float */,
+    x2: number/* float */, y2: number/* float */,
+    x3: number/* float */, y3: number/* float */
   ): PerspectiveTransform {
     // Here, the adjoint serves as the inverse:
     return PerspectiveTransform.squareToQuadrilateral(x0, y0, x1, y1, x2, y2, x3, y3).buildAdjoint();

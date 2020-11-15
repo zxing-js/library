@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.qrcode {*/
+/* namespace com.google.zxing.qrcode { */
 
 import BarcodeFormat from '../BarcodeFormat';
 import EncodeHintType from '../EncodeHintType';
@@ -27,7 +27,7 @@ import QRCode from './encoder/QRCode';
 import IllegalArgumentException from '../IllegalArgumentException';
 import IllegalStateException from '../IllegalStateException';
 
-/*import java.util.Map;*/
+/* import java.util.Map; */
 
 /**
  * This object renders a QR Code as a BitMatrix 2D array of greyscale values.
@@ -38,19 +38,19 @@ export default class QRCodeWriter implements Writer {
 
   private static QUIET_ZONE_SIZE = 4;
 
-  /*@Override*/
-  // public encode(contents: string, format: BarcodeFormat, width: number /*int*/, height: number /*int*/): BitMatrix
+  /* @Override */
+  // public encode(contents: string, format: BarcodeFormat, width: number /*int */, height: number /*int */): BitMatrix
   //     /*throws WriterException */ {
 
   //   return encode(contents, format, width, height, null)
   // }
 
-  /*@Override*/
+  /* @Override */
   public encode(contents: string,
     format: BarcodeFormat,
-    width: number /*int*/,
-    height: number /*int*/,
-    hints: Map<EncodeHintType, any>): BitMatrix /*throws WriterException */ {
+    width: number /* int */,
+    height: number /* int */,
+    hints: Map<EncodeHintType, any>): BitMatrix /* throws WriterException */ {
 
     if (contents.length === 0) {
       throw new IllegalArgumentException('Found empty contents');
@@ -81,7 +81,7 @@ export default class QRCodeWriter implements Writer {
 
   // Note that the input matrix uses 0 == white, 1 == black, while the output matrix uses
   // 0 == black, 255 == white (i.e. an 8 bit greyscale bitmap).
-  private static renderResult(code: QRCode, width: number /*int*/, height: number /*int*/, quietZone: number /*int*/): BitMatrix {
+  private static renderResult(code: QRCode, width: number /* int */, height: number /* int */, quietZone: number /* int */): BitMatrix {
     const input = code.getMatrix();
     if (input === null) {
       throw new IllegalStateException();

@@ -44,7 +44,7 @@ export default class Detector {
    *
    * @return {@link DetectorResult} encapsulating results of detecting a Data Matrix Code
    * @throws NotFoundException if no Data Matrix Code can be found
-   */
+ */
   public detect(): DetectorResult {
 
 
@@ -115,7 +115,7 @@ export default class Detector {
 
   /**
    * Detect a solid side which has minimum transition.
-   */
+ */
   private detectSolid1(cornerPoints: ResultPoint[]): ResultPoint[] {
     // 0  2
     // 1  3
@@ -160,7 +160,7 @@ export default class Detector {
 
   /**
    * Detect a second solid side next to first solid side.
-   */
+ */
   private detectSolid2(points: ResultPoint[]): ResultPoint[] {
     // A..D
     // :  :
@@ -200,7 +200,7 @@ export default class Detector {
 
   /**
    * Calculates the corner position of the white top right module.
-   */
+ */
   private correctTopRight(points: ResultPoint[]): ResultPoint {
     // A..D
     // |  :
@@ -248,7 +248,7 @@ export default class Detector {
 
   /**
    * Shift the edge points to the module center.
-   */
+ */
   private shiftToModuleCenter(points: ResultPoint[]): ResultPoint[] {
     // A..D
     // |  :
@@ -338,7 +338,7 @@ export default class Detector {
 
   /**
    * Counts the number of black/white transitions between two points, using something like Bresenham's algorithm.
-   */
+ */
   private transitionsBetween(from: ResultPoint, to: ResultPoint): int {
     // See QR Code Detector, sizeOfBlackWhiteBlackRun()
     let fromX = Math.trunc(from.getX());

@@ -7,13 +7,13 @@ export default class Exception extends CustomError {
 
   /**
    * It's typed as string so it can be extended and overriden.
-   */
+ */
   static readonly kind: string = 'Exception';
 
   /**
    * Allows Exception to be constructed directly
    * with some message and prototype definition.
-   */
+ */
   constructor(
     public message: string = undefined
   ) {

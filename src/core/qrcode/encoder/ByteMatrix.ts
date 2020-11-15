@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.qrcode.encoder {*/
+/* namespace com.google.zxing.qrcode.encoder { */
 
-/*import java.util.Arrays;*/
+/* import java.util.Arrays; */
 
 import Arrays from '../../util/Arrays';
 import StringBuilder from '../../util/StringBuilder';
@@ -31,7 +31,7 @@ export default class ByteMatrix {
 
   private bytes: Array<Uint8Array>;
 
-  public constructor(private width: number /*int*/, private height: number /*int*/) {
+  public constructor(private width: number /* int */, private height: number /* int */) {
     const bytes = new Array<Uint8Array>(height); // [height][width]
     for (let i = 0; i !== height; i++) {
       bytes[i] = new Uint8Array(width);
@@ -39,39 +39,39 @@ export default class ByteMatrix {
     this.bytes = bytes;
   }
 
-  public getHeight(): number /*int*/ {
+  public getHeight(): number /* int */ {
     return this.height;
   }
 
-  public getWidth(): number /*int*/ {
+  public getWidth(): number /* int */ {
     return this.width;
   }
 
-  public get(x: number /*int*/, y: number /*int*/): number/*byte*/ {
+  public get(x: number /* int */, y: number /* int */): number/* byte */ {
     return this.bytes[y][x];
   }
 
   /**
    * @return an internal representation as bytes, in row-major order. array[y][x] represents point (x,y)
-   */
+ */
   public getArray(): Array<Uint8Array> {
     return this.bytes;
   }
 
   // TYPESCRIPTPORT: preffer to let two methods instead of override to avoid type comparison inside
-  public setNumber(x: number /*int*/, y: number /*int*/, value: number/*byte|int*/): void {
+  public setNumber(x: number /* int */, y: number /* int */, value: number/* byte|int */): void {
     this.bytes[y][x] = value;
   }
 
-  // public set(x: number /*int*/, y: number /*int*/, value: number /*int*/): void {
+  // public set(x: number /*int */, y: number /*int */, value: number /*int */): void {
   //   bytes[y][x] = (byte) value
   // }
 
-  public setBoolean(x: number /*int*/, y: number /*int*/, value: boolean): void {
-    this.bytes[y][x] = /*(byte) */(value ? 1 : 0);
+  public setBoolean(x: number /* int */, y: number /* int */, value: boolean): void {
+    this.bytes[y][x] = /* (byte) */(value ? 1 : 0);
   }
 
-  public clear(value: number/*byte*/): void {
+  public clear(value: number/* byte */): void {
     for (const aByte of this.bytes) {
       Arrays.fill(aByte, value);
     }
@@ -100,7 +100,7 @@ export default class ByteMatrix {
     return true;
   }
 
-  /*@Override*/
+  /* @Override */
   public toString(): string {
     const result = new StringBuilder(); // (2 * width * height + 2)
     for (let y = 0, height = this.height; y < height; ++y) {

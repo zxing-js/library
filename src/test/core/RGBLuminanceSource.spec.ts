@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing;*/
+/* package com.google.zxing; */
 
 import * as assert from 'assert';
 import AssertUtils from './util/AssertUtils';

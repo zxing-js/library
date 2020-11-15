@@ -29,10 +29,10 @@ import { int } from '../../../customTypings';
  */
 export default class DetectionResultColumn {
 
-  private static /*final*/ MAX_NEARBY_DISTANCE: int = 5;
+  private static /* final */ MAX_NEARBY_DISTANCE: int = 5;
 
-  private /*final*/ boundingBox: BoundingBox;
-  private /*final*/ codewords: Codeword[];
+  private /* final */ boundingBox: BoundingBox;
+  private /* final */ codewords: Codeword[];
 
   constructor(boundingBox: BoundingBox) {
     this.boundingBox = new BoundingBox(boundingBox);
@@ -40,7 +40,7 @@ export default class DetectionResultColumn {
     this.codewords = new Array<Codeword>(boundingBox.getMaxY() - boundingBox.getMinY() + 1);
   }
 
-    /*final*/  getCodewordNearby(imageRow: int): Codeword {
+  /* final */  getCodewordNearby(imageRow: int): Codeword {
     let codeword = this.getCodeword(imageRow);
     if (codeword != null) {
       return codeword;
@@ -64,23 +64,23 @@ export default class DetectionResultColumn {
     return null;
   }
 
-    /*final int*/ imageRowToCodewordIndex(imageRow: int): int {
+  /* final int */ imageRowToCodewordIndex(imageRow: int): int {
     return imageRow - this.boundingBox.getMinY();
   }
 
-    /*final void*/ setCodeword(imageRow: int, codeword: Codeword): void {
+  /* final void */ setCodeword(imageRow: int, codeword: Codeword): void {
     this.codewords[this.imageRowToCodewordIndex(imageRow)] = codeword;
   }
 
-/*final*/ getCodeword(imageRow: int): Codeword {
+  /* final */ getCodeword(imageRow: int): Codeword {
     return this.codewords[this.imageRowToCodewordIndex(imageRow)];
   }
 
-/*final*/ getBoundingBox(): BoundingBox {
+  /* final */ getBoundingBox(): BoundingBox {
     return this.boundingBox;
   }
 
-/*final*/ getCodewords(): Codeword[] {
+  /* final */ getCodewords(): Codeword[] {
     return this.codewords;
   }
 

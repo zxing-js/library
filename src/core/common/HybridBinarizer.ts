@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common {*/
+/* namespace com.google.zxing.common { */
 
 import Binarizer from '../Binarizer';
 import LuminanceSource from '../LuminanceSource';
@@ -58,9 +58,9 @@ export default class HybridBinarizer extends GlobalHistogramBinarizer {
    * Calculates the final BitMatrix once for all requests. This could be called once from the
    * constructor instead, but there are some advantages to doing it lazily, such as making
    * profiling easier, and not doing heavy lifting when callers don't expect it.
-   */
-  /*@Override*/
-  public getBlackMatrix(): BitMatrix /*throws NotFoundException*/ {
+ */
+  /* @Override */
+  public getBlackMatrix(): BitMatrix /* throws NotFoundException */ {
     if (this.matrix !== null) {
       return this.matrix;
     }
@@ -89,7 +89,7 @@ export default class HybridBinarizer extends GlobalHistogramBinarizer {
     return this.matrix;
   }
 
-  /*@Override*/
+  /* @Override */
   public createBinarizer(source: LuminanceSource): Binarizer {
     return new HybridBinarizer(source);
   }
@@ -98,12 +98,12 @@ export default class HybridBinarizer extends GlobalHistogramBinarizer {
    * For each block in the image, calculate the average black point using a 5x5 grid
    * of the blocks around it. Also handles the corner cases (fractional blocks are computed based
    * on the last pixels in the row/column which are also used in the previous block).
-   */
+ */
   private static calculateThresholdForBlock(luminances: Uint8ClampedArray,
-    subWidth: number /*int*/,
-    subHeight: number /*int*/,
-    width: number /*int*/,
-    height: number /*int*/,
+    subWidth: number /* int */,
+    subHeight: number /* int */,
+    width: number /* int */,
+    height: number /* int */,
     blackPoints: Int32Array[],
     matrix: BitMatrix): void {
     const maxYOffset = height - HybridBinarizer.BLOCK_SIZE;
@@ -131,18 +131,18 @@ export default class HybridBinarizer extends GlobalHistogramBinarizer {
     }
   }
 
-  private static cap(value: number /*int*/, min: number /*int*/, max: number /*int*/): number /*int*/ {
+  private static cap(value: number /* int */, min: number /* int */, max: number /* int */): number /* int */ {
     return value < min ? min : value > max ? max : value;
   }
 
   /**
    * Applies a single threshold to a block of pixels.
-   */
+ */
   private static thresholdBlock(luminances: Uint8ClampedArray,
-    xoffset: number /*int*/,
-    yoffset: number /*int*/,
-    threshold: number /*int*/,
-    stride: number /*int*/,
+    xoffset: number /* int */,
+    yoffset: number /* int */,
+    threshold: number /* int */,
+    stride: number /* int */,
     matrix: BitMatrix): void {
     for (let y = 0, offset = yoffset * stride + xoffset; y < HybridBinarizer.BLOCK_SIZE; y++, offset += stride) {
       for (let x = 0; x < HybridBinarizer.BLOCK_SIZE; x++) {
@@ -158,12 +158,12 @@ export default class HybridBinarizer extends GlobalHistogramBinarizer {
    * Calculates a single black point for each block of pixels and saves it away.
    * See the following thread for a discussion of this algorithm:
    *  http://groups.google.com/group/zxing/browse_thread/thread/d06efa2c35a7ddc0
-   */
+ */
   private static calculateBlackPoints(luminances: Uint8ClampedArray,
-    subWidth: number /*int*/,
-    subHeight: number /*int*/,
-    width: number /*int*/,
-    height: number /*int*/): Int32Array[] {
+    subWidth: number /* int */,
+    subHeight: number /* int */,
+    width: number /* int */,
+    height: number /* int */): Int32Array[] {
     const maxYOffset = height - HybridBinarizer.BLOCK_SIZE;
     const maxXOffset = width - HybridBinarizer.BLOCK_SIZE;
     // tslint:disable-next-line:whitespace

@@ -46,7 +46,7 @@ export default class AztecReader implements Reader {
    * @return a String representing the content encoded by the Data Matrix code
    * @throws NotFoundException if a Data Matrix code cannot be found
    * @throws FormatException if a Data Matrix code cannot be decoded
-   */
+ */
   public decode(image: BinaryBitmap, hints: Map<DecodeHintType, any> | null = null): Result {
 
     let exception: Exception = null;
