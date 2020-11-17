@@ -40,35 +40,35 @@
   },
   "homepage": "https://zxing-js.github.io/library/",
   "private": false,
-  "main": "./cjs/index.js",
-  "module": "./esm/index.js",
-  "typings": "./esm/index.d.ts",
-  "esnext": "./es2015/index.js",
-  "browser": "./umd/index.js",
-  "browser:min": "./umd/index.min.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "browser": "dist/index.umd.min.js",
+  "unpkg": "dist/index.umd.min.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "lint": "yarn eslint src --ext .js,.ts",
     "clean": "yarn shx rm -rf dist output",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "yarn type-check -- --watch",
+    "build": "yarn clean && rollup -c",
+    "build:umd:min": "gzip index.min.js -c > index.min.js.gz",
     "test": "yarn test:build && yarn test:run",
     "test:build": "tsc --build tsconfig.test.json",
     "test:run": "mocha -r tsconfig-paths/register --timeout 200000 output/tests/**/*.spec.js",
     "cover": "nyc --reporter=lcov --reporter=text yarn test",
-    "build": "yarn clean && yarn build:es2015 && yarn build:esm && yarn build:cjs && yarn build:umd && yarn build:umd:min && yarn build:copy",
-    "build:es2015": "tsc --build tsconfig.lib-es2015.json",
-    "build:esm": "tsc --build tsconfig.lib-esm.json",
-    "build:cjs": "tsc --build tsconfig.lib-cjs.json",
-    "build:umd": "rollup -c rollup.config.js",
-    "build:umd:min": "cd dist/umd && terser --compress --mangle --source-map --screw-ie8 --comments -o index.min.js -- index.js && gzip index.min.js -c > index.min.js.gz",
-    "build:copy": "cp README.md dist && cp package.json dist && cp LICENSE dist",
-    "shx": "./node_modules/.bin/shx",
-    "tsc": "./node_modules/.bin/tsc"
+    "shx": "./node_modules/.bin/shx"
   },
   "dependencies": {
     "ts-custom-error": "^3.2.0"
   },
   "devDependencies": {
+    "@rollup/plugin-babel": "^5.2.1",
+    "@rollup/plugin-commonjs": "^16.0.0",
     "@rollup/plugin-node-resolve": "^10.0.0",
-    "@types/chai": "^4.2.14",
+    "@rollup/plugin-typescript": "^6.1.0",
     "@types/mocha": "^8.0.4",
     "@types/node": "^14.14.7",
     "@types/seedrandom": "^2.4.28",
@@ -90,7 +90,7 @@
     "terser": "^5.3.8",
     "ts-node": "^9.0.0",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^4",
+    "typescript": "^4.0.5",
     "yarn": "^1.22.10"
   },
   "optionalDependencies": {
