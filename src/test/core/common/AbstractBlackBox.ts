@@ -18,6 +18,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
+import * as log from 'loglevel';
 import { assertEquals } from '../util/AssertUtils';
 import SharpImage from '../util/SharpImage';
 import SharpImageLuminanceSource from '../SharpImageLuminanceSource';
@@ -131,7 +132,7 @@ abstract class AbstractBlackBoxSpec {
     }
 
     if (results.length === 0) {
-      console.log(`No files in folder ${dir}`);
+      log.info(`No files in folder ${dir}`);
     }
 
     return results;
@@ -160,9 +161,9 @@ abstract class AbstractBlackBoxSpec {
   public async testBlackBox(): Promise<void> {
     try {
       await this.testBlackBoxCountingResults(true);
-      console.log('testBlackBox finished.');
+      log.info('testBlackBox finished.');
     } catch (e) {
-      console.log('Test ended with error: ', e);
+      log.error('Test ended with error: ', e);
       throw e;
     }
   }
@@ -189,7 +190,7 @@ abstract class AbstractBlackBoxSpec {
       // and run tests in parallel
       testImageIterations.push(new Promise(async resolve => {
 
-        console.log(`    Starting ${testImage}`);
+        let debug = `    Decoding ${path.relative(process.cwd(), testImage)} with rotations:\n`;
         const fileBaseName: string = path.basename(testImage, path.extname(testImage));
         let expectedTextFile: string = path.resolve(this.testBase, fileBaseName + '.txt');
         let expectedText: string;
@@ -215,28 +216,36 @@ abstract class AbstractBlackBoxSpec {
           // we run this in a separated scope so we can iterate faster
           // and run tests in parallel
           decodeIterations.push(new Promise(async resolve => {
-
             const rotation: number /* float */ = this.testResults[x].getRotation();
             const rotatedImage = await SharpImage.loadWithRotation(testImage, rotation);
             const source: LuminanceSource = new SharpImageLuminanceSource(rotatedImage);
             const bitmap = new BinaryBitmap(new HybridBinarizer(source));
+            const truncated = AbstractBlackBoxSpec.truncate(expectedText, 32);
+            let succeeded = false;
             try {
+              debug += `      ${rotation.toString().padStart(3, ' ')}: `;
               if (this.decode(bitmap, rotation, expectedText, expectedMetadata, false)) {
+                debug += `successfully decoded '${truncated}'`;
                 passedCounts[x]++;
+                succeeded = true;
               } else {
+                debug += 'decoded incorrectly';
                 misreadCounts[x]++;
               }
             } catch (e) {
-              console.log(`      could not read at rotation ${rotation} failed with ${e.constructor.name}. Message: ${e.message}`);
+              debug += `failed with '${e.constructor.name}'`;
             }
             try {
               if (this.decode(bitmap, rotation, expectedText, expectedMetadata, true)) {
+                debug += `${succeeded ? ' and':', but'} try harder successfully decoded '${truncated}'.\n`;
                 tryHarderCounts[x]++;
+                succeeded = true;
               } else {
+                debug += ' and try harder also decoded incorrectly.\n';
                 tryHarderMisreadCounts[x]++;
               }
             } catch (e) {
-              console.log(`        could not read at rotation ${rotation} w/TH failed with ${e.constructor.name}.`);
+              debug += ` and try harder also failed with '${e.constructor.name}'.\n`;
             }
 
             resolve();
@@ -244,6 +253,8 @@ abstract class AbstractBlackBoxSpec {
         }
 
         await Promise.all(decodeIterations);
+
+        log.info(debug);
 
         resolve();
       }));
@@ -260,13 +271,13 @@ abstract class AbstractBlackBoxSpec {
 
     for (let x: number /* int */ = 0, length = this.testResults.length; x < length; x++) {
       const testResult: TestResult = this.testResults[x];
-      console.log(`\n      Rotation ${testResult.getRotation()} degrees:`);
-      console.log(`        ${passedCounts[x]} of ${imageFiles.length} images passed (${testResult.getMustPassCount()} required)`);
+      log.info(`\n      Rotation ${testResult.getRotation()} degrees:`);
+      log.info(`        ${passedCounts[x]} of ${imageFiles.length} images passed (${testResult.getMustPassCount()} required)`);
       let failed: number /* int */ = imageFiles.length - passedCounts[x];
-      console.log(`        ${misreadCounts[x]} failed due to misreads, ${failed - misreadCounts[x]} not detected`);
-      console.log(`        ${tryHarderCounts[x]} of ${imageFiles.length} images passed with try harder (${testResult.getTryHarderCount()} required)`);
+      log.info(`        ${misreadCounts[x]} failed due to misreads, ${failed - misreadCounts[x]} not detected`);
+      log.info(`        ${tryHarderCounts[x]} of ${imageFiles.length} images passed with try harder (${testResult.getTryHarderCount()} required)`);
       failed = imageFiles.length - tryHarderCounts[x];
-      console.log(`        ${tryHarderMisreadCounts[x]} failed due to misreads, ${failed - tryHarderMisreadCounts[x]} not detected`);
+      log.info(`        ${tryHarderMisreadCounts[x]} failed due to misreads, ${failed - tryHarderMisreadCounts[x]} not detected`);
       totalFound += passedCounts[x] + tryHarderCounts[x];
       totalMustPass += testResult.getMustPassCount() + testResult.getTryHarderCount();
       totalMisread += misreadCounts[x] + tryHarderMisreadCounts[x];
@@ -275,18 +286,18 @@ abstract class AbstractBlackBoxSpec {
 
     const totalTests: number /* int */ = imageFiles.length * testCount * 2;
 
-    console.log(`    Decoded ${totalFound} images out of ${totalTests} (${totalFound * 100 / totalTests}%, ${totalMustPass} required)`);
+    log.info(`    Decoded ${totalFound} images out of ${totalTests} (${totalFound * 100 / totalTests}%, ${totalMustPass} required)`);
 
     if (totalFound > totalMustPass) {
-      console.warn(`  +++ Test too lax by ${totalFound - totalMustPass} images`);
+      log.warn(`  +++ Test too lax by ${totalFound - totalMustPass} images`);
     } else if (totalFound < totalMustPass) {
-      console.error(`  --- Test failed by ${totalMustPass - totalFound} images`);
+      log.error(`  --- Test failed by ${totalMustPass - totalFound} images`);
     }
 
     if (totalMisread < totalMaxMisread) {
-      console.warn(`  +++ Test expects too many misreads by ${totalMaxMisread - totalMisread} images`);
+      log.warn(`  +++ Test expects too many misreads by ${totalMaxMisread - totalMisread} images`);
     } else if (totalMisread > totalMaxMisread) {
-      console.error(`  --- Test had too many misreads by ${totalMisread - totalMaxMisread} images`);
+      log.error(`  --- Test had too many misreads by ${totalMisread - totalMaxMisread} images`);
     }
 
     // Then run through again and assert if any failed.
@@ -340,7 +351,7 @@ abstract class AbstractBlackBoxSpec {
     const resultFormat = result.getBarcodeFormat();
 
     if (this.expectedFormat !== resultFormat) {
-      console.warn(`Format mismatch: expected '${this.expectedFormat}' but got '${resultFormat}'${suffix}`);
+      log.warn(`Format mismatch: expected '${this.expectedFormat}' but got '${resultFormat}'${suffix}`);
       return false;
     }
 
@@ -352,7 +363,7 @@ abstract class AbstractBlackBoxSpec {
     if (expectedTextR !== resultTextR) {
       const expectedTextHexCodes = AbstractBlackBoxSpec.toDebugHexStringCodes(expectedTextR);
       const resultTextHexCodes = AbstractBlackBoxSpec.toDebugHexStringCodes(resultTextR);
-      console.warn(`Content mismatch: expected '${expectedTextR}' (${expectedTextHexCodes}) but got '${resultTextR}'${suffix} (${resultTextHexCodes})`);
+      log.warn(`Content mismatch: expected '${expectedTextR}' (${expectedTextHexCodes}) but got '${resultTextR}'${suffix} (${resultTextHexCodes})`);
       return false;
     }
 
@@ -364,7 +375,7 @@ abstract class AbstractBlackBoxSpec {
         const keyType: ResultMetadataType = AbstractBlackBoxSpec.valueOfResultMetadataTypeFromString(key);
         const actualValue: Object = resultMetadata === null ? undefined : resultMetadata.get(keyType);
         if (expectedValue !== actualValue) {
-          console.warn(`Metadata mismatch for key '${key}': expected '${expectedValue}' but got '${actualValue}'`);
+          log.warn(`Metadata mismatch for key '${key}': expected '${expectedValue}' but got '${actualValue}'`);
           return false;
         }
       }
@@ -372,6 +383,11 @@ abstract class AbstractBlackBoxSpec {
 
     return true;
   }
+
+  private static truncate(text: string, n: number){
+    text = text.replace(/(?:\r\n|\r|\n)/g, ' ');
+    return (text.length > n) ? text.substr(0, n-1) + '\u2026' : text;
+  };
 
   private static toDebugHexStringCodes(text: string): string {
     let r = '';
@@ -405,7 +421,7 @@ abstract class AbstractBlackBoxSpec {
   protected static readTextFileAsString(file: string): string {
     const stringContents: string = fs.readFileSync(file, { encoding: 'utf8' });
     if (stringContents.endsWith('\n')) {
-      console.warn('contents: string of file ' + file + ' end with a newline. ' +
+      log.warn('contents: string of file ' + file + ' end with a newline. ' +
         'This may not be intended and cause a test failure');
     }
     return stringContents;
@@ -418,7 +434,7 @@ abstract class AbstractBlackBoxSpec {
     const bufferContents: Buffer = fs.readFileSync(file);
     const stringContents = ZXingStringEncoding.decode(new Uint8Array(bufferContents), 'iso-8859-1');
     if (stringContents.endsWith('\n')) {
-      console.warn('contents: string of file ' + file + ' end with a newline. ' +
+      log.warn('contents: string of file ' + file + ' end with a newline. ' +
         'This may not be intended and cause a test failure');
     }
     return stringContents;
