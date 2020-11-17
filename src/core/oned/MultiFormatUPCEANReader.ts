@@ -26,7 +26,7 @@ import EAN8Reader from './EAN8Reader';
 import UPCAReader from './UPCAReader';
 import NotFoundException from '../NotFoundException';
 import UPCEReader from './UPCEReader';
-import { Collection } from 'src/customTypings';
+import { Collection } from 'customTypings';
 
 /**
  * <p>A reader that can read all available UPC/EAN formats. If a caller wants to try to

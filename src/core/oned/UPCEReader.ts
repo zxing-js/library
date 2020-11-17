@@ -19,7 +19,7 @@ import BitArray from '../common/BitArray';
 import StringBuilder from '../util/StringBuilder';
 import NotFoundException from '../NotFoundException';
 import BarcodeFormat from '../BarcodeFormat';
-import { int, char } from 'src/customTypings';
+import { int, char } from 'customTypings';
 
 // package com.google.zxing.oned;
 

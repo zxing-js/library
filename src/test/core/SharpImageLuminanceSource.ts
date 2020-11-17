@@ -22,10 +22,8 @@
 /* import java.awt.image.BufferedImage; */
 /* import java.awt.image.WritableRaster; */
 
+import { IllegalArgumentException, InvertedLuminanceSource, LuminanceSource } from '@zxing/library';
 import SharpImage from './util/SharpImage';
-import { LuminanceSource } from '@zxing/library';
-import { InvertedLuminanceSource } from '@zxing/library';
-import { IllegalArgumentException } from '@zxing/library';
 
 /**
  * This LuminanceSource implementation is meant for J2SE clients and our blackbox unit tests.

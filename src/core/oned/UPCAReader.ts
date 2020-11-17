@@ -29,7 +29,7 @@ import NotFoundException from '../NotFoundException';
 
 import EAN13Reader from './EAN13Reader';
 import UPCEANReader from './UPCEANReader';
-import { int } from 'src/customTypings';
+import { int } from 'customTypings';
 
 /**
  * Encapsulates functionality and implementation that is common to all families
