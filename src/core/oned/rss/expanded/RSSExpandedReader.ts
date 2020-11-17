@@ -104,7 +104,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
       return RSSExpandedReader.constructResult(this.decodeRow2pairs(rowNumber, row));
     } catch (e) {
       // OK
-      console.log(e);
+      //console.log(e);
     }
 
     this.pairs.length = 0;
