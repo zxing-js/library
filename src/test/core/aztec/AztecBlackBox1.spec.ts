@@ -26,7 +26,7 @@ import { AztecCodeReader } from '@zxing/library';
 /**
  * @author David Olivier
  */
-export /*public final*/ class AztecBlackBox1TestCase extends AbstractBlackBoxSpec {
+export /* public final */ class AztecBlackBox1TestCase extends AbstractBlackBoxSpec {
 
   public constructor() {
     super('src/test/resources/blackbox/aztec-1', new AztecCodeReader(), BarcodeFormat.AZTEC);
@@ -39,8 +39,8 @@ export /*public final*/ class AztecBlackBox1TestCase extends AbstractBlackBoxSpe
 }
 
 describe('AztecBlackBox.1', () => {
-    it('testBlackBox', async () => {
-        const test = new AztecBlackBox1TestCase();
-        await test.testBlackBox();
-    });
+  it('testBlackBox', async () => {
+    const test = new AztecBlackBox1TestCase();
+    await test.testBlackBox();
+  });
 });

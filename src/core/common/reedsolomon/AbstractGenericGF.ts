@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common.reedsolomon {*/
+/* namespace com.google.zxing.common.reedsolomon { */
 
 // import GenericGFPoly from './GenericGFPoly';
 
@@ -39,24 +39,24 @@ export default abstract class AbstractGenericGF {
 
   public abstract getZero(): any; // GenericGFPoly
   public abstract buildMonomial(
-    degree: number /*int*/,
-    coefficient: number /*int*/
+    degree: number /* int */,
+    coefficient: number /* int */
   ): any; // GenericGFPoly
   public abstract equals(o: Object): boolean;
-  public abstract multiply(a: number /*int*/, b: number /*int*/): number;
-  public abstract inverse(a: number /*int*/): number;
+  public abstract multiply(a: number /* int */, b: number /* int */): number;
+  public abstract inverse(a: number /* int */): number;
 
   /**
    * @return 2 to the power of a in GF(size)
-   */
-  public exp(a: number): number /*int*/ {
+ */
+  public exp(a: number): number /* int */ {
     return this.expTable[a];
   }
 
   /**
    * @return base 2 log of a in GF(size)
-   */
-  public log(a: number /*int*/): number /*int*/ {
+ */
+  public log(a: number /* int */): number /* int */ {
     if (a === 0) {
       throw new IllegalArgumentException();
     }
@@ -67,11 +67,11 @@ export default abstract class AbstractGenericGF {
    * Implements both addition and subtraction -- they are the same in GF(size).
    *
    * @return sum/difference of a and b
-   */
+ */
   public static addOrSubtract(
-    a: number /*int*/,
-    b: number /*int*/
-  ): number /*int*/ {
+    a: number /* int */,
+    b: number /* int */
+  ): number /* int */ {
     return a ^ b;
   }
 }

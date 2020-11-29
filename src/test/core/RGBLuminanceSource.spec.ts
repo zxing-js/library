@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing;*/
+/* package com.google.zxing; */
 
 import * as assert from 'assert';
 import AssertUtils from './util/AssertUtils';
@@ -23,36 +23,36 @@ import { RGBLuminanceSource } from '@zxing/library';
 
 describe('RGBLuminanceSource', () => {
 
-    const SOURCE = new RGBLuminanceSource(Int32Array.from([
-        0x000000, 0x7F7F7F, 0xFFFFFF,
-        0xFF0000, 0x00FF00, 0x0000FF,
-        0x0000FF, 0x00FF00, 0xFF0000]), 3, 3);
+  const SOURCE = new RGBLuminanceSource(Int32Array.from([
+    0x000000, 0x7F7F7F, 0xFFFFFF,
+    0xFF0000, 0x00FF00, 0x0000FF,
+    0x0000FF, 0x00FF00, 0xFF0000]), 3, 3);
 
-    it('testCrop', () => {
-        assert.strictEqual(SOURCE.isCropSupported(), true);
-        const cropped: LuminanceSource = SOURCE.crop(1, 1, 1, 1);
-        assert.strictEqual(cropped.getHeight(), 1);
-        assert.strictEqual(cropped.getWidth(), 1);
-        assert.strictEqual(AssertUtils.typedArraysAreEqual(Uint8ClampedArray.from([0x7F]), cropped.getRow(0, null)), true);
-    });
+  it('testCrop', () => {
+    assert.strictEqual(SOURCE.isCropSupported(), true);
+    const cropped: LuminanceSource = SOURCE.crop(1, 1, 1, 1);
+    assert.strictEqual(cropped.getHeight(), 1);
+    assert.strictEqual(cropped.getWidth(), 1);
+    assert.strictEqual(AssertUtils.typedArraysAreEqual(Uint8ClampedArray.from([0x7F]), cropped.getRow(0, null)), true);
+  });
 
-    it('testMatrix', () => {
-        assert.strictEqual(AssertUtils.typedArraysAreEqual(Uint8ClampedArray.from([0x00, 0x7F, 0xFF, 0x3F, 0x7F, 0x3F, 0x3F, 0x7F, 0x3F]),
-            SOURCE.getMatrix()), true);
-        const croppedFullWidth: LuminanceSource = SOURCE.crop(0, 1, 3, 2);
-        assert.strictEqual(AssertUtils.typedArraysAreEqual(Uint8ClampedArray.from([0x3F, 0x7F, 0x3F, 0x3F, 0x7F, 0x3F]),
-            croppedFullWidth.getMatrix()), true);
-        const croppedCorner: LuminanceSource = SOURCE.crop(1, 1, 2, 2);
-        assert.strictEqual(AssertUtils.typedArraysAreEqual(Uint8ClampedArray.from([0x7F, 0x3F, 0x7F, 0x3F]),
-            croppedCorner.getMatrix()), true);
-    });
+  it('testMatrix', () => {
+    assert.strictEqual(AssertUtils.typedArraysAreEqual(Uint8ClampedArray.from([0x00, 0x7F, 0xFF, 0x3F, 0x7F, 0x3F, 0x3F, 0x7F, 0x3F]),
+      SOURCE.getMatrix()), true);
+    const croppedFullWidth: LuminanceSource = SOURCE.crop(0, 1, 3, 2);
+    assert.strictEqual(AssertUtils.typedArraysAreEqual(Uint8ClampedArray.from([0x3F, 0x7F, 0x3F, 0x3F, 0x7F, 0x3F]),
+      croppedFullWidth.getMatrix()), true);
+    const croppedCorner: LuminanceSource = SOURCE.crop(1, 1, 2, 2);
+    assert.strictEqual(AssertUtils.typedArraysAreEqual(Uint8ClampedArray.from([0x7F, 0x3F, 0x7F, 0x3F]),
+      croppedCorner.getMatrix()), true);
+  });
 
-    it('testGetRow', () => {
-        assert.strictEqual(AssertUtils.typedArraysAreEqual(Uint8ClampedArray.from([0x3F, 0x7F, 0x3F]), SOURCE.getRow(2, new Uint8ClampedArray(3))), true);
-    });
+  it('testGetRow', () => {
+    assert.strictEqual(AssertUtils.typedArraysAreEqual(Uint8ClampedArray.from([0x3F, 0x7F, 0x3F]), SOURCE.getRow(2, new Uint8ClampedArray(3))), true);
+  });
 
-    it('testToString', () => {
-        assert.strictEqual(SOURCE.toString(), '#+ \n#+#\n#+#\n');
-    });
+  it('testToString', () => {
+    assert.strictEqual(SOURCE.toString(), '#+ \n#+#\n#+#\n');
+  });
 
 });

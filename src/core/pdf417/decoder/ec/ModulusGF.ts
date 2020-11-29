@@ -33,27 +33,27 @@ import ModulusBase from './ModulusBase';
  * @author Sean Owen
  * @see com.google.zxing.common.reedsolomon.GenericGF
  */
-export default /*public final*/ class ModulusGF extends ModulusBase {
+export default /* public final */ class ModulusGF extends ModulusBase {
 
-  public static /*final*/ PDF417_GF: ModulusGF = new ModulusGF(PDF417Common.NUMBER_OF_CODEWORDS, 3);
+  public static /* final */ PDF417_GF: ModulusGF = new ModulusGF(PDF417Common.NUMBER_OF_CODEWORDS, 3);
 
-  // private /*final*/ expTable: Int32Array;
-  // private /*final*/ logTable: Int32Array;
-  private /*final*/ zero: ModulusPoly;
-  private /*final*/ one: ModulusPoly;
-  // private /*final*/ modulus: /*int*/ number;
+  // private /*final */ expTable: Int32Array;
+  // private /*final */ logTable: Int32Array;
+  private /* final */ zero: ModulusPoly;
+  private /* final */ one: ModulusPoly;
+  // private /*final */ modulus: /*int */ number;
 
-  private constructor(modulus: /*int*/ number, generator: /*int*/ number) {
+  private constructor(modulus: /* int */ number, generator: /* int */ number) {
     super();
     this.modulus = modulus;
     this.expTable = new Int32Array(modulus);
     this.logTable = new Int32Array(modulus);
-    let x: /*int*/ number = 1;
-    for (let i /*int*/ = 0; i < modulus; i++) {
+    let x: /* int */ number = 1;
+    for (let i /* int */ = 0; i < modulus; i++) {
       this.expTable[i] = x;
       x = (x * generator) % modulus;
     }
-    for (let i /*int*/ = 0; i < modulus - 1; i++) {
+    for (let i /* int */ = 0; i < modulus - 1; i++) {
       this.logTable[this.expTable[i]] = i;
     }
     // logTable[0] == 0 but this should never be used
@@ -70,7 +70,7 @@ export default /*public final*/ class ModulusGF extends ModulusBase {
     return this.one;
   }
 
-  buildMonomial(degree: /*int*/ number, coefficient: /*int*/ number): ModulusPoly {
+  buildMonomial(degree: /* int */ number, coefficient: /* int */ number): ModulusPoly {
     if (degree < 0) {
       throw new IllegalArgumentException();
     }

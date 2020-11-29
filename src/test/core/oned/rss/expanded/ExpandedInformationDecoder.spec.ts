@@ -1,6 +1,7 @@
 import { createDecoder } from '../../../../../core/oned/rss/expanded/decoders/AbstractExpandedDecoderComplement';
 import { BitArray } from '../../../../..';
 import AbstractExpandedDecoder from '../../../../../core/oned/rss/expanded/decoders/AbstractExpandedDecoder';
+import createDecoder from '../../../../../core/oned/rss/expanded/decoders/createDecoder';
 import { assertEquals } from '../../../util/AssertUtils';
 import BinaryUtil from './BinaryUtil';
 

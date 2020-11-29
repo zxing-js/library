@@ -25,16 +25,16 @@ import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
  * @author Sean Owen
  */
 class Code39BlackBox3Spec extends AbstractBlackBoxSpec {
-    public constructor() {
-        super('src/test/resources/blackbox/code39-3', new MultiFormatReader(), BarcodeFormat.CODE_39);
-        this.addTest(17, 17, 0.0);
-        this.addTest(17, 17, 180.0);
-    }
+  public constructor() {
+    super('src/test/resources/blackbox/code39-3', new MultiFormatReader(), BarcodeFormat.CODE_39);
+    this.addTest(17, 17, 0.0);
+    this.addTest(17, 17, 180.0);
+  }
 }
 
 describe('Code39BlackBox.3', () => {
-    it('testBlackBox', async () => {
-        const test = new Code39BlackBox3Spec();
-        await test.testBlackBox();
-    });
+  it('testBlackBox', async () => {
+    const test = new Code39BlackBox3Spec();
+    await test.testBlackBox();
+  });
 });

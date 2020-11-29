@@ -16,7 +16,7 @@
 
 import LuminanceSource from './LuminanceSource';
 
-/*namespace com.google.zxing {*/
+/* namespace com.google.zxing { */
 
 /**
  * A wrapper implementation of {@link LuminanceSource} which inverts the luminances it returns -- black becomes
@@ -26,65 +26,65 @@ import LuminanceSource from './LuminanceSource';
  */
 export default class InvertedLuminanceSource extends LuminanceSource {
 
-    public constructor(private delegate: LuminanceSource) {
-        super(delegate.getWidth(), delegate.getHeight());
+  public constructor(private delegate: LuminanceSource) {
+    super(delegate.getWidth(), delegate.getHeight());
+  }
+
+  /* @Override */
+  public getRow(y: number /* int */, row?: Uint8ClampedArray): Uint8ClampedArray {
+    const sourceRow = this.delegate.getRow(y, row);
+    const width: number /* int */ = this.getWidth();
+    for (let i = 0; i < width; i++) {
+      sourceRow[i] = /* (byte) */ (255 - (sourceRow[i] & 0xFF));
+    }
+    return sourceRow;
+  }
+
+  /* @Override */
+  public getMatrix(): Uint8ClampedArray {
+
+    const matrix: Uint8ClampedArray = this.delegate.getMatrix();
+    const length: number /* int */ = this.getWidth() * this.getHeight();
+    const invertedMatrix = new Uint8ClampedArray(length);
+
+    for (let i = 0; i < length; i++) {
+      invertedMatrix[i] = /* (byte) */ (255 - (matrix[i] & 0xFF));
     }
 
-    /*@Override*/
-    public getRow(y: number /*int*/, row?: Uint8ClampedArray): Uint8ClampedArray {
-        const sourceRow = this.delegate.getRow(y, row);
-        const width: number /*int*/ = this.getWidth();
-        for (let i = 0; i < width; i++) {
-            sourceRow[i] = /*(byte)*/ (255 - (sourceRow[i] & 0xFF));
-        }
-        return sourceRow;
-    }
+    return invertedMatrix;
+  }
 
-    /*@Override*/
-    public getMatrix(): Uint8ClampedArray {
+  /* @Override */
+  public isCropSupported(): boolean {
+    return this.delegate.isCropSupported();
+  }
 
-        const matrix: Uint8ClampedArray = this.delegate.getMatrix();
-        const length: number /*int*/ = this.getWidth() * this.getHeight();
-        const invertedMatrix = new Uint8ClampedArray(length);
+  /* @Override */
+  public crop(left: number /* int */, top: number /* int */, width: number /* int */, height: number /* int */): LuminanceSource {
+    return new InvertedLuminanceSource(this.delegate.crop(left, top, width, height));
+  }
 
-        for (let i = 0; i < length; i++) {
-            invertedMatrix[i] = /*(byte)*/ (255 - (matrix[i] & 0xFF));
-        }
+  /* @Override */
+  public isRotateSupported(): boolean {
+    return this.delegate.isRotateSupported();
+  }
 
-        return invertedMatrix;
-    }
+  /**
+   * @return original delegate {@link LuminanceSource} since invert undoes itself
+ */
+  /* @Override */
+  public invert(): LuminanceSource {
+    return this.delegate;
+  }
 
-    /*@Override*/
-    public isCropSupported(): boolean {
-        return this.delegate.isCropSupported();
-    }
+  /* @Override */
+  public rotateCounterClockwise(): LuminanceSource {
+    return new InvertedLuminanceSource(this.delegate.rotateCounterClockwise());
+  }
 
-    /*@Override*/
-    public crop(left: number /*int*/, top: number /*int*/, width: number /*int*/, height: number /*int*/): LuminanceSource {
-        return new InvertedLuminanceSource(this.delegate.crop(left, top, width, height));
-    }
-
-    /*@Override*/
-    public isRotateSupported(): boolean {
-        return this.delegate.isRotateSupported();
-    }
-
-    /**
-     * @return original delegate {@link LuminanceSource} since invert undoes itself
-     */
-    /*@Override*/
-    public invert(): LuminanceSource {
-        return this.delegate;
-    }
-
-    /*@Override*/
-    public rotateCounterClockwise(): LuminanceSource {
-        return new InvertedLuminanceSource(this.delegate.rotateCounterClockwise());
-    }
-
-    /*@Override*/
-    public rotateCounterClockwise45(): LuminanceSource {
-        return new InvertedLuminanceSource(this.delegate.rotateCounterClockwise45());
-    }
+  /* @Override */
+  public rotateCounterClockwise45(): LuminanceSource {
+    return new InvertedLuminanceSource(this.delegate.rotateCounterClockwise45());
+  }
 
 }

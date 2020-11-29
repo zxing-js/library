@@ -1,5 +1,5 @@
 import { BarcodeFormat, MultiFormatReader } from '@zxing/library';
-import AbstractBlackBoxSpec from '../../../common/AbstractBlackBox';
+import AbstractBlackBoxSpec from 'test/core/common/AbstractBlackBox';
 
 /*
  * Copyright (C) 2012 ZXing authors

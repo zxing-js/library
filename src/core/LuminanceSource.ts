@@ -18,7 +18,7 @@
 import StringBuilder from './util/StringBuilder';
 import UnsupportedOperationException from './UnsupportedOperationException';
 
-/*namespace com.google.zxing {*/
+/* namespace com.google.zxing { */
 
 /**
  * The purpose of this class hierarchy is to abstract different bitmap implementations across
@@ -31,7 +31,7 @@ import UnsupportedOperationException from './UnsupportedOperationException';
  */
 abstract class LuminanceSource {
 
-  protected constructor(private width: number /*int*/, private height: number /*int*/) { }
+  protected constructor(private width: number /* int */, private height: number /* int */) { }
 
   /**
    * Fetches one row of luminance data from the underlying platform's bitmap. Values range from
@@ -44,8 +44,8 @@ abstract class LuminanceSource {
    * @param row An optional preallocated array. If null or too small, it will be ignored.
    *            Always use the returned object, and ignore the .length of the array.
    * @return An array containing the luminance data.
-   */
-  public abstract getRow(y: number /*int*/, row?: Uint8ClampedArray): Uint8ClampedArray;
+ */
+  public abstract getRow(y: number /* int */, row?: Uint8ClampedArray): Uint8ClampedArray;
 
   /**
    * Fetches luminance data for the underlying bitmap. Values should be fetched using:
@@ -54,26 +54,26 @@ abstract class LuminanceSource {
    * @return A row-major 2D array of luminance values. Do not use result.length as it may be
    *         larger than width * height bytes on some platforms. Do not modify the contents
    *         of the result.
-   */
+ */
   public abstract getMatrix(): Uint8ClampedArray;
 
   /**
    * @return The width of the bitmap.
-   */
-  public getWidth(): number /*int*/ {
+ */
+  public getWidth(): number /* int */ {
     return this.width;
   }
 
   /**
    * @return The height of the bitmap.
-   */
-  public getHeight(): number /*int*/ {
+ */
+  public getHeight(): number /* int */ {
     return this.height;
   }
 
   /**
    * @return Whether this subclass supports cropping.
-   */
+ */
   public isCropSupported(): boolean {
     return false;
   }
@@ -87,14 +87,14 @@ abstract class LuminanceSource {
    * @param width The width of the rectangle to crop.
    * @param height The height of the rectangle to crop.
    * @return A cropped version of this object.
-   */
-  public crop(left: number /*int*/, top: number /*int*/, width: number /*int*/, height: number /*int*/): LuminanceSource {
+ */
+  public crop(left: number /* int */, top: number /* int */, width: number /* int */, height: number /* int */): LuminanceSource {
     throw new UnsupportedOperationException('This luminance source does not support cropping.');
   }
 
   /**
    * @return Whether this subclass supports counter-clockwise rotation.
-   */
+ */
   public isRotateSupported(): boolean {
     return false;
   }
@@ -102,7 +102,7 @@ abstract class LuminanceSource {
   /**
    * @return a wrapper of this {@code LuminanceSource} which inverts the luminances it returns -- black becomes
    *  white and vice versa, and each value becomes (255-value).
-   */
+ */
   public abstract invert(): LuminanceSource;
 
   /**
@@ -110,7 +110,7 @@ abstract class LuminanceSource {
    * Only callable if {@link #isRotateSupported()} is true.
    *
    * @return A rotated version of this object.
-   */
+ */
   public rotateCounterClockwise(): LuminanceSource {
     throw new UnsupportedOperationException('This luminance source does not support rotation by 90 degrees.');
   }
@@ -120,12 +120,12 @@ abstract class LuminanceSource {
    * Only callable if {@link #isRotateSupported()} is true.
    *
    * @return A rotated version of this object.
-   */
+ */
   public rotateCounterClockwise45(): LuminanceSource {
     throw new UnsupportedOperationException('This luminance source does not support rotation by 45 degrees.');
   }
 
-  /*@Override*/
+  /* @Override */
   public toString(): string {
     const row = new Uint8ClampedArray(this.width);
     let result = new StringBuilder();

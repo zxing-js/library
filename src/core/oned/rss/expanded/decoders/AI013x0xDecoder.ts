@@ -12,7 +12,7 @@ export default abstract class AI013x0xDecoder extends AI01weightDecoder {
   }
 
   public parseInformation() {
-    if (this.getInformation().getSize() != AI013x0xDecoder.HEADER_SIZE + AI01weightDecoder.GTIN_SIZE + AI013x0xDecoder.WEIGHT_SIZE) {
+    if (this.getInformation().getSize() !== AI013x0xDecoder.HEADER_SIZE + AI01weightDecoder.GTIN_SIZE + AI013x0xDecoder.WEIGHT_SIZE) {
       throw new NotFoundException();
     }
 

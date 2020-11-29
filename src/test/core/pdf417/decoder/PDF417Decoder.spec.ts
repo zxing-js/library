@@ -34,7 +34,7 @@ describe('PDF417DecoderTestCase', () => {
 
   /**
    * Tests the first sample given in ISO/IEC 15438:2015(E) - Annex H.4
-   */
+ */
   //   @Test
   //   public void testStandardSample1() throws FormatException {
   it('testStandardSample1', () => {
@@ -63,7 +63,7 @@ describe('PDF417DecoderTestCase', () => {
 
   /**
    * Tests the second given in ISO/IEC 15438:2015(E) - Annex H.4
-   */
+ */
   //   @Test
   //   public void testStandardSample2() throws FormatException {
   it('testStandardSample2', () => {

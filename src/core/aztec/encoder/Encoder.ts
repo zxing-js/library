@@ -38,14 +38,14 @@ import Integer from '../../util/Integer';
  *
  * @author Rustam Abdullaev
  */
-export default /*public final*/ class Encoder {
+export default /* public final */ class Encoder {
 
-  public static /*final*/ DEFAULT_EC_PERCENT: int = 33; // default minimal percentage of error check words
-  public static /*final*/ DEFAULT_AZTEC_LAYERS: int = 0;
-  private static /*final*/ MAX_NB_BITS: int = 32;
-  private static /*final*/ MAX_NB_BITS_COMPACT: int = 4;
+  public static /* final */ DEFAULT_EC_PERCENT: int = 33; // default minimal percentage of error check words
+  public static /* final */ DEFAULT_AZTEC_LAYERS: int = 0;
+  private static /* final */ MAX_NB_BITS: int = 32;
+  private static /* final */ MAX_NB_BITS_COMPACT: int = 4;
 
-  private static /*final*/ WORD_SIZE: Int32Array = Int32Array.from([
+  private static /* final */ WORD_SIZE: Int32Array = Int32Array.from([
     4, 6, 6, 8, 8, 8, 8, 8, 8, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
     12, 12, 12, 12, 12, 12, 12, 12, 12, 12
   ]);
@@ -58,7 +58,7 @@ export default /*public final*/ class Encoder {
    *
    * @param data input data string
    * @return Aztec symbol matrix with metadata
-   */
+ */
   public static encodeBytes(data: Uint8Array): AztecCode {
     return Encoder.encode(data, Encoder.DEFAULT_EC_PERCENT, Encoder.DEFAULT_AZTEC_LAYERS);
   }
@@ -71,7 +71,7 @@ export default /*public final*/ class Encoder {
    *                      a minimum of 23% + 3 words is recommended)
    * @param userSpecifiedLayers if non-zero, a user-specified value for the number of layers
    * @return Aztec symbol matrix with metadata
-   */
+ */
   public static encode(data: Uint8Array, minECCPercent: int, userSpecifiedLayers: int): AztecCode {
     // High-level encode
     let bits: BitArray = new HighLevelEncoder(data).encode();
@@ -89,7 +89,7 @@ export default /*public final*/ class Encoder {
       layers = Math.abs(userSpecifiedLayers);
       if (layers > (compact ? Encoder.MAX_NB_BITS_COMPACT : Encoder.MAX_NB_BITS)) {
         throw new IllegalArgumentException(
-            StringUtils.format('Illegal value %s for layers', userSpecifiedLayers));
+          StringUtils.format('Illegal value %s for layers', userSpecifiedLayers));
       }
       totalBitsInLayer = Encoder.totalBitsInLayer(layers, compact);
       wordSize = Encoder.WORD_SIZE[layers];
@@ -108,7 +108,7 @@ export default /*public final*/ class Encoder {
       // We look at the possible table sizes in the order Compact1, Compact2, Compact3,
       // Compact4, Normal4,...  Normal(i) for i < 4 isn't typically used since Compact(i+1)
       // is the same size, but has more data.
-      for (let i /*int*/ = 0; ; i++) {
+      for (let i /* int */ = 0; ; i++) {
         if (i > Encoder.MAX_NB_BITS) {
           throw new IllegalArgumentException('Data too large for an Aztec code');
         }
@@ -147,14 +147,14 @@ export default /*public final*/ class Encoder {
     if (compact) {
       // no alignment marks in compact mode, alignmentMap is a no-op
       matrixSize = baseMatrixSize;
-      for (let i /*int*/ = 0; i < alignmentMap.length; i++) {
+      for (let i /* int */ = 0; i < alignmentMap.length; i++) {
         alignmentMap[i] = i;
       }
     } else {
       matrixSize = baseMatrixSize + 1 + 2 * Integer.truncDivision((Integer.truncDivision(baseMatrixSize, 2) - 1), 15);
       let origCenter: int = Integer.truncDivision(baseMatrixSize, 2);
       let center: int = Integer.truncDivision(matrixSize, 2);
-      for (let i /*int*/ = 0; i < origCenter; i++) {
+      for (let i /* int */ = 0; i < origCenter; i++) {
         let newOffset: int = i + Integer.truncDivision(i, 15);
         alignmentMap[origCenter - i - 1] = center - newOffset - 1;
         alignmentMap[origCenter + i] = center + newOffset + 1;
@@ -163,11 +163,11 @@ export default /*public final*/ class Encoder {
     let matrix: BitMatrix = new BitMatrix(matrixSize);
 
     // draw data bits
-    for (let i /*int*/ = 0, rowOffset = 0; i < layers; i++) {
+    for (let i /* int */ = 0, rowOffset = 0; i < layers; i++) {
       let rowSize: int = (layers - i) * 4 + (compact ? 9 : 12);
-      for (let j /*int*/ = 0; j < rowSize; j++) {
+      for (let j /* int */ = 0; j < rowSize; j++) {
         let columnOffset: int = j * 2;
-        for (let k /*int*/ = 0; k < 2; k++) {
+        for (let k /* int */ = 0; k < 2; k++) {
           if (messageBits.get(rowOffset + columnOffset + k)) {
             matrix.set(alignmentMap[i * 2 + k], alignmentMap[i * 2 + j]);
           }
@@ -193,8 +193,8 @@ export default /*public final*/ class Encoder {
       Encoder.drawBullsEye(matrix, Integer.truncDivision(matrixSize, 2), 5);
     } else {
       Encoder.drawBullsEye(matrix, Integer.truncDivision(matrixSize, 2), 7);
-      for (let i /*int*/ = 0, j = 0; i < Integer.truncDivision(baseMatrixSize, 2) - 1; i += 15, j += 16) {
-        for (let k /*int*/ = Integer.truncDivision(matrixSize, 2) & 1; k < matrixSize; k += 2) {
+      for (let i /* int */ = 0, j = 0; i < Integer.truncDivision(baseMatrixSize, 2) - 1; i += 15, j += 16) {
+        for (let k /* int */ = Integer.truncDivision(matrixSize, 2) & 1; k < matrixSize; k += 2) {
           matrix.set(Integer.truncDivision(matrixSize, 2) - j, k);
           matrix.set(Integer.truncDivision(matrixSize, 2) + j, k);
           matrix.set(k, Integer.truncDivision(matrixSize, 2) - j);
@@ -213,8 +213,8 @@ export default /*public final*/ class Encoder {
   }
 
   private static drawBullsEye(matrix: BitMatrix, center: int, size: int): void {
-    for (let i /*int*/ = 0; i < size; i += 2) {
-      for (let j /*int*/ = center - i; j <= center + i; j++) {
+    for (let i /* int */ = 0; i < size; i += 2) {
+      for (let j /* int */ = center - i; j <= center + i; j++) {
         matrix.set(j, center - i);
         matrix.set(j, center + i);
         matrix.set(center - i, j);
@@ -246,7 +246,7 @@ export default /*public final*/ class Encoder {
   private static drawModeMessage(matrix: BitMatrix, compact: boolean, matrixSize: int, modeMessage: BitArray): void {
     let center: int = Integer.truncDivision(matrixSize, 2);
     if (compact) {
-      for (let i /*int*/ = 0; i < 7; i++) {
+      for (let i /* int */ = 0; i < 7; i++) {
         let offset: int = center - 3 + i;
         if (modeMessage.get(i)) {
           matrix.set(offset, center - 5);
@@ -262,7 +262,7 @@ export default /*public final*/ class Encoder {
         }
       }
     } else {
-      for (let i /*int*/ = 0; i < 10; i++) {
+      for (let i /* int */ = 0; i < 10; i++) {
         let offset: int = center - 5 + i + Integer.truncDivision(i, 5);
         if (modeMessage.get(i)) {
           matrix.set(offset, center - 7);
@@ -290,7 +290,7 @@ export default /*public final*/ class Encoder {
     let startPad: int = totalBits % wordSize;
     let messageBits: BitArray = new BitArray();
     messageBits.appendBits(0, startPad);
-    for (const messageWord/*: int*/ of Array.from(messageWords)) {
+    for (const messageWord/* : int */ of Array.from(messageWords)) {
       messageBits.appendBits(messageWord, wordSize);
     }
     return messageBits;
@@ -302,7 +302,7 @@ export default /*public final*/ class Encoder {
     let n: int;
     for (i = 0, n = stuffedBits.getSize() / wordSize; i < n; i++) {
       let value: int = 0;
-      for (let j /*int*/ = 0; j < wordSize; j++) {
+      for (let j /* int */ = 0; j < wordSize; j++) {
         value |= stuffedBits.get(i * wordSize + j) ? (1 << wordSize - j - 1) : 0;
       }
       message[i] = value;
@@ -332,9 +332,9 @@ export default /*public final*/ class Encoder {
 
     let n: int = bits.getSize();
     let mask: int = (1 << wordSize) - 2;
-    for (let i /*int*/ = 0; i < n; i += wordSize) {
+    for (let i /* int */ = 0; i < n; i += wordSize) {
       let word: int = 0;
-      for (let j /*int*/ = 0; j < wordSize; j++) {
+      for (let j /* int */ = 0; j < wordSize; j++) {
         if (i + j >= n || bits.get(i + j)) {
           word |= 1 << (wordSize - 1 - j);
         }

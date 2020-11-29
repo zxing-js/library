@@ -18,7 +18,7 @@ export default class AI013x0x1xDecoder extends AI01weightDecoder {
   }
 
   public parseInformation(): string {
-    if (this.getInformation().getSize() != AI013x0x1xDecoder.HEADER_SIZE + AI013x0x1xDecoder.GTIN_SIZE + AI013x0x1xDecoder.WEIGHT_SIZE + AI013x0x1xDecoder.DATE_SIZE) {
+    if (this.getInformation().getSize() !== AI013x0x1xDecoder.HEADER_SIZE + AI013x0x1xDecoder.GTIN_SIZE + AI013x0x1xDecoder.WEIGHT_SIZE + AI013x0x1xDecoder.DATE_SIZE) {
       throw new NotFoundException();
     }
 
@@ -33,7 +33,7 @@ export default class AI013x0x1xDecoder extends AI01weightDecoder {
 
   private encodeCompressedDate(buf: StringBuilder, currentPos: number): void {
     let numericDate = this.getGeneralDecoder().extractNumericValueFromBitArray(currentPos, AI013x0x1xDecoder.DATE_SIZE);
-    if (numericDate == 38400) {
+    if (numericDate === 38400) {
       return;
     }
 
@@ -47,15 +47,15 @@ export default class AI013x0x1xDecoder extends AI01weightDecoder {
     numericDate /= 12;
     let year = numericDate;
 
-    if (year / 10 == 0) {
+    if (year / 10 === 0) {
       buf.append('0');
     }
     buf.append(year);
-    if (month / 10 == 0) {
+    if (month / 10 === 0) {
       buf.append('0');
     }
     buf.append(month);
-    if (day / 10 == 0) {
+    if (day / 10 === 0) {
       buf.append('0');
     }
     buf.append(day);

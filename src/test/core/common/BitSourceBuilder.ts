@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.common;*/
+/* package com.google.zxing.common; */
 
-/*import java.io.ByteArrayOutputStream;*/
+/* import java.io.ByteArrayOutputStream; */
 
 /**
  * Class that lets one easily build an array of bytes by appending bits at a time.
@@ -25,42 +25,42 @@
  */
 export default class BitSourceBuilder {
 
-    private output: Array<number>;
-    private nextByte: number; /*int*/
-    private bitsLeftInNextByte: number; /*int*/
+  private output: Array<number>;
+  private nextByte: number; /* int */
+  private bitsLeftInNextByte: number; /* int */
 
-    public constructor() {
-        this.output = new Array<number>();
+  public constructor() {
+    this.output = new Array<number>();
+    this.nextByte = 0;
+    this.bitsLeftInNextByte = 8;
+  }
+
+  public write(value: number /* int */, numBits: number /* int */): void {
+    if (numBits <= this.bitsLeftInNextByte) {
+      const nb = (this.nextByte << numBits) & 0xFFFFFFFF;
+      this.nextByte = nb | value;
+      this.bitsLeftInNextByte -= numBits;
+      if (this.bitsLeftInNextByte === 0) {
+        const byte = this.nextByte & 0xFF;
+        this.output.push(byte);
         this.nextByte = 0;
         this.bitsLeftInNextByte = 8;
+      }
+    } else {
+      const bitsToWriteNow: number /* int */ = this.bitsLeftInNextByte;
+      const numRestOfBits: number /* int */ = numBits - bitsToWriteNow;
+      const mask: number /* int */ = 0xFF >> (8 - bitsToWriteNow);
+      const valueToWriteNow: number /* int */ = (value >>> numRestOfBits) & mask;
+      this.write(valueToWriteNow, bitsToWriteNow);
+      this.write(value, numRestOfBits);
     }
+  }
 
-    public write(value: number /*int*/, numBits: number /*int*/): void {
-        if (numBits <= this.bitsLeftInNextByte) {
-            const nb = (this.nextByte << numBits) & 0xFFFFFFFF;
-            this.nextByte = nb | value;
-            this.bitsLeftInNextByte -= numBits;
-            if (this.bitsLeftInNextByte === 0) {
-                const byte = this.nextByte & 0xFF;
-                this.output.push(byte);
-                this.nextByte = 0;
-                this.bitsLeftInNextByte = 8;
-            }
-        } else {
-            const bitsToWriteNow: number /*int*/ = this.bitsLeftInNextByte;
-            const numRestOfBits: number /*int*/ = numBits - bitsToWriteNow;
-            const mask: number /*int*/ = 0xFF >> (8 - bitsToWriteNow);
-            const valueToWriteNow: number /*int*/ = (value >>> numRestOfBits) & mask;
-            this.write(valueToWriteNow, bitsToWriteNow);
-            this.write(value, numRestOfBits);
-        }
+  public toByteArray(): Uint8Array {
+    if (this.bitsLeftInNextByte < 8) {
+      this.write(0, this.bitsLeftInNextByte);
     }
-
-    public toByteArray(): Uint8Array {
-        if (this.bitsLeftInNextByte < 8) {
-            this.write(0, this.bitsLeftInNextByte);
-        }
-        return Uint8Array.from(this.output);
-    }
+    return Uint8Array.from(this.output);
+  }
 
 }

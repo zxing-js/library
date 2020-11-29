@@ -12,8 +12,8 @@ export default BitSet;
 //   /**
 //    * Sets the bit at the specified index to true.
 //    * Sets the bit at the specified index to the specified value.
-//    */
-//   set(bitIndex: number/*int*/, value: boolean = true): this {
+// */
+//   set(bitIndex: number/*int */, value: boolean = true): this {
 //     return super.set(bitIndex, value);
 //   }
 
