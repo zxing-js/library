@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode;*/
+/* package com.google.zxing.qrcode; */
 
 import { BarcodeFormat } from '@zxing/library';
 import { MultiFormatReader } from '@zxing/library';
@@ -29,19 +29,19 @@ import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
  */
 export default class QRCodeBlackBox5Spec extends AbstractBlackBoxSpec {
 
-    public constructor() {
-        super('src/test/resources/blackbox/qrcode-5', new MultiFormatReader(), BarcodeFormat.QR_CODE);
-        this.addTest(19, 19, 0.0);
-        this.addTest(19, 19, 90.0);
-        this.addTest(19, 19, 180.0);
-        this.addTest(18, 18, 270.0);
-    }
+  public constructor() {
+    super('src/test/resources/blackbox/qrcode-5', new MultiFormatReader(), BarcodeFormat.QR_CODE);
+    this.addTest(19, 19, 0.0);
+    this.addTest(19, 19, 90.0);
+    this.addTest(19, 19, 180.0);
+    this.addTest(18, 18, 270.0);
+  }
 
 }
 
 describe('QRCodeBlackBox.5', () => {
-    it('testBlackBox', async () => {
-        const test = new QRCodeBlackBox5Spec();
-        await test.testBlackBox();
-    });
+  it('testBlackBox', async () => {
+    const test = new QRCodeBlackBox5Spec();
+    await test.testBlackBox();
+  });
 });

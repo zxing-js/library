@@ -12,30 +12,30 @@ export default abstract class AbstractRSSReader extends OneDReader {
   private static readonly MIN_FINDER_PATTERN_RATIO: number = 9.5 / 12.0;
   private static readonly MAX_FINDER_PATTERN_RATIO: number = 12.5 / 14.0;
 
-    private readonly decodeFinderCounters: Int32Array;
-    private readonly dataCharacterCounters: Int32Array;
-    private readonly oddRoundingErrors: number[];
-    private readonly evenRoundingErrors: number[];
-    private readonly oddCounts: number[];
-    private readonly evenCounts: number[];
+  private readonly decodeFinderCounters: Int32Array;
+  private readonly dataCharacterCounters: Int32Array;
+  private readonly oddRoundingErrors: number[];
+  private readonly evenRoundingErrors: number[];
+  private readonly oddCounts: number[];
+  private readonly evenCounts: number[];
 
-    public constructor() {
-        super();
-        this.decodeFinderCounters = new Int32Array(4);
-        this.dataCharacterCounters = new Int32Array(8);
-        this.oddRoundingErrors = new Array<number>(4);
-        this.evenRoundingErrors = new Array<number>(4);
-        this.oddCounts = new Array<number>(this.dataCharacterCounters.length / 2);
-        this.evenCounts = new Array<number>(this.dataCharacterCounters.length / 2);
-    }
+  public constructor() {
+    super();
+    this.decodeFinderCounters = new Int32Array(4);
+    this.dataCharacterCounters = new Int32Array(8);
+    this.oddRoundingErrors = new Array<number>(4);
+    this.evenRoundingErrors = new Array<number>(4);
+    this.oddCounts = new Array<number>(this.dataCharacterCounters.length / 2);
+    this.evenCounts = new Array<number>(this.dataCharacterCounters.length / 2);
+  }
 
-    protected getDecodeFinderCounters(): Int32Array {
-        return this.decodeFinderCounters;
-    }
+  protected getDecodeFinderCounters(): Int32Array {
+    return this.decodeFinderCounters;
+  }
 
-    protected getDataCharacterCounters(): Int32Array {
-        return this.dataCharacterCounters;
-    }
+  protected getDataCharacterCounters(): Int32Array {
+    return this.dataCharacterCounters;
+  }
 
   protected getOddRoundingErrors(): number[] {
     return this.oddRoundingErrors;
@@ -66,7 +66,7 @@ export default abstract class AbstractRSSReader extends OneDReader {
    * @param array values to sum
    * @return sum of values
    * @deprecated call {@link MathUtils#sum(int[])}
-   */
+ */
   protected static count(array: number[]) {
     return MathUtils.sum(new Int32Array(array));
   }

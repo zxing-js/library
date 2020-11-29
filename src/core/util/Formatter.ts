@@ -5,7 +5,7 @@ export default class Formatter {
 
   /**
    * The internal formatted value.
-   */
+ */
   buffer: string;
 
   constructor() {
@@ -18,7 +18,7 @@ export default class Formatter {
    *
    * @param str
    * @param arr
-   */
+ */
   private static form(str: string, arr: any[]) {
 
     let i = -1;
@@ -61,14 +61,14 @@ export default class Formatter {
    *
    * @param append The new string to append.
    * @param args Argumets values to be formated.
-   */
+ */
   format(append: string, ...args: any) {
     this.buffer += Formatter.form(append, args);
   }
 
   /**
    * Returns the Formatter string value.
-   */
+ */
   toString(): string {
     return this.buffer;
   }

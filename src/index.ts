@@ -1,5 +1,3 @@
-export * from './browser';
-
 // Exceptions
 export { default as ArgumentException } from './core/ArgumentException';
 export { default as ArithmeticException } from './core/ArithmeticException';

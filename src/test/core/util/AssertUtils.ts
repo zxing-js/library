@@ -1,4 +1,4 @@
-import * as assert from 'assert';
+import { deepStrictEqual, strictEqual, notStrictEqual, throws } from 'assert';
 
 export default class AssertUtils {
 
@@ -20,10 +20,10 @@ export default class AssertUtils {
 }
 
 
-export const assertEquals = assert.strictEqual;
-export const assertArrayEquals = (a: Array<any> | Uint8Array | Int32Array, b: Array<any> | Uint8Array | Int32Array) => assert.deepStrictEqual(a, b);
-export const assertFalse = x => assert.strictEqual(!!x, false);
-export const assertTrue = x => assert.strictEqual(!!x, true);
-export const assertNull = x => assert.strictEqual(x, null);
-export const assertNotNull = x => assert.notStrictEqual(x, null);
-export const assertThrow = (func, err) => assert.throws(func, err);
+export const assertEquals = <T>(actual: any, expected: T, message?: string) => strictEqual(actual, expected, message);
+export const assertArrayEquals = (a: Array<any> | Uint8Array | Int32Array, b: Array<any> | Uint8Array | Int32Array) => deepStrictEqual(a, b);
+export const assertFalse = x => strictEqual(!!x, false);
+export const assertTrue = x => strictEqual(!!x, true);
+export const assertNull = x => strictEqual(x, null);
+export const assertNotNull = x => notStrictEqual(x, null);
+export const assertThrow = (func, err) => throws(func, err);

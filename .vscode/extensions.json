@@ -1,7 +1,6 @@
 {
-    "recommendations": [
-        "EditorConfig.EditorConfig",
-        "ms-vscode.vscode-typescript-tslint-plugin",
-        "dbaeumer.vscode-eslint",
-    ]
+  "recommendations": [
+    "EditorConfig.EditorConfig",
+    "dbaeumer.vscode-eslint",
+  ]
 }

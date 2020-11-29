@@ -3,8 +3,8 @@
  */
 export class Pattern extends RegExp {
 
-    static compile(regexp: string): Pattern {
-        throw new Pattern(regexp);
-    }
+  static compile(regexp: string): Pattern {
+    throw new Pattern(regexp);
+  }
 
 }
