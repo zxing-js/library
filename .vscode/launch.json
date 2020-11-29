@@ -5,22 +5,6 @@
       "type": "node",
       "request": "launch",
       "name": "Unit Tests",
-      "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
-      "args": [
-        "./src/**/*.spec.ts",
-        "--colors",
-        "--timeout",
-        "999999",
-        "--webpack-env",
-        "dbg",
-        "--webpack-config",
-        "webpack.config.test.js"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Unit Tests - ts-node",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "args": [
         "--require",
@@ -41,14 +25,15 @@
       "name": "Code 39 Tests",
       "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
       "args": [
-        "./src/test/core/oned/Code39*.spec.ts",
-        "--colors",
+        "--require",
+        "ts-node/register",
+        "-u",
+        "tdd",
         "--timeout",
         "999999",
-        "--webpack-env",
-        "dbg",
-        "--webpack-config",
-        "webpack.config.test.js"
+        "--colors",
+        "--recursive",
+        "./src/test/core/oned/Code39*.spec.ts"
       ]
     },
     {
@@ -57,14 +42,15 @@
       "name": "EAN 13 Tests",
       "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
       "args": [
-        "./src/test/core/oned/Ean13*.spec.ts",
-        "--colors",
+        "--require",
+        "ts-node/register",
+        "-u",
+        "tdd",
         "--timeout",
         "999999",
-        "--webpack-env",
-        "dbg",
-        "--webpack-config",
-        "webpack.config.test.js"
+        "--colors",
+        "--recursive",
+        "./src/test/core/oned/Ean13*.spec.ts"
       ]
     },
     {
@@ -73,15 +59,15 @@
       "name": "PDF417 Tests",
       "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
       "args": [
-        "./src/test/core/pdf417/",
-        "--recursive",
-        "--colors",
+        "--require",
+        "ts-node/register",
+        "-u",
+        "tdd",
         "--timeout",
         "999999",
-        "--webpack-env",
-        "dbg",
-        "--webpack-config",
-        "webpack.config.test.js"
+        "--colors",
+        "--recursive",
+        "./src/test/core/pdf417/"
       ]
     },
     {
@@ -90,15 +76,15 @@
       "name": "QR Code Tests",
       "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
       "args": [
-        "./src/test/core/qrcode/",
-        "--recursive",
-        "--colors",
+        "--require",
+        "ts-node/register",
+        "-u",
+        "tdd",
         "--timeout",
         "999999",
-        "--webpack-env",
-        "dbg",
-        "--webpack-config",
-        "webpack.config.test.js"
+        "--colors",
+        "--recursive",
+        "./src/test/core/qrcode/"
       ]
     },
     {
@@ -107,38 +93,21 @@
       "name": "Data Matrix Tests",
       "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
       "args": [
-        "./src/test/core/datamatrix/",
-        "--recursive",
-        "--colors",
+        "--require",
+        "ts-node/register",
+        "-u",
+        "tdd",
         "--timeout",
         "999999",
-        "--webpack-env",
-        "dbg",
-        "--webpack-config",
-        "webpack.config.test.js"
+        "--colors",
+        "--recursive",
+        "./src/test/core/datamatrix/"
       ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Aztec 2D Tests",
-      "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
-      "args": [
-        "./src/test/core/aztec/",
-        "--recursive",
-        "--colors",
-        "--timeout",
-        "999999",
-        "--webpack-env",
-        "dbg",
-        "--webpack-config",
-        "webpack.config.test.js"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Aztec 2D Tests - ts-node",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "args": [
         "--require",
