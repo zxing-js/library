@@ -22,6 +22,7 @@ import MathUtils from '../../common/detector/MathUtils';
 import PDF417Common from '../PDF417Common';
 
 import Float from '../../util/Float';
+import { int, float } from '../../../customTypings';
 
 /**
  * @author Guenther Grau

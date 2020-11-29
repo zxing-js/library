@@ -5,7 +5,7 @@ export default class BlockParsedResult {
   private readonly decodedInformation: DecodedInformation;
   private readonly finished: boolean;
 
-  constructor(finished: boolean,decodedInformation?:DecodedInformation) {
+  constructor(finished: boolean, decodedInformation?: DecodedInformation) {
     if (decodedInformation) {
       this.decodedInformation = null;
     } else {
@@ -14,11 +14,11 @@ export default class BlockParsedResult {
     }
   }
 
-  getDecodedInformation(): DecodedInformation{
+  getDecodedInformation(): DecodedInformation {
     return this.decodedInformation;
   }
 
-  isFinished(): boolean{
+  isFinished(): boolean {
     return this.finished;
   }
 

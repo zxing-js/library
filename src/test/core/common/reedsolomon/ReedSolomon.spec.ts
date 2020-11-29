@@ -17,16 +17,16 @@
 /*package com.google.zxing.common.reedsolomon;*/
 
 import * as assert from 'assert';
-import StringBuilder from '../../../../core/util/StringBuilder';
-import Random from '../../util/Random';
-import System from '../../../../core/util/System';
-import GenericGF from '../../../../core/common/reedsolomon/GenericGF';
-import ReedSolomonEncoder from '../../../../core/common/reedsolomon/ReedSolomonEncoder';
-import ReedSolomonDecoder from '../../../../core/common/reedsolomon/ReedSolomonDecoder';
+import { ZXingStringBuilder } from '@zxing/library';
+import Random  from '../../../core/util/Random';
+import { ZXingSystem } from '@zxing/library';
+import { GenericGF } from '@zxing/library';
+import { ReedSolomonEncoder } from '@zxing/library';
+import { ReedSolomonDecoder } from '@zxing/library';
 
-/*import java.util.Arrays;*/
-import BitSet from '../../util/BitSet';
 /*import java.util.Random;*/
+
+import { corrupt } from './ReedSolomonCorrupt';
 
 /**
  * @author Rustam Abdullaev
@@ -500,24 +500,6 @@ describe('ReedSolomonSpec', () => {
 
 });
 
-function corrupt(received: Int32Array, howMany: number /*int*/, random: Random, max: number /*int*/): void {
-
-    const corrupted: BitSet = new Map<number, boolean>(/*received.length*/);
-
-    for (let j: number /*int*/ = 0; j < howMany; j++) {
-
-        const location: number /*int*/ = random.next(received.length);
-        const value: number /*int*/ = random.next(max);
-
-        if (corrupted.get(location) === true || received[location] === value) {
-            j--;
-        } else {
-            corrupted.set(location, true);
-            received[location] = value;
-        }
-    }
-}
-
 const DECODER_RANDOM_TEST_ITERATIONS: number /*int*/ = 3;
 const DECODER_TEST_ITERATIONS: number /*int*/ = 10;
 
@@ -539,9 +521,9 @@ function testEncodeDecodeRandom(field: GenericGF, dataSize: number /*int*/, ecSi
             dataWords[k] = random.next(field.getSize());
         }
         // generate ECC words
-        System.arraycopy(dataWords, 0, message, 0, dataWords.length);
+        ZXingSystem.arraycopy(dataWords, 0, message, 0, dataWords.length);
         encoder.encode(message, ecWords.length);
-        System.arraycopy(message, dataSize, ecWords, 0, ecSize);
+        ZXingSystem.arraycopy(message, dataSize, ecWords, 0, ecSize);
         // check to see if Decoder can fix up to ecWords/2 random errors
         testDecoder(field, dataWords, ecWords);
     }
@@ -558,9 +540,9 @@ function testEncoder(field: GenericGF, dataWords: Int32Array, ecWords: Int32Arra
     const messageExpected = new Int32Array(dataWords.length + ecWords.length);
     const message = new Int32Array(dataWords.length + ecWords.length);
 
-    System.arraycopy(dataWords, 0, messageExpected, 0, dataWords.length);
-    System.arraycopy(ecWords, 0, messageExpected, dataWords.length, ecWords.length);
-    System.arraycopy(dataWords, 0, message, 0, dataWords.length);
+    ZXingSystem.arraycopy(dataWords, 0, messageExpected, 0, dataWords.length);
+    ZXingSystem.arraycopy(ecWords, 0, messageExpected, dataWords.length, ecWords.length);
+    ZXingSystem.arraycopy(dataWords, 0, message, 0, dataWords.length);
 
     encoder.encode(message, ecWords.length);
 
@@ -583,8 +565,8 @@ function testDecoder(field: GenericGF, dataWords: Int32Array, ecWords: Int32Arra
                 i += Math.floor(ecWords.length / 10);
             }
 
-            System.arraycopy(dataWords, 0, message, 0, dataWords.length);
-            System.arraycopy(ecWords, 0, message, dataWords.length, ecWords.length);
+            ZXingSystem.arraycopy(dataWords, 0, message, 0, dataWords.length);
+            ZXingSystem.arraycopy(ecWords, 0, message, dataWords.length, ecWords.length);
 
             corrupt(message, i, random, field.getSize());
 
@@ -620,7 +602,7 @@ function assertDataEquals(received: Int32Array, expected: Int32Array, message: s
 
 function arrayToString(data: Int32Array): String {
 
-    const sb = new StringBuilder();
+    const sb = new ZXingStringBuilder();
 
     sb.append('{');
 
@@ -637,5 +619,3 @@ function arrayToString(data: Int32Array): String {
 function getPseudoRandom(): Random {
     return new Random('0xDEADBEEF');
 }
-
-export { corrupt };

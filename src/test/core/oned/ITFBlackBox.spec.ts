@@ -17,8 +17,8 @@
 
 // package com.google.zxing.oned;
 
-import BarcodeFormat from '../../../core/BarcodeFormat';
-import MultiFormatReader from '../../../core/MultiFormatReader';
+import { BarcodeFormat } from '@zxing/library';
+import { MultiFormatReader } from '@zxing/library';
 import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 
 /**
@@ -35,9 +35,9 @@ class ITFBlackBoxSpec extends AbstractBlackBoxSpec {
 }
 
 describe('ITFBlackBox', () => {
-    it('testBlackBox', done => {
+    it('testBlackBox', async () => {
         const test = new ITFBlackBoxSpec();
-        return test.testBlackBox(done);
+        await test.testBlackBox();
     });
 });
 

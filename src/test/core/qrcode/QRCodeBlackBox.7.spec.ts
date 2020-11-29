@@ -16,8 +16,8 @@
 
 /*package com.google.zxing.qrcode;*/
 
-import BarcodeFormat from '../../../core/BarcodeFormat';
-import MultiFormatReader from '../../../core/MultiFormatReader';
+import { BarcodeFormat } from '@zxing/library';
+import { MultiFormatReader } from '@zxing/library';
 import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 
 /**
@@ -37,8 +37,8 @@ export default class QRCodeBlackBox7Spec extends AbstractBlackBoxSpec {
 }
 
 describe('QRCodeBlackBox.7', () => {
-    it('testBlackBox', done => {
+    it('testBlackBox', async () => {
         const test = new QRCodeBlackBox7Spec();
-        return test.testBlackBox(done);
+        await test.testBlackBox();
     });
 });

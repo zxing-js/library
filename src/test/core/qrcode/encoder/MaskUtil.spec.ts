@@ -17,63 +17,63 @@
 /*package com.google.zxing.qrcode.encoder;*/
 
 import * as assert from 'assert';
-import ByteMatrix from '../../../../core/qrcode/encoder/ByteMatrix';
-import MaskUtil from '../../../../core/qrcode/encoder/MaskUtil';
+import { QRCodeByteMatrix } from '@zxing/library';
+import { QRCodeMaskUtil } from '@zxing/library';
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator
  * @author mysen@google.com (Chris Mysen) - ported from C++
  */
-describe('MaskUtil', () => {
+describe('QRCodeMaskUtil', () => {
 
     it('testApplyMaskPenaltyRule1', () => {
-        let matrix = new ByteMatrix(4, 1);
+        let matrix = new QRCodeByteMatrix(4, 1);
         matrix.setNumber(0, 0, 0);
         matrix.setNumber(1, 0, 0);
         matrix.setNumber(2, 0, 0);
         matrix.setNumber(3, 0, 0);
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule1(matrix), 0);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule1(matrix), 0);
         // Horizontal.
-        matrix = new ByteMatrix(6, 1);
+        matrix = new QRCodeByteMatrix(6, 1);
         matrix.setNumber(0, 0, 0);
         matrix.setNumber(1, 0, 0);
         matrix.setNumber(2, 0, 0);
         matrix.setNumber(3, 0, 0);
         matrix.setNumber(4, 0, 0);
         matrix.setNumber(5, 0, 1);
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule1(matrix), 3);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule1(matrix), 3);
         matrix.setNumber(5, 0, 0);
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule1(matrix), 4);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule1(matrix), 4);
         // Vertical.
-        matrix = new ByteMatrix(1, 6);
+        matrix = new QRCodeByteMatrix(1, 6);
         matrix.setNumber(0, 0, 0);
         matrix.setNumber(0, 1, 0);
         matrix.setNumber(0, 2, 0);
         matrix.setNumber(0, 3, 0);
         matrix.setNumber(0, 4, 0);
         matrix.setNumber(0, 5, 1);
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule1(matrix), 3);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule1(matrix), 3);
         matrix.setNumber(0, 5, 0);
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule1(matrix), 4);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule1(matrix), 4);
     });
 
     it('testApplyMaskPenaltyRule2', () => {
-        let matrix = new ByteMatrix(1, 1);
+        let matrix = new QRCodeByteMatrix(1, 1);
         matrix.setNumber(0, 0, 0);
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule2(matrix), 0);
-        matrix = new ByteMatrix(2, 2);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule2(matrix), 0);
+        matrix = new QRCodeByteMatrix(2, 2);
         matrix.setNumber(0, 0, 0);
         matrix.setNumber(1, 0, 0);
         matrix.setNumber(0, 1, 0);
         matrix.setNumber(1, 1, 1);
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule2(matrix), 0);
-        matrix = new ByteMatrix(2, 2);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule2(matrix), 0);
+        matrix = new QRCodeByteMatrix(2, 2);
         matrix.setNumber(0, 0, 0);
         matrix.setNumber(1, 0, 0);
         matrix.setNumber(0, 1, 0);
         matrix.setNumber(1, 1, 0);
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule2(matrix), 3);
-        matrix = new ByteMatrix(3, 3);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule2(matrix), 3);
+        matrix = new QRCodeByteMatrix(3, 3);
         matrix.setNumber(0, 0, 0);
         matrix.setNumber(1, 0, 0);
         matrix.setNumber(2, 0, 0);
@@ -84,12 +84,12 @@ describe('MaskUtil', () => {
         matrix.setNumber(1, 2, 0);
         matrix.setNumber(2, 2, 0);
         // Four instances of 2x2 blocks.
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule2(matrix), 3 * 4);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule2(matrix), 3 * 4);
     });
 
     it('testApplyMaskPenaltyRule3', () => {
         // Horizontal 00001011101.
-        let matrix = new ByteMatrix(11, 1);
+        let matrix = new QRCodeByteMatrix(11, 1);
         matrix.setNumber(0, 0, 0);
         matrix.setNumber(1, 0, 0);
         matrix.setNumber(2, 0, 0);
@@ -101,9 +101,9 @@ describe('MaskUtil', () => {
         matrix.setNumber(8, 0, 1);
         matrix.setNumber(9, 0, 0);
         matrix.setNumber(10, 0, 1);
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule3(matrix), 40);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule3(matrix), 40);
         // Horizontal 10111010000.
-        matrix = new ByteMatrix(11, 1);
+        matrix = new QRCodeByteMatrix(11, 1);
         matrix.setNumber(0, 0, 1);
         matrix.setNumber(1, 0, 0);
         matrix.setNumber(2, 0, 1);
@@ -115,9 +115,9 @@ describe('MaskUtil', () => {
         matrix.setNumber(8, 0, 0);
         matrix.setNumber(9, 0, 0);
         matrix.setNumber(10, 0, 0);
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule3(matrix), 40);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule3(matrix), 40);
         // Vertical 00001011101.
-        matrix = new ByteMatrix(1, 11);
+        matrix = new QRCodeByteMatrix(1, 11);
         matrix.setNumber(0, 0, 0);
         matrix.setNumber(0, 1, 0);
         matrix.setNumber(0, 2, 0);
@@ -129,9 +129,9 @@ describe('MaskUtil', () => {
         matrix.setNumber(0, 8, 1);
         matrix.setNumber(0, 9, 0);
         matrix.setNumber(0, 10, 1);
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule3(matrix), 40);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule3(matrix), 40);
         // Vertical 10111010000.
-        matrix = new ByteMatrix(1, 11);
+        matrix = new QRCodeByteMatrix(1, 11);
         matrix.setNumber(0, 0, 1);
         matrix.setNumber(0, 1, 0);
         matrix.setNumber(0, 2, 1);
@@ -143,34 +143,34 @@ describe('MaskUtil', () => {
         matrix.setNumber(0, 8, 0);
         matrix.setNumber(0, 9, 0);
         matrix.setNumber(0, 10, 0);
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule3(matrix), 40);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule3(matrix), 40);
     });
 
     it('testApplyMaskPenaltyRule4', () => {
         // Dark cell ratio = 0%
-        let matrix = new ByteMatrix(1, 1);
+        let matrix = new QRCodeByteMatrix(1, 1);
         matrix.setNumber(0, 0, 0);
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule4(matrix), 100);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule4(matrix), 100);
         // Dark cell ratio = 5%
-        matrix = new ByteMatrix(2, 1);
+        matrix = new QRCodeByteMatrix(2, 1);
         matrix.setNumber(0, 0, 0);
         matrix.setNumber(0, 0, 1);
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule4(matrix), 0);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule4(matrix), 0);
         // Dark cell ratio = 66.67%
-        matrix = new ByteMatrix(6, 1);
+        matrix = new QRCodeByteMatrix(6, 1);
         matrix.setNumber(0, 0, 0);
         matrix.setNumber(1, 0, 1);
         matrix.setNumber(2, 0, 1);
         matrix.setNumber(3, 0, 1);
         matrix.setNumber(4, 0, 1);
         matrix.setNumber(5, 0, 0);
-        assert.strictEqual(MaskUtil.applyMaskPenaltyRule4(matrix), 30);
+        assert.strictEqual(QRCodeMaskUtil.applyMaskPenaltyRule4(matrix), 30);
     });
 
     function TestGetDataMaskBitInternal(maskPattern: number /*int*/, expected: Array<Int32Array>): boolean {
         for (let x: number /*int*/ = 0; x < 6; ++x) {
             for (let y: number /*int*/ = 0; y < 6; ++y) {
-                if ((expected[y][x] === 1) !== MaskUtil.getDataMaskBit(maskPattern, x, y)) {
+                if ((expected[y][x] === 1) !== QRCodeMaskUtil.getDataMaskBit(maskPattern, x, y)) {
                     return false;
                 }
             }

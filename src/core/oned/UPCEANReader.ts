@@ -41,13 +41,11 @@ export default abstract class UPCEANReader extends AbstractUPCEANReader {
         super();
         this.decodeRowStringBuffer = '';
 
-        UPCEANReader.L_AND_G_PATTERNS = UPCEANReader.L_PATTERNS.map(function(arr) {
-            return arr.slice();
-        });
+        UPCEANReader.L_AND_G_PATTERNS = UPCEANReader.L_PATTERNS.map(arr => Int32Array.from(arr));
 
         for (let i = 10; i < 20; i++) {
             let widths = UPCEANReader.L_PATTERNS[i - 10];
-            let reversedWidths = new Array(widths.length);
+            let reversedWidths = new Int32Array(widths.length);
             for (let j = 0; j < widths.length; j++) {
                 reversedWidths[j] = widths[widths.length - j - 1];
             }
@@ -172,7 +170,7 @@ export default abstract class UPCEANReader extends AbstractUPCEANReader {
         return (1000 - sum) % 10;
     }
 
-    static decodeEnd(row: BitArray, endStart: number): number[] {
-        return UPCEANReader.findGuardPattern(row, endStart, false, UPCEANReader.START_END_PATTERN, new Array(UPCEANReader.START_END_PATTERN.length).fill(0));
+    static decodeEnd(row: BitArray, endStart: number): Int32Array {
+        return UPCEANReader.findGuardPattern(row, endStart, false, UPCEANReader.START_END_PATTERN, new Int32Array(UPCEANReader.START_END_PATTERN.length).fill(0));
     }
 }

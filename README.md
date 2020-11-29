@@ -152,7 +152,7 @@ const reader = new MultiFormatReader();
 
 reader.setHints(hints);
 
-const luminanceSource = new RGBLuminanceSource(imgWidth, imgHeight, imgByteArray);
+const luminanceSource = new RGBLuminanceSource(imgByteArray, imgWidth, imgHeight);
 const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
 
 reader.decode(binaryBitmap);
@@ -167,6 +167,10 @@ _You can use external polyfills like [WebRTC adapter](https://github.com/webrtc/
 Also, note that the library is using the [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (`Int32Array`, `Uint8ClampedArray`, etc.) which are not available in older browsers (e.g. Android 4 default browser).
 
 _You can use [core-js](https://github.com/zloirock/core-js) to add support to these browsers._
+
+In the PDF 417 decoder recent addition, the library now makes use of the new `BigInt` type, which [is not supported by all browsers][2] as well. There's no way to polyfill that and ponyfill libraries are **way to big**, but even if PDF 417 decoding relies on `BigInt` the rest of the library shall work ok in browsers that doesn't support it.
+
+_There's no polyfills for `BigInt` in the way it's coded in here._
 
 ### Scanning from Video Camera
 
@@ -202,18 +206,18 @@ If there is just one input device you can use the first `deviceId` and the video
 const firstDeviceId = videoInputDevices[0].deviceId;
 
 codeReader
-  .decodeFromInputVideoDevice(firstDeviceId, 'video')
+  .decodeOnceFromVideoDevice(firstDeviceId, 'video')
   .then(result => console.log(result.text))
   .catch(err => console.error(err));
 ```
 
-If there are more input devices then you will need to chose one for `codeReader.decodeFromInputVideoDevice` device id parameter.
+If there are more input devices then you will need to chose one for `codeReader.decodeOnceFromVideoDevice` device id parameter.
 
 You can also provide `undefined` for the device id parameter in which case the library will automatically choose the camera, preferring the main (environment facing) camera if more are available:
 
 ```javascript
 codeReader
-  .decodeFromInputVideoDevice(undefined, 'video')
+  .decodeOnceFromVideoDevice(undefined, 'video')
   .then(result => console.log(result.text))
   .catch(err => console.error(err));
 ```
@@ -345,7 +349,7 @@ Special thanks to all the contributors who have contributed for this project. We
 
 [![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/0)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/0)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/1)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/1)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/2)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/2)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/3)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/3)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/4)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/4)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/5)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/5)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/6)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/6)[![](https://sourcerer.io/fame/odahcam/zxing-js/library/images/7)](https://sourcerer.io/fame/odahcam/zxing-js/library/links/7)
 
-And a special thanks to @aleris who created the project itself and made the initial QR code port.
+And a special thanks to [@aleris][3] who created the project itself and made available the initial QR code port.
 
 ---
 
@@ -353,3 +357,5 @@ And a special thanks to @aleris who created the project itself and made the init
 
 [0]: https://www.npmjs.com/package/@zxing/library
 [1]: https://github.com/zxing/zxing
+[2]: https://caniuse.com/#feat=bigint
+[3]: https://github.com/aleris

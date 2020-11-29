@@ -29,11 +29,11 @@ import NotFoundException from '../NotFoundException';
  */
 export default class UPCEANExtension5Support {
     private CHECK_DIGIT_ENCODINGS = [0x18, 0x14, 0x12, 0x11, 0x0C, 0x06, 0x03, 0x0A, 0x09, 0x05];
-    private decodeMiddleCounters = [0, 0, 0, 0];
+    private decodeMiddleCounters = Int32Array.from([0, 0, 0, 0]);
     private decodeRowStringBuffer = '';
 
 
-    public decodeRow(rowNumber: number, row: BitArray, extensionStartRange: number[]): Result {
+    public decodeRow(rowNumber: number, row: BitArray, extensionStartRange: Int32Array): Result {
         let result = this.decodeRowStringBuffer;
         let end = this.decodeMiddle(row, extensionStartRange, result);
 
@@ -54,7 +54,7 @@ export default class UPCEANExtension5Support {
         return extensionResult;
     }
 
-    public decodeMiddle(row: BitArray, startRange: number[], resultString: string) {
+    public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: string) {
         let counters = this.decodeMiddleCounters;
         counters[0] = 0;
         counters[1] = 0;

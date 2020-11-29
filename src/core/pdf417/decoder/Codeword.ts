@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { int } from '../../../customTypings';
+
 // package com.google.zxing.pdf417.decoder;
 
 /**

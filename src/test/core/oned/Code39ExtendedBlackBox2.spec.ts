@@ -17,9 +17,9 @@
 
 // package com.google.zxing.oned;
 
-import BarcodeFormat from './../../../core/BarcodeFormat';
+import { BarcodeFormat } from '@zxing/library';
 import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
-import Code39Reader from '../../../core/oned/Code39Reader';
+import { Code39Reader } from '@zxing/library';
 
 /**
  * @author Sean Owen
@@ -33,8 +33,8 @@ class Code39ExtendedBlackBox2Spec extends AbstractBlackBoxSpec {
 }
 
 describe('Code39ExtendedBlackBox.2', () => {
-    it('testBlackBox', done => {
+    it('testBlackBox', async () => {
         const test = new Code39ExtendedBlackBox2Spec();
-        return test.testBlackBox(done);
+        await test.testBlackBox();
     });
 });

@@ -30,6 +30,16 @@ export { default as ResultMetadataType } from './core/ResultMetadataType';
 export { default as ResultPointCallback } from './core/ResultPointCallback';
 export { default as RGBLuminanceSource } from './core/RGBLuminanceSource';
 export { default as Writer } from './core/Writer';
+export { default as ResultPoint } from './core/ResultPoint';
+
+// core/util
+export { default as ZXingSystem } from './core/util/System';
+export { default as ZXingStringBuilder } from './core/util/StringBuilder';
+export { default as ZXingStringEncoding } from './core/util/StringEncoding';
+export { default as ZXingCharset } from './core/util/Charset';
+export { default as ZXingArrays } from './core/util/Arrays';
+export { default as ZXingStandardCharsets } from './core/util/StandardCharsets';
+export { default as ZXingInteger } from './core/util/Integer';
 
 // core/common
 export { default as BitArray } from './core/common/BitArray';
@@ -60,13 +70,42 @@ export { default as ReedSolomonEncoder } from './core/common/reedsolomon/ReedSol
 
 // core/datamatrix
 export { default as DataMatrixReader } from './core/datamatrix/DataMatrixReader';
+export { default as DataMatrixDecodedBitStreamParser } from './core/datamatrix/decoder/DecodedBitStreamParser';
+
+// core/pdf417
+export { default as PDF417Reader } from './core/pdf417/PDF417Reader';
+export { default as PDF417ResultMetadata } from './core/pdf417/PDF417ResultMetadata';
+export { default as PDF417DecodedBitStreamParser } from './core/pdf417/decoder/DecodedBitStreamParser';
+export { default as PDF417DecoderErrorCorrection } from './core/pdf417/decoder/ec/ErrorCorrection';
+
 
 // core/twod/qrcode
 export { default as QRCodeReader } from './core/qrcode/QRCodeReader';
 export { default as QRCodeWriter } from './core/qrcode/QRCodeWriter';
 export { default as QRCodeDecoderErrorCorrectionLevel } from './core/qrcode/decoder/ErrorCorrectionLevel';
+export { default as QRCodeDecoderFormatInformation } from './core/qrcode/decoder/FormatInformation';
+export { default as QRCodeVersion } from './core/qrcode/decoder/Version';
+export { default as QRCodeMode } from './core/qrcode/decoder/Mode';
+export { default as QRCodeDecodedBitStreamParser } from './core/qrcode/decoder/DecodedBitStreamParser';
+export { default as QRCodeDataMask } from './core/qrcode/decoder/DataMask';
 export { default as QRCodeEncoder } from './core/qrcode/encoder/Encoder';
 export { default as QRCodeEncoderQRCode } from './core/qrcode/encoder/QRCode';
+export { default as QRCodeMatrixUtil } from './core/qrcode/encoder/MatrixUtil';
+export { default as QRCodeByteMatrix } from './core/qrcode/encoder/ByteMatrix';
+export { default as QRCodeMaskUtil } from './core/qrcode/encoder/MaskUtil';
+
+
+// core/twod/aztec
+export { default as AztecCodeReader } from './core/aztec/AztecReader';
+export { default as AztecCodeWriter } from './core/aztec/AztecWriter';
+export { default as AztecDetectorResult } from './core/aztec/AztecDetectorResult';
+export { default as AztecEncoder } from './core/aztec/encoder/Encoder';
+export { default as AztecHighLevelEncoder } from './core/aztec/encoder/HighLevelEncoder';
+export { default as AztecCode } from './core/aztec/encoder/AztecCode';
+export { default as AztecDecoder } from './core/aztec/decoder/Decoder';
+export { default as AztecDetector } from './core/aztec/detector/Detector';
+export { Point as AztecPoint } from './core/aztec/detector/Detector';
+
 
 // core/oned
 export { default as OneDReader } from './core/oned/OneDReader';
@@ -76,4 +115,4 @@ export { default as ITFReader } from './core/oned/ITFReader';
 export { default as Code39Reader } from './core/oned/Code39Reader';
 export { default as RSS14Reader } from './core/oned/rss/RSS14Reader';
 export { default as RSSExpandedReader } from './core/oned/rss/expanded/RSSExpandedReader';
-export { default as MultiformatReader } from './core/oned/MultiFormatOneDReader';
+export { default as MultiFormatOneDReader } from './core/oned/MultiFormatOneDReader';

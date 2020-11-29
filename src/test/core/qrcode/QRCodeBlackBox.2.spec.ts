@@ -16,9 +16,14 @@
 
 /*package com.google.zxing.qrcode;*/
 
-import BarcodeFormat from '../../../core/BarcodeFormat';
-import MultiFormatReader from '../../../core/MultiFormatReader';
+import { BarcodeFormat } from '@zxing/library';
+import { MultiFormatReader } from '@zxing/library';
 import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
+import { TextDecoder, TextEncoder } from '@zxing/text-encoding';
+import { ZXingStringEncoding } from '@zxing/library';
+
+ZXingStringEncoding.customDecoder = (b, e) => new TextDecoder(e).decode(b);
+ZXingStringEncoding.customEncoder = (b, e) => new TextEncoder(e, { NONSTANDARD_allowLegacyEncoding: true }).encode(b);
 
 /**
  * @author Sean Owen
@@ -37,8 +42,8 @@ export default class QRCodeBlackBox2Spec extends AbstractBlackBoxSpec {
 
 
 describe('QRCodeBlackBox.2', () => {
-    it('testBlackBox', done => {
+    it.skip('testBlackBox', async () => {
         const test = new QRCodeBlackBox2Spec();
-        return test.testBlackBox(done);
+        await test.testBlackBox();
     });
 });

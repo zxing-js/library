@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "module": "commonjs",
     "target": "es5",
     "moduleResolution": "node",
@@ -7,18 +8,22 @@
       "es7",
       "dom"
     ],
-    "outDir": "./esm5/",
     "alwaysStrict": true,
     "noImplicitAny": false,
     "sourceMap": true,
     "declaration": true,
     "preserveConstEnums": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "paths": {
+      "@zxing/library": [
+        "./dist"
+      ],
+      "@zxing/library/*": [
+        "./dist/*"
+      ]
+    }
   },
   "include": [
     "src/**/*.ts"
-  ],
-  "exclude": [
-    "src/test"
   ]
 }

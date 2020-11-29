@@ -22,6 +22,8 @@
 import DecodeHintType from '../DecodeHintType';
 import CharacterSetECI from './CharacterSetECI';
 import StringEncoding from '../util/StringEncoding';
+import { int } from '../../customTypings';
+import Charset from '../util/Charset';
 
 /**
  * Common string-related functions.
@@ -40,6 +42,14 @@ export default class StringUtils {
   private static ASSUME_SHIFT_JIS = false;
   // SHIFT_JIS.equalsIgnoreCase(PLATFORM_DEFAULT_ENCODING) ||
   // EUC_JP.equalsIgnoreCase(PLATFORM_DEFAULT_ENCODING);
+
+  static castAsNonUtf8Char(code: number, encoding: Charset = null) {
+    // ISO 8859-1 is the Java default as UTF-8 is JavaScripts
+    // you can see this method as a Java version of String.fromCharCode
+    const e = encoding ? encoding.getName() : this.ISO88591;
+    // use passed format (fromCharCode will return UTF8 encoding)
+    return StringEncoding.decode(new Uint8Array([code]), e);
+  }
 
   /**
    * @param bytes bytes encoding a string, whose encoding should be guessed
@@ -203,6 +213,7 @@ export default class StringUtils {
     if (canBeUTF8) {
       return StringUtils.UTF8;
     }
+
     // Otherwise, we take a wild guess with platform encoding
     return StringUtils.PLATFORM_DEFAULT_ENCODING;
   }
@@ -266,4 +277,10 @@ export default class StringUtils {
     return str.charCodeAt(index);
   }
 
+  /**
+   * Returns char for given charcode
+   */
+  public static getCharAt(charCode: number): string {
+    return String.fromCharCode(charCode);
+  }
 }

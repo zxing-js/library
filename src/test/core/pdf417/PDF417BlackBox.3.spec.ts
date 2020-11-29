@@ -16,8 +16,8 @@
 
 // package com.google.zxing.pdf417;
 
-import BarcodeFormat from '../../../core/BarcodeFormat';
-import MultiFormatReader from '../../../core/MultiFormatReader';
+import { BarcodeFormat } from '@zxing/library';
+import { MultiFormatReader } from '@zxing/library';
 import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 
 /**
@@ -34,8 +34,8 @@ class PDF417BlackBox3Spec extends AbstractBlackBoxSpec {
 }
 
 describe('PDF417BlackBox.3', () => {
-  it('testBlackBox', done => {
+  it('testBlackBox', async () => {
     const test = new PDF417BlackBox3Spec();
-    return test.testBlackBox(done);
+    await test.testBlackBox();
   });
 });

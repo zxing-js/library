@@ -79,7 +79,7 @@ export class HTMLCanvasElementLuminanceSource extends LuminanceSource {
     }
 
     public crop(left: number /*int*/, top: number /*int*/, width: number /*int*/, height: number /*int*/): LuminanceSource {
-        this.crop(left, top, width, height);
+        super.crop(left, top, width, height);
         return this;
     }
 

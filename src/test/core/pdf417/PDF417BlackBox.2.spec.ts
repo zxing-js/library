@@ -16,9 +16,13 @@
 
 // package com.google.zxing.pdf417;
 
-import BarcodeFormat from '../../../core/BarcodeFormat';
-import MultiFormatReader from '../../../core/MultiFormatReader';
+import { BarcodeFormat } from '@zxing/library';
+import { MultiFormatReader } from '@zxing/library';
 import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
+import { TextDecoder } from '@zxing/text-encoding';
+import { ZXingStringEncoding } from '@zxing/library';
+
+ZXingStringEncoding.customDecoder = (b, e) => new TextDecoder(e).decode(b);
 
 /**
  * This test contains 480x240 images captured from an Android device at preview resolution.
@@ -36,8 +40,8 @@ class PDF417BlackBox2Spec extends AbstractBlackBoxSpec {
 }
 
 describe('PDF417BlackBox.2', () => {
-  it('testBlackBox', done => {
+  it('testBlackBox', async () => {
     const test = new PDF417BlackBox2Spec();
-    return test.testBlackBox(done);
+    await test.testBlackBox();
   });
 });
