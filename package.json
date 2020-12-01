@@ -65,7 +65,6 @@
     "ts-custom-error": "^3.2.0"
   },
   "devDependencies": {
-    "@rollup/plugin-babel": "^5.2.1",
     "@rollup/plugin-commonjs": "^16.0.0",
     "@rollup/plugin-node-resolve": "^10.0.0",
     "@rollup/plugin-typescript": "^6.1.0",
@@ -96,6 +95,7 @@
     "ts-mocha": "^8.0.0",
     "ts-node": "^9.0.0",
     "tsconfig-paths": "^3.9.0",
+    "tslib": "^2.0.3",
     "typedoc": "^0.19.2",
     "typedoc-plugin-external-module-name": "^4.0.3",
     "typedoc-plugin-pages": "^1.0.1",
