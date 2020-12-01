@@ -32,21 +32,25 @@ export default class Result {
 
     private resultMetadata: Map<ResultMetadataType, Object>;
 
-    // public constructor(private text: string,
-    //               Uint8Array rawBytes,
-    //               ResultPoconst resultPoints: Int32Array,
-    //               BarcodeFormat format) {
-    //   this(text, rawBytes, resultPoints, format, System.currentTimeMillis())
-    // }
+    public static constructor4Args(
+      text: string,
+      rawBytes: Uint8Array,
+      resultPoints: ResultPoint[],
+      format: BarcodeFormat,
+    ) {
+      return Result.constructor5Args(text, rawBytes, resultPoints, format, System.currentTimeMillis());
+    }
 
-    // public constructor(text: string,
-    //               Uint8Array rawBytes,
-    //               ResultPoconst resultPoints: Int32Array,
-    //               BarcodeFormat format,
-    //               long timestamp) {
-    //   this(text, rawBytes, rawBytes == null ? 0 : 8 * rawBytes.length,
-    //        resultPoints, format, timestamp)
-    // }
+    public static constructor5Args(
+      text: string,
+      rawBytes: Uint8Array,
+      resultPoints: ResultPoint[],
+      format: BarcodeFormat,
+      timestamp: number /* long */,
+    ) {
+      return new Result(text, rawBytes, rawBytes == null ? 0 : 8 * rawBytes.length,
+           resultPoints, format, timestamp);
+    }
 
     public constructor(private text: string,
       private rawBytes: Uint8Array,

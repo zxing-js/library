@@ -1,4 +1,5 @@
-import { Collection, int } from '../../customTypings';
+import { Collection, int, List } from '../../customTypings';
+import Comparator from './Comparator';
 
 export default class Collections {
 
@@ -7,6 +8,16 @@ export default class Collections {
    */
   static singletonList<T = any>(item: T): Collection<T> {
     return [item];
+  }
+
+  /**
+   * Sorts the specified list according to the order induced by the specified comparator.
+   */
+  static sort<TToBeCompared = any>(
+    list: List<TToBeCompared> | Array<TToBeCompared> | TToBeCompared[],
+    comparator: Comparator<TToBeCompared>,
+  ) {
+    list.sort(comparator.compare);
   }
 
   /**

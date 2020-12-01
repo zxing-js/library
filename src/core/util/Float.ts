@@ -15,4 +15,8 @@ export default class Float {
   public static floatToIntBits(f: number): number {
     return f;
   }
+
+  public static isNaN(num: number) {
+    return isNaN(num);
+  }
 }
