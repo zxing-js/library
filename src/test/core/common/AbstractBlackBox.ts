@@ -190,7 +190,6 @@ abstract class AbstractBlackBoxSpec {
       // and run tests in parallel
       testImageIterations.push(new Promise(async resolve => {
 
-        let debug = `    Decoding ${path.relative(process.cwd(), testImage)} with rotations:\n`;
         const fileBaseName: string = path.basename(testImage, path.extname(testImage));
         let expectedTextFile: string = path.resolve(this.testBase, fileBaseName + '.txt');
         let expectedText: string;
@@ -202,12 +201,15 @@ abstract class AbstractBlackBoxSpec {
           assertEquals(fs.existsSync(expectedTextFile), true, 'result bin/text file should exists');
           expectedText = AbstractBlackBoxSpec.readBinFileAsString(expectedTextFile);
         }
+        const truncated = AbstractBlackBoxSpec.truncate(expectedText, 32);
 
         const expectedMetadataFile: string = path.resolve(fileBaseName + '.metadata.txt');
         let expectedMetadata = null;
         if (fs.existsSync(expectedMetadataFile)) {
           expectedMetadata = AbstractBlackBoxSpec.readTextFileAsMetadata(expectedMetadataFile);
         }
+
+        let debug = `    Decoding ${path.relative(process.cwd(), testImage)} expecting "${truncated}" with rotations:\n`;
 
         const decodeIterations: Promise<void>[] = [];
 
@@ -220,12 +222,11 @@ abstract class AbstractBlackBoxSpec {
             const rotatedImage = await SharpImage.loadWithRotation(testImage, rotation);
             const source: LuminanceSource = new SharpImageLuminanceSource(rotatedImage);
             const bitmap = new BinaryBitmap(new HybridBinarizer(source));
-            const truncated = AbstractBlackBoxSpec.truncate(expectedText, 32);
             let succeeded = false;
             try {
               debug += `      ${rotation.toString().padStart(3, ' ')}: `;
               if (this.decode(bitmap, rotation, expectedText, expectedMetadata, false)) {
-                debug += `successfully decoded '${truncated}'`;
+                debug += 'successfully decoded';
                 passedCounts[x]++;
                 succeeded = true;
               } else {
@@ -237,7 +238,7 @@ abstract class AbstractBlackBoxSpec {
             }
             try {
               if (this.decode(bitmap, rotation, expectedText, expectedMetadata, true)) {
-                debug += `${succeeded ? ' and':', but'} try harder successfully decoded '${truncated}'.\n`;
+                debug += `${succeeded ? ' and' : ', but'} try harder${succeeded ? ' also' : ''} successfully decoded.\n`;
                 tryHarderCounts[x]++;
                 succeeded = true;
               } else {
