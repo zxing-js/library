@@ -24,7 +24,7 @@ export default class UPCEANExtensionSupport {
   private static EXTENSION_START_PATTERN = Int32Array.from([1, 1, 2]);
 
   static decodeRow(rowNumber: number, row: BitArray, rowOffset: number): Result {
-    let extensionStartRange = AbstractUPCEANReader.findGuardPattern(row, rowOffset, false, this.EXTENSION_START_PATTERN, new Int32Array(this.EXTENSION_START_PATTERN.length).fill(0));
+    let extensionStartRange = AbstractUPCEANReader.findGuardPattern(row, rowOffset, false, this.EXTENSION_START_PATTERN, new Int32Array(this.EXTENSION_START_PATTERN.length));
     try {
       // return null;
       let fiveSupport = new UPCEANExtension5Support();

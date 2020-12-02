@@ -16,6 +16,7 @@
 
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
+import StringBuilder from '../util/StringBuilder';
 
 import AbstractUPCEANReader from './AbstractUPCEANReader';
 import Result from '../Result';
@@ -27,8 +28,8 @@ import NotFoundException from '../NotFoundException';
  * @see UPCEANExtension5Support
  */
 export default class UPCEANExtension2Support {
-  private decodeMiddleCounters = Int32Array.from([0, 0, 0, 0]);
-  private decodeRowStringBuffer = '';
+  private decodeMiddleCounters = new Int32Array(4);
+  private decodeRowStringBuffer = new StringBuilder();
 
 
   public decodeRow(rowNumber: number, row: BitArray, extensionStartRange: Int32Array) {
@@ -52,7 +53,7 @@ export default class UPCEANExtension2Support {
     return extensionResult;
   }
 
-  public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: string) {
+  public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: StringBuilder) {
     let counters = this.decodeMiddleCounters;
     counters[0] = 0;
     counters[1] = 0;
@@ -65,7 +66,7 @@ export default class UPCEANExtension2Support {
 
     for (let x = 0; x < 2 && rowOffset < end; x++) {
       let bestMatch = AbstractUPCEANReader.decodeDigit(row, counters, rowOffset, AbstractUPCEANReader.L_AND_G_PATTERNS);
-      resultString += String.fromCharCode(('0'.charCodeAt(0) + bestMatch % 10));
+      resultString.append('0'.charCodeAt(0) + bestMatch % 10);
       for (let counter of counters) {
         rowOffset += counter;
       }
@@ -79,7 +80,7 @@ export default class UPCEANExtension2Support {
       }
     }
 
-    if (resultString.length !== 2) {
+    if (resultString.length() !== 2) {
       throw new NotFoundException();
     }
 

@@ -16,6 +16,7 @@
 
 import BitArray from '../common/BitArray';
 import DecodeHintType from '../DecodeHintType';
+import StringBuilder from '../util/StringBuilder';
 
 import Result from '../Result';
 import OneDReader from './OneDReader';
@@ -72,7 +73,7 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
  */
   public static L_AND_G_PATTERNS: Int32Array[];
 
-  protected decodeRowStringBuffer = '';
+  protected decodeRowStringBuffer = new StringBuilder();
   // private final UPCEANExtensionSupport extensionReader;
   // private final EANManufacturerOrgSupport eanManSupport;
 
@@ -89,9 +90,9 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
     let foundStart = false;
     let startRange: Int32Array;
     let nextStart = 0;
-    let counters = Int32Array.from([0, 0, 0]);
+    let counters: Int32Array;
     while (!foundStart) {
-      counters = Int32Array.from([0, 0, 0]);
+      counters = new Int32Array(3);
       startRange = AbstractUPCEANReader.findGuardPattern(row, nextStart, false, this.START_END_PATTERN, counters);
       let start = startRange[0];
       nextStart = startRange[1];
@@ -103,7 +104,34 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
     return startRange;
   }
 
+  /**
+   * Attempts to decode a one-dimensional barcode format given a single row of
+   * an image.
+   *
+   * @param rowNumber row number from top of the row
+   * @param row the black/white pixel data of the row
+   * @param hints hints that influence decoding
+   * @return containing encoded string and start/end of barcode
+   * @throws {@link NotFoundException} if no potential barcode is found
+   * @throws {@link ChecksumException} if a potential barcode is found but does not pass its checksum
+   * @throws {@link FormatException} if a potential barcode is found but format is invalid
+   */
   public abstract decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result;
+  /**
+   * Attempts to decode a one-dimensional barcode format given a single row of
+   * an image, but allows caller to inform method about where the UPC/EAN start pattern is found.
+   * This allows this to be computed once and reused across many implementations.
+   *
+   * @param rowNumber row number from top of the row
+   * @param row the black/white pixel data of the row
+   * @param startGuardRange start/end column where the opening start pattern is found
+   * @param hints hints that influence decoding
+   * @return encapsulating the result of decoding a barcode in the row
+   * @throws {@link NotFoundException} if no potential barcode is found
+   * @throws {@link ChecksumException} if a potential barcode is found but does not pass its checksum
+   * @throws {@link FormatException} if a potential barcode is found but format is invalid
+   */
+  public abstract decodeRow(rowNumber: number, row: BitArray, startGuardRange: Int32Array, hints?: Map<DecodeHintType, any>): Result;
 
   static checkChecksum(s: string): boolean {
     return AbstractUPCEANReader.checkStandardUPCEANChecksum(s);
@@ -121,7 +149,7 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
     let length = s.length;
     let sum = 0;
     for (let i = length - 1; i >= 0; i -= 2) {
-      let digit = s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
+      let digit = s.charCodeAt(i) - '0'.charCodeAt(0);
       if (digit < 0 || digit > 9) {
         throw new FormatException();
       }
@@ -129,7 +157,7 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
     }
     sum *= 3;
     for (let i = length - 2; i >= 0; i -= 2) {
-      let digit = s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
+      let digit = s.charCodeAt(i) - '0'.charCodeAt(0);
       if (digit < 0 || digit > 9) {
         throw new FormatException();
       }
@@ -143,17 +171,16 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
   }
 
   /**
-   * @throws NotFoundException
- */
-  static findGuardPatternWithoutCounters(
-    row: BitArray,
-    rowOffset: int,
-    whiteFirst: boolean,
-    pattern: Int32Array,
-  ): Int32Array {
-    return this.findGuardPattern(row, rowOffset, whiteFirst, pattern, new Int32Array(pattern.length));
-  }
-
+   * @param row row of black/white values to search
+   * @param rowOffset position to start search
+   * @param whiteFirst if true, indicates that the pattern specifies white/black/white/...
+   * pixel counts, otherwise, it is interpreted as black/white/black/...
+   * @param pattern pattern of counts of number of black and white pixels that are being
+   * searched for as a pattern
+   * @return start/end horizontal offset of guard pattern, as an array of two ints
+   * @throws {@link NotFoundException} if pattern is not found
+   */
+  static findGuardPattern(row: BitArray, rowOffset: int, whiteFirst: boolean, pattern: Int32Array): Int32Array;
   /**
    * @param row row of black/white values to search
    * @param rowOffset position to start search
@@ -163,9 +190,12 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
    * searched for as a pattern
    * @param counters array of counters, as long as pattern, to re-use
    * @return start/end horizontal offset of guard pattern, as an array of two ints
-   * @throws NotFoundException if pattern is not found
- */
-  static findGuardPattern(row: BitArray, rowOffset: number, whiteFirst: boolean, pattern: Int32Array, counters: Int32Array): Int32Array {
+   * @throws {@link NotFoundException} if pattern is not found
+   */
+  static findGuardPattern(row: BitArray, rowOffset: number, whiteFirst: boolean, pattern: Int32Array, counters: Int32Array): Int32Array;
+  static findGuardPattern(row: BitArray, rowOffset: number, whiteFirst: boolean, pattern: Int32Array, counters?: Int32Array): Int32Array {
+    if (typeof counters === undefined) counters = new Int32Array(pattern.length);
+
     let width = row.getSize();
     rowOffset = whiteFirst ? row.getNextUnset(rowOffset) : row.getNextSet(rowOffset);
     let counterPosition = 0;
@@ -178,7 +208,7 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
       } else {
         if (counterPosition === patternLength - 1) {
           if (OneDReader.patternMatchVariance(counters, pattern, AbstractUPCEANReader.MAX_INDIVIDUAL_VARIANCE) < AbstractUPCEANReader.MAX_AVG_VARIANCE) {
-            return Int32Array.from([patternStart, x]);
+            return new Int32Array([patternStart, x]);
           }
           patternStart += counters[0] + counters[1];
 
@@ -233,9 +263,9 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
    *
    * @param row row of black/white values to search
    * @param startRange start/end offset of start guard pattern
-   * @param resultString {@link StringBuilder} to append decoded chars to
+   * @param resultString to append decoded chars to
    * @return horizontal offset of first pixel after the "middle" that was decoded
    * @throws NotFoundException if decoding could not complete successfully
  */
-  public abstract decodeMiddle(row: BitArray, startRange: Int32Array, resultString: /* StringBuilder */string);
+  public abstract decodeMiddle(row: BitArray, startRange: Int32Array, resultString: StringBuilder);
 }

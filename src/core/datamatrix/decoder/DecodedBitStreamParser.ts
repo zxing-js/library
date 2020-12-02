@@ -160,11 +160,11 @@ export default class DecodedBitStreamParser {
             break;
           case 236: // 05 Macro
             result.append('[)>\u001E05\u001D');
-            resultTrailer.insert(0, '\u001E\u0004');
+            resultTrailer.insert(0, '\u001E\u0004', 2); // Replacing two characters
             break;
           case 237: // 06 Macro
             result.append('[)>\u001E06\u001D');
-            resultTrailer.insert(0, '\u001E\u0004');
+            resultTrailer.insert(0, '\u001E\u0004', 2); // Replacing two characters
             break;
           case 238: // Latch to ANSI X12 encodation
             return Mode.ANSIX12_ENCODE;
