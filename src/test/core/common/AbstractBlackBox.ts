@@ -16,6 +16,8 @@
 
 /*package com.google.zxing.common;*/
 
+import * as fs from 'fs';
+import * as path from 'path';
 import { assertEquals } from '../util/AssertUtils';
 import SharpImage from '../util/SharpImage';
 import SharpImageLuminanceSource from '../SharpImageLuminanceSource';

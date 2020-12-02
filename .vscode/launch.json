@@ -161,6 +161,8 @@
       "args": [
         "--require",
         "ts-node/register",
+        "--require",
+        "tsconfig-paths/register",
         "-u",
         "tdd",
         "--timeout",

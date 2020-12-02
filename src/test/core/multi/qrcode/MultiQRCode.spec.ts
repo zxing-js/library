@@ -14,16 +14,23 @@
  * limitations under the License.
  */
 
-import { BinaryBitmap, HybridBinarizer, LuminanceSource, Result, ResultMetadataType } from "src";
-import BarcodeFormat from "src/core/BarcodeFormat";
-import MultipleBarcodeReader from "src/core/multi/MultipleBarcodeReader";
-import QRCodeMultiReader from "src/core/multi/qrcode/QRCodeMultiReader";
-import Arrays from "src/core/util/Arrays";
-import { Collection, List } from "src/customTypings";
-import AbstractBlackBoxSpec from "../../common/AbstractBlackBox";
-import SharpImageLuminanceSource from "../../SharpImageLuminanceSource";
-import { assertEquals, assertNotNull } from "../../util/AssertUtils";
-import SharpImage from "../../util/SharpImage";
+import {
+  BarcodeFormat,
+  BinaryBitmap,
+  HybridBinarizer,
+  LuminanceSource,
+  MultipleBarcodeReader,
+  QRCodeMultiReader,
+  Result,
+  ResultMetadataType
+} from '@zxing/library';
+import * as path from 'path';
+import Arrays from 'src/core/util/Arrays';
+import { Collection, List } from 'src/customTypings';
+import AbstractBlackBoxSpec from '../../common/AbstractBlackBox';
+import SharpImageLuminanceSource from '../../SharpImageLuminanceSource';
+import { assertEquals, assertNotNull } from '../../util/AssertUtils';
+import SharpImage from '../../util/SharpImage';
 
 // package com.google.zxing.multi.qrcode;
 
@@ -55,15 +62,15 @@ describe('MultiQRCodeTestCase', () => {
 
   it('testMultiQRCodes', () => {
     // Very basic test for now
-    const testBase: string = AbstractBlackBoxSpec.buildTestBase("src/test/resources/blackbox/multi-qrcode-1");
+    const testBase: string = AbstractBlackBoxSpec.buildTestBase('src/test/resources/blackbox/multi-qrcode-1');
 
-    const testImage: string = path.resolve(testBase, "1.png");
+    const testImage: string = path.resolve(testBase, '1.png');
     const image: SharpImage = SharpImage.load(testImage, 0);
     const source: LuminanceSource = new SharpImageLuminanceSource(image);
     const bitmap: BinaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
 
     const reader: MultipleBarcodeReader = new QRCodeMultiReader();
-    const results :Result[] = reader.decodeMultipleWithoutHints(bitmap);
+    const results: Result[] = reader.decodeMultipleWithoutHints(bitmap);
     assertNotNull(results);
     assertEquals(4, results.length);
 
@@ -74,26 +81,26 @@ describe('MultiQRCodeTestCase', () => {
       assertNotNull(result.getResultMetadata());
     }
     const expectedContents: Collection<String> = [];
-    expectedContents.push("You earned the class a 5 MINUTE DANCE PARTY!!  Awesome!  Way to go!  Let's boogie!");
-    expectedContents.push("You earned the class 5 EXTRA MINUTES OF RECESS!!  Fabulous!!  Way to go!!");
-    expectedContents.push("You get to SIT AT MRS. SIGMON'S DESK FOR A DAY!!  Awesome!!  Way to go!! Guess I better clean up! :)");
-    expectedContents.push("You get to CREATE OUR JOURNAL PROMPT FOR THE DAY!  Yay!  Way to go!  ");
+    expectedContents.push('You earned the class a 5 MINUTE DANCE PARTY!!  Awesome!  Way to go!  Let\'s boogie!');
+    expectedContents.push('You earned the class 5 EXTRA MINUTES OF RECESS!!  Fabulous!!  Way to go!!');
+    expectedContents.push('You get to SIT AT MRS. SIGMON\'S DESK FOR A DAY!!  Awesome!!  Way to go!! Guess I better clean up! :)');
+    expectedContents.push('You get to CREATE OUR JOURNAL PROMPT FOR THE DAY!  Yay!  Way to go!  ');
     assertEquals(expectedContents, barcodeContents);
   });
 
   it('testProcessStructuredAppend', () => {
-    const sa1: Result = Result.constructor4Args("SA1", new Uint8Array(0), [], BarcodeFormat.QR_CODE);
-    const sa2: Result = Result.constructor4Args("SA2", new Uint8Array(0), [], BarcodeFormat.QR_CODE);
-    const sa3: Result = Result.constructor4Args("SA3", new Uint8Array(0), [], BarcodeFormat.QR_CODE);
+    const sa1: Result = Result.constructor4Args('SA1', new Uint8Array(0), [], BarcodeFormat.QR_CODE);
+    const sa2: Result = Result.constructor4Args('SA2', new Uint8Array(0), [], BarcodeFormat.QR_CODE);
+    const sa3: Result = Result.constructor4Args('SA3', new Uint8Array(0), [], BarcodeFormat.QR_CODE);
     sa1.putMetadata(ResultMetadataType.STRUCTURED_APPEND_SEQUENCE, 2);
-    sa1.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, "L");
+    sa1.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, 'L');
     sa2.putMetadata(ResultMetadataType.STRUCTURED_APPEND_SEQUENCE, (1 << 4) + 2);
-    sa2.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, "L");
+    sa2.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, 'L');
     sa3.putMetadata(ResultMetadataType.STRUCTURED_APPEND_SEQUENCE, (2 << 4) + 2);
-    sa3.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, "L");
+    sa3.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, 'L');
 
-    const nsa: Result = Result.constructor4Args("NotSA", new Uint8Array(0), [], BarcodeFormat.QR_CODE);
-    nsa.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, "L");
+    const nsa: Result = Result.constructor4Args('NotSA', new Uint8Array(0), [], BarcodeFormat.QR_CODE);
+    nsa.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, 'L');
 
     const inputs: List<Result> = Arrays.asList(sa3, sa1, nsa, sa2);
 
@@ -106,8 +113,8 @@ describe('MultiQRCodeTestCase', () => {
       barcodeContents.push(result.getText());
     }
     const expectedContents: Collection<String> = [];
-    expectedContents.push("SA1SA2SA3");
-    expectedContents.push("NotSA");
+    expectedContents.push('SA1SA2SA3');
+    expectedContents.push('NotSA');
     assertEquals(expectedContents, barcodeContents);
   });
 });

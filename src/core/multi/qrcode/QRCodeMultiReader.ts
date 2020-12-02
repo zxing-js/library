@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-import BarcodeFormat from "src/core/BarcodeFormat";
-import BinaryBitmap from "src/core/BinaryBitmap";
-import DecoderResult from "src/core/common/DecoderResult";
-import DetectorResult from "src/core/common/DetectorResult";
-import DecodeHintType from "src/core/DecodeHintType";
-import QRCodeDecoderMetaData from "src/core/qrcode/decoder/QRCodeDecoderMetaData";
-import QRCodeReader from "src/core/qrcode/QRCodeReader";
-import ReaderException from "src/core/ReaderException";
-import Result from "src/core/Result";
-import ResultMetadataType from "src/core/ResultMetadataType";
-import ResultPoint from "src/core/ResultPoint";
-import ByteArrayOutputStream from "src/core/util/ByteArrayOutputStream";
-import Collections from "src/core/util/Collections";
-import Comparator from "src/core/util/Comparator";
-import Integer from "src/core/util/Integer";
-import StringBuilder from "src/core/util/StringBuilder";
-import { int, List } from "src/customTypings";
-import MultipleBarcodeReader from "../MultipleBarcodeReader";
-import MultiDetector from "./detector/MultiDetector";
+import { int, List } from 'src/customTypings';
+import BarcodeFormat from '../../BarcodeFormat';
+import BinaryBitmap from '../../BinaryBitmap';
+import DecoderResult from '../../common/DecoderResult';
+import DetectorResult from '../../common/DetectorResult';
+import DecodeHintType from '../../DecodeHintType';
+import QRCodeDecoderMetaData from '../../qrcode/decoder/QRCodeDecoderMetaData';
+import QRCodeReader from '../../qrcode/QRCodeReader';
+import ReaderException from '../../ReaderException';
+import Result from '../../Result';
+import ResultMetadataType from '../../ResultMetadataType';
+import ResultPoint from '../../ResultPoint';
+import ByteArrayOutputStream from '../../util/ByteArrayOutputStream';
+import Collections from '../../util/Collections';
+import Comparator from '../../util/Comparator';
+import Integer from '../../util/Integer';
+import StringBuilder from '../../util/StringBuilder';
+import MultipleBarcodeReader from '../MultipleBarcodeReader';
+import MultiDetector from './detector/MultiDetector';
 
 // package com.google.zxing.multi.qrcode;
 

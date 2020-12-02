@@ -72,8 +72,8 @@ export default /*public final*/ class PDF417Reader implements Reader, MultipleBa
    * @throws NotFoundException if a PDF417 code cannot be found,
    * @throws FormatException if a PDF417 cannot be decoded
    * @throws ChecksumException
+   * @override decode
    */
-  // @Override
   public decode(image: BinaryBitmap, hints: Map<DecodeHintType, any> = null): Result {
     let result = PDF417Reader.decode(image, hints, false);
     if (result == null || result.length === 0 || result[0] == null) {
@@ -84,11 +84,19 @@ export default /*public final*/ class PDF417Reader implements Reader, MultipleBa
 
   /**
    *
+   * @override decodeMultiple
+   */
+  public decodeMultipleWithoutHints(image: BinaryBitmap): Result[] {
+    return this.decodeMultiple(image, null);
+  }
+
+  /**
+   *
    * @param BinaryBitmap
    * @param image
    * @throws NotFoundException
+   * @override
    */
-  //   @Override
   public decodeMultiple(image: BinaryBitmap, hints: Map<DecodeHintType, any> = null): Result[] {
     try {
       return PDF417Reader.decode(image, hints, true);
