@@ -29,7 +29,7 @@ import Arrays from 'src/core/util/Arrays';
 import { Collection, List } from 'src/customTypings';
 import AbstractBlackBoxSpec from '../../common/AbstractBlackBox';
 import SharpImageLuminanceSource from '../../SharpImageLuminanceSource';
-import { assertEquals, assertNotNull } from '../../util/AssertUtils';
+import { assertArrayEquals, assertEquals, assertNotNull } from '../../util/AssertUtils';
 import SharpImage from '../../util/SharpImage';
 
 // package com.google.zxing.multi.qrcode;
@@ -85,7 +85,7 @@ describe('MultiQRCodeTestCase', () => {
     expectedContents.push('You earned the class 5 EXTRA MINUTES OF RECESS!!  Fabulous!!  Way to go!!');
     expectedContents.push('You get to SIT AT MRS. SIGMON\'S DESK FOR A DAY!!  Awesome!!  Way to go!! Guess I better clean up! :)');
     expectedContents.push('You get to CREATE OUR JOURNAL PROMPT FOR THE DAY!  Yay!  Way to go!  ');
-    assertEquals(expectedContents, barcodeContents);
+    assertArrayEquals(expectedContents, barcodeContents);
   });
 
   it('testProcessStructuredAppend', () => {
@@ -115,6 +115,6 @@ describe('MultiQRCodeTestCase', () => {
     const expectedContents: Collection<String> = [];
     expectedContents.push('SA1SA2SA3');
     expectedContents.push('NotSA');
-    assertEquals(expectedContents, barcodeContents);
+    assertArrayEquals(expectedContents, barcodeContents);
   });
 });
