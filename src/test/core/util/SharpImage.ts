@@ -50,6 +50,19 @@ export default class SharpImage {
     return new SharpImage(wrapper, undefined, undefined, undefined);
   }
 
+  public static async loadAsync(path: string): Promise<SharpImage> {
+
+    const wrapper = sharp(path).raw();
+
+    const { data, info } = await wrapper.toBuffer({ resolveWithObject: true });
+
+    const width = info.width;
+    const height = info.height;
+    const buffer = new Uint8ClampedArray(data.buffer);
+
+    return new SharpImage(wrapper, buffer, width, height);
+  }
+
   public static async loadAsBitMatrix(path: string): Promise<BitMatrix> {
 
     const wrapper = sharp(path).raw();

@@ -60,12 +60,12 @@ import SharpImage from '../../util/SharpImage';
  */
 describe('MultiQRCodeTestCase', () => {
 
-  it('testMultiQRCodes', () => {
+  it('testMultiQRCodes', async () => {
     // Very basic test for now
     const testBase: string = AbstractBlackBoxSpec.buildTestBase('src/test/resources/blackbox/multi-qrcode-1');
 
     const testImage: string = path.resolve(testBase, '1.png');
-    const image: SharpImage = SharpImage.load(testImage, 0);
+    const image: SharpImage = await SharpImage.loadAsync(testImage);
     const source: LuminanceSource = new SharpImageLuminanceSource(image);
     const bitmap: BinaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
 
