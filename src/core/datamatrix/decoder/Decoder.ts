@@ -45,7 +45,7 @@ export default class Decoder {
    * @return text and bytes encoded within the Data Matrix Code
    * @throws FormatException if the Data Matrix Code cannot be decoded
    * @throws ChecksumException if error correction fails
-   */
+ */
   public decode(bits: BitMatrix): DecoderResult {
     // Construct a parser and read version, error-correction level
     const parser = new BitMatrixParser(bits);
@@ -87,7 +87,7 @@ export default class Decoder {
    * @param codewordBytes data and error correction codewords
    * @param numDataCodewords number of codewords that are data bytes
    * @throws ChecksumException if error correction fails
-   */
+ */
   private correctErrors(codewordBytes: Uint8Array, numDataCodewords: number): void {
     // const numCodewords = codewordBytes.length;
     // First read into an array of ints

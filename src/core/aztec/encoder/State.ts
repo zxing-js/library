@@ -35,8 +35,8 @@ import { int, Deque } from '../../../customTypings';
  * State represents all information about a sequence necessary to generate the current output.
  * Note that a state is immutable.
  */
-export default /*final*/ class State {
-  static /*final*/ INITIAL_STATE: State = new State(
+export default /* final */ class State {
+  static /* final */ INITIAL_STATE: State = new State(
     C.EMPTY_TOKEN,
     C.MODE_UPPER,
     0,
@@ -45,15 +45,15 @@ export default /*final*/ class State {
 
   // The current mode of the encoding (or the mode to which we'll return if
   // we're in Binary Shift mode.
-  private /*final*/ mode: int;
+  private /* final */ mode: int;
   // The list of tokens that we output.  If we are in Binary Shift mode, this
   // token list does *not* yet included the token for those bytes
-  private /*final*/ token: Token;
+  private /* final */ token: Token;
   // If non-zero, the number of most recent bytes that should be output
   // in Binary Shift mode.
-  private /*final*/ binaryShiftByteCount: int;
+  private /* final */ binaryShiftByteCount: int;
   // The total number of bits generated (Shift: y).
-  private /*final*/ bitCount: int;
+  private /* final */ bitCount: int;
 
   private constructor(
     token: Token,
@@ -137,8 +137,8 @@ export default /*final*/ class State {
       this.binaryShiftByteCount === 0 || this.binaryShiftByteCount === 31
         ? 18
         : this.binaryShiftByteCount === 62
-        ? 9
-        : 8;
+          ? 9
+          : 8;
     let result: State = new State(
       token,
       mode,
@@ -209,7 +209,7 @@ export default /*final*/ class State {
 
   /**
    * @Override
-   */
+ */
   public toString(): String {
     return StringUtils.format(
       '%s bits=%d bytes=%d',

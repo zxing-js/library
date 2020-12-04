@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common {*/
+/* namespace com.google.zxing.common { */
 
 import BitMatrix from './BitMatrix';
 import PerspectiveTransform from './PerspectiveTransform';
@@ -36,143 +36,143 @@ import NotFoundException from '../NotFoundException';
  */
 abstract class GridSampler {
 
-    /**
-     * Samples an image for a rectangular matrix of bits of the given dimension. The sampling
-     * transformation is determined by the coordinates of 4 points, in the original and transformed
-     * image space.
-     *
-     * @param image image to sample
-     * @param dimensionX width of {@link BitMatrix} to sample from image
-     * @param dimensionY height of {@link BitMatrix} to sample from image
-     * @param p1ToX point 1 preimage X
-     * @param p1ToY point 1 preimage Y
-     * @param p2ToX point 2 preimage X
-     * @param p2ToY point 2 preimage Y
-     * @param p3ToX point 3 preimage X
-     * @param p3ToY point 3 preimage Y
-     * @param p4ToX point 4 preimage X
-     * @param p4ToY point 4 preimage Y
-     * @param p1FromX point 1 image X
-     * @param p1FromY point 1 image Y
-     * @param p2FromX point 2 image X
-     * @param p2FromY point 2 image Y
-     * @param p3FromX point 3 image X
-     * @param p3FromY point 3 image Y
-     * @param p4FromX point 4 image X
-     * @param p4FromY point 4 image Y
-     *
-     * @return {@link BitMatrix} representing a grid of points sampled from the image within a region
-     *   defined by the "from" parameters
-     *
-     * @throws NotFoundException if image can't be sampled, for example, if the transformation defined
-     *   by the given points is invalid or results in sampling outside the image boundaries
-     */
-    public abstract sampleGrid(
-        image: BitMatrix,
-        dimensionX: number /*int*/,
-        dimensionY: number /*int*/,
-        p1ToX: number/*float*/, p1ToY: number/*float*/,
-        p2ToX: number/*float*/, p2ToY: number/*float*/,
-        p3ToX: number/*float*/, p3ToY: number/*float*/,
-        p4ToX: number/*float*/, p4ToY: number/*float*/,
-        p1FromX: number/*float*/, p1FromY: number/*float*/,
-        p2FromX: number/*float*/, p2FromY: number/*float*/,
-        p3FromX: number/*float*/, p3FromY: number/*float*/,
-        p4FromX: number/*float*/, p4FromY: number/*float*/
-    ): BitMatrix; /*throws NotFoundException*/
+  /**
+   * Samples an image for a rectangular matrix of bits of the given dimension. The sampling
+   * transformation is determined by the coordinates of 4 points, in the original and transformed
+   * image space.
+   *
+   * @param image image to sample
+   * @param dimensionX width of {@link BitMatrix} to sample from image
+   * @param dimensionY height of {@link BitMatrix} to sample from image
+   * @param p1ToX point 1 preimage X
+   * @param p1ToY point 1 preimage Y
+   * @param p2ToX point 2 preimage X
+   * @param p2ToY point 2 preimage Y
+   * @param p3ToX point 3 preimage X
+   * @param p3ToY point 3 preimage Y
+   * @param p4ToX point 4 preimage X
+   * @param p4ToY point 4 preimage Y
+   * @param p1FromX point 1 image X
+   * @param p1FromY point 1 image Y
+   * @param p2FromX point 2 image X
+   * @param p2FromY point 2 image Y
+   * @param p3FromX point 3 image X
+   * @param p3FromY point 3 image Y
+   * @param p4FromX point 4 image X
+   * @param p4FromY point 4 image Y
+   *
+   * @return {@link BitMatrix} representing a grid of points sampled from the image within a region
+   *   defined by the "from" parameters
+   *
+   * @throws NotFoundException if image can't be sampled, for example, if the transformation defined
+   *   by the given points is invalid or results in sampling outside the image boundaries
+ */
+  public abstract sampleGrid(
+    image: BitMatrix,
+    dimensionX: number /* int */,
+    dimensionY: number /* int */,
+    p1ToX: number/* float */, p1ToY: number/* float */,
+    p2ToX: number/* float */, p2ToY: number/* float */,
+    p3ToX: number/* float */, p3ToY: number/* float */,
+    p4ToX: number/* float */, p4ToY: number/* float */,
+    p1FromX: number/* float */, p1FromY: number/* float */,
+    p2FromX: number/* float */, p2FromY: number/* float */,
+    p3FromX: number/* float */, p3FromY: number/* float */,
+    p4FromX: number/* float */, p4FromY: number/* float */
+  ): BitMatrix; /* throws NotFoundException */
 
-    public abstract sampleGridWithTransform(
-        image: BitMatrix,
-        dimensionX: number /*int*/,
-        dimensionY: number /*int*/,
-        transform: PerspectiveTransform
-    ): BitMatrix; /*throws NotFoundException*/
+  public abstract sampleGridWithTransform(
+    image: BitMatrix,
+    dimensionX: number /* int */,
+    dimensionY: number /* int */,
+    transform: PerspectiveTransform
+  ): BitMatrix; /* throws NotFoundException */
 
-    /**
-     * <p>Checks a set of points that have been transformed to sample points on an image against
-     * the image's dimensions to see if the point are even within the image.</p>
-     *
-     * <p>This method will actually "nudge" the endpoints back onto the image if they are found to be
-     * barely (less than 1 pixel) off the image. This accounts for imperfect detection of finder
-     * patterns in an image where the QR Code runs all the way to the image border.</p>
-     *
-     * <p>For efficiency, the method will check points from either end of the line until one is found
-     * to be within the image. Because the set of points are assumed to be linear, this is valid.</p>
-     *
-     * @param image image into which the points should map
-     * @param points actual points in x1,y1,...,xn,yn form
-     * @throws NotFoundException if an endpoint is lies outside the image boundaries
-     */
-    protected static checkAndNudgePoints(
-        image: BitMatrix,
-        points: Float32Array
-    ): void /*throws NotFoundException*/ {
+  /**
+   * <p>Checks a set of points that have been transformed to sample points on an image against
+   * the image's dimensions to see if the point are even within the image.</p>
+   *
+   * <p>This method will actually "nudge" the endpoints back onto the image if they are found to be
+   * barely (less than 1 pixel) off the image. This accounts for imperfect detection of finder
+   * patterns in an image where the QR Code runs all the way to the image border.</p>
+   *
+   * <p>For efficiency, the method will check points from either end of the line until one is found
+   * to be within the image. Because the set of points are assumed to be linear, this is valid.</p>
+   *
+   * @param image image into which the points should map
+   * @param points actual points in x1,y1,...,xn,yn form
+   * @throws NotFoundException if an endpoint is lies outside the image boundaries
+ */
+  protected static checkAndNudgePoints(
+    image: BitMatrix,
+    points: Float32Array
+  ): void /* throws NotFoundException */ {
 
-        const width: number /*int*/ = image.getWidth();
-        const height: number /*int*/ = image.getHeight();
+    const width: number /* int */ = image.getWidth();
+    const height: number /* int */ = image.getHeight();
 
-        // Check and nudge points from start until we see some that are OK:
-        let nudged: boolean = true;
+    // Check and nudge points from start until we see some that are OK:
+    let nudged: boolean = true;
 
-        for (let offset = 0; offset < points.length && nudged; offset += 2) {
+    for (let offset = 0; offset < points.length && nudged; offset += 2) {
 
-            const x = Math.floor(points[offset]);
-            const y = Math.floor(points[offset + 1]);
+      const x = Math.floor(points[offset]);
+      const y = Math.floor(points[offset + 1]);
 
-            if (x < -1 || x > width || y < -1 || y > height) {
-                throw new NotFoundException();
-            }
+      if (x < -1 || x > width || y < -1 || y > height) {
+        throw new NotFoundException();
+      }
 
-            nudged = false;
+      nudged = false;
 
-            if (x === -1) {
-                points[offset] = 0.0;
-                nudged = true;
-            } else if (x === width) {
-                points[offset] = width - 1;
-                nudged = true;
-            }
-
-            if (y === -1) {
-                points[offset + 1] = 0.0;
-                nudged = true;
-            } else if (y === height) {
-                points[offset + 1] = height - 1;
-                nudged = true;
-            }
-        }
-
-        // Check and nudge points from end:
+      if (x === -1) {
+        points[offset] = 0.0;
         nudged = true;
+      } else if (x === width) {
+        points[offset] = width - 1;
+        nudged = true;
+      }
 
-        for (let offset = points.length - 2; offset >= 0 && nudged; offset -= 2) {
-
-            const x = Math.floor(points[offset]);
-            const y = Math.floor(points[offset + 1]);
-
-            if (x < -1 || x > width || y < -1 || y > height) {
-                throw new NotFoundException();
-            }
-
-            nudged = false;
-
-            if (x === -1) {
-                points[offset] = 0.0;
-                nudged = true;
-            } else if (x === width) {
-                points[offset] = width - 1;
-                nudged = true;
-            }
-
-            if (y === -1) {
-                points[offset + 1] = 0.0;
-                nudged = true;
-            } else if (y === height) {
-                points[offset + 1] = height - 1;
-                nudged = true;
-            }
-        }
+      if (y === -1) {
+        points[offset + 1] = 0.0;
+        nudged = true;
+      } else if (y === height) {
+        points[offset + 1] = height - 1;
+        nudged = true;
+      }
     }
+
+    // Check and nudge points from end:
+    nudged = true;
+
+    for (let offset = points.length - 2; offset >= 0 && nudged; offset -= 2) {
+
+      const x = Math.floor(points[offset]);
+      const y = Math.floor(points[offset + 1]);
+
+      if (x < -1 || x > width || y < -1 || y > height) {
+        throw new NotFoundException();
+      }
+
+      nudged = false;
+
+      if (x === -1) {
+        points[offset] = 0.0;
+        nudged = true;
+      } else if (x === width) {
+        points[offset] = width - 1;
+        nudged = true;
+      }
+
+      if (y === -1) {
+        points[offset + 1] = 0.0;
+        nudged = true;
+      } else if (y === height) {
+        points[offset + 1] = height - 1;
+        nudged = true;
+      }
+    }
+  }
 
 }
 

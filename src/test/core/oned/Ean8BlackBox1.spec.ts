@@ -23,16 +23,16 @@ import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
  */
 class Ean8BlackBox1Spec extends AbstractBlackBoxSpec {
 
-    public constructor() {
-        super('src/test/resources/blackbox/ean8-1', new MultiFormatReader(), BarcodeFormat.EAN_8);
-        this.addTest(8, 8, 0.0);
-        this.addTest(8, 8, 180.0);
-    }
+  public constructor() {
+    super('src/test/resources/blackbox/ean8-1', new MultiFormatReader(), BarcodeFormat.EAN_8);
+    this.addTest(8, 8, 0.0);
+    this.addTest(8, 8, 180.0);
+  }
 }
 
 describe('Ean8BlackBox1Spec.1', () => {
-    it('testBlackBox', async () => {
-        const test = new Ean8BlackBox1Spec();
-        await test.testBlackBox();
-    });
+  it('testBlackBox', async () => {
+    const test = new Ean8BlackBox1Spec();
+    await test.testBlackBox();
+  });
 });

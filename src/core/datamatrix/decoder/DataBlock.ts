@@ -44,9 +44,9 @@ export default class DataBlock {
    * @param version version of the Data Matrix Code
    * @return DataBlocks containing original bytes, "de-interleaved" from representation in the
    *         Data Matrix Code
-   */
+ */
   static getDataBlocks(rawCodewords: Int8Array,
-                                   version: Version): DataBlock[]  {
+    version: Version): DataBlock[] {
     // Figure out the number and size of data blocks used by this version
     const ecBlocks = version.getECBlocks();
 
@@ -54,7 +54,7 @@ export default class DataBlock {
     let totalBlocks = 0;
     const ecBlockArray = ecBlocks.getECBlocks();
     for (let ecBlock of ecBlockArray) {
-       totalBlocks += ecBlock.getCount();
+      totalBlocks += ecBlock.getCount();
     }
 
     // Now establish DataBlocks of the appropriate size and number of data codewords

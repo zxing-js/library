@@ -35,9 +35,9 @@ import StringBuilder from '../../../../../core/util/StringBuilder';
 // import java.util.regex.Pattern;
 
 
-const /*private static /*final*/ ONE: RegExp = RegExp('1');
-const /*private static /*final*/ ZERO: RegExp = RegExp('0');
-const /*private static /*final*/ SPACE: RegExp = RegExp(' ');
+const /* private static /*final */ ONE: RegExp = RegExp('1');
+const /* private static /*final */ ZERO: RegExp = RegExp('0');
+const /* private static /*final */ SPACE: RegExp = RegExp(' ');
 
 /**
  * @author Pablo Orduña, University of Deusto (pablo.orduna@deusto.es)
@@ -49,13 +49,13 @@ export default class BinaryUtil {
 
   /*
   * Constructs a BitArray from a String like the one returned from BitArray.toString()
-  */
+ */
   public static buildBitArrayFromString(data: string): BitArray {
     let dotsAndXs: string = data.replace(ONE, 'X').replace(ZERO, '.');
     let binary: BitArray = new BitArray(dotsAndXs.replace(SPACE, '').length);
-    let counter: /*int*/ number = 0;
+    let counter: /* int */ number = 0;
 
-    for (let i /*int*/ = 0; i < dotsAndXs.length; ++i) {
+    for (let i /* int */ = 0; i < dotsAndXs.length; ++i) {
       if (i % 9 === 0) { // spaces
         if (dotsAndXs.charAt(i) !== ' ') {
           throw new IllegalStateException('space expected');
@@ -75,10 +75,10 @@ export default class BinaryUtil {
   public static buildBitArrayFromStringWithoutSpaces(data: string): BitArray {
     let sb: StringBuilder = new StringBuilder();
     let dotsAndXs: string = data.replace(ONE, 'X').replace(ZERO, '.');
-    let current: /*int*/ number = 0;
+    let current: /* int */ number = 0;
     while (current < dotsAndXs.length) {
       sb.append(' ');
-      for (let i /*int*/ = 0; i < 8 && current < dotsAndXs.length; ++i) {
+      for (let i /* int */ = 0; i < 8 && current < dotsAndXs.length; ++i) {
         sb.append(dotsAndXs.charAt(current));
         current++;
       }

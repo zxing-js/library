@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.qrcode.decoder {*/
+/* namespace com.google.zxing.qrcode.decoder { */
 
 import BitSource from '../../common/BitSource';
 import CharacterSetECI from '../../common/CharacterSetECI';
@@ -29,11 +29,11 @@ import Mode from './Mode';
 import Version from './Version';
 
 
-/*import java.io.UnsupportedEncodingException;*/
-/*import java.util.ArrayList;*/
-/*import java.util.Collection;*/
-/*import java.util.List;*/
-/*import java.util.Map;*/
+/* import java.io.UnsupportedEncodingException; */
+/* import java.util.ArrayList; */
+/* import java.util.Collection; */
+/* import java.util.List; */
+/* import java.util.Map; */
 
 /**
  * <p>QR Codes can encode text as bits in one of several modes, and can use multiple modes
@@ -47,15 +47,15 @@ export default class DecodedBitStreamParser {
 
   /**
    * See ISO 18004:2006, 6.4.4 Table 5
-   */
+ */
   private static ALPHANUMERIC_CHARS =
-    '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:';
+  '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:';
   private static GB2312_SUBSET = 1;
 
   public static decode(bytes: Uint8Array,
     version: Version,
     ecLevel: ErrorCorrectionLevel,
-    hints: Map<DecodeHintType, any>): DecoderResult /*throws FormatException*/ {
+    hints: Map<DecodeHintType, any>): DecoderResult /* throws FormatException */ {
     const bits = new BitSource(bytes);
     let result = new StringBuilder();
     const byteSegments = new Array<Uint8Array>(); // 1
@@ -133,7 +133,7 @@ export default class DecodedBitStreamParser {
             break;
         }
       } while (mode !== Mode.TERMINATOR);
-    } catch (iae/*: IllegalArgumentException*/) {
+    } catch (iae/* : IllegalArgumentException */) {
       // from readBits() calls
       throw new FormatException();
     }
@@ -148,10 +148,10 @@ export default class DecodedBitStreamParser {
 
   /**
    * See specification GBT 18284-2000
-   */
+ */
   private static decodeHanziSegment(bits: BitSource,
     result: StringBuilder,
-    count: number /*int*/): void /*throws FormatException*/ {
+    count: number /* int */): void /* throws FormatException */ {
     // Don't crash trying to read more bits than we have available.
     if (count * 13 > bits.available()) {
       throw new FormatException();
@@ -172,8 +172,8 @@ export default class DecodedBitStreamParser {
         // In the 0xB0A1 to 0xFAFE range
         assembledTwoBytes += 0x0A6A1;
       }
-      buffer[offset] = /*(byte) */((assembledTwoBytes >> 8) & 0xFF);
-      buffer[offset + 1] = /*(byte) */(assembledTwoBytes & 0xFF);
+      buffer[offset] = /* (byte) */((assembledTwoBytes >> 8) & 0xFF);
+      buffer[offset + 1] = /* (byte) */(assembledTwoBytes & 0xFF);
       offset += 2;
       count--;
     }
@@ -181,14 +181,14 @@ export default class DecodedBitStreamParser {
     try {
       result.append(StringEncoding.decode(buffer, StringUtils.GB2312));
       // TYPESCRIPTPORT: TODO: implement GB2312 decode. StringView from MDN could be a starting point
-    } catch (ignored/*: UnsupportedEncodingException*/) {
+    } catch (ignored/* : UnsupportedEncodingException */) {
       throw new FormatException(ignored);
     }
   }
 
   private static decodeKanjiSegment(bits: BitSource,
     result: StringBuilder,
-    count: number /*int*/): void /*throws FormatException*/ {
+    count: number /* int */): void /* throws FormatException */ {
     // Don't crash trying to read more bits than we have available.
     if (count * 13 > bits.available()) {
       throw new FormatException();
@@ -209,8 +209,8 @@ export default class DecodedBitStreamParser {
         // In the 0xE040 to 0xEBBF range
         assembledTwoBytes += 0x0C140;
       }
-      buffer[offset] = /*(byte) */(assembledTwoBytes >> 8);
-      buffer[offset + 1] = /*(byte) */assembledTwoBytes;
+      buffer[offset] = /* (byte) */(assembledTwoBytes >> 8);
+      buffer[offset + 1] = /* (byte) */assembledTwoBytes;
       offset += 2;
       count--;
     }
@@ -218,17 +218,17 @@ export default class DecodedBitStreamParser {
     try {
       result.append(StringEncoding.decode(buffer, StringUtils.SHIFT_JIS));
       // TYPESCRIPTPORT: TODO: implement SHIFT_JIS decode. StringView from MDN could be a starting point
-    } catch (ignored/*: UnsupportedEncodingException*/) {
+    } catch (ignored/* : UnsupportedEncodingException */) {
       throw new FormatException(ignored);
     }
   }
 
   private static decodeByteSegment(bits: BitSource,
     result: StringBuilder,
-    count: number /*int*/,
+    count: number /* int */,
     currentCharacterSetECI: CharacterSetECI,
     byteSegments: Uint8Array[],
-    hints: Map<DecodeHintType, any>): void /*throws FormatException*/ {
+    hints: Map<DecodeHintType, any>): void /* throws FormatException */ {
     // Don't crash trying to read more bits than we have available.
     if (8 * count > bits.available()) {
       throw new FormatException();
@@ -236,7 +236,7 @@ export default class DecodedBitStreamParser {
 
     const readBytes = new Uint8Array(count);
     for (let i = 0; i < count; i++) {
-      readBytes[i] = /*(byte) */bits.readBits(8);
+      readBytes[i] = /* (byte) */bits.readBits(8);
     }
     let encoding: string;
     if (currentCharacterSetECI === null) {
@@ -251,13 +251,13 @@ export default class DecodedBitStreamParser {
     }
     try {
       result.append(StringEncoding.decode(readBytes, encoding));
-    } catch (ignored/*: UnsupportedEncodingException*/) {
+    } catch (ignored/* : UnsupportedEncodingException */) {
       throw new FormatException(ignored);
     }
     byteSegments.push(readBytes);
   }
 
-  private static toAlphaNumericChar(value: number /*int*/): string /*throws FormatException*/ {
+  private static toAlphaNumericChar(value: number /* int */): string /* throws FormatException */ {
     if (value >= DecodedBitStreamParser.ALPHANUMERIC_CHARS.length) {
       throw new FormatException();
     }
@@ -266,8 +266,8 @@ export default class DecodedBitStreamParser {
 
   private static decodeAlphanumericSegment(bits: BitSource,
     result: StringBuilder,
-    count: number /*int*/,
-    fc1InEffect: boolean): void /*throws FormatException*/ {
+    count: number /* int */,
+    fc1InEffect: boolean): void /* throws FormatException */ {
     // Read two characters at a time
     const start = result.length();
     while (count > 1) {
@@ -305,7 +305,7 @@ export default class DecodedBitStreamParser {
 
   private static decodeNumericSegment(bits: BitSource,
     result: StringBuilder,
-    count: number /*int*/): void /*throws FormatException*/ {
+    count: number /* int */): void /* throws FormatException */ {
     // Read three digits at a time
     while (count >= 3) {
       // Each 10 bits encodes three digits
@@ -345,7 +345,7 @@ export default class DecodedBitStreamParser {
     }
   }
 
-  private static parseECIValue(bits: BitSource): number /*int*/ /*throws FormatException*/ {
+  private static parseECIValue(bits: BitSource): number /* int */ /* throws FormatException */ {
     const firstByte = bits.readBits(8);
     if ((firstByte & 0x80) === 0) {
       // just one byte

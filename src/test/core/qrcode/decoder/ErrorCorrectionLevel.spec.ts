@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode.decoder;*/
+/* package com.google.zxing.qrcode.decoder; */
 
 import * as assert from 'assert';
 
@@ -25,18 +25,18 @@ import { QRCodeDecoderErrorCorrectionLevel } from '@zxing/library';
  */
 describe('QRCodeDecoderErrorCorrectionLevel', () => {
 
-    it('testForBits', () => {
-        assert.strictEqual(QRCodeDecoderErrorCorrectionLevel.M.equals(QRCodeDecoderErrorCorrectionLevel.forBits(0)), true);
-        assert.strictEqual(QRCodeDecoderErrorCorrectionLevel.L.equals(QRCodeDecoderErrorCorrectionLevel.forBits(1)), true);
-        assert.strictEqual(QRCodeDecoderErrorCorrectionLevel.H.equals(QRCodeDecoderErrorCorrectionLevel.forBits(2)), true);
-        assert.strictEqual(QRCodeDecoderErrorCorrectionLevel.Q.equals(QRCodeDecoderErrorCorrectionLevel.forBits(3)), true);
-        try {
-            QRCodeDecoderErrorCorrectionLevel.forBits(4);
-            assert.ok(false, 'Should have thrown an exception');
-        } catch (ex) {
-            // good for IllegalArgumentException
-        }
-    });
+  it('testForBits', () => {
+    assert.strictEqual(QRCodeDecoderErrorCorrectionLevel.M.equals(QRCodeDecoderErrorCorrectionLevel.forBits(0)), true);
+    assert.strictEqual(QRCodeDecoderErrorCorrectionLevel.L.equals(QRCodeDecoderErrorCorrectionLevel.forBits(1)), true);
+    assert.strictEqual(QRCodeDecoderErrorCorrectionLevel.H.equals(QRCodeDecoderErrorCorrectionLevel.forBits(2)), true);
+    assert.strictEqual(QRCodeDecoderErrorCorrectionLevel.Q.equals(QRCodeDecoderErrorCorrectionLevel.forBits(3)), true);
+    try {
+      QRCodeDecoderErrorCorrectionLevel.forBits(4);
+      assert.ok(false, 'Should have thrown an exception');
+    } catch (ex) {
+      // good for IllegalArgumentException
+    }
+  });
 
 
 });

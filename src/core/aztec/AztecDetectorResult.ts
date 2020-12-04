@@ -26,30 +26,30 @@ import DetectorResult from '../common/DetectorResult';
  */
 export default class AztecDetectorResult extends DetectorResult {
 
-    private compact: boolean;
-    private nbDatablocks: number;
-    private nbLayers: number;
+  private compact: boolean;
+  private nbDatablocks: number;
+  private nbLayers: number;
 
-    public constructor(bits: BitMatrix,
-        points: ResultPoint[],
-        compact: boolean,
-        nbDatablocks: number,
-        nbLayers: number) {
-        super(bits, points);
-        this.compact = compact;
-        this.nbDatablocks = nbDatablocks;
-        this.nbLayers = nbLayers;
-    }
+  public constructor(bits: BitMatrix,
+    points: ResultPoint[],
+    compact: boolean,
+    nbDatablocks: number,
+    nbLayers: number) {
+    super(bits, points);
+    this.compact = compact;
+    this.nbDatablocks = nbDatablocks;
+    this.nbLayers = nbLayers;
+  }
 
-    public getNbLayers(): number {
-        return this.nbLayers;
-    }
+  public getNbLayers(): number {
+    return this.nbLayers;
+  }
 
-    public getNbDatablocks(): number {
-        return this.nbDatablocks;
-    }
+  public getNbDatablocks(): number {
+    return this.nbDatablocks;
+  }
 
-    public isCompact(): boolean {
-        return this.compact;
-    }
+  public isCompact(): boolean {
+    return this.compact;
+  }
 }

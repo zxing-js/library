@@ -46,7 +46,7 @@ import NullPointerException from '../NullPointerException';
  * @see     java.io.OutputStream#write(int)
  * @since   JDK1.0
  */
-export default /*public*/ abstract class OutputStream /*implements Closeable, Flushable*/ {
+export default /* public */ abstract class OutputStream /* implements Closeable, Flushable */ {
   /**
    * Writes the specified byte to this output stream. The general
    * contract for <code>write</code> is that one byte is written
@@ -61,8 +61,8 @@ export default /*public*/ abstract class OutputStream /*implements Closeable, Fl
    * @exception  IOException  if an I/O error occurs. In particular,
    *             an <code>IOException</code> may be thrown if the
    *             output stream has been closed.
-   */
-  public abstract write(b: /*int*/ number): void;
+ */
+  public abstract write(b: /* int */ number): void;
 
   /**
    * Writes <code>b.length</code> bytes from the specified byte array
@@ -73,7 +73,7 @@ export default /*public*/ abstract class OutputStream /*implements Closeable, Fl
    * @param      b   the data.
    * @exception  IOException  if an I/O error occurs.
    * @see        java.io.OutputStream#write(byte[], int, int)
-   */
+ */
   public writeBytes(b: Uint8Array): void {
     this.writeBytesOffset(b, 0, b.length);
   }
@@ -105,8 +105,8 @@ export default /*public*/ abstract class OutputStream /*implements Closeable, Fl
    * @exception  IOException  if an I/O error occurs. In particular,
    *             an <code>IOException</code> is thrown if the output
    *             stream is closed.
-   */
-  public writeBytesOffset(b: Uint8Array, off: /*int*/ number, len: /*int*/ number): void {
+ */
+  public writeBytesOffset(b: Uint8Array, off: /* int */ number, len: /* int */ number): void {
     if (b == null) {
       throw new NullPointerException();
     } else if ((off < 0) || (off > b.length) || (len < 0) ||
@@ -137,7 +137,7 @@ export default /*public*/ abstract class OutputStream /*implements Closeable, Fl
    * The <code>flush</code> method of <code>OutputStream</code> does nothing.
    *
    * @exception  IOException  if an I/O error occurs.
-   */
+ */
   public flush(): void {
   }
 
@@ -150,7 +150,7 @@ export default /*public*/ abstract class OutputStream /*implements Closeable, Fl
    * The <code>close</code> method of <code>OutputStream</code> does nothing.
    *
    * @exception  IOException  if an I/O error occurs.
-   */
+ */
   public close(): void {
   }
 

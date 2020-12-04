@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.qrcode.detector {*/
+/* namespace com.google.zxing.qrcode.detector { */
 
 import ResultPoint from '../../ResultPoint';
 
@@ -27,54 +27,54 @@ import ResultPoint from '../../ResultPoint';
  */
 export default class FinderPattern extends ResultPoint {
 
-    // FinderPattern(posX: number/*float*/, posY: number/*float*/, estimatedModuleSize: number/*float*/) {
-    //   this(posX, posY, estimatedModuleSize, 1)
-    // }
+  // FinderPattern(posX: number/*float */, posY: number/*float */, estimatedModuleSize: number/*float */) {
+  //   this(posX, posY, estimatedModuleSize, 1)
+  // }
 
-    public constructor(posX: number/*float*/, posY: number/*float*/, private estimatedModuleSize: number/*float*/, private count?: number /*int*/) {
-        super(posX, posY);
-        if (undefined === count) {
-            this.count = 1;
-        }
+  public constructor(posX: number/* float */, posY: number/* float */, private estimatedModuleSize: number/* float */, private count?: number /* int */) {
+    super(posX, posY);
+    if (undefined === count) {
+      this.count = 1;
     }
+  }
 
-    public getEstimatedModuleSize(): number/*float*/ {
-        return this.estimatedModuleSize;
-    }
+  public getEstimatedModuleSize(): number/* float */ {
+    return this.estimatedModuleSize;
+  }
 
-    public getCount(): number /*int*/ {
-        return this.count;
-    }
+  public getCount(): number /* int */ {
+    return this.count;
+  }
 
-    /*
-    void incrementCount() {
-      this.count++
-    }
-     */
+  /*
+  void incrementCount() {
+    this.count++
+  }
+ */
 
-    /**
-     * <p>Determines if this finder pattern "about equals" a finder pattern at the stated
-     * position and size -- meaning, it is at nearly the same center with nearly the same size.</p>
-     */
-    public aboutEquals(moduleSize: number/*float*/, i: number/*float*/, j: number/*float*/): boolean {
-        if (Math.abs(i - this.getY()) <= moduleSize && Math.abs(j - this.getX()) <= moduleSize) {
-            const moduleSizeDiff: number /*float*/ = Math.abs(moduleSize - this.estimatedModuleSize);
-            return moduleSizeDiff <= 1.0 || moduleSizeDiff <= this.estimatedModuleSize;
-        }
-        return false;
+  /**
+   * <p>Determines if this finder pattern "about equals" a finder pattern at the stated
+   * position and size -- meaning, it is at nearly the same center with nearly the same size.</p>
+ */
+  public aboutEquals(moduleSize: number/* float */, i: number/* float */, j: number/* float */): boolean {
+    if (Math.abs(i - this.getY()) <= moduleSize && Math.abs(j - this.getX()) <= moduleSize) {
+      const moduleSizeDiff: number /* float */ = Math.abs(moduleSize - this.estimatedModuleSize);
+      return moduleSizeDiff <= 1.0 || moduleSizeDiff <= this.estimatedModuleSize;
     }
+    return false;
+  }
 
-    /**
-     * Combines this object's current estimate of a finder pattern position and module size
-     * with a new estimate. It returns a new {@code FinderPattern} containing a weighted average
-     * based on count.
-     */
-    public combineEstimate(i: number/*float*/, j: number/*float*/, newModuleSize: number/*float*/): FinderPattern {
-        const combinedCount = this.count + 1;
-        const combinedX: number /*float*/ = (this.count * this.getX() + j) / combinedCount;
-        const combinedY: number /*float*/ = (this.count * this.getY() + i) / combinedCount;
-        const combinedModuleSize: number /*float*/ = (this.count * this.estimatedModuleSize + newModuleSize) / combinedCount;
-        return new FinderPattern(combinedX, combinedY, combinedModuleSize, combinedCount);
-    }
+  /**
+   * Combines this object's current estimate of a finder pattern position and module size
+   * with a new estimate. It returns a new {@code FinderPattern} containing a weighted average
+   * based on count.
+ */
+  public combineEstimate(i: number/* float */, j: number/* float */, newModuleSize: number/* float */): FinderPattern {
+    const combinedCount = this.count + 1;
+    const combinedX: number /* float */ = (this.count * this.getX() + j) / combinedCount;
+    const combinedY: number /* float */ = (this.count * this.getY() + i) / combinedCount;
+    const combinedModuleSize: number /* float */ = (this.count * this.estimatedModuleSize + newModuleSize) / combinedCount;
+    return new FinderPattern(combinedX, combinedY, combinedModuleSize, combinedCount);
+  }
 
 }

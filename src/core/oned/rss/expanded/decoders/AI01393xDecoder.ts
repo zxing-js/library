@@ -28,10 +28,10 @@ export default class AI01393xDecoder extends AI01decoder {
     buf.append(')');
 
     let firstThreeDigits = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01393xDecoder.HEADER_SIZE + AI01decoder.GTIN_SIZE + AI01393xDecoder.LAST_DIGIT_SIZE, AI01393xDecoder.FIRST_THREE_DIGITS_SIZE);
-    if (firstThreeDigits / 100 == 0) {
+    if (firstThreeDigits / 100 === 0) {
       buf.append('0');
     }
-    if (firstThreeDigits / 10 == 0) {
+    if (firstThreeDigits / 10 === 0) {
       buf.append('0');
     }
     buf.append(firstThreeDigits);

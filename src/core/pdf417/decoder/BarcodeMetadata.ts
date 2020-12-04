@@ -21,13 +21,13 @@ import { int } from '../../../customTypings';
 /**
  * @author Guenther Grau
  */
-export default /*final*/ class BarcodeMetadata {
+export default /* final */ class BarcodeMetadata {
 
-  private /*final*/ columnCount: int;
-  private /*final*/ errorCorrectionLevel: int;
-  private /*final*/ rowCountUpperPart: int;
-  private /*final*/ rowCountLowerPart: int;
-  private /*final*/ rowCount: int;
+  private /* final */ columnCount: int;
+  private /* final */ errorCorrectionLevel: int;
+  private /* final */ rowCountUpperPart: int;
+  private /* final */ rowCountLowerPart: int;
+  private /* final */ rowCount: int;
 
   constructor(columnCount: int, rowCountUpperPart: int, rowCountLowerPart: int, errorCorrectionLevel: int) {
     this.columnCount = columnCount;

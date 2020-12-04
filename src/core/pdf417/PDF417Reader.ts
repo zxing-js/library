@@ -61,9 +61,9 @@ import { int } from '../../customTypings';
  *
  * @author Guenther Grau
  */
-export default /*public final*/ class PDF417Reader implements Reader, MultipleBarcodeReader {
+export default /* public final */ class PDF417Reader implements Reader, MultipleBarcodeReader {
 
-  // private static /*final Result[]*/ EMPTY_RESULT_ARRAY: Result[] = new Result([0]);
+  // private static /*final Result[] */ EMPTY_RESULT_ARRAY: Result[] = new Result([0]);
 
   /**
    * Locates and decodes a PDF417 code in an image.
@@ -72,7 +72,7 @@ export default /*public final*/ class PDF417Reader implements Reader, MultipleBa
    * @throws NotFoundException if a PDF417 code cannot be found,
    * @throws FormatException if a PDF417 cannot be decoded
    * @throws ChecksumException
-   */
+ */
   // @Override
   public decode(image: BinaryBitmap, hints: Map<DecodeHintType, any> = null): Result {
     let result = PDF417Reader.decode(image, hints, false);
@@ -87,7 +87,7 @@ export default /*public final*/ class PDF417Reader implements Reader, MultipleBa
    * @param BinaryBitmap
    * @param image
    * @throws NotFoundException
-   */
+ */
   //   @Override
   public decodeMultiple(image: BinaryBitmap, hints: Map<DecodeHintType, any> = null): Result[] {
     try {
@@ -110,7 +110,7 @@ export default /*public final*/ class PDF417Reader implements Reader, MultipleBa
    * @throws NotFoundException
    * @throws FormatExceptionß
    * @throws ChecksumException
-   */
+ */
   private static decode(image: BinaryBitmap, hints: Map<DecodeHintType, any>, multiple: boolean) {
     const results = new Array<Result>();
     const detectorResult = Detector.detectMultiple(image, hints, multiple);
@@ -128,21 +128,21 @@ export default /*public final*/ class PDF417Reader implements Reader, MultipleBa
     return results.map(x => x);
   }
 
-  private static getMaxWidth(p1: ResultPoint, p2: ResultPoint): number /*int*/ {
+  private static getMaxWidth(p1: ResultPoint, p2: ResultPoint): number /* int */ {
     if (p1 == null || p2 == null) {
       return 0;
     }
-    return <int> Math.trunc(Math.abs(p1.getX() - p2.getX()));
+    return <int>Math.trunc(Math.abs(p1.getX() - p2.getX()));
   }
 
-  private static getMinWidth(p1: ResultPoint, p2: ResultPoint): number /*int*/ {
+  private static getMinWidth(p1: ResultPoint, p2: ResultPoint): number /* int */ {
     if (p1 == null || p2 == null) {
       return Integer.MAX_VALUE;
     }
-    return <int> Math.trunc(Math.abs(p1.getX() - p2.getX()));
+    return <int>Math.trunc(Math.abs(p1.getX() - p2.getX()));
   }
 
-  private static getMaxCodewordWidth(p: ResultPoint[]): number /*int*/ {
+  private static getMaxCodewordWidth(p: ResultPoint[]): number /* int */ {
     return Math.floor(Math.max(
       Math.max(PDF417Reader.getMaxWidth(p[0], p[4]), PDF417Reader.getMaxWidth(p[6], p[2]) * PDF417Common.MODULES_IN_CODEWORD /
         PDF417Common.MODULES_IN_STOP_PATTERN),
@@ -150,7 +150,7 @@ export default /*public final*/ class PDF417Reader implements Reader, MultipleBa
         PDF417Common.MODULES_IN_STOP_PATTERN)));
   }
 
-  private static getMinCodewordWidth(p: ResultPoint[]): number /*int*/ {
+  private static getMinCodewordWidth(p: ResultPoint[]): number /* int */ {
     return Math.floor(Math.min(
       Math.min(PDF417Reader.getMinWidth(p[0], p[4]), PDF417Reader.getMinWidth(p[6], p[2]) * PDF417Common.MODULES_IN_CODEWORD /
         PDF417Common.MODULES_IN_STOP_PATTERN),

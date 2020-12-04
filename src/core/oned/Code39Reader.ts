@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.oned {*/
+/* namespace com.google.zxing.oned { */
 
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
@@ -40,13 +40,13 @@ export default class Code39Reader extends OneDReader {
    * These represent the encodings of characters, as patterns of wide and narrow bars.
    * The 9 least-significant bits of each int correspond to the pattern of wide and narrow,
    * with 1s representing "wide" and 0s representing narrow.
-   */
+ */
   private static readonly CHARACTER_ENCODINGS: number[] = [
-      0x034, 0x121, 0x061, 0x160, 0x031, 0x130, 0x070, 0x025, 0x124, 0x064, // 0-9
-      0x109, 0x049, 0x148, 0x019, 0x118, 0x058, 0x00D, 0x10C, 0x04C, 0x01C, // A-J
-      0x103, 0x043, 0x142, 0x013, 0x112, 0x052, 0x007, 0x106, 0x046, 0x016, // K-T
-      0x181, 0x0C1, 0x1C0, 0x091, 0x190, 0x0D0, 0x085, 0x184, 0x0C4, 0x0A8, // U-$
-      0x0A2, 0x08A, 0x02A // /-%
+    0x034, 0x121, 0x061, 0x160, 0x031, 0x130, 0x070, 0x025, 0x124, 0x064, // 0-9
+    0x109, 0x049, 0x148, 0x019, 0x118, 0x058, 0x00D, 0x10C, 0x04C, 0x01C, // A-J
+    0x103, 0x043, 0x142, 0x013, 0x112, 0x052, 0x007, 0x106, 0x046, 0x016, // K-T
+    0x181, 0x0C1, 0x1C0, 0x091, 0x190, 0x0D0, 0x085, 0x184, 0x0C4, 0x0A8, // U-$
+    0x0A2, 0x08A, 0x02A // /-%
   ];
 
   private static readonly ASTERISK_ENCODING = 0x094;
@@ -59,7 +59,7 @@ export default class Code39Reader extends OneDReader {
   /**
    * Creates a reader that assumes all encoded data is data, and does not treat the final
    * character as a check digit. It will not decoded "extended Code 39" sequences.
-   */
+ */
   // public Code39Reader() {
   //   this(false);
   // }
@@ -70,7 +70,7 @@ export default class Code39Reader extends OneDReader {
    *
    * @param usingCheckDigit if true, treat the last data character as a check digit, not
    * data, and verify that the checksum passes.
-   */
+ */
   // public Code39Reader(boolean usingCheckDigit) {
   //   this(usingCheckDigit, false);
   // }
@@ -84,7 +84,7 @@ export default class Code39Reader extends OneDReader {
    * data, and verify that the checksum passes.
    * @param extendedMode if true, will attempt to decode extended Code 39 sequences in the
    * text.
-   */
+ */
   public constructor(usingCheckDigit: boolean = false, extendedMode: boolean = false) {
     super();
     this.usingCheckDigit = usingCheckDigit;
@@ -186,7 +186,7 @@ export default class Code39Reader extends OneDReader {
         if (counterPosition === patternLength - 1) {
           // Look for whitespace before start pattern, >= 50% of width of start pattern
           if (this.toNarrowWidePattern(counters) === Code39Reader.ASTERISK_ENCODING &&
-              row.isRange(Math.max(0, patternStart - Math.floor((i - patternStart) / 2)), patternStart, false)) {
+            row.isRange(Math.max(0, patternStart - Math.floor((i - patternStart) / 2)), patternStart, false)) {
             return [patternStart, i];
           }
           patternStart += counters[0] + counters[1];
