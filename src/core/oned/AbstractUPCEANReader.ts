@@ -166,8 +166,8 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
     return (1000 - sum) % 10;
   }
 
-  static decodeEnd(row: BitArray, endStart: number): Int32Array {
-    return AbstractUPCEANReader.findGuardPattern(row, endStart, false, AbstractUPCEANReader.START_END_PATTERN, new Int32Array(AbstractUPCEANReader.START_END_PATTERN.length).fill(0));
+  protected decodeEnd(row: BitArray, endStart: number): Int32Array {
+    return AbstractUPCEANReader.findGuardPattern(row, endStart, false, AbstractUPCEANReader.START_END_PATTERN);
   }
 
   /**
@@ -194,7 +194,7 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
    */
   static findGuardPattern(row: BitArray, rowOffset: number, whiteFirst: boolean, pattern: Int32Array, counters: Int32Array): Int32Array;
   static findGuardPattern(row: BitArray, rowOffset: number, whiteFirst: boolean, pattern: Int32Array, counters?: Int32Array): Int32Array {
-    if (typeof counters === undefined) counters = new Int32Array(pattern.length);
+    if (typeof counters === 'undefined') counters = new Int32Array(pattern.length);
 
     let width = row.getSize();
     rowOffset = whiteFirst ? row.getNextUnset(rowOffset) : row.getNextSet(rowOffset);
@@ -211,12 +211,7 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
             return new Int32Array([patternStart, x]);
           }
           patternStart += counters[0] + counters[1];
-
-          let slice = counters.slice(2, counters.length - 1);
-          for (let i = 0; i < counterPosition - 1; i++) {
-            counters[i] = slice[i];
-          }
-
+          counters.copyWithin(0, 2, 2 + counterPosition - 1);
           counters[counterPosition - 1] = 0;
           counters[counterPosition] = 0;
           counterPosition--;

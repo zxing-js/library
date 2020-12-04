@@ -74,7 +74,7 @@ export default abstract class UPCEANReader extends AbstractUPCEANReader {
       resultPointCallback.foundPossibleResultPoint(resultPoint);
     }
 
-    let endRange = UPCEANReader.decodeEnd(row, endStart);
+    let endRange = this.decodeEnd(row, endStart);
 
     if (resultPointCallback != null) {
       const resultPoint = new ResultPoint((endRange[0] + endRange[1]) / 2.0, rowNumber);

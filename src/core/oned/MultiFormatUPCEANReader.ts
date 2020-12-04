@@ -71,11 +71,11 @@ export default class MultiFormatUPCEANReader extends OneDReader {
 
   // @Override
   public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
-    const startGuardRange = UPCEANReader.findStartGuardPattern(row);
+    const startGuardPattern = UPCEANReader.findStartGuardPattern(row);
     for (let reader of this.readers) {
       try {
         // const result: Result = reader.decodeRow(rowNumber, row, startGuardPattern, hints);
-        const result = reader.decodeRow(rowNumber, row, startGuardRange, hints);
+        const result = reader.decodeRow(rowNumber, row, startGuardPattern, hints);
         // Special case: a 12-digit code encoded in UPC-A is identical to a "0"
         // followed by those 12 digits encoded as EAN-13. Each will recognize such a code,
         // UPC-A as a 12-digit string and EAN-13 as a 13-digit string starting with "0".
