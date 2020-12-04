@@ -60,6 +60,10 @@ export default class UPCAReader extends UPCEANReader {
   public decodeRow(rowNumber: number, row: BitArray, arg3: Int32Array | Map<DecodeHintType, any>, arg4?: Map<DecodeHintType, any>): Result {
     const startGuardRange = arg3 instanceof Int32Array ? arg3 : UPCEANReader.findStartGuardPattern(row);
     const hints = arg3 instanceof Map ? arg3 : arg4;
+    return this.decodeRowImplementation(rowNumber, row, startGuardRange, hints);
+  }
+
+  private decodeRowImplementation(rowNumber: number, row: BitArray, startGuardRange: Int32Array, hints?: Map<DecodeHintType, any>): Result {
     return this.maybeReturnResult(this.ean13Reader.decodeRow(rowNumber, row, startGuardRange, hints));
   }
 
