@@ -11,6 +11,7 @@ import ResultPoint from '../ResultPoint';
 import System from '../util/System';
 import Decoder from './decoder/Decoder';
 import Detector from './detector/Detector';
+import DetectorWithLPattern from './detector/LPattern/DetectorWithLPattern';
 
 
 /*
@@ -63,7 +64,12 @@ export default class DataMatrixReader implements Reader {
       decoderResult = this.decoder.decode(bits);
       points = DataMatrixReader.NO_POINTS;
     } else {
-      const detectorResult = new Detector(image.getBlackMatrix()).detect();
+      let detectorResult;
+      try {
+        detectorResult = new Detector(image.getBlackMatrix()).detect();
+      } catch {
+        detectorResult = new DetectorWithLPattern(image.getBlackMatrix()).detect();
+      }
       decoderResult = this.decoder.decode(detectorResult.getBits());
       points = detectorResult.getPoints();
     }
