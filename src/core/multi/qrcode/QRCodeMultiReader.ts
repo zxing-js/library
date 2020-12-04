@@ -163,7 +163,7 @@ export default /*public final*/ class QRCodeMultiReader extends QRCodeReader imp
     if (newByteSegment.size() > 0) {
       newResult.putMetadata(ResultMetadataType.BYTE_SEGMENTS, Collections.singletonList(newByteSegment.toByteArray()));
     }
-    newResults.unshift(newResult); // TYPESCRIPTPORT: inserted element at the start of the array because it seems the Java version does that as well.
+    newResults.push(newResult); // TYPESCRIPTPORT: inserted element at the start of the array because it seems the Java version does that as well.
     return newResults;
   }
 
