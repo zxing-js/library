@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-import { BitMatrix, NotFoundException, ResultPoint, DecodeHintType } from "src";
-import FinderPattern from "src/core/qrcode/detector/FinderPattern";
-import FinderPatternFinder from "src/core/qrcode/detector/FinderPatternFinder";
-import FinderPatternInfo from "src/core/qrcode/detector/FinderPatternInfo";
-import ResultPointCallback from "src/core/ResultPointCallback";
-import Collections from "src/core/util/Collections";
-import Comparator from "src/core/util/Comparator";
-import { double, float, int, List } from "src/customTypings";
+import BitMatrix from 'src/core/common/BitMatrix';
+import DecodeHintType from 'src/core/DecodeHintType';
+import NotFoundException from 'src/core/NotFoundException';
+import FinderPattern from 'src/core/qrcode/detector/FinderPattern';
+import FinderPatternFinder from 'src/core/qrcode/detector/FinderPatternFinder';
+import FinderPatternInfo from 'src/core/qrcode/detector/FinderPatternInfo';
+import ResultPoint from 'src/core/ResultPoint';
+import ResultPointCallback from 'src/core/ResultPointCallback';
+import Collections from 'src/core/util/Collections';
+import Comparator from 'src/core/util/Comparator';
+import { double, float, int, List } from 'src/customTypings';
 
 // package com.google.zxing.multi.qrcode.detector;
 
@@ -228,7 +231,7 @@ export default /* public final */ class MultiFinderPatternFinder extends FinderP
     // image, and then account for the center being 3 modules in size. This gives the smallest
     // number of pixels the center could be, so skip this often. When trying harder, look for all
     // QR versions regardless of how dense they are.
-    let iSkip: int = (3 * maxI) / (4 * MultiFinderPatternFinder.MAX_MODULES);
+    let iSkip: int = Math.trunc((3 * maxI) / (4 * MultiFinderPatternFinder.MAX_MODULES)); // TYPESCRIPTPORT: Java integer divisions always discard decimal chars.
     if (iSkip < MultiFinderPatternFinder.MIN_SKIP || tryHarder) {
       iSkip = MultiFinderPatternFinder.MIN_SKIP;
     }
@@ -236,24 +239,24 @@ export default /* public final */ class MultiFinderPatternFinder extends FinderP
     const stateCount: Int32Array = Int32Array.from({ length: 5 });
     for (let i: int = iSkip - 1; i < maxI; i += iSkip) {
       // Get a row of black/white values
-      MultiFinderPatternFinder.doClearCounts(stateCount);
+      this.clearCounts(stateCount);
       let currentState: int = 0;
       for (let j: int = 0; j < maxJ; j++) {
         if (image.get(j, i)) {
           // Black pixel
-          if ((currentState & 1) == 1) { // Counting white pixels
+          if ((currentState & 1) === 1) { // Counting white pixels
             currentState++;
           }
           stateCount[currentState]++;
         } else { // White pixel
-          if ((currentState & 1) == 0) { // Counting black pixels
-            if (currentState == 4) { // A winner?
-              if (MultiFinderPatternFinder.foundPatternCross(stateCount) && this.handlePossibleCenter2(stateCount, i, j)) { // Yes
+          if ((currentState & 1) === 0) { // Counting black pixels
+            if (currentState === 4) { // A winner?
+              if (MultiFinderPatternFinder.foundPatternCross(stateCount) && this.handlePossibleCenter(stateCount, i, j)) { // Yes
                 // Clear state to start looking again
                 currentState = 0;
-                MultiFinderPatternFinder.doClearCounts(stateCount);
+                this.clearCounts(stateCount);
               } else { // No, shift counts back by two
-                MultiFinderPatternFinder.doShiftCounts2(stateCount);
+                this.shiftCounts2(stateCount);
                 currentState = 3;
               }
             } else {
@@ -266,7 +269,7 @@ export default /* public final */ class MultiFinderPatternFinder extends FinderP
       } // for j=...
 
       if (MultiFinderPatternFinder.foundPatternCross(stateCount)) {
-        this.handlePossibleCenter2(stateCount, i, maxJ);
+        this.handlePossibleCenter(stateCount, i, maxJ);
       }
     } // for i=iSkip-1 ...
     const patternInfo: FinderPattern[][] = this.selectMultipleBestPatterns();
