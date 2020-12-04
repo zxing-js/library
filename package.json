@@ -55,7 +55,7 @@
     "type-check:watch": "yarn type-check -- --watch",
     "build": "yarn clean && rollup -c",
     "build:umd:min": "gzip index.min.js -c > index.min.js.gz",
-    "test": "ts-mocha -p tsconfig.test.json --paths",
+    "test": "ts-mocha -p tsconfig.test.json --paths src/test/**/*.spec.ts",
     "cover": "nyc --reporter=lcov --reporter=text yarn test",
     "docs": "typedoc",
     "docs:deploy": "node ./tools/docs-deploy.js",

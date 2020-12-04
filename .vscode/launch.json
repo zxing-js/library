@@ -2,115 +2,130 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
+      "type": "pwa-node",
       "request": "launch",
       "name": "Unit Tests",
+      "internalConsoleOptions": "openOnSessionStart",
       "program": "${workspaceFolder}/node_modules/ts-mocha/bin/ts-mocha",
+      "resolveSourceMapLocations": [
+        "!**/node_modules/**"
+      ],
       "args": [
         "-p",
         "tsconfig.test.json",
         "--paths",
-        "--timeout",
-        "999999",
-        "--colors",
-        "--recursive",
         "./src/test/**/*.spec.ts"
       ],
-      "internalConsoleOptions": "openOnSessionStart"
     },
     {
-      "type": "node",
+      "type": "pwa-node",
       "request": "launch",
       "name": "Code 39 Tests",
+      "internalConsoleOptions": "openOnSessionStart",
       "program": "${workspaceFolder}/node_modules/ts-mocha/bin/ts-mocha",
+      "resolveSourceMapLocations": [
+        "!**/node_modules/**"
+      ],
       "args": [
         "-p",
         "tsconfig.test.json",
         "--paths",
-        "--timeout",
-        "999999",
-        "--colors",
-        "--recursive",
         "./src/test/core/oned/Code39*.spec.ts"
       ]
     },
     {
-      "type": "node",
+      "type": "pwa-node",
       "request": "launch",
-      "name": "EAN 13 Tests",
+      "name": "EAN 8 Tests",
+      "internalConsoleOptions": "openOnSessionStart",
       "program": "${workspaceFolder}/node_modules/ts-mocha/bin/ts-mocha",
+      "resolveSourceMapLocations": [
+        "!**/node_modules/**"
+      ],
       "args": [
         "-p",
         "tsconfig.test.json",
         "--paths",
-        "--timeout",
-        "999999",
-        "--colors",
-        "--recursive",
+        "./src/test/core/oned/Ean8*.spec.ts"
+      ]
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "EAN 13 Tests",
+      "internalConsoleOptions": "openOnSessionStart",
+      "program": "${workspaceFolder}/node_modules/ts-mocha/bin/ts-mocha",
+      "resolveSourceMapLocations": [
+        "!**/node_modules/**"
+      ],
+      "args": [
+        "-p",
+        "tsconfig.test.json",
+        "--paths",
         "./src/test/core/oned/Ean13*.spec.ts"
       ]
     },
     {
-      "type": "node",
+      "type": "pwa-node",
       "request": "launch",
       "name": "PDF417 Tests",
+      "internalConsoleOptions": "openOnSessionStart",
       "program": "${workspaceFolder}/node_modules/ts-mocha/bin/ts-mocha",
+      "resolveSourceMapLocations": [
+        "!**/node_modules/**"
+      ],
       "args": [
         "-p",
         "tsconfig.test.json",
         "--paths",
-        "--timeout",
-        "999999",
-        "--colors",
-        "--recursive",
         "./src/test/core/pdf417/**/*.spec.ts"
       ]
     },
     {
-      "type": "node",
+      "type": "pwa-node",
       "request": "launch",
       "name": "QR Code Tests",
+      "internalConsoleOptions": "openOnSessionStart",
       "program": "${workspaceFolder}/node_modules/ts-mocha/bin/ts-mocha",
+      "resolveSourceMapLocations": [
+        "!**/node_modules/**"
+      ],
       "args": [
         "-p",
         "tsconfig.test.json",
         "--paths",
-        "--timeout",
-        "999999",
-        "--colors",
-        "--recursive",
         "./src/test/core/qrcode/**/*.spec.ts"
       ]
     },
     {
-      "type": "node",
+      "type": "pwa-node",
       "request": "launch",
       "name": "Data Matrix Tests",
+      "internalConsoleOptions": "openOnSessionStart",
       "program": "${workspaceFolder}/node_modules/ts-mocha/bin/ts-mocha",
+      "resolveSourceMapLocations": [
+        "!**/node_modules/**"
+      ],
       "args": [
         "-p",
         "tsconfig.test.json",
         "--paths",
-        "--timeout",
-        "999999",
-        "--colors",
-        "--recursive",
         "./src/test/core/datamatrix/**/*.spec.ts"
       ]
     },
     {
-      "type": "node",
+      "type": "pwa-node",
       "request": "launch",
       "name": "Aztec 2D Tests",
+      "internalConsoleOptions": "openOnSessionStart",
       "program": "${workspaceFolder}/node_modules/ts-mocha/bin/ts-mocha",
+      "resolveSourceMapLocations": [
+        "!**/node_modules/**"
+      ],
       "args": [
         "-p",
         "tsconfig.test.json",
         "--paths",
-        "--timeout",
-        "999999",
-        "--colors",
-        "--recursive",
         "./src/test/core/aztec/**/*.spec.ts"
       ],
     }
