@@ -65,11 +65,8 @@ export default class DataMatrixReader implements Reader {
       points = DataMatrixReader.NO_POINTS;
     } else {
       let detectorResult;
-      try {
-        detectorResult = new Detector(image.getBlackMatrix()).detect();
-      } catch {
-        detectorResult = new DetectorWithLPattern(image.getBlackMatrix()).detect();
-      }
+      detectorResult = new Detector(image.getBlackMatrix()).detect();
+      // detectorResult = new DetectorWithLPattern(image.getBlackMatrix()).detect();
       decoderResult = this.decoder.decode(detectorResult.getBits());
       points = detectorResult.getPoints();
     }

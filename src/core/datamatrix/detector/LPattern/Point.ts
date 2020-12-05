@@ -2,17 +2,13 @@ export default class Point {
   x: number;
   y: number;
 
-  constructor(x: number = null, y: number = null) {
+  constructor(x: number = 0, y: number = 0) {
     this.x = x;
     this.y = y;
   }
 
   static equals(a: Point, b: Point) {
-    return a.x === b.x && a.y === b.y;
-  }
-
-  static unequals(a: Point, b: Point) {
-    return !Point.equals(a, b);
+    return a.x === b.x && a.y === b.y; 
   }
 
   static add(a: Point, b: Point): Point {
@@ -24,7 +20,7 @@ export default class Point {
   }
 
   static multiplyBy(a: Point, s: number): Point {
-    return new Point(s * a.x, s * a.y);
+    return new Point(a.x * s, a.y * s);
   }
 
   static divideBy(a: Point, d: number): Point {
@@ -36,7 +32,7 @@ export default class Point {
   }
 
   static distance(a: Point, b: Point): number {
-    return Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2);
+    return Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
   }
 
   static round(p: Point): Point {

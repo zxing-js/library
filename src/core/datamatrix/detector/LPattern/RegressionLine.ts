@@ -2,8 +2,9 @@ import Point from './Point';
 
 export class RegressionLine {
 
-  private _points: Point[];
-  private _directionInward: Point;
+  private _points: Point[] = [];
+  private _directionInward: Point = new Point();
+
   private a: number;
   private b: number;
   private c: number;
@@ -13,6 +14,18 @@ export class RegressionLine {
     const x = (l1.c * l2.b - l1.b * l2.c) / d;
     const y = (l1.a * l2.c - l1.c * l2.a) / d;
     return new Point(x, y);
+  }
+
+  static average(c: number[], filter: (x: number) => boolean): number {
+    let sum = 0;
+    let num = 0;
+    for (let v of c) {
+      if (filter(v)) {
+        sum += v;
+        ++num;
+      }
+    }
+    return sum / num;
   }
 
   public _evaluate(ps: Point[]): void {
@@ -40,17 +53,6 @@ export class RegressionLine {
     this.c = Point.mul(this.normal(), mean);
   }
 
-  static average(c: number[], filter: (x: number) => boolean): number {
-    let sum = 0;
-    let num = 0;
-    for (let v of c)
-      if (filter(v)) {
-        sum += v;
-        ++num;
-      }
-    return sum / num;
-  }
-
   get points(): Point[] {
     return this._points;
   }
@@ -61,20 +63,36 @@ export class RegressionLine {
       : 0;
   }
 
-  public isValid(): boolean { return this.a !== undefined; }
-  public normal(): Point { return new Point(this.a, this.b); }
+  public isValid(): boolean {
+    return this.a !== undefined;
+  }
+
+  public normal(): Point {
+    return new Point(this.a, this.b);
+  }
+
   public project(p: Point): Point {
     return Point.sub(
       p,
       Point.multiplyBy(this.normal(), Point.mul(this.normal(), p) - this.c)
     );
   }
+
   public signedDistance(p: Point): number {
     return (Point.mul(this.normal(), p) - this.c) / Math.sqrt(this.a * this.a + this.b * this.b);
   }
-  public reverse() { this._points = this._points.reverse(); }
-  public add(p: Point) { this._points.push(p); }
-  public setDirectionInward(d: Point) { this._directionInward = d; }
+
+  public reverse() {
+    this._points = this._points.reverse();
+  }
+
+  public add(p: Point) {
+    this._points.push(p);
+  }
+
+  public setDirectionInward(d: Point) {
+    this._directionInward = d;
+  }
 
   public evaluate(clean = false) {
     let ps = this._points;
@@ -83,50 +101,50 @@ export class RegressionLine {
       let old_points_length;
       while (true) {
         old_points_length = this._points.length;
-        this._points = this._points.filter(p => this.signedDistance(p) > 1.5);
+        this._points = this._points.filter(p => !(this.signedDistance(p) > 1.5));
         if (old_points_length === this._points.length)
           break;
 
-        // printf("removed %zu points\n", old_points_size - _points.size());
+        // console.log("removed %zu points", old_points_length - this._points.length);
         this._evaluate(this._points);
       }
     }
   }
 
   public modules(beg: Point, end: Point): number {
-    // assert(this._points.length > 3);
 
-    let gapSizes: number[];
+    console.assert(this._points.length > 3);
+
+    let gapSizes: number[] = [];
 
     // calculate the distance between the points projected onto the regression line
     for (let i = 1; i < this._points.length; ++i)
       gapSizes.push(Point.distance(this.project(this._points[i]), this.project(this._points[i - 1])));
-
 
     // calculate the (average) distance of two adjacent pixels
     const unitPixelDist: number = RegressionLine.average(gapSizes, (dist) => { return 0.75 < dist && dist < 1.5; });
 
     // calculate the width of 2 modules (first black pixel to first black pixel)
     let sum = Point.distance(beg, this.project(this._points[0])) - unitPixelDist;
-    let i = gapSizes[0];
+    let i = 0;
     for (let dist of gapSizes) {
       sum += dist;
       if (dist > 1.9 * unitPixelDist) {
-        i += 1;
         gapSizes[i] = sum;
+        i += 1;
         sum = 0;
       }
     }
-    i += 1;
     gapSizes[i] = sum + Point.distance(end, this.project(this._points[this._points.length - 1]));
-    gapSizes = gapSizes.slice(0, i);
+    i += 1;
+    gapSizes = gapSizes.slice(0, i); // TODO: Check
+
     let lineLength: number = Point.distance(beg, end) - unitPixelDist;
     let meanGapSize: number = lineLength / gapSizes.length;
-
-    // printf("unit pixel dist: %f\n", unitPixelDist);
-    // printf("lineLength: %f, meanGapSize: %f, gaps: %lu\n", lineLength, meanGapSize, gapSizes.size());
-    meanGapSize = RegressionLine.average(gapSizes, (dist) => { return Math.abs(dist - meanGapSize) < meanGapSize / 2; });
-    // printf("lineLength: %f, meanGapSize: %f, gaps: %lu\n", lineLength, meanGapSize, gapSizes.size());
+    // console.log(`Unit pixel dist: ${unitPixelDist}`)
+    // console.log(`lineLength: ${lineLength}, meanGapSize: ${meanGapSize}, gaps: ${gapSizes.length}`);
+    meanGapSize = RegressionLine.average(gapSizes, (dist) => { return Math.abs(dist - meanGapSize) < (meanGapSize / 2); });
+    // console.log(`lineLength: ${lineLength}, meanGapSize: ${meanGapSize}, gaps: ${gapSizes.length}`);
     return lineLength / meanGapSize;
   }
 }

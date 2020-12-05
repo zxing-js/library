@@ -15,20 +15,24 @@ export enum Value {
 }
 
 export class EdgeTracer {
+
   private image: BitMatrix;
   private p: Point; // current position
   private d: Point; // current direction
 
-  static mainDirection(d: Point): Point { return Math.abs(d.x) > Math.abs(d.y) ? new Point(d.x, 0) : new Point(0, d.y); }
+  static mainDirection(d: Point): Point {
+    return Math.abs(d.x) > Math.abs(d.y) ? new Point(d.x, 0) : new Point(0, d.y);
+  }
 
   public pointIsIn(p: Point): boolean {
     const b = 0;
-    return b <= p.x
-      && p.x < this.image.getWidth() - b
+    return b <= p.x && p.x < this.image.getWidth() - b
       && b <= p.y && p.y < this.image.getHeight() - b;
   }
 
-  public isIn() { return this.pointIsIn(this.p); }
+  public isIn() {
+    return this.pointIsIn(Point.round(this.p));
+  }
 
   public getAt(p: Point): any {
     if (!this.pointIsIn(p))
@@ -37,10 +41,17 @@ export class EdgeTracer {
     return this.image.get(q.x, q.y) ? Value.BLACK : Value.WHITE;
   }
 
-  public blackAt(p: Point): boolean { return this.getAt(p) === Value.BLACK; }
-  public whiteAt(p: Point): boolean { return this.getAt(p) === Value.WHITE; }
+  public blackAt(p: Point): boolean {
+    return this.getAt(p) === Value.BLACK;
+  }
 
-  public isEdge(pos: Point, dir: Point): boolean { return this.whiteAt(pos) && this.blackAt(Point.add(pos, dir)); }
+  public whiteAt(p: Point): boolean {
+    return this.getAt(p) === Value.WHITE;
+  }
+
+  public isEdge(pos: Point, dir: Point): boolean {
+    return this.whiteAt(pos) && this.blackAt(Point.add(pos, dir));
+  }
 
   traceStep(dEdge: Point, maxStepSize: number, goodDirection: boolean): StepResult {
     dEdge = EdgeTracer.mainDirection(dEdge);
@@ -52,7 +63,7 @@ export class EdgeTracer {
               this.p,
               Point.multiplyBy(this.d, step)
             ),
-            Point.multiplyBy(dEdge, (i & 1 ? (i + 1) / 2 : -i / 2))
+            Point.multiplyBy(dEdge, (i&1 ? (i + 1) / 2 : -i / 2))
           );
           this.log(pEdge);
 
@@ -62,7 +73,7 @@ export class EdgeTracer {
           // found black pixel -> go 'outward' until we hit the b/w border
           for (let j = 0; j < Math.max(maxStepSize, 3) && this.pointIsIn(pEdge); ++j) {
             if (this.whiteAt(pEdge)) {
-              this.p = Point.round(pEdge);
+              this.p = pEdge;
               return StepResult.FOUND;
             }
             pEdge = Point.sub(pEdge, dEdge);
@@ -76,21 +87,20 @@ export class EdgeTracer {
     return StepResult.OPEN_END;
   }
 
-  _log: BitMatrix;
-
   // TODO: IF DEBUG
   public log(p: Point): void {
-    if (this._log.getHeight() !== this.image.getHeight() || this._log.getWidth() !== this.image.getWidth())
-      this._log = new BitMatrix(this.image.getWidth(), this.image.getHeight());
-    let q = Point.round(p);
-    if (this.pointIsIn(q))
-      this._log.set(q.x, q.y);
+    // if (this._log.getHeight() !== this.image.getHeight() || this._log.getWidth() !== this.image.getWidth())
+    //   this._log = new BitMatrix(this.image.getWidth(), this.image.getHeight());
+    // let q = Point.round(p);
+    // if (this.pointIsIn(q))
+    //   this._log.set(q.x, q.y);
+    // console.log(JSON.stringify(p));
   }
 
   constructor(img: BitMatrix, p: Point, d: Point) {
     this.image = img;
-    this.p = p;
-    this.d = d;
+    this.p = new Point(p.x, p.y);
+    this.d = new Point(d.x, d.y);
   }
 
   step(s = 1): boolean {
@@ -104,14 +114,15 @@ export class EdgeTracer {
   }
 
   updateDirectionFromOrigin(origin: Point): boolean {
-    let old_d = this.d;
+    let old_d = new Point(this.d.x, this.d.y);
     this.setDirection(Point.sub(this.p, origin));
     // it the new direction is pointing "backward", i.e. angle(new, old) > pi/2 -> break
-    if (Point.mul(this.d, old_d) < 0)
+    if (Point.mul(this.d, old_d) < 0) {
       return false;
-    // printf("new dir: %f, %f\n", d.x, d.y);
+    }
+    // console.log(`new dir: ${this.d.x}, ${this.d.y}`);
     // make sure d stays in the same quadrant to prevent an infinite loop
-    if (EdgeTracer.mainDirection(this.d) !== EdgeTracer.mainDirection(old_d))
+    if (!Point.equals(EdgeTracer.mainDirection(this.d), EdgeTracer.mainDirection(old_d)))
       this.d = Point.add(EdgeTracer.mainDirection(old_d), Point.multiplyBy(EdgeTracer.mainDirection(this.d), 0.99));
     return true;
   }
@@ -121,12 +132,14 @@ export class EdgeTracer {
   right(): Point { return new Point(-this.d.y, this.d.x); }
   left(): Point { return new Point(this.d.y, -this.d.x); }
 
-  isEdgeBehind(): boolean { return this.isEdge(this.p, this.back()); }
+  isEdgeBehind(): boolean {
+    return this.isEdge(this.p, this.back());
+  }
 
   traceLine(dEdge: Point, line: RegressionLine): boolean {
     do {
       this.log(this.p);
-      line.add(Point.round(this.p));
+      line.add(this.p);
       if (line.points.length % 30 === 10) {
         line.evaluate();
         if (!this.updateDirectionFromOrigin(Point.add(Point.sub(this.p, line.project(this.p)), line.points[0])))
@@ -147,14 +160,15 @@ export class EdgeTracer {
       let next_p = Point.round(this.p);
       let diff = line.points.length === 0 ? new Point() : Point.sub(next_p, line.points[line.points.length - 1]);
 
-      if (line.points.length === 0 || line.points[line.points.length - 1] !== next_p)
+      if (line.points.length === 0 || !Point.equals(line.points[line.points.length - 1], next_p))
         line.add(next_p);
 
       if (Math.abs(Point.mul(diff, this.d)) > 1) {
         ++gaps;
         if (line.length > 5) {
+          const firstPoint = new Point(line.points[0].x, line.points[0].y);
           line.evaluate(true);
-          if (!this.updateDirectionFromOrigin(Point.add(Point.sub(this.p, line.project(this.p)), line.points[0])))
+          if (!this.updateDirectionFromOrigin(Point.add(Point.sub(this.p, line.project(this.p)), firstPoint)))
             return false;
         }
         // the minimum size is 10x10 -> 4 gaps
@@ -182,12 +196,21 @@ export class EdgeTracer {
 
   traceCorner(dir: Point): Point {
     this.step();
-    let ret = this.p = Point.round(this.p);
-    let _tmp = dir;
+    let ret = new Point(this.p.x, this.p.y);
+    this.p = new Point(this.p.x, this.p.y);
+    let _tmp = new Point(dir.x, dir.y);
     dir = this.d;
     this.d = _tmp;
     this.traceStep(Point.multiplyBy(dir, -1), 2, false);
-    // printf("turn: %f x %f -> %f, %f\n", p.x, p.y, d.x, d.y);
+    // console.log(`turn: ${this.p.x} x ${this.p.y} -> ${this.d.x}, ${this.d.y}`);
     return ret;
+  }
+
+  clone(): EdgeTracer {
+    return new EdgeTracer(
+      this.image,
+      new Point(this.p.x, this.p.y),
+      new Point(this.d.x, this.d.y),
+    );
   }
 }

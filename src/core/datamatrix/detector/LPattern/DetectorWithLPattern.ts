@@ -26,10 +26,21 @@ export default class DetectorWithLPattern {
    * @throws NotFoundException if no Data Matrix Code can be found
    */
   public detect(): DetectorResult {
-    return DetectorWithLPattern.DetectNew(this.image, false);
+    return DetectorWithLPattern.detectWithLPattern(this.image, true);
   }
 
-  static SampleGrid(image: BitMatrix, tl: Point, bl: Point, br: Point, tr: Point, dimensionX: number, dimensionY: number): BitMatrix {
+  // Print matrix (for debugging)
+  static printBitMatrix(matrix: BitMatrix):void
+  {
+    for (let y = 0; y < matrix.getHeight(); ++y) {
+      let row = "";
+      for (let x = 0; x < matrix.getWidth(); ++x)
+        row += matrix.get(x, y) ? '+' : '.';
+      console.log(row);
+    }
+  }
+
+  static sampleGridAndMoveHalfAPixel(image: BitMatrix, tl: Point, bl: Point, br: Point, tr: Point, dimensionX: number, dimensionY: number): BitMatrix {
     // shrink shape by half a pixel to go from center of white pixel outside of code to the edge between white and black
     let moveHalfAPixel = (a: Point, b: Point) => {
       let a2b = Point.divideBy(Point.sub(b, a), Point.distance(a, b));
@@ -47,7 +58,7 @@ export default class DetectorWithLPattern {
       p = Point.add(p, new Point(0.5, 0.5));
     }
 
-    let border = 0.0;
+    let border = 0;
 
     return GridSamplerInstance.getInstance().sampleGrid(
       image,
@@ -59,14 +70,18 @@ export default class DetectorWithLPattern {
       tl.x, tl.y,
       tr.x, tr.y,
       br.x, br.y,
-      bl.x, bl.y);
+      bl.x, bl.y
+    );
   }
 
-  static DetectNew(image: BitMatrix, tryRotate: boolean): DetectorResult {
-    // walk to the left at first
-    for (let startDirection of [new Point(-1, 0), new Point(1, 0), new Point(0, -1), new Point(0, 1)]) {
+  static detectWithLPattern(image: BitMatrix, tryRotate: boolean): DetectorResult {
 
-      let startTracer = new EdgeTracer(image, new Point(image.getWidth() / 2, image.getHeight() / 2), startDirection);
+    // walk to the left at first
+    const directions = [new Point(-1, 0), new Point(1, 0), new Point(0, -1), new Point(0, 1)];
+
+    for (let direction of directions) {
+
+      let startTracer = new EdgeTracer(image, new Point(image.getWidth() / 2, image.getHeight() / 2), direction);
 
       while (startTracer.step()) {
         // go forward until we reach a white/black border
@@ -74,9 +89,12 @@ export default class DetectorWithLPattern {
           continue;
 
         let tl: Point, bl: Point, br: Point, tr: Point;
-        let lineL: RegressionLine, lineB: RegressionLine, lineR: RegressionLine, lineT: RegressionLine;
+        let lineL = new RegressionLine();
+        let lineB = new RegressionLine();
+        let lineR = new RegressionLine();
+        let lineT = new RegressionLine();
 
-        let t = startTracer;
+        let t = startTracer.clone();
 
         // follow left leg upwards
         t.setDirection(t.right());
@@ -85,10 +103,11 @@ export default class DetectorWithLPattern {
 
         tl = t.traceCorner(t.right());
         lineL.reverse();
-        let tlTracer = t;
+
+        let tlTracer = t.clone();
 
         // follow left leg downwards
-        t = startTracer;
+        t = startTracer.clone();
         t.setDirection(t.left());
         if (!t.traceLine(t.left(), lineL))
           continue;
@@ -142,8 +161,8 @@ export default class DetectorWithLPattern {
           lineT.points.length < 5 || lineR.points.length < 5)
           continue;
 
-        // printf("L: %f, %f ^ %f, %f > %f, %f (%d : %d : %d : %d)\n", bl.x, bl.y,
-        //        tl.x - bl.x, tl.y - bl.y, br.x - bl.x, br.y - bl.y, (int)lenL, (int)lenB, (int)lenT, (int)lenR);
+        // console.log("L: %f, %f ^ %f, %f > %f, %f (%d : %d : %d : %d)\n", bl.x, bl.y,
+        //         tl.x - bl.x, tl.y - bl.y, br.x - bl.x, br.y - bl.y, lenL, lenB, lenT, lenR);
 
         for (let l of [lineL, lineB, lineT, lineR]) {
           l.evaluate(true);
@@ -155,24 +174,11 @@ export default class DetectorWithLPattern {
         tr = RegressionLine.intersect(lineT, lineR);
         br = RegressionLine.intersect(lineB, lineR);
 
-        let dimT: number, dimR: number;
-        let fracT: number, fracR: number;
-        let splitDouble = (d: number, i: number, f: number) => {
-          i = Math.abs(d) > 0 ? (d + 0.5) : 0;
-          f = Math.abs(d) > 0 ? Math.abs(d - i) : Infinity;
-        };
+        let dimT = lineT.modules(tl, tr);
+        let dimR = lineR.modules(br, tr);
 
-        splitDouble(lineT.modules(tl, tr), dimT, fracT);
-        splitDouble(lineR.modules(br, tr), dimR, fracR);
-
-        // printf("L: %f, %f ^ %f, %f > %f, %f ^> %f, %f\n", bl.x, bl.y,
-        //        tl.x - bl.x, tl.y - bl.y, br.x - bl.x, br.y - bl.y, tr.x, tr.y);
-        // printf("dim: %d x %d\n", dimT, dimR);
-
-        // if we have an invalid rectangular data matrix dimension, we try to parse it by assuming a square
-        // we use the dimension that is closer to an integral value
-        if (dimT < 2 * dimR || dimT > 4 * dimR)
-          dimT = dimR = fracR < fracT ? dimR : dimT;
+        // console.log("L: %f, %f ^ %f, %f > %f, %f ^> %f, %f", bl.x, bl.y, tl.x - bl.x, tl.y - bl.y, br.x - bl.x, br.y - bl.y, tr.x, tr.y);
+        // console.log("dim: %d x %d", dimT, dimR);
 
         // the dimension is 2x the number of black/white transitions
         dimT *= 2;
@@ -181,19 +187,12 @@ export default class DetectorWithLPattern {
         if (dimT < 10 || dimT > 144 || dimR < 8 || dimR > 144 )
           continue;
 
-        let bits = this.SampleGrid(image, tl, bl, br, tr, dimT, dimR);
+        let bits = this.sampleGridAndMoveHalfAPixel(image, tl, bl, br, tr, dimT, dimR);
 
-        // TODO: Debug Output
-        // printf("modules top: %d, right: %d\n", dimT, dimR);
-        // printBitMatrix(bits);
+        // DetectorWithLPattern.printBitMatrix(bits);
 
-        // auto border = lineT.points();
-        // border.insert(border.end(), lineR.points().begin(), lineR.points().end());
-        // dumpDebugPPM(image, "binary.pnm", border);
-
-        // TODO: Why do we need to check this?
-        // if (bits.empty())
-        //   continue;
+        if (bits.getWidth() === 0 && bits.getHeight() === 0)
+          continue;
 
         return new DetectorResult(bits, [
           new ResultPoint(tl.x, tl.y),
@@ -205,10 +204,8 @@ export default class DetectorWithLPattern {
 
       // reached border of image -> try next scan direction
       if (!tryRotate)
-        break; // only test left direction
+        break; // only test first direction (left)
     }
-
-    // dumpDebugPPM<PointF>(image, "binary.pnm");//, { tl, bl, br, tr });
 
     throw new NotFoundException();
   }
