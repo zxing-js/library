@@ -32,12 +32,24 @@ export default class DetectorWithLPattern {
   // Print matrix (for debugging)
   static printBitMatrix(matrix: BitMatrix):void
   {
+    let content = "";
     for (let y = 0; y < matrix.getHeight(); ++y) {
       let row = "";
       for (let x = 0; x < matrix.getWidth(); ++x)
         row += matrix.get(x, y) ? '+' : '.';
-      console.log(row);
+      content += `${row}\n`;
     }
+    content.split('\n').forEach((row) => {
+      console.log(row);
+    });
+    // try {
+    //   const fs = require('fs');
+    //   fs.writeFileSync('dump.txt', contet, (err) => {
+    //     if (err) return console.log(err);
+    //   });
+    // } catch(e) {
+    //   console.log(e);
+    // }
   }
 
   static sampleGridAndMoveHalfAPixel(image: BitMatrix, tl: Point, bl: Point, br: Point, tr: Point, dimensionX: number, dimensionY: number): BitMatrix {
@@ -75,6 +87,8 @@ export default class DetectorWithLPattern {
   }
 
   static detectWithLPattern(image: BitMatrix, tryRotate: boolean): DetectorResult {
+
+    // DetectorWithLPattern.printBitMatrix(image);
 
     // walk to the left at first
     const directions = [new Point(-1, 0), new Point(1, 0), new Point(0, -1), new Point(0, 1)];
@@ -187,7 +201,7 @@ export default class DetectorWithLPattern {
         if (dimT < 10 || dimT > 144 || dimR < 8 || dimR > 144 )
           continue;
 
-        let bits = this.sampleGridAndMoveHalfAPixel(image, tl, bl, br, tr, dimT, dimR);
+        let bits = this.sampleGridAndMoveHalfAPixel(image, tl, bl, br, tr, Math.round(dimT), Math.round(dimR));
 
         // DetectorWithLPattern.printBitMatrix(bits);
 
