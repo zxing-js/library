@@ -1,11 +1,10 @@
 import { assertArrayEquals } from './util/AssertUtils';
-import { AdvancedLuminanceSource, LuminanceSource } from '@zxing/library';
-import { ColorFormat } from 'core/AdvancedLuminanceSource';
+import { ColorFormat, MultiFormatLuminanceSource, LuminanceSource } from '@zxing/library';
 import { strictEqual } from 'assert';
 
-describe('AdvancedLuminanceSource', () => {
+describe('MultiFormatLuminanceSource', () => {
 
-  const SOURCE = new AdvancedLuminanceSource(Int32Array.from([
+  const SOURCE = new MultiFormatLuminanceSource(Int32Array.from([
     0x000000, 0x7F7F7F, 0xFFFFFF,
     0xFF0000, 0x00FF00, 0x0000FF,
     0x0000FF, 0x00FF00, 0xFF0000,
@@ -31,45 +30,45 @@ describe('AdvancedLuminanceSource', () => {
 
   it('testColorFormats', () => {
     let buffer: Uint8ClampedArray;
-    buffer = new AdvancedLuminanceSource(new Uint8ClampedArray([112]), 1, 1, ColorFormat.Luminance).getMatrix();
+    buffer = new MultiFormatLuminanceSource(new Uint8ClampedArray([112]), 1, 1, ColorFormat.Luminance).getMatrix();
     assertArrayEquals(buffer, new Uint8ClampedArray([112]), 'Should not convert if luminance array is given.');
 
-    buffer = new AdvancedLuminanceSource(new Uint8ClampedArray([200, 50, 150]), 1, 1, ColorFormat.RGBMatrix).getMatrix();
+    buffer = new MultiFormatLuminanceSource(new Uint8ClampedArray([200, 50, 150]), 1, 1, ColorFormat.RGBMatrix).getMatrix();
     assertArrayEquals(buffer, new Uint8ClampedArray([112]), 'Incorrect luminance conversion using format RGBMatrix.');
 
-    buffer = new AdvancedLuminanceSource(new Uint8ClampedArray([200, 50, 150, 127]), 1, 1, ColorFormat.RGBAMatrix).getMatrix();
+    buffer = new MultiFormatLuminanceSource(new Uint8ClampedArray([200, 50, 150, 127]), 1, 1, ColorFormat.RGBAMatrix).getMatrix();
     assertArrayEquals(buffer, new Uint8ClampedArray([112]), 'Incorrect luminance conversion using format RGBAMatrix.');
 
-    buffer = new AdvancedLuminanceSource(new Uint8ClampedArray([200, 50, 150, 0]), 1, 1, ColorFormat.RGBAMatrix).getMatrix();
+    buffer = new MultiFormatLuminanceSource(new Uint8ClampedArray([200, 50, 150, 0]), 1, 1, ColorFormat.RGBAMatrix).getMatrix();
     assertArrayEquals(buffer, new Uint8ClampedArray([255]), 'Incorrect transparency luminance conversion using format RGBMatrix.');
 
-    buffer = new AdvancedLuminanceSource(new Int32Array([0xC83296]), 1, 1, ColorFormat.RGBHex).getMatrix();
+    buffer = new MultiFormatLuminanceSource(new Int32Array([0xC83296]), 1, 1, ColorFormat.RGBHex).getMatrix();
     assertArrayEquals(buffer, new Uint8ClampedArray([112]), 'Incorrect luminance conversion using format RGBHex.');
 
-    buffer = new AdvancedLuminanceSource(new Int32Array([0x7FC83296]), 1, 1, ColorFormat.RGBAStartHex).getMatrix();
+    buffer = new MultiFormatLuminanceSource(new Int32Array([0x7FC83296]), 1, 1, ColorFormat.RGBAStartHex).getMatrix();
     assertArrayEquals(buffer, new Uint8ClampedArray([112]), 'Incorrect luminance conversion using format RGBAStartHex.');
 
-    buffer = new AdvancedLuminanceSource(new Int32Array([0x00C83296]), 1, 1, ColorFormat.RGBAStartHex).getMatrix();
+    buffer = new MultiFormatLuminanceSource(new Int32Array([0x00C83296]), 1, 1, ColorFormat.RGBAStartHex).getMatrix();
     assertArrayEquals(buffer, new Uint8ClampedArray([255]), 'Incorrect transparency luminance conversion using format RGBAStartHex.');
 
-    buffer = new AdvancedLuminanceSource(new Int32Array([0xC832967F]), 1, 1, ColorFormat.RGBAEndHex).getMatrix();
+    buffer = new MultiFormatLuminanceSource(new Int32Array([0xC832967F]), 1, 1, ColorFormat.RGBAEndHex).getMatrix();
     assertArrayEquals(buffer, new Uint8ClampedArray([112]), 'Incorrect luminance conversion using format RGBAEndHex.');
 
-    buffer = new AdvancedLuminanceSource(new Int32Array([0xC8329600]), 1, 1, ColorFormat.RGBAEndHex).getMatrix();
+    buffer = new MultiFormatLuminanceSource(new Int32Array([0xC8329600]), 1, 1, ColorFormat.RGBAEndHex).getMatrix();
     assertArrayEquals(buffer, new Uint8ClampedArray([255]), 'Incorrect transparency luminance conversion using format RGBAEndHex.');
 
-    buffer = new AdvancedLuminanceSource(new Uint8ClampedArray([88, 60, 44]), 1, 1, ColorFormat.HSLMatrix).getMatrix();
+    buffer = new MultiFormatLuminanceSource(new Uint8ClampedArray([88, 60, 44]), 1, 1, ColorFormat.HSLMatrix).getMatrix();
     assertArrayEquals(buffer, new Uint8ClampedArray([112]), 'Incorrect luminance conversion using format HSLMatrix.');
 
-    buffer = new AdvancedLuminanceSource(new Uint8ClampedArray([88, 60, 44, 50]), 1, 1, ColorFormat.HSLAMatrix).getMatrix();
+    buffer = new MultiFormatLuminanceSource(new Uint8ClampedArray([88, 60, 44, 50]), 1, 1, ColorFormat.HSLAMatrix).getMatrix();
     assertArrayEquals(buffer, new Uint8ClampedArray([112]), 'Incorrect luminance conversion using format HSLAMatrix.');
 
-    buffer = new AdvancedLuminanceSource(new Uint8ClampedArray([88, 60, 44, 0]), 1, 1, ColorFormat.HSLAMatrix).getMatrix();
+    buffer = new MultiFormatLuminanceSource(new Uint8ClampedArray([88, 60, 44, 0]), 1, 1, ColorFormat.HSLAMatrix).getMatrix();
     assertArrayEquals(buffer, new Uint8ClampedArray([255]), 'Incorrect transparency luminance conversion using format HSLAMatrix.');
   });
 
   it('testRotation', () => {
-    const enlargedSource = new AdvancedLuminanceSource(new Uint8ClampedArray(16).map((_, i) => 256 / 16 * i), 4, 4, ColorFormat.Luminance);
+    const enlargedSource = new MultiFormatLuminanceSource(new Uint8ClampedArray(16).map((_, i) => 256 / 16 * i), 4, 4, ColorFormat.Luminance);
     let rotatedBuffer = enlargedSource.rotateCounterClockwise().getMatrix();
     assertArrayEquals(rotatedBuffer, Uint8ClampedArray.from([255, 255, 255, 255, 48, 112, 176, 240, 32, 96, 160, 224, 16, 80, 144, 208]));
 
