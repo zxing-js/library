@@ -70,7 +70,7 @@ describe('MultiQRCodeTestCase', () => {
     const bitmap: BinaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
 
     const reader: MultipleBarcodeReader = new QRCodeMultiReader();
-    const results: Result[] = reader.decodeMultipleWithoutHints(bitmap);
+    const results: Result[] = reader.decodeMultiple(bitmap);
     assertNotNull(results);
     assertEquals(4, results.length);
 
@@ -90,9 +90,9 @@ describe('MultiQRCodeTestCase', () => {
   });
 
   it('testProcessStructuredAppend', () => {
-    const sa1: Result = Result.constructor4Args('SA1', new Uint8Array(0), [], BarcodeFormat.QR_CODE);
-    const sa2: Result = Result.constructor4Args('SA2', new Uint8Array(0), [], BarcodeFormat.QR_CODE);
-    const sa3: Result = Result.constructor4Args('SA3', new Uint8Array(0), [], BarcodeFormat.QR_CODE);
+    const sa1: Result = new Result('SA1', new Uint8Array(0), [], BarcodeFormat.QR_CODE);
+    const sa2: Result = new Result('SA2', new Uint8Array(0), [], BarcodeFormat.QR_CODE);
+    const sa3: Result = new Result('SA3', new Uint8Array(0), [], BarcodeFormat.QR_CODE);
     sa1.putMetadata(ResultMetadataType.STRUCTURED_APPEND_SEQUENCE, 2);
     sa1.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, 'L');
     sa2.putMetadata(ResultMetadataType.STRUCTURED_APPEND_SEQUENCE, (1 << 4) + 2);
@@ -100,7 +100,7 @@ describe('MultiQRCodeTestCase', () => {
     sa3.putMetadata(ResultMetadataType.STRUCTURED_APPEND_SEQUENCE, (2 << 4) + 2);
     sa3.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, 'L');
 
-    const nsa: Result = Result.constructor4Args('NotSA', new Uint8Array(0), [], BarcodeFormat.QR_CODE);
+    const nsa: Result = new Result('NotSA', new Uint8Array(0), [], BarcodeFormat.QR_CODE);
     nsa.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, 'L');
 
     const inputs: List<Result> = Arrays.asList(sa3, sa1, nsa, sa2);
