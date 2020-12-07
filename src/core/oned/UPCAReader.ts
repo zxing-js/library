@@ -71,7 +71,7 @@ export default class UPCAReader extends UPCEANReader {
   public maybeReturnResult(result: Result) {
     let text = result.getText();
     if (text.charAt(0) === '0') {
-      let upcaResult = new Result(text.substring(1), null, null, result.getResultPoints(), BarcodeFormat.UPC_A);
+      let upcaResult = new Result(text.substring(1), null, null, BarcodeFormat.UPC_A);
       if (result.getResultMetadata() != null) {
         upcaResult.putAllMetadata(result.getResultMetadata());
       }

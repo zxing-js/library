@@ -71,18 +71,30 @@ export default /*public final*/ class QRCodeMultiReader extends QRCodeReader imp
   protected static /* final */ NO_POINTS = new Array<ResultPoint>();
 
   /**
+   * TYPESCRIPTPORT: this is an overloaded method so here it'll work only as a entrypoint for choosing which overload to call.
+   */
+  public decodeMultiple(image: BinaryBitmap, hints: Map<DecodeHintType, any> = null): Result[] {
+
+    if (hints && hints instanceof Map) {
+      return this.decodeMultiple_Overload2(image, hints);
+    }
+
+    return this.decodeMultiple_Overload1(image);
+  }
+
+  /**
    * @throws NotFoundException
    * @override decodeMultiple
    */
-  public decodeMultipleWithoutHints(image: BinaryBitmap): Result[] {
-    return this.decodeMultiple(image, null);
+  public decodeMultiple_Overload1(image: BinaryBitmap): Result[] {
+    return this.decodeMultiple_Overload2(image, null);
   }
 
   /**
    * @override
    * @throws NotFoundException
    */
-  public decodeMultiple(image: BinaryBitmap, hints:  Map<DecodeHintType, any>): Result[] {
+  public decodeMultiple_Overload2(image: BinaryBitmap, hints:  Map<DecodeHintType, any>): Result[] {
     let results: List<Result> = [];
     const detectorResults: DetectorResult[] = new MultiDetector(image.getBlackMatrix()).detectMulti(hints);
     for (const detectorResult of detectorResults) {
@@ -93,7 +105,7 @@ export default /*public final*/ class QRCodeMultiReader extends QRCodeReader imp
         if (decoderResult.getOther() instanceof QRCodeDecoderMetaData) {
           (<QRCodeDecoderMetaData> decoderResult.getOther()).applyMirroredCorrection(points);
         }
-        const result: Result = Result.constructor4Args(decoderResult.getText(), decoderResult.getRawBytes(), points,
+        const result: Result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), points,
                                    BarcodeFormat.QR_CODE);
         const byteSegments: List<Uint8Array> = decoderResult.getByteSegments();
         if (byteSegments != null) {
@@ -159,7 +171,7 @@ export default /*public final*/ class QRCodeMultiReader extends QRCodeReader imp
       }
     }
 
-    const newResult: Result = Result.constructor4Args(newText.toString(), newRawBytes.toByteArray(), QRCodeMultiReader.NO_POINTS, BarcodeFormat.QR_CODE);
+    const newResult: Result = new Result(newText.toString(), newRawBytes.toByteArray(), QRCodeMultiReader.NO_POINTS, BarcodeFormat.QR_CODE);
     if (newByteSegment.size() > 0) {
       newResult.putMetadata(ResultMetadataType.BYTE_SEGMENTS, Collections.singletonList(newByteSegment.toByteArray()));
     }

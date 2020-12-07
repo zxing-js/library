@@ -38,7 +38,7 @@ export default /*public*/ interface MultipleBarcodeReader {
    * @throws NotFoundException
    * @override decodeMultiple
    */
-  decodeMultipleWithoutHints(image: BinaryBitmap): Result[];
+  decodeMultiple(image: BinaryBitmap): Result[];
 
   /**
    * @throws NotFoundException

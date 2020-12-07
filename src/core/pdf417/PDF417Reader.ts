@@ -125,7 +125,7 @@ export default /*public final*/ class PDF417Reader implements Reader, MultipleBa
     for (const points of detectorResult.getPoints()) {
       const decoderResult = PDF417ScanningDecoder.decode(detectorResult.getBits(), points[4], points[5],
         points[6], points[7], PDF417Reader.getMinCodewordWidth(points), PDF417Reader.getMaxCodewordWidth(points));
-      const result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), undefined, points, BarcodeFormat.PDF_417);
+      const result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), points, BarcodeFormat.PDF_417);
       result.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, decoderResult.getECLevel());
       const pdf417ResultMetadata: PDF417ResultMetadata = decoderResult.getOther();
       if (pdf417ResultMetadata != null) {
