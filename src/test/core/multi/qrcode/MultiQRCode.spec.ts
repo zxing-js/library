@@ -65,7 +65,7 @@ describe('MultiQRCodeTestCase', () => {
     const testBase: string = AbstractBlackBoxSpec.buildTestBase('src/test/resources/blackbox/multi-qrcode-1');
 
     const testImage: string = path.resolve(testBase, '1.png');
-    const image: SharpImage = await SharpImage.loadAsync(testImage);
+    const image: SharpImage = await SharpImage.loadWithRotation(testImage, 0);
     const source: LuminanceSource = new SharpImageLuminanceSource(image);
     const bitmap: BinaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
 
@@ -81,10 +81,11 @@ describe('MultiQRCodeTestCase', () => {
       assertNotNull(result.getResultMetadata());
     }
     const expectedContents: Collection<String> = [];
-    expectedContents.push('You earned the class a 5 MINUTE DANCE PARTY!!  Awesome!  Way to go!  Let\'s boogie!');
-    expectedContents.push('You earned the class 5 EXTRA MINUTES OF RECESS!!  Fabulous!!  Way to go!!');
-    expectedContents.push('You get to SIT AT MRS. SIGMON\'S DESK FOR A DAY!!  Awesome!!  Way to go!! Guess I better clean up! :)');
+    // TYPESCRIPTPORT: following lines are in different order from Java because JavaScript's push works in a different way HashSet<>.add, but the results are actually the same
     expectedContents.push('You get to CREATE OUR JOURNAL PROMPT FOR THE DAY!  Yay!  Way to go!  ');
+    expectedContents.push('You earned the class 5 EXTRA MINUTES OF RECESS!!  Fabulous!!  Way to go!!');
+    expectedContents.push('You earned the class a 5 MINUTE DANCE PARTY!!  Awesome!  Way to go!  Let\'s boogie!');
+    expectedContents.push('You get to SIT AT MRS. SIGMON\'S DESK FOR A DAY!!  Awesome!!  Way to go!! Guess I better clean up! :)');
     assertArrayEquals(expectedContents, barcodeContents);
   });
 
@@ -113,8 +114,9 @@ describe('MultiQRCodeTestCase', () => {
       barcodeContents.push(result.getText());
     }
     const expectedContents: Collection<String> = [];
-    expectedContents.push('SA1SA2SA3');
+    // TYPESCRIPTPORT: following lines are in different order from Java because JavaScript's push works in a different way HashSet<>.add, but the results are actually the same
     expectedContents.push('NotSA');
+    expectedContents.push('SA1SA2SA3');
     assertArrayEquals(expectedContents, barcodeContents);
   });
 });
