@@ -32,19 +32,19 @@ export default class DetectorWithLPattern {
   // Print matrix (for debugging)
   static printBitMatrix(matrix: BitMatrix):void
   {
-    let content = "";
-    for (let y = 0; y < matrix.getHeight(); ++y) {
-      let row = "";
-      for (let x = 0; x < matrix.getWidth(); ++x)
-        row += matrix.get(x, y) ? '+' : '.';
-      content += `${row}\n`;
-    }
-    content.split('\n').forEach((row) => {
-      console.log(row);
-    });
+    // let content = "";
+    // for (let y = 0; y < matrix.getHeight(); ++y) {
+    //   let row = "";
+    //   for (let x = 0; x < matrix.getWidth(); ++x)
+    //     row += matrix.get(x, y) ? '+' : '.';
+    //   content += `${row}\n`;
+    // }
+    // content.split('\n').forEach((row) => {
+    //   console.log(row);
+    // });
     // try {
     //   const fs = require('fs');
-    //   fs.writeFileSync('dump.txt', contet, (err) => {
+    //   fs.writeFileSync('dump.txt', content, (err) => {
     //     if (err) return console.log(err);
     //   });
     // } catch(e) {
@@ -88,7 +88,7 @@ export default class DetectorWithLPattern {
 
   static detectWithLPattern(image: BitMatrix, tryRotate: boolean): DetectorResult {
 
-    // DetectorWithLPattern.printBitMatrix(image);
+    DetectorWithLPattern.printBitMatrix(image);
 
     // walk to the left at first
     const directions = [new Point(-1, 0), new Point(1, 0), new Point(0, -1), new Point(0, 1)];
