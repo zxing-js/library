@@ -25,6 +25,7 @@ import ExpandedRow from './ExpandedRow';
 // import java.util.Map;
 // import java.util.Collections;
 
+/** @experimental */
 export default class RSSExpandedReader extends AbstractRSSReader {
 
   private static readonly SYMBOL_WIDEST = [7, 5, 4, 3, 1];
