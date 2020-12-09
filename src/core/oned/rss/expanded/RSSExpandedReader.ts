@@ -25,6 +25,7 @@ import ExpandedRow from './ExpandedRow';
 // import java.util.Map;
 // import java.util.Collections;
 
+/** @experimental */
 export default class RSSExpandedReader extends AbstractRSSReader {
 
   private static readonly SYMBOL_WIDEST = [7, 5, 4, 3, 1];
@@ -104,7 +105,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
       return RSSExpandedReader.constructResult(this.decodeRow2pairs(rowNumber, row));
     } catch (e) {
       // OK
-      console.log(e);
+      // console.log(e);
     }
 
     this.pairs.length = 0;
