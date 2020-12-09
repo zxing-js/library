@@ -16,11 +16,9 @@ export { default as WriterException } from './core/WriterException';
 export { default as BarcodeFormat } from './core/BarcodeFormat';
 export { default as Binarizer } from './core/Binarizer';
 export { default as BinaryBitmap } from './core/BinaryBitmap';
-export { default as ColorFormat } from './core/ColorFormat';
 export { default as DecodeHintType } from './core/DecodeHintType';
 export { default as InvertedLuminanceSource } from './core/InvertedLuminanceSource';
 export { default as LuminanceSource } from './core/LuminanceSource';
-export { default as MultiFormatLuminanceSource } from './core/MultiFormatLuminanceSource';
 export { default as MultiFormatReader } from './core/MultiFormatReader';
 export { default as MultiFormatWriter } from './core/MultiFormatWriter';
 export { default as PlanarYUVLuminanceSource } from './core/PlanarYUVLuminanceSource';
@@ -116,3 +114,7 @@ export { default as Code39Reader } from './core/oned/Code39Reader';
 export { default as RSS14Reader } from './core/oned/rss/RSS14Reader';
 export { default as RSSExpandedReader } from './core/oned/rss/expanded/RSSExpandedReader';
 export { default as MultiFormatOneDReader } from './core/oned/MultiFormatOneDReader';
+
+// extension/sources
+export { default as ColorFormat } from './extension/sources/ColorFormat';
+export { default as MultiFormatLuminanceSource } from './extension/sources/MultiFormatLuminanceSource';

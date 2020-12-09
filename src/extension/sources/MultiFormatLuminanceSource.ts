@@ -1,8 +1,8 @@
 import ColorFormat from './ColorFormat';
-import IllegalArgumentException from './IllegalArgumentException';
-import IllegalStateException from './IllegalStateException';
-import InvertedLuminanceSource from './InvertedLuminanceSource';
-import LuminanceSource from './LuminanceSource';
+import IllegalArgumentException from '../../core/IllegalArgumentException';
+import IllegalStateException from '../../core/IllegalStateException';
+import InvertedLuminanceSource from '../../core/InvertedLuminanceSource';
+import LuminanceSource from '../../core/LuminanceSource';
 
 /**
  * Used instead of HTMLCanvasElementLuminanceSource in cases where DOM is not available e.g. web workers.

@@ -1,6 +1,5 @@
-import { assertArrayEquals } from './util/AssertUtils';
+import { assertArrayEquals, assertEquals } from '../../core/util/AssertUtils';
 import { ColorFormat, MultiFormatLuminanceSource, LuminanceSource } from '@zxing/library';
-import { strictEqual } from 'assert';
 
 describe('MultiFormatLuminanceSource', () => {
 
@@ -11,10 +10,10 @@ describe('MultiFormatLuminanceSource', () => {
   ]), 3, 3, ColorFormat.RGBHex);
 
   it('testCrop', () => {
-    strictEqual(SOURCE.isCropSupported(), true);
+    assertEquals(SOURCE.isCropSupported(), true);
     const cropped: LuminanceSource = SOURCE.crop(1, 1, 1, 1);
-    strictEqual(cropped.getHeight(), 1);
-    strictEqual(cropped.getWidth(), 1);
+    assertEquals(cropped.getHeight(), 1);
+    assertEquals(cropped.getWidth(), 1);
     assertArrayEquals(cropped.getRow(0, null), new Uint8ClampedArray([127]), 'Failed to crop luminance data.');
   });
 
@@ -88,6 +87,6 @@ describe('MultiFormatLuminanceSource', () => {
   });
 
   it('testToString', () => {
-    strictEqual(SOURCE.toString(), '#+ \n#+#\n#+#\n');
+    assertEquals(SOURCE.toString(), '#+ \n#+#\n#+#\n');
   });
 });
