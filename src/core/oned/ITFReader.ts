@@ -148,6 +148,7 @@ export default class ITFReader extends OneDReader {
 
     return resultReturn;
   }
+
   /**
    * @param row          row of black/white values to search
    * @param payloadStart offset of start pattern
