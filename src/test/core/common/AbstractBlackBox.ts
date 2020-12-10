@@ -204,9 +204,7 @@ abstract class AbstractBlackBoxSpec {
           expectedMetadata = AbstractBlackBoxSpec.readTextFileAsMetadata(expectedMetadataFile);
         }
 
-        const decodeIterations: Promise<void>[] = [];
-
-        let debug = `    Decoding ${path.relative(process.cwd(), testImage)} expecting '${truncated}' with rotations:\n`;
+        const decodeIterations: Promise<{success: boolean; message: string}>[] = [];
 
         for (let x: number /* int */ = 0; x < testCount; x++) {
 
@@ -218,44 +216,47 @@ abstract class AbstractBlackBoxSpec {
             const source: LuminanceSource = new SharpImageLuminanceSource(rotatedImage);
             const bitmap = new BinaryBitmap(new HybridBinarizer(source));
 
-            debug += `      ${rotation.toString().padStart(3, ' ')}: `;
+            let message  = `      ${rotation.toString().padStart(3, ' ')}: `;
             let success = false;
             let misread = false;
             try {
               let { decoded, error } = this.decode(bitmap, rotation, expectedText, expectedMetadata, false);
               if (decoded) {
-                debug += 'successfully decoded';
+                message += 'successfully decoded';
                 passedCounts[x]++;
                 success = true;
               } else {
-                debug += `misread with error ${error}`;
+                message += `misread with error ${error}`;
                 misread = true;
                 misreadCounts[x]++;
               }
             } catch (e) {
-              debug += `failed with error [${e.constructor.name}]`;
+              message += `failed with error [${e.constructor.name}]`;
             }
             try {
               let { decoded, error } = this.decode(bitmap, rotation, expectedText, expectedMetadata, true);
               if (decoded) {
-                debug += `${!success || misread ? ', but' : ' and'} try harder successfully decoded\n`;
+                message += `${!success || misread ? ', but' : ' and'} try harder successfully decoded`;
                 tryHarderCounts[x]++;
                 success = true;
               } else {
-                debug += `${success || !misread ? ', but' : ' and'} try harder misread with error ${error}\n`;
+                message += `${success || !misread ? ', but' : ' and'} try harder misread with error ${error}`;
                 tryHarderMisreadCounts[x]++;
                 misread = true;
               }
             } catch (e) {
-              debug += `${success || misread ? ', but' : ' and'} try harder failed with error [${e.constructor.name}]\n`;
+              message += `${success || misread ? ', but' : ' and'} try harder failed with error [${e.constructor.name}]`;
             }
-            resolve();
+            resolve({success, message});
           }));
         }
 
-        await Promise.all(decodeIterations);
-
-        log.info(debug);
+        const results = await Promise.all(decodeIterations);
+        log.info(`    Decoding ${path.relative(process.cwd(), testImage)} expecting '${truncated}' with rotations`);
+        results.forEach(({success, message}) => {
+          if (!success) log.warn(message);
+          else log.debug(message);
+        });
 
         resolve();
       }));
