@@ -67,10 +67,10 @@ export default class MultiFormatOneDReader extends OneDReader {
       if (possibleFormats.includes(BarcodeFormat.RSS_14)) {
         this.readers.push(new RSS14Reader());
       }
-
-      // if (possibleFormats.includes(BarcodeFormat.RSS_EXPANDED)) {
-      //   this.readers.push(new RSSExpandedReader());
-      // }
+      if (possibleFormats.includes(BarcodeFormat.RSS_EXPANDED)) {
+        console.warn('RSS Expanded reader IS NOT ready for production yet! use at your own risk.');
+        this.readers.push(new RSSExpandedReader());
+      }
     }
     if (this.readers.length === 0) {
       this.readers.push(new MultiFormatUPCEANReader(hints));
