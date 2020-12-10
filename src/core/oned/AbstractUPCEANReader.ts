@@ -195,10 +195,10 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
   static findGuardPattern(row: BitArray, rowOffset: number, whiteFirst: boolean, pattern: Int32Array, counters: Int32Array): Int32Array;
   static findGuardPattern(row: BitArray, rowOffset: number, whiteFirst: boolean, pattern: Int32Array, counters?: Int32Array): Int32Array {
     if (typeof counters === 'undefined') counters = new Int32Array(pattern.length);
-    return this.findGuardPatternOverload(row, rowOffset, whiteFirst, pattern, counters);
+    return this.findGuardPatternImpl(row, rowOffset, whiteFirst, pattern, counters);
   }
 
-  static findGuardPatternOverload(row: BitArray, rowOffset: number, whiteFirst: boolean, pattern: Int32Array, counters: Int32Array): Int32Array {
+  static findGuardPatternImpl(row: BitArray, rowOffset: number, whiteFirst: boolean, pattern: Int32Array, counters: Int32Array): Int32Array {
     let width = row.getSize();
     rowOffset = whiteFirst ? row.getNextUnset(rowOffset) : row.getNextSet(rowOffset);
     let counterPosition = 0;
