@@ -92,8 +92,8 @@ export default /* final */ class UPCEReader extends UPCEANReader {
    * @throws NotFoundException
  */
   // @Override
-  public decodeMiddle(row: BitArray, startRange: Int32Array, result: string) {
-    const counters: Int32Array = this.decodeMiddleCounters.map(x => x);
+  public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: StringBuilder) {
+    const counters: Int32Array = new Int32Array(this.decodeMiddleCounters);
     counters[0] = 0;
     counters[1] = 0;
     counters[2] = 0;
@@ -105,7 +105,7 @@ export default /* final */ class UPCEReader extends UPCEANReader {
 
     for (let x: int = 0; x < 6 && rowOffset < end; x++) {
       const bestMatch: int = UPCEReader.decodeDigit(row, counters, rowOffset, UPCEReader.L_AND_G_PATTERNS);
-      result += String.fromCharCode(('0'.charCodeAt(0) + bestMatch % 10));
+      resultString.append('0'.charCodeAt(0) + bestMatch % 10);
       for (let counter of counters) {
         rowOffset += counter;
       }
@@ -114,7 +114,7 @@ export default /* final */ class UPCEReader extends UPCEANReader {
       }
     }
 
-    UPCEReader.determineNumSysAndCheckDigit(new StringBuilder(result), lgPatternFound);
+    UPCEReader.determineNumSysAndCheckDigit(resultString, lgPatternFound);
 
     return rowOffset;
   }
@@ -124,7 +124,7 @@ export default /* final */ class UPCEReader extends UPCEANReader {
  */
   // @Override
   protected decodeEnd(row: BitArray, endStart: int): Int32Array {
-    return UPCEReader.findGuardPatternWithoutCounters(row, endStart, true, UPCEReader.MIDDLE_END_PATTERN);
+    return UPCEReader.findGuardPattern(row, endStart, true, UPCEReader.MIDDLE_END_PATTERN);
   }
 
   /**
@@ -138,13 +138,12 @@ export default /* final */ class UPCEReader extends UPCEANReader {
   /**
    * @throws NotFoundException
  */
-  private static determineNumSysAndCheckDigit(resultString: StringBuilder, lgPatternFound: int): void {
-
+  private static determineNumSysAndCheckDigit(resultString: StringBuilder, lgPatternFound: int) {
     for (let numSys: int = 0; numSys <= 1; numSys++) {
       for (let d: int = 0; d < 10; d++) {
         if (lgPatternFound === this.NUMSYS_AND_CHECK_DIGIT_PATTERNS[numSys][d]) {
-          resultString.insert(0, /* (char) */('0' + numSys));
-          resultString.append(/* (char) */('0' + d));
+          resultString.insert(0, '0'.charCodeAt(0) + numSys);
+          resultString.append('0'.charCodeAt(0) + d);
           return;
         }
       }

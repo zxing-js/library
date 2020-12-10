@@ -16,15 +16,7 @@ export default class StringBuilder {
   }
 
   public append(s: string | number): StringBuilder {
-    if (typeof s === 'string') {
-      this.value += s.toString();
-    } else if (this.encoding) {
-      // use passed format (fromCharCode will return UTF8 encoding)
-      this.value += StringUtils.castAsNonUtf8Char(s, this.encoding);
-    } else {
-      // correctly converts from UTF-8, but not other encodings
-      this.value += String.fromCharCode(s);
-    }
+    this.value += this.normalizeString(s);
     return this;
   }
 
@@ -32,6 +24,12 @@ export default class StringBuilder {
     for (let i = offset; offset < offset + len; i++) {
       this.append(str[i]);
     }
+    return this;
+  }
+
+  public insert(n: number, s: string | number, replace = 0) {
+    let c = this.normalizeString(s);
+    this.value = this.value.substr(0, n) + c + this.value.substr(n + replace);
     return this;
   }
 
@@ -55,9 +53,6 @@ export default class StringBuilder {
     return this.value.substring(start, end);
   }
 
-  /**
-   * @note helper method for RSS Expanded
- */
   public setLengthToZero(): void {
     this.value = '';
   }
@@ -66,7 +61,15 @@ export default class StringBuilder {
     return this.value;
   }
 
-  public insert(n: number, c: string) {
-    this.value = this.value.substr(0, n) + c + this.value.substr(n + c.length);
+  public normalizeString(s: string | number) {
+    if (typeof s === 'string') {
+      return s;
+    } else if (this.encoding) {
+      // use passed format (fromCharCode will return UTF8 encoding)
+      return StringUtils.castAsNonUtf8Char(s, this.encoding);
+    } else {
+      // correctly converts from UTF-8, but not other encodings
+      return String.fromCharCode(s);
+    }
   }
 }

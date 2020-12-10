@@ -274,16 +274,16 @@ export default abstract class OneDReader implements Reader {
   }
 
   /**
-   * <p>Attempts to decode a one-dimensional barcode format given a single row of
-   * an image.</p>
+   * Attempts to decode a one-dimensional barcode format given a single row of
+   * an image.
    *
    * @param rowNumber row number from top of the row
    * @param row the black/white pixel data of the row
-   * @param hints decode hints
-   * @return {@link Result} containing encoded string and start/end of barcode
-   * @throws NotFoundException if no potential barcode is found
-   * @throws ChecksumException if a potential barcode is found but does not pass its checksum
-   * @throws FormatException if a potential barcode is found but format is invalid
- */
+   * @param hints hints that influence decoding
+   * @return containing encoded string and start/end of barcode
+   * @throws {@link NotFoundException} if no potential barcode is found
+   * @throws {@link ChecksumException} if a potential barcode is found but does not pass its checksum
+   * @throws {@link FormatException} if a potential barcode is found but format is invalid
+   */
   public abstract decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result;
 }

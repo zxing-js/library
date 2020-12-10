@@ -77,7 +77,6 @@ export default class MultiFormatOneDReader extends OneDReader {
       this.readers.push(new Code39Reader());
       // this.readers.push(new CodaBarReader());
       // this.readers.push(new Code93Reader());
-      this.readers.push(new MultiFormatUPCEANReader(hints));
       this.readers.push(new Code128Reader());
       this.readers.push(new ITFReader());
       this.readers.push(new RSS14Reader());

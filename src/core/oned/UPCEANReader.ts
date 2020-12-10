@@ -28,8 +28,8 @@ import FormatException from '../FormatException';
 import ChecksumException from '../ChecksumException';
 
 /**
- * <p>Encapsulates functionality and implementation that is common to UPC and EAN families
- * of one-dimensional barcodes.</p>
+ * Encapsulates functionality and implementation that is common to UPC and EAN families
+ * of one-dimensional barcodes.
  *
  * @author dswitkin@google.com (Daniel Switkin)
  * @author Sean Owen
@@ -39,7 +39,6 @@ export default abstract class UPCEANReader extends AbstractUPCEANReader {
 
   public constructor() {
     super();
-    this.decodeRowStringBuffer = '';
 
     UPCEANReader.L_AND_G_PATTERNS = UPCEANReader.L_PATTERNS.map(arr => Int32Array.from(arr));
 
@@ -53,8 +52,15 @@ export default abstract class UPCEANReader extends AbstractUPCEANReader {
     }
   }
 
-  public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
-    let startGuardRange = UPCEANReader.findStartGuardPattern(row);
+  public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result;
+  public decodeRow(rowNumber: number, row: BitArray, startGuardRange: Int32Array, hints?: Map<DecodeHintType, any>): Result;
+  public decodeRow(rowNumber: number, row: BitArray, arg3: Int32Array | Map<DecodeHintType, any>, arg4?: Map<DecodeHintType, any>): Result {
+    const startGuardRange = arg3 instanceof Int32Array ? arg3 : UPCEANReader.findStartGuardPattern(row);
+    const hints = arg3 instanceof Map ? arg3 : arg4;
+    return this.decodeRowImpl(rowNumber, row, startGuardRange, hints);
+  }
+
+  protected decodeRowImpl(rowNumber: number, row: BitArray, startGuardRange: Int32Array, hints?: Map<DecodeHintType, any>): Result {
     let resultPointCallback = hints == null ? null : hints.get(DecodeHintType.NEED_RESULT_POINT_CALLBACK);
 
     if (resultPointCallback != null) {
@@ -62,16 +68,16 @@ export default abstract class UPCEANReader extends AbstractUPCEANReader {
       resultPointCallback.foundPossibleResultPoint(resultPoint);
     }
 
-    let budello = this.decodeMiddle(row, startGuardRange, this.decodeRowStringBuffer);
-    let endStart = budello.rowOffset;
-    let result = budello.resultString;
+    let result = this.decodeRowStringBuffer;
+    result.setLengthToZero();
+    let endStart = this.decodeMiddle(row, startGuardRange, result);
 
     if (resultPointCallback != null) {
       const resultPoint = new ResultPoint(endStart, rowNumber);
       resultPointCallback.foundPossibleResultPoint(resultPoint);
     }
 
-    let endRange = UPCEANReader.decodeEnd(row, endStart);
+    let endRange = this.decodeEnd(row, endStart);
 
     if (resultPointCallback != null) {
       const resultPoint = new ResultPoint((endRange[0] + endRange[1]) / 2.0, rowNumber);
@@ -117,6 +123,7 @@ export default abstract class UPCEANReader extends AbstractUPCEANReader {
     if (allowedExtensions != null) {
       let valid = false;
       for (let length in allowedExtensions) {
+        // Todo: investigate
         if (extensionLength.toString() === length) {  // check me
           valid = true;
           break;
@@ -135,42 +142,5 @@ export default abstract class UPCEANReader extends AbstractUPCEANReader {
     }
 
     return decodeResult;
-  }
-
-  static checkChecksum(s: string): boolean {
-    return UPCEANReader.checkStandardUPCEANChecksum(s);
-  }
-
-  static checkStandardUPCEANChecksum(s: string): boolean {
-    let length = s.length;
-    if (length === 0) return false;
-
-    let check = parseInt(s.charAt(length - 1), 10);
-    return UPCEANReader.getStandardUPCEANChecksum(s.substring(0, length - 1)) === check;
-  }
-
-  static getStandardUPCEANChecksum(s: string): number {
-    let length = s.length;
-    let sum = 0;
-    for (let i = length - 1; i >= 0; i -= 2) {
-      let digit = s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
-      if (digit < 0 || digit > 9) {
-        throw new FormatException();
-      }
-      sum += digit;
-    }
-    sum *= 3;
-    for (let i = length - 2; i >= 0; i -= 2) {
-      let digit = s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
-      if (digit < 0 || digit > 9) {
-        throw new FormatException();
-      }
-      sum += digit;
-    }
-    return (1000 - sum) % 10;
-  }
-
-  static decodeEnd(row: BitArray, endStart: number): Int32Array {
-    return UPCEANReader.findGuardPattern(row, endStart, false, UPCEANReader.START_END_PATTERN, new Int32Array(UPCEANReader.START_END_PATTERN.length).fill(0));
   }
 }

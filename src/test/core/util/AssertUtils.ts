@@ -1,4 +1,4 @@
-import { deepStrictEqual, strictEqual, notStrictEqual, throws } from 'assert';
+import { deepStrictEqual, strictEqual, notStrictEqual, throws, AssertionError } from 'assert';
 
 export default class AssertUtils {
 
@@ -19,7 +19,6 @@ export default class AssertUtils {
 
 }
 
-
 export const assertEquals = <T>(actual: any, expected: T, message?: string) => strictEqual(actual, expected, message);
 export const assertArrayEquals = (a: Array<any> | Uint8Array | Int32Array, b: Array<any> | Uint8Array | Int32Array) => deepStrictEqual(a, b);
 export const assertFalse = x => strictEqual(!!x, false);
@@ -27,3 +26,15 @@ export const assertTrue = x => strictEqual(!!x, true);
 export const assertNull = x => strictEqual(x, null);
 export const assertNotNull = x => notStrictEqual(x, null);
 export const assertThrow = (func, err) => throws(func, err);
+export const assertLessThanEquals = (actual: number, expected: number, message: string) => {
+  if (actual > expected) throw new AssertionError({ actual, expected, message, operator: 'assertLessThanEquals' });
+};
+export const assertGreaterThanEquals = (actual: number, expected: number, message: string) => {
+  if (actual < expected) throw new AssertionError({ actual, expected, message, operator: 'assertGreaterThanEquals' });
+};
+export const assertLessThan = (actual: number, expected: number, message: string) => {
+  if (actual >= expected) throw new AssertionError({ actual, expected, message, operator: 'assertLessThan' });
+};
+export const assertGreaterThan = (actual: number, expected: number, message: string) => {
+  if (actual <= expected) throw new AssertionError({ actual, expected, message, operator: 'assertGreaterThan' });
+};

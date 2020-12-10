@@ -16,6 +16,7 @@
 
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
+import StringBuilder from '../util/StringBuilder';
 
 import UPCEANReader from './UPCEANReader';
 import NotFoundException from '../NotFoundException';
@@ -37,7 +38,7 @@ export default class EAN13Reader extends UPCEANReader {
     this.decodeMiddleCounters = Int32Array.from([0, 0, 0, 0]);
   }
 
-  public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: string) {
+  public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: StringBuilder) {
     let counters = this.decodeMiddleCounters;
     counters[0] = 0;
     counters[1] = 0;
@@ -50,7 +51,7 @@ export default class EAN13Reader extends UPCEANReader {
 
     for (let x = 0; x < 6 && rowOffset < end; x++) {
       let bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_AND_G_PATTERNS);
-      resultString += String.fromCharCode(('0'.charCodeAt(0) + bestMatch % 10));
+      resultString.append('0'.charCodeAt(0) + bestMatch % 10);
       for (let counter of counters) {
         rowOffset += counter;
       }
@@ -59,31 +60,31 @@ export default class EAN13Reader extends UPCEANReader {
       }
     }
 
-    resultString = EAN13Reader.determineFirstDigit(resultString, lgPatternFound);
+    EAN13Reader.determineFirstDigit(resultString, lgPatternFound);
 
-    let middleRange = UPCEANReader.findGuardPattern(row, rowOffset, true, UPCEANReader.MIDDLE_PATTERN, new Int32Array(UPCEANReader.MIDDLE_PATTERN.length).fill(0));
+    let middleRange = UPCEANReader.findGuardPattern(row, rowOffset, true, UPCEANReader.MIDDLE_PATTERN, new Int32Array(UPCEANReader.MIDDLE_PATTERN.length));
     rowOffset = middleRange[1];
 
     for (let x = 0; x < 6 && rowOffset < end; x++) {
       let bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_PATTERNS);
-      resultString += String.fromCharCode(('0'.charCodeAt(0) + bestMatch));
+      resultString.append('0'.charCodeAt(0) + bestMatch);
       for (let counter of counters) {
         rowOffset += counter;
       }
     }
 
-    return { rowOffset, resultString };
+    return rowOffset;
   }
 
   public getBarcodeFormat(): BarcodeFormat {
     return BarcodeFormat.EAN_13;
   }
 
-  static determineFirstDigit(resultString: string, lgPatternFound: number) {
+  static determineFirstDigit(resultString: StringBuilder, lgPatternFound: number) {
     for (let d = 0; d < 10; d++) {
       if (lgPatternFound === this.FIRST_DIGIT_ENCODINGS[d]) {
-        resultString = String.fromCharCode(('0'.charCodeAt(0) + d)) + resultString;
-        return resultString;
+        resultString.insert(0, '0'.charCodeAt(0) + d);
+        return;
       }
     }
     throw new NotFoundException();
