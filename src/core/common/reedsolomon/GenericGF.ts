@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.common.reedsolomon {*/
+/* namespace com.google.zxing.common.reedsolomon { */
 
 import GenericGFPoly from './GenericGFPoly';
 import AbstractGenericGF from './AbstractGenericGF';
@@ -57,11 +57,11 @@ export default class GenericGF extends AbstractGenericGF {
    * @param b the factor b in the generator polynomial can be 0- or 1-based
    *  (g(x) = (x+a^b)(x+a^(b+1))...(x+a^(b+2t-1))).
    *  In most cases it should be 1, but for QR code it is 0.
-   */
+ */
   public constructor(
-    private primitive: number /*int*/,
-    private size: number /*int*/,
-    private generatorBase: number /*int*/
+    private primitive: number /* int */,
+    private size: number /* int */,
+    private generatorBase: number /* int */
   ) {
     super();
     const expTable = new Int32Array(size);
@@ -97,10 +97,10 @@ export default class GenericGF extends AbstractGenericGF {
 
   /**
    * @return the monomial representing coefficient * x^degree
-   */
+ */
   public buildMonomial(
-    degree: number /*int*/,
-    coefficient: number /*int*/
+    degree: number /* int */,
+    coefficient: number /* int */
   ): GenericGFPoly {
     if (degree < 0) {
       throw new IllegalArgumentException();
@@ -115,8 +115,8 @@ export default class GenericGF extends AbstractGenericGF {
 
   /**
    * @return multiplicative inverse of a
-   */
-  public inverse(a: number /*int*/): number /*int*/ {
+ */
+  public inverse(a: number /* int */): number /* int */ {
     if (a === 0) {
       throw new ArithmeticException();
     }
@@ -125,8 +125,8 @@ export default class GenericGF extends AbstractGenericGF {
 
   /**
    * @return product of a and b in GF(size)
-   */
-  public multiply(a: number /*int*/, b: number /*int*/): number /*int*/ {
+ */
+  public multiply(a: number /* int */, b: number /* int */): number /* int */ {
     if (a === 0 || b === 0) {
       return 0;
     }
@@ -135,15 +135,15 @@ export default class GenericGF extends AbstractGenericGF {
     ];
   }
 
-  public getSize(): number /*int*/ {
+  public getSize(): number /* int */ {
     return this.size;
   }
 
-  public getGeneratorBase(): number /*int*/ {
+  public getGeneratorBase(): number /* int */ {
     return this.generatorBase;
   }
 
-  /*@Override*/
+  /* @Override */
   public toString(): string {
     return (
       'GF(0x' + Integer.toHexString(this.primitive) + ',' + this.size + ')'

@@ -1,7 +1,7 @@
-import { BinaryBitmap, GlobalHistogramBinarizer } from "../../../../..";
-import AbstractBlackBoxSpec from "../../../common/AbstractBlackBox";
-import SharpImageLuminanceSource from "../../../SharpImageLuminanceSource";
-import SharpImage from "../../../util/SharpImage";
+import { BinaryBitmap, GlobalHistogramBinarizer } from '@zxing/library';
+import AbstractBlackBoxSpec from '../../../common/AbstractBlackBox';
+import SharpImageLuminanceSource from '../../../SharpImageLuminanceSource';
+import SharpImage from '../../../util/SharpImage';
 
 /*
  * Copyright (C) 2012 ZXing authors
@@ -48,7 +48,7 @@ export default class TestCaseUtil {
 
   /**
    * @throws IOException
-   */
+ */
   private static getBufferedImage(path: string): SharpImage {
     let file = AbstractBlackBoxSpec.buildTestBase(path);
     return SharpImage.load(file, 0);
@@ -56,7 +56,7 @@ export default class TestCaseUtil {
 
   /**
    * @throws IOException
-   */
+ */
   static getBinaryBitmap(path: string): BinaryBitmap {
     let bufferedImage: SharpImage = TestCaseUtil.getBufferedImage(path);
     let luminanceSource: SharpImageLuminanceSource = new SharpImageLuminanceSource(bufferedImage);

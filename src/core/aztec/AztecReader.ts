@@ -40,75 +40,75 @@ import Exception from '../../core/Exception';
  */
 export default class AztecReader implements Reader {
 
-    /**
-     * Locates and decodes a Data Matrix code in an image.
-     *
-     * @return a String representing the content encoded by the Data Matrix code
-     * @throws NotFoundException if a Data Matrix code cannot be found
-     * @throws FormatException if a Data Matrix code cannot be decoded
-     */
-    public decode(image: BinaryBitmap, hints: Map<DecodeHintType, any> | null = null): Result {
+  /**
+   * Locates and decodes a Data Matrix code in an image.
+   *
+   * @return a String representing the content encoded by the Data Matrix code
+   * @throws NotFoundException if a Data Matrix code cannot be found
+   * @throws FormatException if a Data Matrix code cannot be decoded
+ */
+  public decode(image: BinaryBitmap, hints: Map<DecodeHintType, any> | null = null): Result {
 
-        let exception: Exception = null;
-        let detector = new Detector(image.getBlackMatrix());
-        let points: ResultPoint[] = null;
-        let decoderResult: DecoderResult = null;
+    let exception: Exception = null;
+    let detector = new Detector(image.getBlackMatrix());
+    let points: ResultPoint[] = null;
+    let decoderResult: DecoderResult = null;
 
-        try {
-            let detectorResult = detector.detectMirror(false);
-            points = detectorResult.getPoints();
-            this.reportFoundResultPoints(hints, points);
-            decoderResult = new Decoder().decode(detectorResult);
-        } catch (e) {
-            exception = e;
+    try {
+      let detectorResult = detector.detectMirror(false);
+      points = detectorResult.getPoints();
+      this.reportFoundResultPoints(hints, points);
+      decoderResult = new Decoder().decode(detectorResult);
+    } catch (e) {
+      exception = e;
+    }
+    if (decoderResult == null) {
+      try {
+        let detectorResult = detector.detectMirror(true);
+        points = detectorResult.getPoints();
+        this.reportFoundResultPoints(hints, points);
+        decoderResult = new Decoder().decode(detectorResult);
+      } catch (e) {
+        if (exception != null) {
+          throw exception;
         }
-        if (decoderResult == null) {
-            try {
-                let detectorResult = detector.detectMirror(true);
-                points = detectorResult.getPoints();
-                this.reportFoundResultPoints(hints, points);
-                decoderResult = new Decoder().decode(detectorResult);
-            } catch (e) {
-                if (exception != null) {
-                    throw exception;
-                }
-                throw e;
-            }
-        }
-
-        let result = new Result(decoderResult.getText(),
-            decoderResult.getRawBytes(),
-            decoderResult.getNumBits(),
-            points,
-            BarcodeFormat.AZTEC,
-            System.currentTimeMillis());
-
-        let byteSegments = decoderResult.getByteSegments();
-        if (byteSegments != null) {
-            result.putMetadata(ResultMetadataType.BYTE_SEGMENTS, byteSegments);
-        }
-        let ecLevel = decoderResult.getECLevel();
-        if (ecLevel != null) {
-            result.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, ecLevel);
-        }
-
-        return result;
+        throw e;
+      }
     }
 
-    private reportFoundResultPoints(hints: Map<DecodeHintType, any>, points: ResultPoint[]): void {
-        if (hints != null) {
-            let rpcb = hints.get(DecodeHintType.NEED_RESULT_POINT_CALLBACK);
-            if (rpcb != null) {
-                points.forEach((point, idx, arr) => {
-                    rpcb.foundPossibleResultPoint(point);
-                });
-            }
-        }
+    let result = new Result(decoderResult.getText(),
+      decoderResult.getRawBytes(),
+      decoderResult.getNumBits(),
+      points,
+      BarcodeFormat.AZTEC,
+      System.currentTimeMillis());
+
+    let byteSegments = decoderResult.getByteSegments();
+    if (byteSegments != null) {
+      result.putMetadata(ResultMetadataType.BYTE_SEGMENTS, byteSegments);
+    }
+    let ecLevel = decoderResult.getECLevel();
+    if (ecLevel != null) {
+      result.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, ecLevel);
     }
 
-    // @Override
-    public reset(): void {
-        // do nothing
+    return result;
+  }
+
+  private reportFoundResultPoints(hints: Map<DecodeHintType, any>, points: ResultPoint[]): void {
+    if (hints != null) {
+      let rpcb = hints.get(DecodeHintType.NEED_RESULT_POINT_CALLBACK);
+      if (rpcb != null) {
+        points.forEach((point, idx, arr) => {
+          rpcb.foundPossibleResultPoint(point);
+        });
+      }
     }
+  }
+
+  // @Override
+  public reset(): void {
+    // do nothing
+  }
 
 }

@@ -12,9 +12,9 @@
 //  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  * See the License for the specific language governing permissions and
 //  * limitations under the License.
-//  */
+// */
 
-// /*namespace com.google.zxing.common.detector {*/
+// /*namespace com.google.zxing.common.detector { */
 
 // import ResultPoint from '../../ResultPoint'
 // import BitMatrix from '../BitMatrix'
@@ -26,7 +26,7 @@
 //  *
 //  * @author Sean Owen
 //  * @deprecated without replacement since 3.3.0
-//  */
+// */
 // @Deprecated
 // export default class MonochromeRectangleDetector {
 
@@ -47,10 +47,10 @@
 //    *  the topmost point and the last, the bottommost. The second point will be leftmost and the
 //    *  third, the rightmost
 //    * @throws NotFoundException if no Data Matrix Code can be found
-//    */
-//   public detect(): ResultPoInt32Array /*throws NotFoundException*/ {
-//     height: number /*int*/ = image.getHeight();
-//     width: number /*int*/ = image.getWidth();
+// */
+//   public detect(): ResultPoInt32Array /*throws NotFoundException */ {
+//     height: number /*int */ = image.getHeight();
+//     width: number /*int */ = image.getWidth();
 //     const halfHeight = height / 2
 //     const halfWidth = width / 2
 //     const deltaY = Math.max(1, height / (MAX_MODULES * 8));
@@ -97,16 +97,16 @@
 //    *  the barcode
 //    * @return a {@link ResultPoint} encapsulating the corner that was found
 //    * @throws NotFoundException if such a point cannot be found
-//    */
-//   private ResultPoint findCornerFromCenter(centerX: number /*int*/,
-//                                            deltaX: number /*int*/,
-//                                            left: number /*int*/,
-//                                            right: number /*int*/,
-//                                            centerY: number /*int*/,
-//                                            deltaY: number /*int*/,
-//                                            top: number /*int*/,
-//                                            bottom: number /*int*/,
-//                                            maxWhiteRun: number /*int*/) /*throws NotFoundException*/ {
+// */
+//   private ResultPoint findCornerFromCenter(centerX: number /*int */,
+//                                            deltaX: number /*int */,
+//                                            left: number /*int */,
+//                                            right: number /*int */,
+//                                            centerY: number /*int */,
+//                                            deltaY: number /*int */,
+//                                            top: number /*int */,
+//                                            bottom: number /*int */,
+//                                            maxWhiteRun: number /*int */) /*throws NotFoundException */ {
 //     const lastRange: Int32Array = null
 //     for (let y = centerY, x = centerX
 //          y < bottom && y >= top && x < right && x >= left
@@ -165,8 +165,8 @@
 //    * @param horizontal if true, we're scanning left-right, instead of up-down
 //    * @return const with: Int32Array start and end of found range, or null if no such range is found
 //    *  (e.g. only white was found)
-//    */
-//   private const blackWhiteRange: Int32Array(fixedDimension: number /*int*/, maxWhiteRun: number /*int*/, minDim: number /*int*/, maxDim: number /*int*/, boolean horizontal) {
+// */
+//   private const blackWhiteRange: Int32Array(fixedDimension: number /*int */, maxWhiteRun: number /*int */, minDim: number /*int */, maxDim: number /*int */, boolean horizontal) {
 
 //     const center = (minDim + maxDim) / 2
 

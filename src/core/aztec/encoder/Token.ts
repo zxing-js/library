@@ -23,20 +23,20 @@ import { int } from '../../../customTypings';
 
 export default abstract class Token {
 
-  private /*final*/ previous: Token;
+  private /* final */ previous: Token;
 
   constructor(previous: Token) {
     this.previous = previous;
   }
 
-  public /*final*/ getPrevious(): Token {
+  public /* final */ getPrevious(): Token {
     return this.previous;
   }
 
-  public /*final*/ abstract add(value: int, bitCount: int): Token;
+  public /* final */ abstract add(value: int, bitCount: int): Token;
 
-  public /*final*/ abstract addBinaryShift(start: int, byteCount: int): Token;
+  public /* final */ abstract addBinaryShift(start: int, byteCount: int): Token;
 
-  public abstract appendTo(bitArray: BitArray, text: /*byte[]*/Uint8Array): void;
+  public abstract appendTo(bitArray: BitArray, text: /* byte[] */Uint8Array): void;
 
 }

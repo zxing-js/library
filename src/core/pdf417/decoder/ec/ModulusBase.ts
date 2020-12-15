@@ -3,9 +3,9 @@ import ArithmeticException from '../../../ArithmeticException';
 
 export default class ModulusBase {
 
-  protected /*final*/ logTable: Int32Array;
-  protected /*final*/ expTable: Int32Array;
-  protected /*final*/ modulus: number;
+  protected /* final */ logTable: Int32Array;
+  protected /* final */ expTable: Int32Array;
+  protected /* final */ modulus: number;
 
   add(a: number, b: number): number {
     return (a + b) % this.modulus;

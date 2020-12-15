@@ -8,7 +8,7 @@ export default class Long {
    *
    * @param num Numeric string.
    * @param radix Destination radix.
-   */
+ */
   static parseLong(num: string, radix: number = undefined) {
     return parseInt(num, radix);
   }

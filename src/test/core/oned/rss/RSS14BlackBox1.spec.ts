@@ -27,17 +27,17 @@ import AbstractBlackBoxSpec from '../../common/AbstractBlackBox';
 
 class RSS14BlackBox1Spec extends AbstractBlackBoxSpec {
 
-    public constructor() {
-        super('src/test/resources/blackbox/rss14-1', new MultiFormatReader(), BarcodeFormat.RSS_14);
-        this.addTest(6, 6, 0.0);
-        this.addTest(6, 6, 180.0);
-    }
+  public constructor() {
+    super('src/test/resources/blackbox/rss14-1', new MultiFormatReader(), BarcodeFormat.RSS_14);
+    this.addTest(6, 6, 0.0);
+    this.addTest(6, 6, 180.0);
+  }
 }
 
 describe('RSS14BlackBox.1', () => {
-    it('testBlackBox', async () => {
-        const test = new RSS14BlackBox1Spec();
-        await test.testBlackBox();
-    });
+  it('testBlackBox', async () => {
+    const test = new RSS14BlackBox1Spec();
+    await test.testBlackBox();
+  });
 });
 

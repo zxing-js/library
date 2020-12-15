@@ -16,6 +16,7 @@
 
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
+import StringBuilder from '../util/StringBuilder';
 
 import AbstractUPCEANReader from './AbstractUPCEANReader';
 import Result from '../Result';
@@ -27,74 +28,74 @@ import NotFoundException from '../NotFoundException';
  * @see UPCEANExtension5Support
  */
 export default class UPCEANExtension2Support {
-    private decodeMiddleCounters = Int32Array.from([0, 0, 0, 0]);
-    private decodeRowStringBuffer = '';
+  private decodeMiddleCounters = new Int32Array(4);
+  private decodeRowStringBuffer = new StringBuilder();
 
 
-    public decodeRow(rowNumber: number, row: BitArray, extensionStartRange: Int32Array) {
-        let result = this.decodeRowStringBuffer;
-        let end = this.decodeMiddle(row, extensionStartRange, result);
+  public decodeRow(rowNumber: number, row: BitArray, extensionStartRange: Int32Array) {
+    let result = this.decodeRowStringBuffer;
+    let end = this.decodeMiddle(row, extensionStartRange, result);
 
-        let resultString = result.toString();
-        let extensionData = UPCEANExtension2Support.parseExtensionString(resultString);
+    let resultString = result.toString();
+    let extensionData = UPCEANExtension2Support.parseExtensionString(resultString);
 
-        let resultPoints = [
-            new ResultPoint((extensionStartRange[0] + extensionStartRange[1]) / 2.0, rowNumber),
-            new ResultPoint(end, rowNumber)
-        ];
+    let resultPoints = [
+      new ResultPoint((extensionStartRange[0] + extensionStartRange[1]) / 2.0, rowNumber),
+      new ResultPoint(end, rowNumber)
+    ];
 
-        let extensionResult = new Result(resultString, null, 0, resultPoints, BarcodeFormat.UPC_EAN_EXTENSION, new Date().getTime());
+    let extensionResult = new Result(resultString, null, 0, resultPoints, BarcodeFormat.UPC_EAN_EXTENSION, new Date().getTime());
 
-        if (extensionData != null) {
-            extensionResult.putAllMetadata(extensionData);
-        }
-
-        return extensionResult;
+    if (extensionData != null) {
+      extensionResult.putAllMetadata(extensionData);
     }
 
-    public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: string) {
-        let counters = this.decodeMiddleCounters;
-        counters[0] = 0;
-        counters[1] = 0;
-        counters[2] = 0;
-        counters[3] = 0;
-        let end = row.getSize();
-        let rowOffset = startRange[1];
+    return extensionResult;
+  }
 
-        let checkParity = 0;
+  public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: StringBuilder) {
+    let counters = this.decodeMiddleCounters;
+    counters[0] = 0;
+    counters[1] = 0;
+    counters[2] = 0;
+    counters[3] = 0;
+    let end = row.getSize();
+    let rowOffset = startRange[1];
 
-        for (let x = 0; x < 2 && rowOffset < end; x++) {
-            let bestMatch = AbstractUPCEANReader.decodeDigit(row, counters, rowOffset, AbstractUPCEANReader.L_AND_G_PATTERNS);
-            resultString += String.fromCharCode(('0'.charCodeAt(0) + bestMatch % 10));
-            for (let counter of counters) {
-                rowOffset += counter;
-            }
-            if (bestMatch >= 10) {
-                checkParity |= 1 << (1 - x);
-            }
-            if (x !== 1) {
-                // Read off separator if not last
-                rowOffset = row.getNextSet(rowOffset);
-                rowOffset = row.getNextUnset(rowOffset);
-            }
-        }
+    let checkParity = 0;
 
-        if (resultString.length !== 2) {
-            throw new NotFoundException();
-        }
-
-        if (parseInt(resultString.toString()) % 4 !== checkParity) {
-            throw new NotFoundException();
-        }
-
-        return rowOffset;
+    for (let x = 0; x < 2 && rowOffset < end; x++) {
+      let bestMatch = AbstractUPCEANReader.decodeDigit(row, counters, rowOffset, AbstractUPCEANReader.L_AND_G_PATTERNS);
+      resultString.append('0'.charCodeAt(0) + bestMatch % 10);
+      for (let counter of counters) {
+        rowOffset += counter;
+      }
+      if (bestMatch >= 10) {
+        checkParity |= 1 << (1 - x);
+      }
+      if (x !== 1) {
+        // Read off separator if not last
+        rowOffset = row.getNextSet(rowOffset);
+        rowOffset = row.getNextUnset(rowOffset);
+      }
     }
 
-    static parseExtensionString(raw: string) {
-        if (raw.length !== 2) {
-            return null;
-        }
-
-        return new Map([[ResultMetadataType.ISSUE_NUMBER, parseInt(raw)]]);
+    if (resultString.length() !== 2) {
+      throw new NotFoundException();
     }
+
+    if (parseInt(resultString.toString()) % 4 !== checkParity) {
+      throw new NotFoundException();
+    }
+
+    return rowOffset;
+  }
+
+  static parseExtensionString(raw: string) {
+    if (raw.length !== 2) {
+      return null;
+    }
+
+    return new Map([[ResultMetadataType.ISSUE_NUMBER, parseInt(raw)]]);
+  }
 }

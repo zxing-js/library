@@ -27,17 +27,17 @@ import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 
 class ITFBlackBoxSpec extends AbstractBlackBoxSpec {
 
-    public constructor() {
-        super('src/test/resources/blackbox/itf', new MultiFormatReader(), BarcodeFormat.ITF);
-        this.addTest(1, 1, 0.0);
-        this.addTest(1, 1, 180.0);
-    }
+  public constructor() {
+    super('src/test/resources/blackbox/itf', new MultiFormatReader(), BarcodeFormat.ITF);
+    this.addTest(1, 1, 0.0);
+    this.addTest(1, 1, 180.0);
+  }
 }
 
 describe('ITFBlackBox', () => {
-    it('testBlackBox', async () => {
-        const test = new ITFBlackBoxSpec();
-        await test.testBlackBox();
-    });
+  it('testBlackBox', async () => {
+    const test = new ITFBlackBoxSpec();
+    await test.testBlackBox();
+  });
 });
 

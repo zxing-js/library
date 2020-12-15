@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode.decoder;*/
+/* package com.google.zxing.qrcode.decoder; */
 
 import * as assert from 'assert';
 
@@ -26,56 +26,56 @@ import { QRCodeVersion } from '@zxing/library';
  */
 describe('Version', () => {
 
-    it('testVersionForNumber', () => {
-        try {
-            QRCodeVersion.getVersionForNumber(0);
-            assert.ok(false, 'Should have thrown an exception');
-        } catch (ex) {
-            // good for IllegalArgumentException
-        }
-        for (let i: number /*int*/ = 1; i <= 40; i++) {
-            checkVersion(QRCodeVersion.getVersionForNumber(i), i, 4 * i + 17);
-        }
-    });
+  it('testVersionForNumber', () => {
+    try {
+      QRCodeVersion.getVersionForNumber(0);
+      assert.ok(false, 'Should have thrown an exception');
+    } catch (ex) {
+      // good for IllegalArgumentException
+    }
+    for (let i: number /* int */ = 1; i <= 40; i++) {
+      checkVersion(QRCodeVersion.getVersionForNumber(i), i, 4 * i + 17);
+    }
+  });
 
-    function checkVersion(version: QRCodeVersion, versionNumber: number /*int*/, dimension: number /*int*/): void {
+  function checkVersion(version: QRCodeVersion, versionNumber: number /* int */, dimension: number /* int */): void {
 
-        assert.strictEqual(null !== version, true);
-        assert.strictEqual(version.getVersionNumber(), versionNumber);
-        assert.strictEqual(null !== version.getAlignmentPatternCenters(), true);
+    assert.strictEqual(null !== version, true);
+    assert.strictEqual(version.getVersionNumber(), versionNumber);
+    assert.strictEqual(null !== version.getAlignmentPatternCenters(), true);
 
-        if (versionNumber > 1) {
-            assert.strictEqual(version.getAlignmentPatternCenters().length > 0, true);
-        }
-
-        assert.strictEqual(version.getDimensionForVersion(), dimension);
-        assert.strictEqual(null !== version.getECBlocksForLevel(QRCodeDecoderErrorCorrectionLevel.H), true);
-        assert.strictEqual(null !== version.getECBlocksForLevel(QRCodeDecoderErrorCorrectionLevel.L), true);
-        assert.strictEqual(null !== version.getECBlocksForLevel(QRCodeDecoderErrorCorrectionLevel.M), true);
-        assert.strictEqual(null !== version.getECBlocksForLevel(QRCodeDecoderErrorCorrectionLevel.Q), true);
-        assert.strictEqual(null !== version.buildFunctionPattern(), true);
+    if (versionNumber > 1) {
+      assert.strictEqual(version.getAlignmentPatternCenters().length > 0, true);
     }
 
-    it('testGetProvisionalVersionForDimension', () => {
-        for (let i: number /*int*/ = 1; i <= 40; i++) {
-            assert.strictEqual(QRCodeVersion.getProvisionalVersionForDimension(4 * i + 17).getVersionNumber(), i);
-        }
-    });
+    assert.strictEqual(version.getDimensionForVersion(), dimension);
+    assert.strictEqual(null !== version.getECBlocksForLevel(QRCodeDecoderErrorCorrectionLevel.H), true);
+    assert.strictEqual(null !== version.getECBlocksForLevel(QRCodeDecoderErrorCorrectionLevel.L), true);
+    assert.strictEqual(null !== version.getECBlocksForLevel(QRCodeDecoderErrorCorrectionLevel.M), true);
+    assert.strictEqual(null !== version.getECBlocksForLevel(QRCodeDecoderErrorCorrectionLevel.Q), true);
+    assert.strictEqual(null !== version.buildFunctionPattern(), true);
+  }
 
-    it('testDecodeVersionInformation', () => {
-        // Spot check
-        doTestVersion(7, 0x07C94);
-        doTestVersion(12, 0x0C762);
-        doTestVersion(17, 0x1145D);
-        doTestVersion(22, 0x168C9);
-        doTestVersion(27, 0x1B08E);
-        doTestVersion(32, 0x209D5);
-    });
-
-    function doTestVersion(expectedVersion: number /*int*/, mask: number /*int*/): void {
-        const version: QRCodeVersion = QRCodeVersion.decodeVersionInformation(mask);
-        assert.strictEqual(null !== version, true);
-        assert.strictEqual(version.getVersionNumber(), expectedVersion);
+  it('testGetProvisionalVersionForDimension', () => {
+    for (let i: number /* int */ = 1; i <= 40; i++) {
+      assert.strictEqual(QRCodeVersion.getProvisionalVersionForDimension(4 * i + 17).getVersionNumber(), i);
     }
+  });
+
+  it('testDecodeVersionInformation', () => {
+    // Spot check
+    doTestVersion(7, 0x07C94);
+    doTestVersion(12, 0x0C762);
+    doTestVersion(17, 0x1145D);
+    doTestVersion(22, 0x168C9);
+    doTestVersion(27, 0x1B08E);
+    doTestVersion(32, 0x209D5);
+  });
+
+  function doTestVersion(expectedVersion: number /* int */, mask: number /* int */): void {
+    const version: QRCodeVersion = QRCodeVersion.decodeVersionInformation(mask);
+    assert.strictEqual(null !== version, true);
+    assert.strictEqual(version.getVersionNumber(), expectedVersion);
+  }
 
 });

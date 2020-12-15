@@ -32,7 +32,7 @@ export default class BitMatrixParser {
   /**
    * @param bitMatrix {@link BitMatrix} to parse
    * @throws FormatException if dimension is < 8 or > 144 or not 0 mod 2
-   */
+ */
   constructor(bitMatrix: BitMatrix) {
     const dimension = bitMatrix.getHeight();
     if (dimension < 8 || dimension > 144 || (dimension & 0x01) !== 0) {
@@ -58,7 +58,7 @@ export default class BitMatrixParser {
    * @return {@link Version} encapsulating the Data Matrix Code's "version"
    * @throws FormatException if the dimensions of the mapping matrix are not valid
    * Data Matrix dimensions.
-   */
+ */
   public static readVersion(bitMatrix: BitMatrix): Version {
     const numRows = bitMatrix.getHeight();
     const numColumns = bitMatrix.getWidth();
@@ -72,7 +72,7 @@ export default class BitMatrixParser {
    *
    * @return bytes encoded within the Data Matrix Code
    * @throws FormatException if the exact number of bytes expected is not read
-   */
+ */
   readCodewords(): Int8Array {
 
     const result = new Int8Array(this.version.getTotalCodewords());
@@ -127,7 +127,7 @@ export default class BitMatrixParser {
         // Sweep downward diagonally to the left
         do {
           if ((row >= 0) && (column < numColumns) && !this.readMappingMatrix.get(column, row)) {
-             result[resultOffset++] = this.readUtah(row, column, numRows, numColumns) & 0xff;
+            result[resultOffset++] = this.readUtah(row, column, numRows, numColumns) & 0xff;
           }
           row += 2;
           column -= 2;
@@ -151,7 +151,7 @@ export default class BitMatrixParser {
    * @param numRows Number of rows in the mapping matrix
    * @param numColumns Number of columns in the mapping matrix
    * @return value of the given bit in the mapping matrix
-   */
+ */
   private readModule(row: number, column: number, numRows: number, numColumns: number): boolean {
     // Adjust the row and column indices based on boundary wrapping
     if (row < 0) {
@@ -176,7 +176,7 @@ export default class BitMatrixParser {
    * @param numRows Number of rows in the mapping matrix
    * @param numColumns Number of columns in the mapping matrix
    * @return byte from the utah shape
-   */
+ */
   private readUtah(row: number, column: number, numRows: number, numColumns: number): number {
     let currentByte = 0;
     if (this.readModule(row - 2, column - 2, numRows, numColumns)) {
@@ -221,7 +221,7 @@ export default class BitMatrixParser {
    * @param numRows Number of rows in the mapping matrix
    * @param numColumns Number of columns in the mapping matrix
    * @return byte from the Corner condition 1
-   */
+ */
   private readCorner1(numRows: number, numColumns: number): number {
     let currentByte = 0;
     if (this.readModule(numRows - 1, 0, numRows, numColumns)) {
@@ -266,7 +266,7 @@ export default class BitMatrixParser {
    * @param numRows Number of rows in the mapping matrix
    * @param numColumns Number of columns in the mapping matrix
    * @return byte from the Corner condition 2
-   */
+ */
   private readCorner2(numRows: number, numColumns: number): number {
     let currentByte = 0;
     if (this.readModule(numRows - 3, 0, numRows, numColumns)) {
@@ -311,7 +311,7 @@ export default class BitMatrixParser {
    * @param numRows Number of rows in the mapping matrix
    * @param numColumns Number of columns in the mapping matrix
    * @return byte from the Corner condition 3
-   */
+ */
   private readCorner3(numRows: number, numColumns: number): number {
     let currentByte = 0;
     if (this.readModule(numRows - 1, 0, numRows, numColumns)) {
@@ -356,7 +356,7 @@ export default class BitMatrixParser {
    * @param numRows Number of rows in the mapping matrix
    * @param numColumns Number of columns in the mapping matrix
    * @return byte from the Corner condition 4
-   */
+ */
   private readCorner4(numRows: number, numColumns: number): number {
     let currentByte = 0;
     if (this.readModule(numRows - 3, 0, numRows, numColumns)) {
@@ -399,7 +399,7 @@ export default class BitMatrixParser {
    *
    * @param bitMatrix Original {@link BitMatrix} with alignment patterns
    * @return BitMatrix that has the alignment patterns removed
-   */
+ */
   private extractDataRegion(bitMatrix: BitMatrix): BitMatrix {
     const symbolSizeRows = this.version.getSymbolSizeRows();
     const symbolSizeColumns = this.version.getSymbolSizeColumns();

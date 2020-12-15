@@ -1,29 +1,27 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
-    "module": "commonjs",
-    "target": "es5",
-    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
+    "baseUrl": "./src",
+    "downlevelIteration": true,
+    "esModuleInterop": true,
     "lib": [
-      "es7",
+      "esnext",
       "dom"
     ],
-    "alwaysStrict": true,
+    "module": "esnext",
+    "moduleResolution": "node",
     "noImplicitAny": false,
-    "sourceMap": true,
-    "declaration": true,
     "preserveConstEnums": true,
-    "downlevelIteration": true,
+    "target": "esnext",
+    "types": [],
     "paths": {
       "@zxing/library": [
-        "./dist"
-      ],
-      "@zxing/library/*": [
-        "./dist/*"
+        "./index.ts"
       ]
     }
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*"
   ]
 }

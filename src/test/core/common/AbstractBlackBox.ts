@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.common;*/
+/* package com.google.zxing.common; */
 
-import { assertEquals } from '../util/AssertUtils';
+import * as path from 'path';
+import * as fs from 'fs';
+import * as log from 'loglevel';
+import { assertEquals, assertGreaterThanEquals, assertLessThanEquals } from '../util/AssertUtils';
 import SharpImage from '../util/SharpImage';
 import SharpImageLuminanceSource from '../SharpImageLuminanceSource';
 import { BarcodeFormat } from '@zxing/library';
@@ -31,27 +34,27 @@ import { HybridBinarizer } from '@zxing/library';
 import { ZXingStringEncoding } from '@zxing/library';
 
 
-/*import javax.imageio.ImageIO;*/
-/*import java.awt.Graphics;*/
-/*import java.awt.geom.AffineTransform;*/
-/*import java.awt.geom.RectangularShape;*/
-/*import java.awt.image.AffineTransformOp;*/
-/*import java.awt.image.BufferedImage;*/
-/*import java.awt.image.BufferedImageOp;*/
-/*import java.io.BufferedReader;*/
-/*import java.io.IOException;*/
-/*import java.nio.charset.ZXingCharset;*/
-/*import java.nio.charset.ZXingStandardCharsets;*/
-/*import java.nio.file.DirectoryStream;*/
-/*import java.nio.file.Files;*/
-/*import java.nio.file.Path;*/
-/*import java.nio.file.Paths;*/
-/*import java.util.ArrayList;*/
-/*import java.util.EnumMap;*/
-/*import java.util.List;*/
-/*import java.util.Map;*/
-/*import java.util.Properties;*/
-/*import java.util.logging.Logger;*/
+/* import javax.imageio.ImageIO; */
+/* import java.awt.Graphics; */
+/* import java.awt.geom.AffineTransform; */
+/* import java.awt.geom.RectangularShape; */
+/* import java.awt.image.AffineTransformOp; */
+/* import java.awt.image.BufferedImage; */
+/* import java.awt.image.BufferedImageOp; */
+/* import java.io.BufferedReader; */
+/* import java.io.IOException; */
+/* import java.nio.charset.ZXingCharset; */
+/* import java.nio.charset.ZXingStandardCharsets; */
+/* import java.nio.file.DirectoryStream; */
+/* import java.nio.file.Files; */
+/* import java.nio.file.Path; */
+/* import java.nio.file.Paths; */
+/* import java.util.ArrayList; */
+/* import java.util.EnumMap; */
+/* import java.util.List; */
+/* import java.util.Map; */
+/* import java.util.Properties; */
+/* import java.util.logging.Logger; */
 
 /**
  * @author Sean Owen
@@ -101,7 +104,7 @@ abstract class AbstractBlackBoxSpec {
    * @param maxTryHarderMisreads Maximum number of images which can fail due to successfully
    *                             reading the wrong contents using the try harder flag
    * @param rotation The rotation in degrees clockwise to use for this test.
-   */
+ */
   protected addTestWithMax(
     mustPassCount: number /* int */,
     tryHarderCount: number /* int */,
@@ -129,7 +132,7 @@ abstract class AbstractBlackBoxSpec {
     }
 
     if (results.length === 0) {
-      console.log(`No files in folder ${dir}`);
+      log.info(`No files in folder ${dir}`);
     }
 
     return results;
@@ -137,7 +140,7 @@ abstract class AbstractBlackBoxSpec {
 
   /**
    * @throws IOException
-   */
+ */
   protected getImageFiles(): Array<string> {
     assertEquals(fs.existsSync(this.testBase), true, 'Please download and install test images, and run from the \'core\' directory');
     return this.walkDirectory(this.testBase);
@@ -154,25 +157,20 @@ abstract class AbstractBlackBoxSpec {
    * @param done
    *
    * @throws IOException
-   */
+ */
   public async testBlackBox(): Promise<void> {
-    try {
-      await this.testBlackBoxCountingResults(true);
-      console.log('testBlackBox finished.');
-    } catch (e) {
-      console.log('Test ended with error: ', e);
-      throw e;
-    }
+    await this.testBlackBoxCountingResults(true);
+    log.info('testBlackBox finished.');
   }
 
   /**
    * @throws IOException
-   */
+ */
   private async testBlackBoxCountingResults(assertOnFailure: boolean): Promise<void> {
     assertEquals(this.testResults.length > 0, true);
 
     const imageFiles: Array<string> = this.getImageFiles();
-    const testCount: number /*int*/ = this.testResults.length;
+    const testCount: number /* int */ = this.testResults.length;
 
     const passedCounts = new Int32Array(testCount);
     const misreadCounts = new Int32Array(testCount);
@@ -187,7 +185,6 @@ abstract class AbstractBlackBoxSpec {
       // and run tests in parallel
       testImageIterations.push(new Promise(async resolve => {
 
-        console.log(`    Starting ${testImage}`);
         const fileBaseName: string = path.basename(testImage, path.extname(testImage));
         let expectedTextFile: string = path.resolve(this.testBase, fileBaseName + '.txt');
         let expectedText: string;
@@ -199,6 +196,7 @@ abstract class AbstractBlackBoxSpec {
           assertEquals(fs.existsSync(expectedTextFile), true, 'result bin/text file should exists');
           expectedText = AbstractBlackBoxSpec.readBinFileAsString(expectedTextFile);
         }
+        const truncated = AbstractBlackBoxSpec.truncate(expectedText, 32);
 
         const expectedMetadataFile: string = path.resolve(fileBaseName + '.metadata.txt');
         let expectedMetadata = null;
@@ -206,42 +204,59 @@ abstract class AbstractBlackBoxSpec {
           expectedMetadata = AbstractBlackBoxSpec.readTextFileAsMetadata(expectedMetadataFile);
         }
 
-        const decodeIterations: Promise<void>[] = [];
+        const decodeIterations: Promise<{success: boolean; message: string}>[] = [];
 
-        for (let x: number /*int*/ = 0; x < testCount; x++) {
+        for (let x: number /* int */ = 0; x < testCount; x++) {
 
           // we run this in a separated scope so we can iterate faster
           // and run tests in parallel
           decodeIterations.push(new Promise(async resolve => {
-
-            const rotation: number /*float*/ = this.testResults[x].getRotation();
+            const rotation: number /* float */ = this.testResults[x].getRotation();
             const rotatedImage = await SharpImage.loadWithRotation(testImage, rotation);
             const source: LuminanceSource = new SharpImageLuminanceSource(rotatedImage);
             const bitmap = new BinaryBitmap(new HybridBinarizer(source));
+
+            let message  = `      ${rotation.toString().padStart(3, ' ')}: `;
+            let success = false;
+            let misread = false;
             try {
-              if (this.decode(bitmap, rotation, expectedText, expectedMetadata, false)) {
+              let { decoded, error } = this.decode(bitmap, rotation, expectedText, expectedMetadata, false);
+              if (decoded) {
+                message += 'successfully decoded';
                 passedCounts[x]++;
+                success = true;
               } else {
+                message += `misread with error ${error}`;
+                misread = true;
                 misreadCounts[x]++;
               }
             } catch (e) {
-              console.log(`      could not read at rotation ${rotation} failed with ${e.constructor.name}. Message: ${e.message}`);
+              message += `failed with error [${e.constructor.name}]`;
             }
             try {
-              if (this.decode(bitmap, rotation, expectedText, expectedMetadata, true)) {
+              let { decoded, error } = this.decode(bitmap, rotation, expectedText, expectedMetadata, true);
+              if (decoded) {
+                message += `${!success || misread ? ', but' : ' and'} try harder successfully decoded`;
                 tryHarderCounts[x]++;
+                success = true;
               } else {
+                message += `${success || !misread ? ', but' : ' and'} try harder misread with error ${error}`;
                 tryHarderMisreadCounts[x]++;
+                misread = true;
               }
             } catch (e) {
-              console.log(`        could not read at rotation ${rotation} w/TH failed with ${e.constructor.name}.`);
+              message += `${success || misread ? ', but' : ' and'} try harder failed with error [${e.constructor.name}]`;
             }
-
-            resolve();
+            resolve({success, message});
           }));
         }
 
-        await Promise.all(decodeIterations);
+        const results = await Promise.all(decodeIterations);
+        log.info(`    Decoding ${path.relative(process.cwd(), testImage)} expecting '${truncated}' with rotations`);
+        results.forEach(({success, message}) => {
+          if (!success) log.warn(message);
+          else log.debug(message);
+        });
 
         resolve();
       }));
@@ -251,70 +266,83 @@ abstract class AbstractBlackBoxSpec {
 
     // Original reference: 197.
     // Print the results of all tests first
-    let totalFound /*int*/ = 0;
-    let totalMustPass /*int*/ = 0;
-    let totalMisread /*int*/ = 0;
-    let totalMaxMisread /*int*/ = 0;
+    let totalFound /* int */ = 0;
+    let totalMustPass /* int */ = 0;
+    let totalMisread /* int */ = 0;
+    let totalMaxMisread /* int */ = 0;
 
-    for (let x: number /*int*/ = 0, length = this.testResults.length; x < length; x++) {
+    for (let x: number /* int */ = 0, length = this.testResults.length; x < length; x++) {
       const testResult: TestResult = this.testResults[x];
-      console.log(`\n      Rotation ${testResult.getRotation()} degrees:`);
-      console.log(`        ${passedCounts[x]} of ${imageFiles.length} images passed (${testResult.getMustPassCount()} required)`);
-      let failed: number /*int*/ = imageFiles.length - passedCounts[x];
-      console.log(`        ${misreadCounts[x]} failed due to misreads, ${failed - misreadCounts[x]} not detected`);
-      console.log(`        ${tryHarderCounts[x]} of ${imageFiles.length} images passed with try harder (${testResult.getTryHarderCount()} required)`);
+      log.info(`    Rotation ${testResult.getRotation()} degrees:`);
+      log.info(`      ${passedCounts[x]} of ${imageFiles.length} images passed (${testResult.getMustPassCount()} required)`);
+      let failed: number /* int */ = imageFiles.length - passedCounts[x];
+      log.info(`      ${misreadCounts[x]} failed due to misreads, ${failed - misreadCounts[x]} not detected`);
+      log.info(`      ${tryHarderCounts[x]} of ${imageFiles.length} images passed with try harder (${testResult.getTryHarderCount()} required)`);
       failed = imageFiles.length - tryHarderCounts[x];
-      console.log(`        ${tryHarderMisreadCounts[x]} failed due to misreads, ${failed - tryHarderMisreadCounts[x]} not detected`);
+      log.info(`      ${tryHarderMisreadCounts[x]} failed due to misreads, ${failed - tryHarderMisreadCounts[x]} not detected\n`);
       totalFound += passedCounts[x] + tryHarderCounts[x];
       totalMustPass += testResult.getMustPassCount() + testResult.getTryHarderCount();
       totalMisread += misreadCounts[x] + tryHarderMisreadCounts[x];
       totalMaxMisread += testResult.getMaxMisreads() + testResult.getMaxTryHarderMisreads();
     }
 
-    const totalTests: number /*int*/ = imageFiles.length * testCount * 2;
+    const totalTests: number /* int */ = imageFiles.length * testCount * 2;
 
-    console.log(`    Decoded ${totalFound} images out of ${totalTests} (${totalFound * 100 / totalTests}%, ${totalMustPass} required)`);
+    log.info(`    Decoded ${totalFound} images out of ${totalTests} (${totalFound * 100 / totalTests}%, ${totalMustPass} required)`);
 
     if (totalFound > totalMustPass) {
-      console.warn(`  +++ Test too lax by ${totalFound - totalMustPass} images`);
+      log.warn(`      +++ Test too lax by ${Math.abs(totalFound - totalMustPass)} images`);
     } else if (totalFound < totalMustPass) {
-      console.error(`  --- Test failed by ${totalMustPass - totalFound} images`);
+      log.error(`      --- Test failed by ${Math.abs(totalMustPass - totalFound)} images`);
     }
 
     if (totalMisread < totalMaxMisread) {
-      console.warn(`  +++ Test expects too many misreads by ${totalMaxMisread - totalMisread} images`);
+      log.warn(`      +++ Test expects too many misreads by ${Math.abs(totalMaxMisread - totalMisread)} images`);
     } else if (totalMisread > totalMaxMisread) {
-      console.error(`  --- Test had too many misreads by ${totalMisread - totalMaxMisread} images`);
+      log.error(`      --- Test had too many misreads by ${Math.abs(totalMisread - totalMaxMisread)} images`);
     }
 
     // Then run through again and assert if any failed.
     if (assertOnFailure) {
-      for (let x: number /*int*/ = 0; x < testCount; x++) {
+      for (let x: number /* int */ = 0; x < testCount; x++) {
 
         const testResult = this.testResults[x];
-        const label = '      Rotation ' + testResult.getRotation() + ' degrees: Too many images failed.';
+        const label = `Rotation ${testResult.getRotation()} degrees`;
 
-        assertEquals(passedCounts[x] >= testResult.getMustPassCount(), true, label);
-        assertEquals(tryHarderCounts[x] >= testResult.getTryHarderCount(), true, `Try harder, ${label}`);
-        assertEquals(misreadCounts[x] <= testResult.getMaxMisreads(), true, label);
-        assertEquals(tryHarderMisreadCounts[x] <= testResult.getMaxTryHarderMisreads(), true, `Try harder, ${label}`);
+        assertGreaterThanEquals(
+          passedCounts[x],
+          testResult.getMustPassCount(),
+          `${label} - ${Math.abs(testResult.getMustPassCount() - passedCounts[x])} too many images failed.`
+        );
+        assertGreaterThanEquals(
+          tryHarderCounts[x],
+          testResult.getTryHarderCount(),
+          `${label} (try harder) - ${Math.abs(testResult.getTryHarderCount() - tryHarderCounts[x])} too many images failed.`
+        );
+        assertLessThanEquals(
+          misreadCounts[x],
+          testResult.getMaxMisreads(),
+          `${label} - ${misreadCounts[x] - testResult.getMaxMisreads()} too many images were misread.`
+        );
+        assertLessThanEquals(
+          tryHarderMisreadCounts[x],
+          testResult.getMaxTryHarderMisreads(),
+          `${label} (try harder) - ${tryHarderMisreadCounts[x] - testResult.getMaxTryHarderMisreads()} too many images were misread.`
+        );
       }
     }
   }
 
   /**
    * @throws ReaderException
-   */
+ */
   private decode(
     source: BinaryBitmap,
-    rotation: number/*float*/,
+    rotation: number/* float */,
     expectedText: string,
     expectedMetadata: Map<string, string>,
     tryHarder: boolean
-  ): boolean {
-
-    const suffix: string = ` (${tryHarder ? 'try harder, ' : ''}rotation: ${rotation})`;
-
+  ): { decoded: boolean; error?: string } {
     const hints = new Map<DecodeHintType, any>();
     if (tryHarder) {
       hints.set(DecodeHintType.TRY_HARDER, true);
@@ -327,7 +355,7 @@ abstract class AbstractBlackBoxSpec {
       const pureHints = new Map<DecodeHintType, any>(hints);
       pureHints.set(DecodeHintType.PURE_BARCODE, true);
       result = this.barcodeReader.decode(source, pureHints);
-    } catch (re/*ReaderException*/) {
+    } catch (re/* ReaderException */) {
       // continue
     }
 
@@ -338,20 +366,24 @@ abstract class AbstractBlackBoxSpec {
     const resultFormat = result.getBarcodeFormat();
 
     if (this.expectedFormat !== resultFormat) {
-      console.warn(`Format mismatch: expected '${this.expectedFormat}' but got '${resultFormat}'${suffix}`);
-      return false;
+      return {
+        decoded: false,
+        error: `[Format Mismatch]: expected '${this.expectedFormat}', actual '${resultFormat}'`,
+      };
     }
 
     const resultText: string = result.getText();
-    // WORKAROUND: ignore new line diferences between systems
+    // WORKAROUND: ignore new line differences between systems
     // TODO: check if a real problem or only because test result is stored in a file with modified new line chars
     const expectedTextR = expectedText.replace(/\r\n/g, '\n');
     const resultTextR = resultText.replace(/\r\n/g, '\n');
     if (expectedTextR !== resultTextR) {
       const expectedTextHexCodes = AbstractBlackBoxSpec.toDebugHexStringCodes(expectedTextR);
       const resultTextHexCodes = AbstractBlackBoxSpec.toDebugHexStringCodes(resultTextR);
-      console.warn(`Content mismatch: expected '${expectedTextR}' (${expectedTextHexCodes}) but got '${resultTextR}'${suffix} (${resultTextHexCodes})`);
-      return false;
+      return {
+        decoded: false,
+        error: `[Content Mismatch]: expected '${expectedTextR}' (${expectedTextHexCodes}), actual '${resultTextR}' (${resultTextHexCodes})`,
+      };
     }
 
     const resultMetadata: Map<ResultMetadataType, any> = result.getResultMetadata();
@@ -362,14 +394,21 @@ abstract class AbstractBlackBoxSpec {
         const keyType: ResultMetadataType = AbstractBlackBoxSpec.valueOfResultMetadataTypeFromString(key);
         const actualValue: Object = resultMetadata === null ? undefined : resultMetadata.get(keyType);
         if (expectedValue !== actualValue) {
-          console.warn(`Metadata mismatch for key '${key}': expected '${expectedValue}' but got '${actualValue}'`);
-          return false;
+          return {
+            decoded: false,
+            error: `[Metadata Mismatch]: key '${key}', expected '${expectedValue}', actual '${actualValue}'`,
+          };
         }
       }
     }
 
-    return true;
+    return { decoded: true };
   }
+
+  private static truncate(text: string, n: number){
+    text = text.replace(/(?:\r\n|\r|\n)/g, ' ');
+    return (text.length > n) ? text.substr(0, n-1) + '\u2026' : text;
+  };
 
   private static toDebugHexStringCodes(text: string): string {
     let r = '';
@@ -399,11 +438,11 @@ abstract class AbstractBlackBoxSpec {
 
   /**
    * @throws IOException
-   */
+ */
   protected static readTextFileAsString(file: string): string {
     const stringContents: string = fs.readFileSync(file, { encoding: 'utf8' });
     if (stringContents.endsWith('\n')) {
-      console.warn('contents: string of file ' + file + ' end with a newline. ' +
+      log.warn('contents: string of file ' + file + ' end with a newline. ' +
         'This may not be intended and cause a test failure');
     }
     return stringContents;
@@ -411,12 +450,12 @@ abstract class AbstractBlackBoxSpec {
 
   /**
    * @throws IOException
-   */
+ */
   protected static readBinFileAsString(file: string): string {
     const bufferContents: Buffer = fs.readFileSync(file);
     const stringContents = ZXingStringEncoding.decode(new Uint8Array(bufferContents), 'iso-8859-1');
     if (stringContents.endsWith('\n')) {
-      console.warn('contents: string of file ' + file + ' end with a newline. ' +
+      log.warn('contents: string of file ' + file + ' end with a newline. ' +
         'This may not be intended and cause a test failure');
     }
     return stringContents;
@@ -424,7 +463,7 @@ abstract class AbstractBlackBoxSpec {
 
   /**
    * @throws IOException
-   */
+ */
   protected static readTextFileAsMetadata(file: string): Map<string, string> {
     // TODO: read text-file as metadata.
     return null;

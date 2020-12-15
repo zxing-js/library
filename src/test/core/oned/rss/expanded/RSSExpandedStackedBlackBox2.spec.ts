@@ -1,6 +1,5 @@
-import { BarcodeFormat } from '../../../../..';
-import MultiFormatReader from '../../../../../core/MultiFormatReader';
-import AbstractBlackBoxSpec from '../../../common/AbstractBlackBox';
+import { BarcodeFormat, MultiFormatReader } from '@zxing/library';
+import AbstractBlackBoxSpec from 'test/core/common/AbstractBlackBox';
 
 /*
  * Copyright (C) 2012 ZXing authors
@@ -49,9 +48,9 @@ class RSSExpandedStackedBlackBox2TestCase extends AbstractBlackBoxSpec {
 }
 
 describe('RSSExpandedStackedBlackBox2TestCase', () => {
-  it('testBlackBox', done => {
+  it('testBlackBox', () => {
     const test = new RSSExpandedStackedBlackBox2TestCase();
-    return test.testBlackBox(done);
+    return test.testBlackBox();
   });
 });
 

@@ -24,10 +24,10 @@ import SimpleToken from './SimpleToken';
 
 import { short, int } from '../../../customTypings';
 
-export default /*final*/ class BinaryShiftToken extends SimpleToken {
+export default /* final */ class BinaryShiftToken extends SimpleToken {
 
-  private /*final*/  binaryShiftStart: short;
-  private /*final*/  binaryShiftByteCount: short;
+  private /* final */  binaryShiftStart: short;
+  private /* final */  binaryShiftByteCount: short;
 
   constructor(
     previous: Token,
@@ -41,8 +41,8 @@ export default /*final*/ class BinaryShiftToken extends SimpleToken {
 
   /**
    * @Override
-   */
-  public appendTo(bitArray: BitArray, text: /*byte[]*/ Uint8Array): void {
+ */
+  public appendTo(bitArray: BitArray, text: /* byte[] */ Uint8Array): void {
     for (let i = 0; i < this.binaryShiftByteCount; i++) {
       if (i === 0 || (i === 31 && this.binaryShiftByteCount <= 62)) {
         // We need a header before the first character, and before
@@ -62,14 +62,14 @@ export default /*final*/ class BinaryShiftToken extends SimpleToken {
     }
   }
 
-  public /*final*/ addBinaryShift(start: int, byteCount: int): Token {
+  public /* final */ addBinaryShift(start: int, byteCount: int): Token {
     // int bitCount = (byteCount * 8) + (byteCount <= 31 ? 10 : byteCount <= 62 ? 20 : 21);
     return new BinaryShiftToken(this, start, byteCount);
   }
 
   /**
    * @Override
-   */
+ */
   public toString(): string {
     return '<' + this.binaryShiftStart + '::' + (this.binaryShiftStart + this.binaryShiftByteCount - 1) + '>';
   }

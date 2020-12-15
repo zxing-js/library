@@ -44,7 +44,7 @@ export default class Detector {
    *
    * @return {@link DetectorResult} encapsulating results of detecting a Data Matrix Code
    * @throws NotFoundException if no Data Matrix Code can be found
-   */
+ */
   public detect(): DetectorResult {
 
 
@@ -54,7 +54,7 @@ export default class Detector {
     points = this.detectSolid2(points);
     points[3] = this.correctTopRight(points);
     if (!points[3]) {
-       throw new NotFoundException();
+      throw new NotFoundException();
     }
     points = this.shiftToModuleCenter(points);
 
@@ -78,12 +78,12 @@ export default class Detector {
     }
 
     let bits = Detector.sampleGrid(this.image,
-                                topLeft,
-                                bottomLeft,
-                                bottomRight,
-                                topRight,
-                                dimensionTop,
-                                dimensionRight);
+      topLeft,
+      bottomLeft,
+      bottomRight,
+      topRight,
+      dimensionTop,
+      dimensionRight);
 
     return new DetectorResult(bits, [topLeft, bottomLeft, bottomRight, topRight]);
   }
@@ -115,7 +115,7 @@ export default class Detector {
 
   /**
    * Detect a solid side which has minimum transition.
-   */
+ */
   private detectSolid1(cornerPoints: ResultPoint[]): ResultPoint[] {
     // 0  2
     // 1  3
@@ -160,7 +160,7 @@ export default class Detector {
 
   /**
    * Detect a second solid side next to first solid side.
-   */
+ */
   private detectSolid2(points: ResultPoint[]): ResultPoint[] {
     // A..D
     // :  :
@@ -200,7 +200,7 @@ export default class Detector {
 
   /**
    * Calculates the corner position of the white top right module.
-   */
+ */
   private correctTopRight(points: ResultPoint[]): ResultPoint {
     // A..D
     // |  :
@@ -222,7 +222,7 @@ export default class Detector {
     let candidate1 = new ResultPoint(
       pointD.getX() + (pointC.getX() - pointB.getX()) / (trTop + 1),
       pointD.getY() + (pointC.getY() - pointB.getY()) / (trTop + 1));
-      let candidate2 = new ResultPoint(
+    let candidate2 = new ResultPoint(
       pointD.getX() + (pointA.getX() - pointB.getX()) / (trRight + 1),
       pointD.getY() + (pointA.getY() - pointB.getY()) / (trRight + 1));
 
@@ -248,7 +248,7 @@ export default class Detector {
 
   /**
    * Shift the edge points to the module center.
-   */
+ */
   private shiftToModuleCenter(points: ResultPoint[]): ResultPoint[] {
     // A..D
     // |  :
@@ -306,39 +306,39 @@ export default class Detector {
   }
 
   private static sampleGrid(image: BitMatrix,
-                                      topLeft: ResultPoint,
-                                      bottomLeft: ResultPoint,
-                                      bottomRight: ResultPoint,
-                                      topRight: ResultPoint,
-                                      dimensionX: int,
-                                      dimensionY: int): BitMatrix {
+    topLeft: ResultPoint,
+    bottomLeft: ResultPoint,
+    bottomRight: ResultPoint,
+    topRight: ResultPoint,
+    dimensionX: int,
+    dimensionY: int): BitMatrix {
 
     const sampler = GridSamplerInstance.getInstance();
 
     return sampler.sampleGrid(image,
-                              dimensionX,
-                              dimensionY,
-                              0.5,
-                              0.5,
-                              dimensionX - 0.5,
-                              0.5,
-                              dimensionX - 0.5,
-                              dimensionY - 0.5,
-                              0.5,
-                              dimensionY - 0.5,
-                              topLeft.getX(),
-                              topLeft.getY(),
-                              topRight.getX(),
-                              topRight.getY(),
-                              bottomRight.getX(),
-                              bottomRight.getY(),
-                              bottomLeft.getX(),
-                              bottomLeft.getY());
+      dimensionX,
+      dimensionY,
+      0.5,
+      0.5,
+      dimensionX - 0.5,
+      0.5,
+      dimensionX - 0.5,
+      dimensionY - 0.5,
+      0.5,
+      dimensionY - 0.5,
+      topLeft.getX(),
+      topLeft.getY(),
+      topRight.getX(),
+      topRight.getY(),
+      bottomRight.getX(),
+      bottomRight.getY(),
+      bottomLeft.getX(),
+      bottomLeft.getY());
   }
 
   /**
    * Counts the number of black/white transitions between two points, using something like Bresenham's algorithm.
-   */
+ */
   private transitionsBetween(from: ResultPoint, to: ResultPoint): int {
     // See QR Code Detector, sizeOfBlackWhiteBlackRun()
     let fromX = Math.trunc(from.getX());

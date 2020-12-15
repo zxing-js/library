@@ -33,14 +33,14 @@ import { int } from '../../../customTypings';
 /**
  * @author Guenther Grau
  */
-export default /*final*/ class DetectionResult {
+export default /* final */ class DetectionResult {
 
-  /*final*/ ADJUST_ROW_NUMBER_SKIP: int = 2;
+  /* final */ ADJUST_ROW_NUMBER_SKIP: int = 2;
 
-  private /*final*/  barcodeMetadata: BarcodeMetadata;
-  private /*final*/ detectionResultColumns: DetectionResultColumn[];
+  private /* final */  barcodeMetadata: BarcodeMetadata;
+  private /* final */ detectionResultColumns: DetectionResultColumn[];
   private boundingBox: BoundingBox;
-  private /*final*/  barcodeColumnCount: int;
+  private /* final */  barcodeColumnCount: int;
 
   constructor(barcodeMetadata: BarcodeMetadata, boundingBox: BoundingBox) {
     this.barcodeMetadata = barcodeMetadata;
@@ -75,15 +75,15 @@ export default /*final*/ class DetectionResult {
   /**
    * @return number of codewords which don't have a valid row number. Note that the count is not accurate as codewords
    * will be counted several times. It just serves as an indicator to see when we can stop adjusting row numbers
-   */
+ */
   private adjustRowNumbersAndGetCount(): int {
     let unadjustedCount: int = this.adjustRowNumbersByRow();
     if (unadjustedCount === 0) {
       return 0;
     }
-    for (let barcodeColumn /*int*/ = 1; barcodeColumn < this.barcodeColumnCount + 1; barcodeColumn++) {
+    for (let barcodeColumn /* int */ = 1; barcodeColumn < this.barcodeColumnCount + 1; barcodeColumn++) {
       let codewords: Codeword[] = this.detectionResultColumns[barcodeColumn].getCodewords();
-      for (let codewordsRow /*int*/ = 0; codewordsRow < codewords.length; codewordsRow++) {
+      for (let codewordsRow /* int */ = 0; codewordsRow < codewords.length; codewordsRow++) {
         if (codewords[codewordsRow] == null) {
           continue;
         }
@@ -111,11 +111,11 @@ export default /*final*/ class DetectionResult {
     }
     let LRIcodewords: Codeword[] = this.detectionResultColumns[0].getCodewords();
     let RRIcodewords: Codeword[] = this.detectionResultColumns[this.barcodeColumnCount + 1].getCodewords();
-    for (let codewordsRow /*int*/ = 0; codewordsRow < LRIcodewords.length; codewordsRow++) {
+    for (let codewordsRow /* int */ = 0; codewordsRow < LRIcodewords.length; codewordsRow++) {
       if (LRIcodewords[codewordsRow] != null &&
         RRIcodewords[codewordsRow] != null &&
         LRIcodewords[codewordsRow].getRowNumber() === RRIcodewords[codewordsRow].getRowNumber()) {
-        for (let barcodeColumn /*int*/ = 1; barcodeColumn <= this.barcodeColumnCount; barcodeColumn++) {
+        for (let barcodeColumn /* int */ = 1; barcodeColumn <= this.barcodeColumnCount; barcodeColumn++) {
           let codeword: Codeword = this.detectionResultColumns[barcodeColumn].getCodewords()[codewordsRow];
           if (codeword == null) {
             continue;
@@ -135,13 +135,13 @@ export default /*final*/ class DetectionResult {
     }
     let unadjustedCount: int = 0;
     let codewords: Codeword[] = this.detectionResultColumns[this.barcodeColumnCount + 1].getCodewords();
-    for (let codewordsRow /*int*/ = 0; codewordsRow < codewords.length; codewordsRow++) {
+    for (let codewordsRow /* int */ = 0; codewordsRow < codewords.length; codewordsRow++) {
       if (codewords[codewordsRow] == null) {
         continue;
       }
       let rowIndicatorRowNumber: int = codewords[codewordsRow].getRowNumber();
       let invalidRowCounts: int = 0;
-      for (let barcodeColumn /*int*/ = this.barcodeColumnCount + 1; barcodeColumn > 0 && invalidRowCounts < this.ADJUST_ROW_NUMBER_SKIP; barcodeColumn--) {
+      for (let barcodeColumn /* int */ = this.barcodeColumnCount + 1; barcodeColumn > 0 && invalidRowCounts < this.ADJUST_ROW_NUMBER_SKIP; barcodeColumn--) {
         let codeword: Codeword = this.detectionResultColumns[barcodeColumn].getCodewords()[codewordsRow];
         if (codeword != null) {
           invalidRowCounts = DetectionResult.adjustRowNumberIfValid(rowIndicatorRowNumber, invalidRowCounts, codeword);
@@ -160,13 +160,13 @@ export default /*final*/ class DetectionResult {
     }
     let unadjustedCount: int = 0;
     let codewords: Codeword[] = this.detectionResultColumns[0].getCodewords();
-    for (let codewordsRow /*int*/ = 0; codewordsRow < codewords.length; codewordsRow++) {
+    for (let codewordsRow /* int */ = 0; codewordsRow < codewords.length; codewordsRow++) {
       if (codewords[codewordsRow] == null) {
         continue;
       }
       let rowIndicatorRowNumber: int = codewords[codewordsRow].getRowNumber();
       let invalidRowCounts: int = 0;
-      for (let barcodeColumn /*int*/ = 1; barcodeColumn < this.barcodeColumnCount + 1 && invalidRowCounts < this.ADJUST_ROW_NUMBER_SKIP; barcodeColumn++) {
+      for (let barcodeColumn /* int */ = 1; barcodeColumn < this.barcodeColumnCount + 1 && invalidRowCounts < this.ADJUST_ROW_NUMBER_SKIP; barcodeColumn++) {
         let codeword: Codeword = this.detectionResultColumns[barcodeColumn].getCodewords()[codewordsRow];
         if (codeword != null) {
           invalidRowCounts = DetectionResult.adjustRowNumberIfValid(rowIndicatorRowNumber, invalidRowCounts, codeword);
@@ -237,7 +237,7 @@ export default /*final*/ class DetectionResult {
 
   /**
    * @return true, if row number was adjusted, false otherwise
-   */
+ */
   private static adjustRowNumber(codeword: Codeword, otherCodeword: Codeword): boolean {
     if (otherCodeword == null) {
       return false;
@@ -286,9 +286,9 @@ export default /*final*/ class DetectionResult {
     // try (
     let formatter: Formatter = new Formatter();
     // ) {
-    for (let codewordsRow /*int*/ = 0; codewordsRow < rowIndicatorColumn.getCodewords().length; codewordsRow++) {
+    for (let codewordsRow /* int */ = 0; codewordsRow < rowIndicatorColumn.getCodewords().length; codewordsRow++) {
       formatter.format('CW %3d:', codewordsRow);
-      for (let barcodeColumn /*int*/ = 0; barcodeColumn < this.barcodeColumnCount + 2; barcodeColumn++) {
+      for (let barcodeColumn /* int */ = 0; barcodeColumn < this.barcodeColumnCount + 2; barcodeColumn++) {
         if (this.detectionResultColumns[barcodeColumn] == null) {
           formatter.format('    |   ');
           continue;

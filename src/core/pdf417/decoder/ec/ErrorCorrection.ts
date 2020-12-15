@@ -33,9 +33,9 @@ import { int } from '../../../../customTypings';
  * @author Sean Owen
  * @see com.google.zxing.common.reedsolomon.ReedSolomonDecoder
  */
-export default /*public final*/ class ErrorCorrection {
+export default /* public final */ class ErrorCorrection {
 
-  private /*final*/ field: ModulusGF;
+  private /* final */ field: ModulusGF;
 
   public constructor() {
     this.field = ModulusGF.PDF417_GF;
@@ -47,7 +47,7 @@ export default /*public final*/ class ErrorCorrection {
    * @param erasures location of erasures
    * @return number of errors
    * @throws ChecksumException if errors cannot be corrected, maybe because of too many errors
-   */
+ */
   public decode(received: Int32Array,
     numECCodewords: int,
     erasures: Int32Array): int {
@@ -55,7 +55,7 @@ export default /*public final*/ class ErrorCorrection {
     let poly: ModulusPoly = new ModulusPoly(this.field, received);
     let S: Int32Array = new Int32Array(numECCodewords);
     let error: boolean = false;
-    for (let i /*int*/ = numECCodewords; i > 0; i--) {
+    for (let i /* int */ = numECCodewords; i > 0; i--) {
       let evaluation: int = poly.evaluateAt(this.field.exp(i));
       S[numECCodewords - i] = evaluation;
       if (evaluation !== 0) {
@@ -90,7 +90,7 @@ export default /*public final*/ class ErrorCorrection {
     let errorLocations: Int32Array = this.findErrorLocations(sigma);
     let errorMagnitudes: Int32Array = this.findErrorMagnitudes(omega, sigma, errorLocations);
 
-    for (let i /*int*/ = 0; i < errorLocations.length; i++) {
+    for (let i /* int */ = 0; i < errorLocations.length; i++) {
       let position: int = received.length - 1 - this.field.log(errorLocations[i]);
       if (position < 0) {
         throw ChecksumException.getChecksumInstance();
@@ -109,7 +109,7 @@ export default /*public final*/ class ErrorCorrection {
    * @param int
    * @param R
    * @throws ChecksumException
-   */
+ */
   private runEuclideanAlgorithm(a: ModulusPoly, b: ModulusPoly, R: int): ModulusPoly[] {
     // Assume a's degree is >= b's
     if (a.getDegree() < b.getDegree()) {
@@ -164,13 +164,13 @@ export default /*public final*/ class ErrorCorrection {
    *
    * @param errorLocator
    * @throws ChecksumException
-   */
+ */
   private findErrorLocations(errorLocator: ModulusPoly): Int32Array {
     // This is a direct application of Chien's search
     let numErrors: int = errorLocator.getDegree();
     let result: Int32Array = new Int32Array(numErrors);
     let e: int = 0;
-    for (let i /*int*/ = 1; i < this.field.getSize() && e < numErrors; i++) {
+    for (let i /* int */ = 1; i < this.field.getSize() && e < numErrors; i++) {
       if (errorLocator.evaluateAt(i) === 0) {
         result[e] = this.field.inverse(i);
         e++;
@@ -187,7 +187,7 @@ export default /*public final*/ class ErrorCorrection {
     errorLocations: Int32Array): Int32Array {
     let errorLocatorDegree: int = errorLocator.getDegree();
     let formalDerivativeCoefficients: Int32Array = new Int32Array(errorLocatorDegree);
-    for (let i /*int*/ = 1; i <= errorLocatorDegree; i++) {
+    for (let i /* int */ = 1; i <= errorLocatorDegree; i++) {
       formalDerivativeCoefficients[errorLocatorDegree - i] =
         this.field.multiply(i, errorLocator.getCoefficient(i));
     }
@@ -196,7 +196,7 @@ export default /*public final*/ class ErrorCorrection {
     // This is directly applying Forney's Formula
     let s: int = errorLocations.length;
     let result: Int32Array = new Int32Array(s);
-    for (let i /*int*/ = 0; i < s; i++) {
+    for (let i /* int */ = 0; i < s; i++) {
       let xiInverse: int = this.field.inverse(errorLocations[i]);
       let numerator: int = this.field.subtract(0, errorEvaluator.evaluateAt(xiInverse));
       let denominator: int = this.field.inverse(formalDerivative.evaluateAt(xiInverse));

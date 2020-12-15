@@ -17,7 +17,7 @@ export default class BitArrayBuilder {
     let firstPair: ExpandedPair = pairs[0];
     let firstValue = firstPair.getRightChar().getValue();
     for (let i = 11; i >= 0; --i) {
-      if ((firstValue & (1 << i)) != 0) {
+      if ((firstValue & (1 << i)) !== 0) {
         binary.set(accPos);
       }
       accPos++;
@@ -28,7 +28,7 @@ export default class BitArrayBuilder {
 
       let leftValue = currentPair.getLeftChar().getValue();
       for (let j = 11; j >= 0; --j) {
-        if ((leftValue & (1 << j)) != 0) {
+        if ((leftValue & (1 << j)) !== 0) {
           binary.set(accPos);
         }
         accPos++;
@@ -37,7 +37,7 @@ export default class BitArrayBuilder {
       if (currentPair.getRightChar() != null) {
         let rightValue = currentPair.getRightChar().getValue();
         for (let j = 11; j >= 0; --j) {
-          if ((rightValue & (1 << j)) != 0) {
+          if ((rightValue & (1 << j)) !== 0) {
             binary.set(accPos);
           }
           accPos++;

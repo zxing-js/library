@@ -16,43 +16,43 @@
 
 import IllegalArgumentException from './IllegalArgumentException';
 
-/*namespace com.google.zxing {*/
+/* namespace com.google.zxing { */
 
 /**
  * Simply encapsulates a width and height.
  */
 export default class Dimension {
-    public constructor(private width: number /*int*/, private height: number /*int*/) {
-        if (width < 0 || height < 0) {
-            throw new IllegalArgumentException();
-        }
+  public constructor(private width: number /* int */, private height: number /* int */) {
+    if (width < 0 || height < 0) {
+      throw new IllegalArgumentException();
     }
+  }
 
-    public getWidth(): number /*int*/ {
-        return this.width;
-    }
+  public getWidth(): number /* int */ {
+    return this.width;
+  }
 
-    public getHeight(): number /*int*/ {
-        return this.height;
-    }
+  public getHeight(): number /* int */ {
+    return this.height;
+  }
 
-    /*@Override*/
-    public equals(other: any): boolean {
-        if (other instanceof Dimension) {
-            const d = <Dimension>other;
-            return this.width === d.width && this.height === d.height;
-        }
-        return false;
+  /* @Override */
+  public equals(other: any): boolean {
+    if (other instanceof Dimension) {
+      const d = <Dimension>other;
+      return this.width === d.width && this.height === d.height;
     }
+    return false;
+  }
 
-    /*@Override*/
-    public hashCode(): number /*int*/ {
-        return this.width * 32713 + this.height;
-    }
+  /* @Override */
+  public hashCode(): number /* int */ {
+    return this.width * 32713 + this.height;
+  }
 
-    /*@Override*/
-    public toString(): string {
-        return this.width + 'x' + this.height;
-    }
+  /* @Override */
+  public toString(): string {
+    return this.width + 'x' + this.height;
+  }
 
 }
