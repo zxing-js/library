@@ -214,7 +214,7 @@ export default class BitMatrixParser {
         if (this.parsedFormatInfo === null) {
             return; // We have no format information, and have no data mask
         }
-        const dataMask = DataMask.values[this.parsedFormatInfo.getDataMask()];
+        const dataMask = DataMask.values.get(this.parsedFormatInfo.getDataMask());
         const dimension = this.bitMatrix.getHeight();
         dataMask.unmaskBitMatrix(this.bitMatrix, dimension);
     }
