@@ -19,7 +19,7 @@ import BitArray from '../common/BitArray';
 import StringBuilder from '../util/StringBuilder';
 import NotFoundException from '../NotFoundException';
 import BarcodeFormat from '../BarcodeFormat';
-import { int, char } from 'src/customTypings';
+import { int, char } from 'customTypings';
 
 // package com.google.zxing.oned;
 
@@ -44,8 +44,8 @@ export default /* final */ class UPCEReader extends UPCEANReader {
   /**
    * The pattern that marks the middle, and end, of a UPC-E pattern.
    * There is no "second half" to a UPC-E barcode.
-   */
-  private static /*final*/ MIDDLE_END_PATTERN: Int32Array = Int32Array.from([1, 1, 1, 1, 1, 1]);
+ */
+  private static /* final */ MIDDLE_END_PATTERN: Int32Array = Int32Array.from([1, 1, 1, 1, 1, 1]);
 
   // For an UPC-E barcode, the final digit is represented by the parities used
   // to encode the middle six digits, according to the table below.
@@ -75,13 +75,13 @@ export default /* final */ class UPCEReader extends UPCEANReader {
    * See {@link #L_AND_G_PATTERNS}; these values similarly represent patterns of
    * even-odd parity encodings of digits that imply both the number system (0 or 1)
    * used, and the check digit.
-   */
-  static /*final*/  NUMSYS_AND_CHECK_DIGIT_PATTERNS: Int32Array[] = [
+ */
+  static /* final */  NUMSYS_AND_CHECK_DIGIT_PATTERNS: Int32Array[] = [
     Int32Array.from([0x38, 0x34, 0x32, 0x31, 0x2C, 0x26, 0x23, 0x2A, 0x29, 0x25]),
     Int32Array.from([0x07, 0x0B, 0x0D, 0x0E, 0x13, 0x19, 0x1C, 0x15, 0x16, 0x1]),
   ];
 
-  private /*final*/  decodeMiddleCounters: Int32Array;
+  private /* final */  decodeMiddleCounters: Int32Array;
 
   public constructor() {
     super();
@@ -90,10 +90,10 @@ export default /* final */ class UPCEReader extends UPCEANReader {
 
   /**
    * @throws NotFoundException
-   */
+ */
   // @Override
-  public decodeMiddle(row: BitArray, startRange: Int32Array, result: string) {
-    const counters: Int32Array = this.decodeMiddleCounters.map(x => x);
+  public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: StringBuilder) {
+    const counters: Int32Array = new Int32Array(this.decodeMiddleCounters);
     counters[0] = 0;
     counters[1] = 0;
     counters[2] = 0;
@@ -105,7 +105,7 @@ export default /* final */ class UPCEReader extends UPCEANReader {
 
     for (let x: int = 0; x < 6 && rowOffset < end; x++) {
       const bestMatch: int = UPCEReader.decodeDigit(row, counters, rowOffset, UPCEReader.L_AND_G_PATTERNS);
-      result += String.fromCharCode(('0'.charCodeAt(0) + bestMatch % 10));
+      resultString.append('0'.charCodeAt(0) + bestMatch % 10);
       for (let counter of counters) {
         rowOffset += counter;
       }
@@ -114,22 +114,22 @@ export default /* final */ class UPCEReader extends UPCEANReader {
       }
     }
 
-    UPCEReader.determineNumSysAndCheckDigit(new StringBuilder(result), lgPatternFound);
+    UPCEReader.determineNumSysAndCheckDigit(resultString, lgPatternFound);
 
     return rowOffset;
   }
 
   /**
    * @throws NotFoundException
-   */
+ */
   // @Override
   protected decodeEnd(row: BitArray, endStart: int): Int32Array {
-    return UPCEReader.findGuardPatternWithoutCounters(row, endStart, true, UPCEReader.MIDDLE_END_PATTERN);
+    return UPCEReader.findGuardPattern(row, endStart, true, UPCEReader.MIDDLE_END_PATTERN);
   }
 
   /**
    * @throws FormatException
-   */
+ */
   // @Override
   protected checkChecksum(s: string): boolean {
     return UPCEANReader.checkChecksum(UPCEReader.convertUPCEtoUPCA(s));
@@ -137,14 +137,13 @@ export default /* final */ class UPCEReader extends UPCEANReader {
 
   /**
    * @throws NotFoundException
-   */
-  private static determineNumSysAndCheckDigit(resultString: StringBuilder, lgPatternFound: int): void {
-
+ */
+  private static determineNumSysAndCheckDigit(resultString: StringBuilder, lgPatternFound: int) {
     for (let numSys: int = 0; numSys <= 1; numSys++) {
       for (let d: int = 0; d < 10; d++) {
         if (lgPatternFound === this.NUMSYS_AND_CHECK_DIGIT_PATTERNS[numSys][d]) {
-          resultString.insert(0, /*(char)*/('0' + numSys));
-          resultString.append(/*(char)*/('0' + d));
+          resultString.insert(0, '0'.charCodeAt(0) + numSys);
+          resultString.append('0'.charCodeAt(0) + d);
           return;
         }
       }
@@ -162,11 +161,11 @@ export default /* final */ class UPCEReader extends UPCEANReader {
    *
    * @param upce UPC-E code as string of digits
    * @return equivalent UPC-A code as string of digits
-   */
+ */
   public static convertUPCEtoUPCA(upce: string): string {
     // the following line is equivalent to upce.getChars(1, 7, upceChars, 0);
     const upceChars = upce.slice(1, 7).split('').map(x => x.charCodeAt(0));
-    const result: StringBuilder = new StringBuilder(/*12*/);
+    const result: StringBuilder = new StringBuilder(/* 12 */);
     result.append(upce.charAt(0));
     let lastChar: char = upceChars[5];
     switch (lastChar) {

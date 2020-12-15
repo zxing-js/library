@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.oned {*/
+/* namespace com.google.zxing.oned { */
 
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
@@ -53,7 +53,7 @@ export default class MultiFormatOneDReader extends OneDReader {
         this.readers.push(new Code39Reader(useCode39CheckDigit));
       }
       // if (possibleFormats.includes(BarcodeFormat.CODE_93)) {
-      //    this.readers.push(new Code93Reader());
+      //   this.readers.push(new Code93Reader());
       // }
       if (possibleFormats.includes(BarcodeFormat.CODE_128)) {
         this.readers.push(new Code128Reader());
@@ -62,7 +62,7 @@ export default class MultiFormatOneDReader extends OneDReader {
         this.readers.push(new ITFReader());
       }
       // if (possibleFormats.includes(BarcodeFormat.CODABAR)) {
-      //    this.readers.push(new CodaBarReader());
+      //   this.readers.push(new CodaBarReader());
       // }
       if (possibleFormats.includes(BarcodeFormat.RSS_14)) {
         this.readers.push(new RSS14Reader());
@@ -77,7 +77,6 @@ export default class MultiFormatOneDReader extends OneDReader {
       this.readers.push(new Code39Reader());
       // this.readers.push(new CodaBarReader());
       // this.readers.push(new Code93Reader());
-      this.readers.push(new MultiFormatUPCEANReader(hints));
       this.readers.push(new Code128Reader());
       this.readers.push(new ITFReader());
       this.readers.push(new RSS14Reader());

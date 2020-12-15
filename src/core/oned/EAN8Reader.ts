@@ -16,6 +16,7 @@
 
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
+import StringBuilder from '../util/StringBuilder';
 
 import UPCEANReader from './UPCEANReader';
 
@@ -25,47 +26,46 @@ import UPCEANReader from './UPCEANReader';
  * @author Sean Owen
  */
 export default class EAN8Reader extends UPCEANReader {
-    private decodeMiddleCounters: Int32Array;
+  private decodeMiddleCounters: Int32Array;
 
-    public constructor() {
-        super();
-        this.decodeMiddleCounters = Int32Array.from([0, 0, 0, 0]);
+  public constructor() {
+    super();
+    this.decodeMiddleCounters = Int32Array.from([0, 0, 0, 0]);
+  }
+
+  public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: StringBuilder) {
+    const counters = this.decodeMiddleCounters;
+    counters[0] = 0;
+    counters[1] = 0;
+    counters[2] = 0;
+    counters[3] = 0;
+    let end = row.getSize();
+    let rowOffset = startRange[1];
+    for (let x = 0; x < 4 && rowOffset < end; x++) {
+      let bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_PATTERNS);
+      resultString.append('0'.charCodeAt(0) + bestMatch);
+
+      for (let counter of counters) {
+        rowOffset += counter;
+      }
     }
 
-    public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: string) {
-        const counters = this.decodeMiddleCounters;
-        counters[0] = 0;
-        counters[1] = 0;
-        counters[2] = 0;
-        counters[3] = 0;
-        let end = row.getSize();
-        let rowOffset = startRange[1];
+    let middleRange = UPCEANReader.findGuardPattern(row, rowOffset, true, UPCEANReader.MIDDLE_PATTERN, new Int32Array(UPCEANReader.MIDDLE_PATTERN.length));
+    rowOffset = middleRange[1];
 
-        for (let x = 0; x < 4 && rowOffset < end; x++) {
-            let bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_PATTERNS);
-            resultString += String.fromCharCode(('0'.charCodeAt(0) + bestMatch));
+    for (let x = 0; x < 4 && rowOffset < end; x++) {
+      let bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_PATTERNS);
+      resultString.append('0'.charCodeAt(0) + bestMatch);
 
-            for (let counter of counters) {
-                rowOffset += counter;
-            }
-        }
-
-        let middleRange = UPCEANReader.findGuardPattern(row, rowOffset, true, UPCEANReader.MIDDLE_PATTERN, new Int32Array(UPCEANReader.MIDDLE_PATTERN.length).fill(0));
-        rowOffset = middleRange[1];
-
-        for (let x = 0; x < 4 && rowOffset < end; x++) {
-            let bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_PATTERNS);
-            resultString += String.fromCharCode(('0'.charCodeAt(0) + bestMatch));
-
-            for (let counter of counters) {
-                rowOffset += counter;
-            }
-        }
-
-        return {rowOffset, resultString};
+      for (let counter of counters) {
+        rowOffset += counter;
+      }
     }
 
-    public getBarcodeFormat(): BarcodeFormat {
-        return BarcodeFormat.EAN_8;
-    }
+    return rowOffset;
+  }
+
+  public getBarcodeFormat(): BarcodeFormat {
+    return BarcodeFormat.EAN_8;
+  }
 }

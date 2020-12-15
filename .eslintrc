@@ -1,16 +1,81 @@
 {
-    "parserOptions": {
-        "ecmaVersion": 8,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "jsx": false
+  "env": {
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "tsconfig.lint.json",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "@typescript-eslint/indent": [
+      "error",
+      2
+    ],
+    "@typescript-eslint/member-delimiter-style": [
+      "error",
+      {
+        "multiline": {
+          "delimiter": "semi",
+          "requireLast": true
+        },
+        "singleline": {
+          "delimiter": "semi",
+          "requireLast": false
         }
-    },
-    "rules": {
-        "semi": "error",
-        "quotes": ["error", "single"]
-    },
-    "env": {
-        "es6": true
-    }
+      }
+    ],
+    "@typescript-eslint/member-ordering": "off", // to keep the same as with the java version
+    // "@typescript-eslint/naming-convention": "error", // constants are UPPERCASE but should be camelCase
+    "@typescript-eslint/prefer-namespace-keyword": "error",
+    "@typescript-eslint/quotes": [
+      "error",
+      "single"
+    ],
+    "@typescript-eslint/semi": [
+      "error",
+      "always"
+    ],
+    "@typescript-eslint/type-annotation-spacing": "error",
+    "brace-style": [
+      "error",
+      "1tbs"
+    ],
+    "eqeqeq": [
+      "error",
+      "smart"
+    ],
+    "id-blacklist": [
+      "error",
+      "any",
+      "Number",
+      "number",
+      "String",
+      "string",
+      "Boolean",
+      "boolean",
+      "Undefined",
+      "undefined"
+    ],
+    "id-match": "error",
+    "no-bitwise": "off", // we use a lot of these
+    "no-eval": "error",
+    "no-redeclare": "error",
+    "no-trailing-spaces": "error",
+    "no-underscore-dangle": "error",
+    "no-unsafe-finally": "error",
+    "no-var": "error",
+    "spaced-comment": [
+      "error",
+      "always",
+      {
+        "markers": [
+          "/"
+        ]
+      }
+    ]
+  }
 }

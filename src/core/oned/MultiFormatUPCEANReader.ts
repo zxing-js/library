@@ -26,7 +26,7 @@ import EAN8Reader from './EAN8Reader';
 import UPCAReader from './UPCAReader';
 import NotFoundException from '../NotFoundException';
 import UPCEReader from './UPCEReader';
-import { Collection } from 'src/customTypings';
+import { Collection } from 'customTypings';
 
 /**
  * <p>A reader that can read all available UPC/EAN formats. If a caller wants to try to
@@ -69,11 +69,13 @@ export default class MultiFormatUPCEANReader extends OneDReader {
     this.readers = readers;
   }
 
+  // @Override
   public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
+    const startGuardPattern = UPCEANReader.findStartGuardPattern(row);
     for (let reader of this.readers) {
       try {
         // const result: Result = reader.decodeRow(rowNumber, row, startGuardPattern, hints);
-        const result = reader.decodeRow(rowNumber, row, hints);
+        const result = reader.decodeRow(rowNumber, row, startGuardPattern, hints);
         // Special case: a 12-digit code encoded in UPC-A is identical to a "0"
         // followed by those 12 digits encoded as EAN-13. Each will recognize such a code,
         // UPC-A as a 12-digit string and EAN-13 as a 13-digit string starting with "0".

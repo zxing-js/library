@@ -53,22 +53,22 @@ import { int } from '../../customTypings';
  * @since   JDK1.0
  */
 
-export default /*public*/ class ByteArrayOutputStream extends OutputStream {
+export default /* public */ class ByteArrayOutputStream extends OutputStream {
 
   /**
    * The buffer where data is stored.
-   */
+ */
   protected buf: Uint8Array;
 
   /**
    * The number of valid bytes in the buffer.
-   */
+ */
   protected count: int = 0;
 
   /**
    * Creates a new byte array output stream. The buffer capacity is
    * initially 32 bytes, though its size increases if necessary.
-   */
+ */
   // public constructor() {
   //     this(32);
   // }
@@ -79,7 +79,7 @@ export default /*public*/ class ByteArrayOutputStream extends OutputStream {
    *
    * @param   size   the initial size.
    * @exception  IllegalArgumentException if size is negative.
-   */
+ */
   public constructor(size: int = 32) {
     super();
     if (size < 0) {
@@ -98,7 +98,7 @@ export default /*public*/ class ByteArrayOutputStream extends OutputStream {
    * @throws OutOfMemoryError if {@code minCapacity < 0}.  This is
    * interpreted as a request for the unsatisfiably large capacity
    * {@code (long) Integer.MAX_VALUE + (minCapacity - Integer.MAX_VALUE)}.
-   */
+ */
   private ensureCapacity(minCapacity: int): void {
     // overflow-conscious code
     if (minCapacity - this.buf.length > 0)
@@ -110,7 +110,7 @@ export default /*public*/ class ByteArrayOutputStream extends OutputStream {
    * number of elements specified by the minimum capacity argument.
    *
    * @param minCapacity the desired minimum capacity
-   */
+ */
   private grow(minCapacity: int): void {
     // overflow-conscious code
     let oldCapacity: int = this.buf.length;
@@ -129,10 +129,10 @@ export default /*public*/ class ByteArrayOutputStream extends OutputStream {
    * Writes the specified byte to this byte array output stream.
    *
    * @param   b   the byte to be written.
-   */
-  public /*synchronized*/ write(b: int): void {
+ */
+  public /* synchronized */ write(b: int): void {
     this.ensureCapacity(this.count + 1);
-    this.buf[this.count] = /*(byte)*/ b;
+    this.buf[this.count] = /* (byte) */ b;
     this.count += 1;
   }
 
@@ -143,8 +143,8 @@ export default /*public*/ class ByteArrayOutputStream extends OutputStream {
    * @param   b     the data.
    * @param   off   the start offset in the data.
    * @param   len   the number of bytes to write.
-   */
-  public /*synchronized*/  writeBytesOffset(b: Uint8Array, off: int, len: int): void {
+ */
+  public /* synchronized */  writeBytesOffset(b: Uint8Array, off: int, len: int): void {
     if ((off < 0) || (off > b.length) || (len < 0) ||
       ((off + len) - b.length > 0)) {
       throw new IndexOutOfBoundsException();
@@ -161,8 +161,8 @@ export default /*public*/ class ByteArrayOutputStream extends OutputStream {
    *
    * @param      out   the output stream to which to write the data.
    * @exception  IOException  if an I/O error occurs.
-   */
-  public /*synchronized*/  writeTo(out: OutputStream): void {
+ */
+  public /* synchronized */  writeTo(out: OutputStream): void {
     out.writeBytesOffset(this.buf, 0, this.count);
   }
 
@@ -173,8 +173,8 @@ export default /*public*/ class ByteArrayOutputStream extends OutputStream {
    * reusing the already allocated buffer space.
    *
    * @see     java.io.ByteArrayInputStream#count
-   */
-  public /*synchronized*/  reset(): void {
+ */
+  public /* synchronized */  reset(): void {
     this.count = 0;
   }
 
@@ -185,8 +185,8 @@ export default /*public*/ class ByteArrayOutputStream extends OutputStream {
    *
    * @return  the current contents of this output stream, as a byte array.
    * @see     java.io.ByteArrayOutputStream#size()
-   */
-  public /*synchronized*/  toByteArray(): Uint8Array {
+ */
+  public /* synchronized */  toByteArray(): Uint8Array {
     return Arrays.copyOfUint8Array(this.buf, this.count);
   }
 
@@ -196,8 +196,8 @@ export default /*public*/ class ByteArrayOutputStream extends OutputStream {
    * @return  the value of the <code>count</code> field, which is the number
    *          of valid bytes in this output stream.
    * @see     java.io.ByteArrayOutputStream#count
-   */
-  public /*synchronized*/ size(): int {
+ */
+  public /* synchronized */ size(): int {
     return this.count;
   }
 
@@ -225,9 +225,9 @@ export default /*public*/ class ByteArrayOutputStream extends OutputStream {
    *
    * @return String decoded from the buffer's contents.
    * @since  JDK1.1
-   */
-  public /*synchronized*/ toString_void(): string {
-    return new String(this.buf/*, 0, this.count*/).toString();
+ */
+  public /* synchronized */ toString_void(): string {
+    return new String(this.buf/* , 0, this.count */).toString();
   }
 
   /**
@@ -247,9 +247,9 @@ export default /*public*/ class ByteArrayOutputStream extends OutputStream {
    * @exception  UnsupportedEncodingException
    *             If the named charset is not supported
    * @since   JDK1.1
-   */
-  public /*synchronized*/ toString_string(charsetName: string): string {
-    return new String(this.buf/*, 0, this.count, charsetName*/).toString();
+ */
+  public /* synchronized */ toString_string(charsetName: string): string {
+    return new String(this.buf/* , 0, this.count, charsetName */).toString();
   }
 
   /**
@@ -273,10 +273,10 @@ export default /*public*/ class ByteArrayOutputStream extends OutputStream {
    * @see        java.io.ByteArrayOutputStream#size()
    * @see        java.io.ByteArrayOutputStream#toString(String)
    * @see        java.io.ByteArrayOutputStream#toString()
-   */
+ */
   // @Deprecated
-  public /*synchronized*/ toString_number(hibyte: int): string {
-    return new String(this.buf/*, hibyte, 0, this.count*/).toString();
+  public /* synchronized */ toString_number(hibyte: int): string {
+    return new String(this.buf/* , hibyte, 0, this.count */).toString();
   }
 
   /**
@@ -286,7 +286,7 @@ export default /*public*/ class ByteArrayOutputStream extends OutputStream {
    * <p>
    *
    * @throws IOException
-   */
+ */
   public close(): void {
   }
 

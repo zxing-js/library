@@ -1,3 +1,6 @@
+/// <reference types="node" />
+/// <reference types="mocha" />
+
 /**
  * This file contains some types to make our
  * lifes easier when copy and pasting Java code.

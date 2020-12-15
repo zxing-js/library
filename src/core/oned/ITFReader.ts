@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.oned {*/
+/* namespace com.google.zxing.oned { */
 
 import BarcodeFormat from '../BarcodeFormat';
 import BitArray from '../common/BitArray';
@@ -39,60 +39,59 @@ export default class ITFReader extends OneDReader {
   // private static w = 2; // Pixel width of a 2x wide line
   // private static N = 1; // Pixed width of a narrow line
 
-    private static PATTERNS: Int32Array[] = [
-        Int32Array.from([1, 1, 2, 2, 1]), // 0
-        Int32Array.from([2, 1, 1, 1, 2]), // 1
-        Int32Array.from([1, 2, 1, 1, 2]), // 2
-        Int32Array.from([2, 2, 1, 1, 1]), // 3
-        Int32Array.from([1, 1, 2, 1, 2]), // 4
-        Int32Array.from([2, 1, 2, 1, 1]), // 5
-        Int32Array.from([1, 2, 2, 1, 1]), // 6
-        Int32Array.from([1, 1, 1, 2, 2]), // 7
-        Int32Array.from([2, 1, 1, 2, 1]), // 8
-        Int32Array.from([1, 2, 1, 2, 1]), // 9
-        Int32Array.from([1, 1, 3, 3, 1]), // 0
-        Int32Array.from([3, 1, 1, 1, 3]), // 1
-        Int32Array.from([1, 3, 1, 1, 3]), // 2
-        Int32Array.from([3, 3, 1, 1, 1]), // 3
-        Int32Array.from([1, 1, 3, 1, 3]), // 4
-        Int32Array.from([3, 1, 3, 1, 1]), // 5
-        Int32Array.from([1, 3, 3, 1, 1]), // 6
-        Int32Array.from([1, 1, 1, 3, 3]), // 7
-        Int32Array.from([3, 1, 1, 3, 1]), // 8
-        Int32Array.from([1, 3, 1, 3, 1])  // 9
-    ];
+  private static PATTERNS: Int32Array[] = [
+    Int32Array.from([1, 1, 2, 2, 1]), // 0
+    Int32Array.from([2, 1, 1, 1, 2]), // 1
+    Int32Array.from([1, 2, 1, 1, 2]), // 2
+    Int32Array.from([2, 2, 1, 1, 1]), // 3
+    Int32Array.from([1, 1, 2, 1, 2]), // 4
+    Int32Array.from([2, 1, 2, 1, 1]), // 5
+    Int32Array.from([1, 2, 2, 1, 1]), // 6
+    Int32Array.from([1, 1, 1, 2, 2]), // 7
+    Int32Array.from([2, 1, 1, 2, 1]), // 8
+    Int32Array.from([1, 2, 1, 2, 1]), // 9
+    Int32Array.from([1, 1, 3, 3, 1]), // 0
+    Int32Array.from([3, 1, 1, 1, 3]), // 1
+    Int32Array.from([1, 3, 1, 1, 3]), // 2
+    Int32Array.from([3, 3, 1, 1, 1]), // 3
+    Int32Array.from([1, 1, 3, 1, 3]), // 4
+    Int32Array.from([3, 1, 3, 1, 1]), // 5
+    Int32Array.from([1, 3, 3, 1, 1]), // 6
+    Int32Array.from([1, 1, 1, 3, 3]), // 7
+    Int32Array.from([3, 1, 1, 3, 1]), // 8
+    Int32Array.from([1, 3, 1, 3, 1])  // 9
+  ];
 
   private static MAX_AVG_VARIANCE = 0.38;
   private static MAX_INDIVIDUAL_VARIANCE = 0.5;
 
 
 
-  /* /!** Valid ITF lengths. Anything longer than the largest value is also allowed. *!/*/
+  /* /!** Valid ITF lengths. Anything longer than the largest value is also allowed. *!/ */
   private static DEFAULT_ALLOWED_LENGTHS: number[] = [6, 8, 10, 12, 14];
 
   // Stores the actual narrow line width of the image being decoded.
   private narrowLineWidth = -1;
 
-    /*/!**
-     * Start/end guard pattern.
-     *
-     * Note: The end pattern is reversed because the row is reversed before
-     * searching for the END_PATTERN
-     *!/*/
-    private static START_PATTERN = Int32Array.from([1, 1, 1, 1]);
-    private static END_PATTERN_REVERSED: Int32Array[] = [
-        Int32Array.from([1, 1, 2]), // 2x
-        Int32Array.from([1, 1, 3])  // 3x
-    ];
+  /**
+   * Start/end guard pattern.
+   *
+   * Note: The end pattern is reversed because the row is reversed before
+   * searching for the END_PATTERN
+   */
+  private static START_PATTERN = Int32Array.from([1, 1, 1, 1]);
+  private static END_PATTERN_REVERSED: Int32Array[] = [
+    Int32Array.from([1, 1, 2]), // 2x
+    Int32Array.from([1, 1, 3])  // 3x
+  ];
 
   // See ITFWriter.PATTERNS
   /*
 
-  /!**
+  /**
    * Patterns of Wide / Narrow lines to indicate each digit
-   *!/
-  */
-
+   *
+   */
   public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
 
     // Find out where the Middle section (payload) starts & ends
@@ -149,13 +148,13 @@ export default class ITFReader extends OneDReader {
 
     return resultReturn;
   }
-  /*
-  /!**
+
+  /**
    * @param row          row of black/white values to search
    * @param payloadStart offset of start pattern
    * @param resultString {@link StringBuilder} to append decoded chars to
    * @throws NotFoundException if decoding could not complete successfully
-   *!/*/
+   */
   private static decodeMiddle(
     row: BitArray,
     payloadStart: number,
@@ -169,9 +168,9 @@ export default class ITFReader extends OneDReader {
     // Therefore, need to scan 10 lines and then
     // split these into two arrays
 
-        let counterDigitPair: Int32Array = new Int32Array(10); // 10
-        let counterBlack: Int32Array = new Int32Array(5); // 5
-        let counterWhite: Int32Array = new Int32Array(5); // 5
+    let counterDigitPair: Int32Array = new Int32Array(10); // 10
+    let counterBlack: Int32Array = new Int32Array(5); // 5
+    let counterWhite: Int32Array = new Int32Array(5); // 5
 
     counterDigitPair.fill(0);
     counterBlack.fill(0);
@@ -199,13 +198,13 @@ export default class ITFReader extends OneDReader {
     }
   }
 
-  /*/!**
+  /**
    * Identify where the start of the middle / payload section starts.
    *
    * @param row row of black/white values to search
    * @return Array, containing index of start of 'start block' and end of
    *         'start block'
-   *!/*/
+   */
   private decodeStart(row: BitArray): number[] {
 
     let endStart = ITFReader.skipWhiteSpace(row);
@@ -221,7 +220,7 @@ export default class ITFReader extends OneDReader {
     return startPattern;
   }
 
-  /*/!**
+  /**
    * The start & end patterns must be pre/post fixed by a quiet zone. This
    * zone must be at least 10 times the width of a narrow line.  Scan back until
    * we either get to the start of the barcode or match the necessary number of
@@ -235,7 +234,7 @@ export default class ITFReader extends OneDReader {
    * @param row bit array representing the scanned barcode.
    * @param startPattern index into row of the start or end pattern.
    * @throws NotFoundException if the quiet zone cannot be found
-   *!/*/
+   */
   private validateQuietZone(row: BitArray, startPattern: number): void {
 
     let quietCount: number = this.narrowLineWidth * 10;  // expect to find this many pixels of quiet zone
@@ -254,14 +253,14 @@ export default class ITFReader extends OneDReader {
       throw new NotFoundException();
     }
   }
-  /*
-  /!**
+
+  /**
    * Skip all whitespace until we get to the first black line.
    *
    * @param row row of black/white values to search
    * @return index of the first black line.
    * @throws NotFoundException Throws exception if no black lines are found in the row
-   *!/*/
+   */
   private static skipWhiteSpace(row: BitArray): number {
 
     const width = row.getSize();
@@ -274,13 +273,13 @@ export default class ITFReader extends OneDReader {
     return endStart;
   }
 
-  /*/!**
+  /**
    * Identify where the end of the middle / payload section ends.
    *
    * @param row row of black/white values to search
    * @return Array, containing index of start of 'end block' and end of 'end
    *         block'
-   *!/*/
+   */
   private decodeEnd(row: BitArray): number[] {
 
     // For convenience, reverse the row and then
@@ -319,26 +318,25 @@ export default class ITFReader extends OneDReader {
     }
   }
 
-    /*
-    /!**
-     * @param row       row of black/white values to search
-     * @param rowOffset position to start search
-     * @param pattern   pattern of counts of number of black and white pixels that are
-     *                  being searched for as a pattern
-     * @return start/end horizontal offset of guard pattern, as an array of two
-     *         ints
-     * @throws NotFoundException if pattern is not found
-     *!/*/
-    private static findGuardPattern(
-        row: BitArray,
-        rowOffset: number,
-        pattern: Int32Array
-    ): number[] {
+  /**
+   * @param row       row of black/white values to search
+   * @param rowOffset position to start search
+   * @param pattern   pattern of counts of number of black and white pixels that are
+   *                  being searched for as a pattern
+   * @return start/end horizontal offset of guard pattern, as an array of two
+   *         ints
+   * @throws NotFoundException if pattern is not found
+   */
+  private static findGuardPattern(
+    row: BitArray,
+    rowOffset: number,
+    pattern: Int32Array
+  ): number[] {
 
-        let patternLength: number = pattern.length;
-        let counters: Int32Array = new Int32Array(patternLength);
-        let width: number = row.getSize();
-        let isWhite: boolean = false;
+    let patternLength: number = pattern.length;
+    let counters: Int32Array = new Int32Array(patternLength);
+    let width: number = row.getSize();
+    let isWhite: boolean = false;
 
     let counterPosition: number = 0;
     let patternStart: number = rowOffset;
@@ -368,15 +366,15 @@ export default class ITFReader extends OneDReader {
     throw new NotFoundException();
   }
 
-    /*/!**
-     * Attempts to decode a sequence of ITF black/white lines into single
-     * digit.
-     *
-     * @param counters the counts of runs of observed black/white/black/... values
-     * @return The decoded digit
-     * @throws NotFoundException if digit cannot be decoded
-     *!/*/
-    private static decodeDigit(counters: Int32Array): number {
+  /**
+   * Attempts to decode a sequence of ITF black/white lines into single
+   * digit.
+   *
+   * @param counters the counts of runs of observed black/white/black/... values
+   * @return The decoded digit
+   * @throws NotFoundException if digit cannot be decoded
+   */
+  private static decodeDigit(counters: Int32Array): number {
 
     let bestVariance: number = ITFReader.MAX_AVG_VARIANCE; // worst variance we'll accept
     let bestMatch: number = -1;
@@ -402,5 +400,4 @@ export default class ITFReader extends OneDReader {
       throw new NotFoundException();
     }
   }
-
 }

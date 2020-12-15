@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*package com.google.zxing.qrcode;*/
+/* package com.google.zxing.qrcode; */
 
 import { BarcodeFormat } from '@zxing/library';
 import { MultiFormatReader } from '@zxing/library';
@@ -25,19 +25,19 @@ import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
  */
 class DataMatrixBlackBox1Spec extends AbstractBlackBoxSpec {
 
-    public constructor() {
-        super('src/test/resources/blackbox/datamatrix-1', new MultiFormatReader(), BarcodeFormat.DATA_MATRIX);
-        this.addTest(21, 21, 0.0);
-        this.addTest(21, 21, 90.0);
-        this.addTest(21, 21, 180.0);
-        this.addTest(21, 21, 270.0);
-    }
+  public constructor() {
+    super('src/test/resources/blackbox/datamatrix-1', new MultiFormatReader(), BarcodeFormat.DATA_MATRIX);
+    this.addTest(21, 21, 0.0);
+    this.addTest(21, 21, 90.0);
+    this.addTest(21, 21, 180.0);
+    this.addTest(21, 21, 270.0);
+  }
 
 }
 
 describe('DataMatrixBlackBox.1', () => {
-    it('testBlackBox', async () => {
-        const test = new DataMatrixBlackBox1Spec();
-        await test.testBlackBox();
-    });
+  it('testBlackBox', async () => {
+    const test = new DataMatrixBlackBox1Spec();
+    await test.testBlackBox();
+  });
 });

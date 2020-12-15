@@ -7,30 +7,30 @@ import ECB from './ECB';
  * will be the same across all blocks within one version.</p>
  */
 export default class ECBlocks {
-    private ecBlocks: ECB[];
+  private ecBlocks: ECB[];
 
-    public constructor(private ecCodewordsPerBlock: number /*int*/, ...ecBlocks: ECB[]) {
-        this.ecBlocks = ecBlocks;
-    }
+  public constructor(private ecCodewordsPerBlock: number /* int */, ...ecBlocks: ECB[]) {
+    this.ecBlocks = ecBlocks;
+  }
 
-    public getECCodewordsPerBlock(): number /*int*/ {
-        return this.ecCodewordsPerBlock;
-    }
+  public getECCodewordsPerBlock(): number /* int */ {
+    return this.ecCodewordsPerBlock;
+  }
 
-    public getNumBlocks(): number /*int*/ {
-        let total = 0;
-        const ecBlocks = this.ecBlocks;
-        for (const ecBlock of ecBlocks) {
-            total += ecBlock.getCount();
-        }
-        return total;
+  public getNumBlocks(): number /* int */ {
+    let total = 0;
+    const ecBlocks = this.ecBlocks;
+    for (const ecBlock of ecBlocks) {
+      total += ecBlock.getCount();
     }
+    return total;
+  }
 
-    public getTotalECCodewords(): number /*int*/ {
-        return this.ecCodewordsPerBlock * this.getNumBlocks();
-    }
+  public getTotalECCodewords(): number /* int */ {
+    return this.ecCodewordsPerBlock * this.getNumBlocks();
+  }
 
-    public getECBlocks(): ECB[] {
-        return this.ecBlocks;
-    }
+  public getECBlocks(): ECB[] {
+    return this.ecBlocks;
+  }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.qrcode.decoder {*/
+/* namespace com.google.zxing.qrcode.decoder { */
 
 import ChecksumException from '../../ChecksumException';
 import BitMatrix from '../../common/BitMatrix';
@@ -28,7 +28,7 @@ import DecodedBitStreamParser from './DecodedBitStreamParser';
 import QRCodeDecoderMetaData from './QRCodeDecoderMetaData';
 
 
-/*import java.util.Map;*/
+/* import java.util.Map; */
 
 /**
  * <p>The main class which implements QR Code decoding -- as opposed to locating and extracting
@@ -44,7 +44,7 @@ export default class Decoder {
     this.rsDecoder = new ReedSolomonDecoder(GenericGF.QR_CODE_FIELD_256);
   }
 
-  // public decode(image: boolean[][]): DecoderResult /*throws ChecksumException, FormatException*/ {
+  // public decode(image: boolean[][]): DecoderResult /*throws ChecksumException, FormatException */ {
   //   return decode(image, null)
   // }
 
@@ -57,12 +57,12 @@ export default class Decoder {
    * @return text and bytes encoded within the QR Code
    * @throws FormatException if the QR Code cannot be decoded
    * @throws ChecksumException if error correction fails
-   */
+ */
   public decodeBooleanArray(image: boolean[][], hints?: Map<DecodeHintType, any>): DecoderResult {
     return this.decodeBitMatrix(BitMatrix.parseFromBooleanArray(image), hints);
   }
 
-  // public decodeBitMatrix(bits: BitMatrix): DecoderResult /*throws ChecksumException, FormatException*/ {
+  // public decodeBitMatrix(bits: BitMatrix): DecoderResult /*throws ChecksumException, FormatException */ {
   //   return decode(bits, null)
   // }
 
@@ -74,7 +74,7 @@ export default class Decoder {
    * @return text and bytes encoded within the QR Code
    * @throws FormatException if the QR Code cannot be decoded
    * @throws ChecksumException if error correction fails
-   */
+ */
   public decodeBitMatrix(bits: BitMatrix, hints?: Map<DecodeHintType, any>): DecoderResult {
 
     // Construct a parser and read version, error-correction level
@@ -82,7 +82,7 @@ export default class Decoder {
     let ex = null;
     try {
       return this.decodeBitMatrixParser(parser, hints);
-    } catch (e/*: FormatException, ChecksumException*/) {
+    } catch (e/* : FormatException, ChecksumException */) {
       ex = e;
     }
 
@@ -105,7 +105,7 @@ export default class Decoder {
        * of version and format information when mirrored. This is a good sign,
        * that the QR code may be mirrored, and we should try once more with a
        * mirrored content.
-       */
+ */
       // Prepare for a mirrored reading.
       parser.mirror();
 
@@ -116,7 +116,7 @@ export default class Decoder {
 
       return result;
 
-    } catch (e/*FormatException | ChecksumException*/) {
+    } catch (e/* FormatException | ChecksumException */) {
       // Throw the exception from the original reading
       if (ex !== null) {
         throw ex;
@@ -164,8 +164,8 @@ export default class Decoder {
    * @param codewordBytes data and error correction codewords
    * @param numDataCodewords number of codewords that are data bytes
    * @throws ChecksumException if error correction fails
-   */
-  private correctErrors(codewordBytes: Uint8Array, numDataCodewords: number /*int*/): void /*throws ChecksumException*/ {
+ */
+  private correctErrors(codewordBytes: Uint8Array, numDataCodewords: number /* int */): void /* throws ChecksumException */ {
     // const numCodewords = codewordBytes.length;
     // First read into an array of ints
     const codewordsInts = new Int32Array(codewordBytes);
@@ -176,13 +176,13 @@ export default class Decoder {
     // }
     try {
       this.rsDecoder.decode(codewordsInts, codewordBytes.length - numDataCodewords);
-    } catch (ignored/*: ReedSolomonException*/) {
+    } catch (ignored/* : ReedSolomonException */) {
       throw new ChecksumException();
     }
     // Copy back into array of bytes -- only need to worry about the bytes that were data
     // We don't care about errors in the error-correction codewords
     for (let i = 0; i < numDataCodewords; i++) {
-      codewordBytes[i] = /*(byte) */codewordsInts[i];
+      codewordBytes[i] = /* (byte) */codewordsInts[i];
     }
   }
 

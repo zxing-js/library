@@ -1,5 +1,3 @@
-export * from './browser';
-
 // Exceptions
 export { default as ArgumentException } from './core/ArgumentException';
 export { default as ArithmeticException } from './core/ArithmeticException';
@@ -116,3 +114,7 @@ export { default as Code39Reader } from './core/oned/Code39Reader';
 export { default as RSS14Reader } from './core/oned/rss/RSS14Reader';
 export { default as RSSExpandedReader } from './core/oned/rss/expanded/RSSExpandedReader';
 export { default as MultiFormatOneDReader } from './core/oned/MultiFormatOneDReader';
+
+// extension/sources
+export { default as ColorFormat } from './extension/sources/ColorFormat';
+export { default as MultiFormatLuminanceSource } from './extension/sources/MultiFormatLuminanceSource';

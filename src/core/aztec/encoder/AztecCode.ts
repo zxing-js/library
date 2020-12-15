@@ -26,7 +26,7 @@ import { int } from '../../../customTypings';
  *
  * @author Rustam Abdullaev
  */
-export default /*public final*/ class AztecCode {
+export default /* public final */ class AztecCode {
 
   private compact: boolean;
   private size: int;
@@ -36,7 +36,7 @@ export default /*public final*/ class AztecCode {
 
   /**
    * @return {@code true} if compact instead of full mode
-   */
+ */
   public isCompact(): boolean {
     return this.compact;
   }
@@ -47,7 +47,7 @@ export default /*public final*/ class AztecCode {
 
   /**
    * @return size in pixels (width and height)
-   */
+ */
   public getSize(): int {
     return this.size;
   }
@@ -58,7 +58,7 @@ export default /*public final*/ class AztecCode {
 
   /**
    * @return number of levels
-   */
+ */
   public getLayers(): int {
     return this.layers;
   }
@@ -69,7 +69,7 @@ export default /*public final*/ class AztecCode {
 
   /**
    * @return number of data codewords
-   */
+ */
   public getCodeWords(): int {
     return this.codeWords;
   }
@@ -80,7 +80,7 @@ export default /*public final*/ class AztecCode {
 
   /**
    * @return the symbol image
-   */
+ */
   public getMatrix(): BitMatrix {
     return this.matrix;
   }

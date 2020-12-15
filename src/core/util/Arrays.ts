@@ -11,7 +11,7 @@ export default class Arrays {
    *
    * @param a the array to be filled
    * @param val the value to be stored in all elements of the array
-   */
+ */
   public static fill(a: Int32Array | Uint8Array | any[], val: int): void {
     for (let i = 0, len = a.length; i < len; i++)
       a[i] = val;
@@ -33,7 +33,7 @@ export default class Arrays {
    * @throws IllegalArgumentException if {@code fromIndex > toIndex}
    * @throws ArrayIndexOutOfBoundsException if {@code fromIndex < 0} or
    *         {@code toIndex > a.length}
-   */
+ */
   public static fillWithin(a: Int32Array, fromIndex: int, toIndex: int, val: int): void {
     Arrays.rangeCheck(a.length, fromIndex, toIndex);
     for (let i = fromIndex; i < toIndex; i++)
@@ -43,7 +43,7 @@ export default class Arrays {
   /**
    * Checks that {@code fromIndex} and {@code toIndex} are in
    * the range and throws an exception if they aren't.
-   */
+ */
   static rangeCheck(arrayLength: int, fromIndex: int, toIndex: int): void {
     if (fromIndex > toIndex) {
       throw new IllegalArgumentException(
@@ -152,7 +152,7 @@ export default class Arrays {
   * the returned value can be the index of any one of the equal elements.
   *
   * http://jsfiddle.net/aryzhov/pkfst550/
-  */
+ */
   public static binarySearch(ar: Int32Array, el: number, comparator?: (a: number, b: number) => number): number {
     if (undefined === comparator) {
       comparator = Arrays.numberComparator;

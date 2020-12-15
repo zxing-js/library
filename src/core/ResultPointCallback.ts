@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing {*/
+/* namespace com.google.zxing { */
 
 import ResultPoint from './ResultPoint';
 
@@ -28,6 +28,6 @@ export default ResultPointCallback;
  */
 interface ResultPointCallback {
 
-    foundPossibleResultPoint(point: ResultPoint): void;
+  foundPossibleResultPoint(point: ResultPoint): void;
 
 }

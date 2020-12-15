@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-/*namespace com.google.zxing.oned {*/
+/* namespace com.google.zxing.oned { */
 
 import BarcodeFormat from '../BarcodeFormat';
 import BinaryBitmap from '../BinaryBitmap';
 import BitArray from '../common/BitArray';
 import DecodeHintType from '../DecodeHintType';
+import StringBuilder from '../util/StringBuilder';
 
-import Reader from '../Reader';
 import Result from '../Result';
-import ResultMetadataType from '../ResultMetadataType';
-import ResultPoint from '../ResultPoint';
 import NotFoundException from '../NotFoundException';
 
 import EAN13Reader from './EAN13Reader';
 import UPCEANReader from './UPCEANReader';
-import { int } from 'src/customTypings';
 
 /**
  * Encapsulates functionality and implementation that is common to all families
@@ -58,13 +55,20 @@ export default class UPCAReader extends UPCEANReader {
     return this.maybeReturnResult(this.ean13Reader.decode(image));
   }
 
-  // @Override
-  public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {
-    return this.maybeReturnResult(this.ean13Reader.decodeRow(rowNumber, row, hints));
+  public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result;
+  public decodeRow(rowNumber: number, row: BitArray, startGuardRange: Int32Array, hints?: Map<DecodeHintType, any>): Result;
+  public decodeRow(rowNumber: number, row: BitArray, arg3: Int32Array | Map<DecodeHintType, any>, arg4?: Map<DecodeHintType, any>): Result {
+    const startGuardRange = arg3 instanceof Int32Array ? arg3 : UPCEANReader.findStartGuardPattern(row);
+    const hints = arg3 instanceof Map ? arg3 : arg4;
+    return this.decodeRowImpl(rowNumber, row, startGuardRange, hints);
+  }
+
+  protected decodeRowImpl(rowNumber: number, row: BitArray, startGuardRange: Int32Array, hints?: Map<DecodeHintType, any>): Result {
+    return this.maybeReturnResult(this.ean13Reader.decodeRow(rowNumber, row, startGuardRange, hints));
   }
 
   // @Override
-  public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: string) {
+  public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: StringBuilder) {
     return this.ean13Reader.decodeMiddle(row, startRange, resultString);
   }
 
