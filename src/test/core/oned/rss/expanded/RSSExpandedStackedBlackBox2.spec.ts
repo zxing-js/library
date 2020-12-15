@@ -48,7 +48,7 @@ class RSSExpandedStackedBlackBox2TestCase extends AbstractBlackBoxSpec {
 }
 
 describe('RSSExpandedStackedBlackBox2TestCase', () => {
-  it('testBlackBox', () => {
+  it.skip('testBlackBox', () => {
     const test = new RSSExpandedStackedBlackBox2TestCase();
     return test.testBlackBox();
   });
