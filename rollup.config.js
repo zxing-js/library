@@ -12,7 +12,7 @@ export default [
     external: [
       '@zxing/text-encoding',
     ],
-    context: '(globalThis || global || self || window || undefined)',
+    context: '(global || self || globalThis || window || undefined)',
     plugins: [
       resolve({
         extensions,
