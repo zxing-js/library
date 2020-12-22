@@ -76,25 +76,25 @@ export default /*public final*/ class QRCodeMultiReader extends QRCodeReader imp
   public decodeMultiple(image: BinaryBitmap, hints: Map<DecodeHintType, any> = null): Result[] {
 
     if (hints && hints instanceof Map) {
-      return this.decodeMultiple_Overload2(image, hints);
+      return this.decodeMultipleImpl(image, hints);
     }
 
-    return this.decodeMultiple_Overload1(image);
+    return this.decodeMultipleOverload1(image);
   }
 
   /**
    * @throws NotFoundException
    * @override decodeMultiple
    */
-  public decodeMultiple_Overload1(image: BinaryBitmap): Result[] {
-    return this.decodeMultiple_Overload2(image, null);
+  public decodeMultipleOverload1(image: BinaryBitmap): Result[] {
+    return this.decodeMultipleImpl(image, null);
   }
 
   /**
    * @override
    * @throws NotFoundException
    */
-  public decodeMultiple_Overload2(image: BinaryBitmap, hints:  Map<DecodeHintType, any>): Result[] {
+  public decodeMultipleImpl(image: BinaryBitmap, hints:  Map<DecodeHintType, any>): Result[] {
     let results: List<Result> = [];
     const detectorResults: DetectorResult[] = new MultiDetector(image.getBlackMatrix()).detectMulti(hints);
     for (const detectorResult of detectorResults) {

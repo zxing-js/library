@@ -71,19 +71,19 @@ export default class Result {
       // check overload 3
       if (numBits_resultPoints instanceof Number && Array.isArray(resultPoints_format) && isBarcodeFormatValue(format_timestamp)) {
         numBits_resultPoints = rawBytes == null ? 0 : 8 * rawBytes.length;
-        this.constructor_Overload3(text, rawBytes, numBits_resultPoints, resultPoints_format, format_timestamp, timestamp);
+        this.constructorImpl(text, rawBytes, numBits_resultPoints, resultPoints_format, format_timestamp, timestamp);
         return;
       }
 
       // check overload 2
       if (Array.isArray(resultPoints_format) && isBarcodeFormatValue(format_timestamp)) {
-        this.constructor_Overload2(text, rawBytes, resultPoints_format, format_timestamp, timestamp);
+        this.constructorOverload2(text, rawBytes, resultPoints_format, format_timestamp, timestamp);
         return;
       }
 
       // check overload 1
       if (typeof text === 'string' && rawBytes instanceof Uint8Array && Array.isArray(numBits_resultPoints) && isBarcodeFormatValue(resultPoints_format)) {
-        this.constructor_Overload1(text, rawBytes, numBits_resultPoints, resultPoints_format);
+        this.constructorOverload1(text, rawBytes, numBits_resultPoints, resultPoints_format);
         return;
       }
 
@@ -91,27 +91,27 @@ export default class Result {
       throw new Error('No supported overload for the given combination of parameters.');
     }
 
-    private constructor_Overload1(
+    private constructorOverload1(
       text: string,
       rawBytes: Uint8Array,
       resultPoints: ResultPoint[],
       format: BarcodeFormat,
     ) {
-      return this.constructor_Overload2(text, rawBytes, resultPoints, format, System.currentTimeMillis());
+      return this.constructorOverload2(text, rawBytes, resultPoints, format, System.currentTimeMillis());
     }
 
-    private constructor_Overload2(
+    private constructorOverload2(
       text: string,
       rawBytes: Uint8Array,
       resultPoints: ResultPoint[],
       format: BarcodeFormat,
       timestamp: number /* long */,
     ) {
-      return this.constructor_Overload3(text, rawBytes, rawBytes == null ? 0 : 8 * rawBytes.length,
+      return this.constructorImpl(text, rawBytes, rawBytes == null ? 0 : 8 * rawBytes.length,
            resultPoints, format, timestamp);
     }
 
-    private constructor_Overload3(
+    private constructorImpl(
       text: string,
       rawBytes: Uint8Array,
       numBits: number,
