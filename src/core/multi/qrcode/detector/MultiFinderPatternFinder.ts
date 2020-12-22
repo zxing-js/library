@@ -97,7 +97,7 @@ export default /* public final */ class MultiFinderPatternFinder extends FinderP
    *         size differs from the average among those patterns the least
    * @throws NotFoundException if 3 such finder patterns do not exist
    */
-  private  selectMultipleBestPatterns(): FinderPattern[][] {
+  private selectMultipleBestPatterns(): FinderPattern[][] {
     const possibleCenters: List<FinderPattern> = this.getPossibleCenters();
     const size: int = possibleCenters.length;
 

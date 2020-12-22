@@ -78,8 +78,8 @@ export default /*final*/ class Codeword {
     this.rowNumber = rowNumber;
   }
 
-//   @Override
-  public  toString(): string {
+  // @Override
+  public toString(): string {
     return this.rowNumber + '|' + this.value;
   }
 

@@ -56,7 +56,7 @@ export default /* public final */ class MultiDetector extends Detector {
   }
 
   /** @throws NotFoundException */
-  public  detectMulti( hints: Map<DecodeHintType, any>): DetectorResult[] {
+  public detectMulti(hints: Map<DecodeHintType, any>): DetectorResult[] {
     const image: BitMatrix = this.getImage();
     const resultPointCallback: ResultPointCallback =
         hints == null ? null : <ResultPointCallback> hints.get(DecodeHintType.NEED_RESULT_POINT_CALLBACK);
