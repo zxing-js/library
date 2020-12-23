@@ -86,7 +86,7 @@ export default /*public final*/ class QRCodeMultiReader extends QRCodeReader imp
    * @throws NotFoundException
    * @override decodeMultiple
    */
-  public decodeMultipleOverload1(image: BinaryBitmap): Result[] {
+  private decodeMultipleOverload1(image: BinaryBitmap): Result[] {
     return this.decodeMultipleImpl(image, null);
   }
 
@@ -94,7 +94,7 @@ export default /*public final*/ class QRCodeMultiReader extends QRCodeReader imp
    * @override
    * @throws NotFoundException
    */
-  public decodeMultipleImpl(image: BinaryBitmap, hints:  Map<DecodeHintType, any>): Result[] {
+  private decodeMultipleImpl(image: BinaryBitmap, hints:  Map<DecodeHintType, any>): Result[] {
     let results: List<Result> = [];
     const detectorResults: DetectorResult[] = new MultiDetector(image.getBlackMatrix()).detectMulti(hints);
     for (const detectorResult of detectorResults) {

@@ -86,8 +86,29 @@ export default /*public final*/ class PDF417Reader implements Reader, MultipleBa
    *
    * @override decodeMultiple
    */
-  public decodeMultipleWithoutHints(image: BinaryBitmap): Result[] {
-    return this.decodeMultiple(image, null);
+  public decodeMultiple(image: BinaryBitmap): Result[];
+  /**
+   *
+   * @param BinaryBitmap
+   * @param image
+   * @throws NotFoundException
+   * @override
+   */
+  public decodeMultiple(image: BinaryBitmap, hints: Map<DecodeHintType, any> = null): Result[] {
+
+    if (!hints) {
+      return this.decodeMultipleOverload1(image);
+    }
+
+    return this.decodeMultipleImpl(image, hints);
+  }
+
+  /**
+   *
+   * @override decodeMultiple
+   */
+  private decodeMultipleOverload1(image: BinaryBitmap): Result[] {
+    return this.decodeMultipleImpl(image, null);
   }
 
   /**
@@ -97,7 +118,7 @@ export default /*public final*/ class PDF417Reader implements Reader, MultipleBa
    * @throws NotFoundException
    * @override
    */
-  public decodeMultiple(image: BinaryBitmap, hints: Map<DecodeHintType, any> = null): Result[] {
+  private decodeMultipleImpl(image: BinaryBitmap, hints: Map<DecodeHintType, any> = null): Result[] {
     try {
       return PDF417Reader.decode(image, hints, true);
     } catch (ignored) {
