@@ -48,7 +48,7 @@ interface Reader {
      * @throws FormatException if a potential barcode is found but format is invalid
      * @override decode
      */
-    // decodeWithoutHints(image: BinaryBitmap): Result;
+    decode(image: BinaryBitmap): Result;
 
     /**
      * Locates and decodes a barcode in some format within an image. This method also accepts

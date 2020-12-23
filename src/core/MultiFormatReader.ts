@@ -54,10 +54,7 @@ export default class MultiFormatReader implements Reader {
      * @throws NotFoundException Any errors which occurred
      */
     /*@Override*/
-    // public decode(image: BinaryBitmap): Result {
-    //   setHints(null)
-    //   return decodeInternal(image)
-    // }
+    public decode(image: BinaryBitmap): Result;
 
     /**
      * Decode an image using the hints provided. Does not honor existing state.

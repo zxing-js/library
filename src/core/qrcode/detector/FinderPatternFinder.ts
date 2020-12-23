@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import BitMatrix from 'src/core/common/BitMatrix';
-import DecodeHintType from 'src/core/DecodeHintType';
-import NotFoundException from 'src/core/NotFoundException';
-import ResultPoint from 'src/core/ResultPoint';
-import ResultPointCallback from 'src/core/ResultPointCallback';
-import Arrays from 'src/core/util/Arrays';
-import Comparator from 'src/core/util/Comparator';
-import Double from 'src/core/util/Double';
-import Float from 'src/core/util/Float';
-import { double, float, int, List } from 'src/customTypings';
+import BitMatrix from '../../common/BitMatrix';
+import DecodeHintType from '../../DecodeHintType';
+import NotFoundException from '../../NotFoundException';
+import ResultPoint from '../../ResultPoint';
+import ResultPointCallback from '../../ResultPointCallback';
+import Arrays from '../../util/Arrays';
+import Comparator from '../../util/Comparator';
+import Double from '../../util/Double';
+import Float from '../../util/Float';
+import { double, float, int, List } from '../../../customTypings';
 import FinderPattern from './FinderPattern';
 import FinderPatternInfo from './FinderPatternInfo';
 

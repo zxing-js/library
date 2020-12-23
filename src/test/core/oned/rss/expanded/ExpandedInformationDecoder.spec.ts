@@ -1,8 +1,6 @@
-import { BitArray } from '../../../../..';
-import AbstractExpandedDecoder from '../../../../../core/oned/rss/expanded/decoders/AbstractExpandedDecoder';
+import { BitArray, AbstractExpandedDecoder, createDecoder } from '@zxing/library';
 import { assertEquals } from '../../../util/AssertUtils';
 import BinaryUtil from './BinaryUtil';
-
 
 
 /*
@@ -48,7 +46,7 @@ it('ExpandedInformationDecoderTest', () => {
   it('testNoAi', () => {
     let information: BitArray = BinaryUtil.buildBitArrayFromString(' .......X ..XX..X. X.X....X .......X ....');
 
-    let decoder: AbstractExpandedDecoder = AbstractExpandedDecoder.createDecoder(information);
+    let decoder: AbstractExpandedDecoder = createDecoder(information);
     let decoded: String = decoder.parseInformation();
     assertEquals('(10)12A', decoded);
   });

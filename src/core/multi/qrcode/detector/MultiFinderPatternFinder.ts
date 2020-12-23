@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import BitMatrix from 'src/core/common/BitMatrix';
-import DecodeHintType from 'src/core/DecodeHintType';
-import NotFoundException from 'src/core/NotFoundException';
-import FinderPattern from 'src/core/qrcode/detector/FinderPattern';
-import FinderPatternFinder from 'src/core/qrcode/detector/FinderPatternFinder';
-import FinderPatternInfo from 'src/core/qrcode/detector/FinderPatternInfo';
-import ResultPoint from 'src/core/ResultPoint';
-import ResultPointCallback from 'src/core/ResultPointCallback';
-import Collections from 'src/core/util/Collections';
-import Comparator from 'src/core/util/Comparator';
-import { double, float, int, List } from 'src/customTypings';
+import BitMatrix from '../../../common/BitMatrix';
+import DecodeHintType from '../../../DecodeHintType';
+import NotFoundException from '../../../NotFoundException';
+import FinderPattern from '../../../qrcode/detector/FinderPattern';
+import FinderPatternFinder from '../../../qrcode/detector/FinderPatternFinder';
+import FinderPatternInfo from '../../../qrcode/detector/FinderPatternInfo';
+import ResultPoint from '../../../ResultPoint';
+import ResultPointCallback from '../../../ResultPointCallback';
+import Collections from '../../../util/Collections';
+import Comparator from '../../../util/Comparator';
+import { double, float, int, List } from '../../../../customTypings';
 
 // package com.google.zxing.multi.qrcode.detector;
 

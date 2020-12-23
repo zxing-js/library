@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import BitMatrix from "src/core/common/BitMatrix";
-import DetectorResult from "src/core/common/DetectorResult";
-import DecodeHintType from "src/core/DecodeHintType";
-import NotFoundException from "src/core/NotFoundException";
-import Detector from "src/core/qrcode/detector/Detector";
-import FinderPatternInfo from "src/core/qrcode/detector/FinderPatternInfo";
-import ReaderException from "src/core/ReaderException";
-import ResultPointCallback from "src/core/ResultPointCallback";
-import { List } from "src/customTypings";
-import MultiFinderPatternFinder from "./MultiFinderPatternFinder";
+import BitMatrix from '../../../common/BitMatrix';
+import DetectorResult from '../../../common/DetectorResult';
+import DecodeHintType from '../../../DecodeHintType';
+import NotFoundException from '../../../NotFoundException';
+import Detector from '../../../qrcode/detector/Detector';
+import FinderPatternInfo from '../../../qrcode/detector/FinderPatternInfo';
+import ReaderException from '../../../ReaderException';
+import ResultPointCallback from '../../../ResultPointCallback';
+import { List } from '../../../../customTypings';
+import MultiFinderPatternFinder from './MultiFinderPatternFinder';
 
 // package com.google.zxing.multi.qrcode.detector;
 

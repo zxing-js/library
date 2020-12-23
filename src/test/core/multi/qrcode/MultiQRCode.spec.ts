@@ -25,8 +25,8 @@ import {
   ResultMetadataType
 } from '@zxing/library';
 import * as path from 'path';
-import Arrays from 'src/core/util/Arrays';
-import { Collection, List } from 'src/customTypings';
+import Arrays from '../../../../core/util/Arrays';
+import { Collection, List } from '../../../../customTypings';
 import AbstractBlackBoxSpec from '../../common/AbstractBlackBox';
 import SharpImageLuminanceSource from '../../SharpImageLuminanceSource';
 import { assertArrayEquals, assertEquals, assertNotNull } from '../../util/AssertUtils';

@@ -118,6 +118,11 @@ export { default as RSSExpandedReader } from './core/oned/rss/expanded/RSSExpand
 export { default as MultiFormatOneDReader } from './core/oned/MultiFormatOneDReader';
 
 
+// core/oned/rss/expanded
+export { default as AbstractExpandedDecoder } from './core/oned/rss/expanded/decoders/AbstractExpandedDecoder';
+export { default as createDecoder } from './core/oned/rss/expanded/decoders/createDecoder';
+
+
 // core/multi
 export { default as MultipleBarcodeReader } from './core/multi/MultipleBarcodeReader';
 

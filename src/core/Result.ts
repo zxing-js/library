@@ -22,7 +22,7 @@ import ResultPoint from './ResultPoint';
 import BarcodeFormat from './BarcodeFormat';
 import System from './util/System';
 import ResultMetadataType from './ResultMetadataType';
-import { long } from 'src/customTypings';
+import { long } from '../customTypings';
 import { isBarcodeFormatValue } from './util/BarcodeFormaHelpers';
 
 /**
