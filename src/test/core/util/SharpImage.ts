@@ -43,6 +43,19 @@ export default class SharpImage {
     return new SharpImage(wrapper, undefined, undefined, undefined);
   }
 
+  public static async loadAsync(path: string): Promise<SharpImage> {
+
+    const wrapper = sharp(path).raw();
+
+    const { data, info } = await wrapper.toBuffer({ resolveWithObject: true });
+
+    const width = info.width;
+    const height = info.height;
+    const buffer = SharpImage.toGrayscaleBuffer(new Uint8ClampedArray(data.buffer), info.width, info.height, info.channels);
+
+    return new SharpImage(wrapper, buffer, width, height);
+  }
+
   public static async loadAsBitMatrix(path: string): Promise<BitMatrix> {
     const wrapper = sharp(path).raw();
     const metadata = await wrapper.metadata();
@@ -58,11 +71,20 @@ export default class SharpImage {
     const height = info.height;
     const grayscaleBuffer = SharpImage.toGrayscaleBuffer(new Uint8ClampedArray(data.buffer), width, height, channels);
     // const image = new SharpImage(wrapper, grayscaleBuffer, info.width, info.height)
+
+    return SharpImage.bufferToBitMatrix(grayscaleBuffer, width, height);
+  }
+
+  private static bufferToBitMatrix(
+    imageBuffer: Uint8ClampedArray,
+    width: number,
+    height: number
+  ): BitMatrix {
     const matrix = new BitMatrix(width, height);
 
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        const pixel = grayscaleBuffer[y * width + x];
+        const pixel = imageBuffer[y * width + x];
         if (pixel <= 0x7F) {
           matrix.set(x, y);
         }

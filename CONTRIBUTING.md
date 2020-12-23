@@ -62,6 +62,8 @@ https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
 - `int` has 32 bits, signed, so `int[]` transforms to `Int32Array`.
 - `char` has 2 bytes, so `char[]` transforms to `Uint16Array`.
 - `long` has 64 bit two's complement `integer`, can be signed or unsigned.
+- `float[]` can be ported to `Float32Array`.
+- `double[]` can be ported to `Float64Array`.
 
 ### JavaScript's TypedArray
 
@@ -71,8 +73,8 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 
 - Take care of `int` -> `number` (integer to number) port when doing bitwise transformation especially `<<`. Do a `& 0xFFFFFFFF` for ints, a &0xFF for bytes.
 - Take care of array initialization, in Java `new Array(N)` initializes capacity NOT size/length.
-- Use `Math.floor` for any division of ints otherwise the `number` type is a floating point and keeps the numbers after the dot.
-- For `float` to `int` casting use `Math.trunc`, to replicate the same effect as Java casting does.
+- Use `Math.floor` for any division of `int`s otherwise the `number` type is a floating point and keeps the numbers after the dot.
+- For `float`/`number` to `int` casting use `Math.trunc`, to replicate the same effect as Java casting does.
 
 ## Encoding
 

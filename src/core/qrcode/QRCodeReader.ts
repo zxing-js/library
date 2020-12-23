@@ -42,7 +42,7 @@ import Detector from './detector/Detector';
  */
 export default class QRCodeReader implements Reader {
 
-  private static NO_POINTS = new Array<ResultPoint>();
+  protected static NO_POINTS = new Array<ResultPoint>();
 
   private decoder = new Decoder();
 
@@ -57,14 +57,36 @@ export default class QRCodeReader implements Reader {
    * @throws NotFoundException if a QR code cannot be found
    * @throws FormatException if a QR code cannot be decoded
    * @throws ChecksumException if error correction fails
- */
-  /* @Override */
-  // public decode(image: BinaryBitmap): Result /*throws NotFoundException, ChecksumException, FormatException */ {
-  //   return this.decode(image, null)
-  // }
-
-  /* @Override */
+   */
+  public decode(image: BinaryBitmap): Result /*throws NotFoundException, ChecksumException, FormatException */;
+  /**
+   * @override
+   */
   public decode(image: BinaryBitmap, hints?: Map<DecodeHintType, any>): Result {
+
+    if (!hints) {
+      this.decodeOverload1(image);
+    }
+
+    return this.decodeImpl(image, hints);
+  }
+
+  /**
+   * Locates and decodes a QR code in an image.
+   *
+   * @return a representing: string the content encoded by the QR code
+   * @throws NotFoundException if a QR code cannot be found
+   * @throws FormatException if a QR code cannot be decoded
+   * @throws ChecksumException if error correction fails
+   */
+  public decodeOverload1(image: BinaryBitmap): Result /*throws NotFoundException, ChecksumException, FormatException */ {
+    return this.decodeImpl(image, null);
+  }
+
+  /**
+   * @override
+   */
+  public decodeImpl(image: BinaryBitmap, hints?: Map<DecodeHintType, any>): Result {
     let decoderResult: DecoderResult;
     let points: Array<ResultPoint>;
     if (hints !== undefined && hints !== null && undefined !== hints.get(DecodeHintType.PURE_BARCODE)) {

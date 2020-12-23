@@ -115,6 +115,22 @@ export { default as RSS14Reader } from './core/oned/rss/RSS14Reader';
 export { default as RSSExpandedReader } from './core/oned/rss/expanded/RSSExpandedReader';
 export { default as MultiFormatOneDReader } from './core/oned/MultiFormatOneDReader';
 
+
+// core/oned/rss/expanded
+export { default as AbstractExpandedDecoder } from './core/oned/rss/expanded/decoders/AbstractExpandedDecoder';
+export { default as createDecoder } from './core/oned/rss/expanded/decoders/createDecoder';
+
+
+// core/multi
+export { default as MultipleBarcodeReader } from './core/multi/MultipleBarcodeReader';
+
+
+// core/multi/qrcode
+export { default as QRCodeMultiReader } from './core/multi/qrcode/QRCodeMultiReader';
+export { default as MultiDetector } from './core/multi/qrcode/detector/MultiDetector';
+export { default as MultiFinderPatternFinder } from './core/multi/qrcode/detector/MultiFinderPatternFinder';
+
+
 // extension/sources
 export { default as ColorFormat } from './extension/sources/ColorFormat';
 export { default as MultiFormatLuminanceSource } from './extension/sources/MultiFormatLuminanceSource';

@@ -22,6 +22,8 @@ import ResultPoint from './ResultPoint';
 import BarcodeFormat from './BarcodeFormat';
 import System from './util/System';
 import ResultMetadataType from './ResultMetadataType';
+import { long } from '../customTypings';
+import { isBarcodeFormatValue } from './util/BarcodeFormaHelpers';
 
 /**
  * <p>Encapsulates the result of decoding a barcode within an image.</p>
@@ -30,44 +32,115 @@ import ResultMetadataType from './ResultMetadataType';
  */
 export default class Result {
 
-  private resultMetadata: Map<ResultMetadataType, Object>;
+    private resultMetadata: Map<ResultMetadataType, Object>;
+    private numBits: number;
+    private resultPoints: ResultPoint[];
+    private format: BarcodeFormat;
 
-  // public constructor(private text: string,
-  //               Uint8Array rawBytes,
-  //               ResultPoconst resultPoints: Int32Array,
-  //               BarcodeFormat format) {
-  //   this(text, rawBytes, resultPoints, format, System.currentTimeMillis())
-  // }
+    public constructor(
+      text: string,
+      rawBytes: Uint8Array,
+      resultPoints: ResultPoint[],
+      format: BarcodeFormat,
+    );
+    public constructor(
+      text: string,
+      rawBytes: Uint8Array,
+      resultPoints: ResultPoint[],
+      format: BarcodeFormat,
+      timestamp: long,
+    );
+    public constructor(
+      text: string,
+      rawBytes: Uint8Array,
+      numBits: number,
+      resultPoints: ResultPoint[],
+      format: BarcodeFormat,
+      timestamp: number
+    );
+    public constructor(
+      private text: string,
+      private rawBytes: Uint8Array,
+      numBits_resultPoints: number | ResultPoint[],
+      resultPoints_format: ResultPoint[] | BarcodeFormat | any,
+      format_timestamp: BarcodeFormat | long | any = null,
+      private timestamp: long = System.currentTimeMillis()
+    ) {
+      // checks overloading order from most to least params
 
-  // public constructor(text: string,
-  //               Uint8Array rawBytes,
-  //               ResultPoconst resultPoints: Int32Array,
-  //               BarcodeFormat format,
-  //               long timestamp) {
-  //   this(text, rawBytes, rawBytes == null ? 0 : 8 * rawBytes.length,
-  //        resultPoints, format, timestamp)
-  // }
+      // check overload 3
+      if (numBits_resultPoints instanceof Number && Array.isArray(resultPoints_format) && isBarcodeFormatValue(format_timestamp)) {
+        numBits_resultPoints = rawBytes == null ? 0 : 8 * rawBytes.length;
+        this.constructorImpl(text, rawBytes, numBits_resultPoints, resultPoints_format, format_timestamp, timestamp);
+        return;
+      }
 
-  public constructor(private text: string,
-    private rawBytes: Uint8Array,
-    private numBits: number /* int */ = rawBytes == null ? 0 : 8 * rawBytes.length,
-    private resultPoints: ResultPoint[],
-    private format: BarcodeFormat,
-    private timestamp: number /* long */ = System.currentTimeMillis()) {
-    this.text = text;
-    this.rawBytes = rawBytes;
-    if (undefined === numBits || null === numBits) {
-      this.numBits = (rawBytes === null || rawBytes === undefined) ? 0 : 8 * rawBytes.length;
-    } else {
-      this.numBits = numBits;
+      // check overload 2
+      if (Array.isArray(resultPoints_format) && isBarcodeFormatValue(format_timestamp)) {
+        this.constructorOverload2(text, rawBytes, resultPoints_format, format_timestamp, timestamp);
+        return;
+      }
+
+      // check overload 1
+      if (typeof text === 'string' && rawBytes instanceof Uint8Array && Array.isArray(numBits_resultPoints) && isBarcodeFormatValue(resultPoints_format)) {
+        this.constructorOverload1(text, rawBytes, numBits_resultPoints, resultPoints_format);
+        return;
+      }
+
+      // throw no supported overload exception
+      throw new Error('No supported overload for the given combination of parameters.');
     }
-    this.resultPoints = resultPoints;
-    this.format = format;
-    this.resultMetadata = null;
-    if (undefined === timestamp || null === timestamp) {
-      this.timestamp = System.currentTimeMillis();
-    } else {
-      this.timestamp = timestamp;
+
+    private constructorOverload1(
+      text: string,
+      rawBytes: Uint8Array,
+      resultPoints: ResultPoint[],
+      format: BarcodeFormat,
+    ) {
+      return this.constructorOverload2(text, rawBytes, resultPoints, format, System.currentTimeMillis());
+    }
+
+    private constructorOverload2(
+      text: string,
+      rawBytes: Uint8Array,
+      resultPoints: ResultPoint[],
+      format: BarcodeFormat,
+      timestamp: number /* long */,
+    ) {
+      return this.constructorImpl(text, rawBytes, rawBytes == null ? 0 : 8 * rawBytes.length,
+           resultPoints, format, timestamp);
+    }
+
+    private constructorImpl(
+      text: string,
+      rawBytes: Uint8Array,
+      numBits: number,
+      resultPoints: ResultPoint[],
+      format: BarcodeFormat,
+      timestamp: number
+    ) {
+      this.text = text;
+      this.rawBytes = rawBytes;
+      if (undefined === numBits || null === numBits) {
+        this.numBits = (rawBytes === null || rawBytes === undefined) ? 0 : 8 * rawBytes.length;
+      } else {
+        this.numBits = numBits;
+      }
+      this.resultPoints = resultPoints;
+      this.format = format;
+      this.resultMetadata = null;
+      if (undefined === timestamp || null === timestamp) {
+        this.timestamp = System.currentTimeMillis();
+      } else {
+        this.timestamp = timestamp;
+      }
+    }
+
+    /**
+     * @return raw text encoded by the barcode
+     */
+    public getText(): string {
+        return this.text;
     }
   }
 

@@ -38,16 +38,17 @@ export default Reader;
  */
 interface Reader {
 
-  /**
-   * Locates and decodes a barcode in some format within an image.
-   *
-   * @param image image of barcode to decode
-   * @return which: string the barcode encodes
-   * @throws NotFoundException if no potential barcode is found
-   * @throws ChecksumException if a potential barcode is found but does not pass its checksum
-   * @throws FormatException if a potential barcode is found but format is invalid
- */
-  // decode(image: BinaryBitmap): Result /*throws NotFoundException, ChecksumException, FormatException */
+    /**
+     * Locates and decodes a barcode in some format within an image.
+     *
+     * @param image image of barcode to decode
+     * @return which: string the barcode encodes
+     * @throws NotFoundException if no potential barcode is found
+     * @throws ChecksumException if a potential barcode is found but does not pass its checksum
+     * @throws FormatException if a potential barcode is found but format is invalid
+     * @override decode
+     */
+    decode(image: BinaryBitmap): Result;
 
   /**
    * Locates and decodes a barcode in some format within an image. This method also accepts

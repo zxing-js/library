@@ -74,7 +74,8 @@ export default class Decoder {
    * @return text and bytes encoded within the QR Code
    * @throws FormatException if the QR Code cannot be decoded
    * @throws ChecksumException if error correction fails
- */
+   * @override decode
+   */
   public decodeBitMatrix(bits: BitMatrix, hints?: Map<DecodeHintType, any>): DecoderResult {
 
     // Construct a parser and read version, error-correction level

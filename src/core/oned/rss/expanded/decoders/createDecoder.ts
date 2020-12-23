@@ -1,4 +1,5 @@
-import { BitArray, IllegalStateException } from '../../../../..';
+import BitArray from '../../../../common/BitArray';
+import IllegalStateException from '../../../../IllegalStateException';
 import AbstractExpandedDecoder from './AbstractExpandedDecoder';
 import AI013103decoder from './AI013103decoder';
 import AI01320xDecoder from './AI01320xDecoder';

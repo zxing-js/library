@@ -78,7 +78,7 @@ export default /* final */ class Codeword {
     this.rowNumber = rowNumber;
   }
 
-  //   @Override
+  // @Override
   public toString(): string {
     return this.rowNumber + '|' + this.value;
   }
