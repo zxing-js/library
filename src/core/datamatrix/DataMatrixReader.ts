@@ -42,8 +42,6 @@ export default class DataMatrixReader implements Reader {
     if (isInverted != null && isInverted) {
       // We use inverted code
       this.isInverted = true;
-      console.log('inverted!');
-      alert('inverted!');
     }
   }
 
@@ -70,11 +68,15 @@ export default class DataMatrixReader implements Reader {
     let points: ResultPoint[];
 
     if (hints != null && hints.has(DecodeHintType.PURE_BARCODE)) {
-      const bits = DataMatrixReader.extractPureBits(image.getBlackMatrix().inverted());
+      const bits = this.isInverted ?
+        DataMatrixReader.extractPureBits(image.getBlackMatrix().inverted()) :
+        DataMatrixReader.extractPureBits(image.getBlackMatrix());
       decoderResult = this.decoder.decode(bits);
       points = DataMatrixReader.NO_POINTS;
     } else {
-      const detectorResult = new Detector(image.getBlackMatrix().inverted()).detect();
+      const detectorResult = this.isInverted ?
+        new Detector(image.getBlackMatrix().inverted()).detect() :
+        new Detector(image.getBlackMatrix()).detect();
       decoderResult = this.decoder.decode(detectorResult.getBits());
       points = detectorResult.getPoints();
     }

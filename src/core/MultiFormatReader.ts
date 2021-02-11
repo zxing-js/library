@@ -154,6 +154,7 @@ export default class MultiFormatReader implements Reader {
 
             readers.push(new QRCodeReader());
             readers.push(new DataMatrixReader());
+            readers.push(new DataMatrixReader(true));
             readers.push(new AztecReader());
             readers.push(new PDF417Reader());
             // readers.push(new MaxiCodeReader())
