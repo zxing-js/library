@@ -131,6 +131,7 @@ export default class MultiFormatReader implements Reader {
             }
             if (formats.includes(BarcodeFormat.DATA_MATRIX)) {
               readers.push(new DataMatrixReader());
+              readers.push(new DataMatrixReader(true));
             }
             if (formats.includes(BarcodeFormat.AZTEC)) {
               readers.push(new AztecReader());
