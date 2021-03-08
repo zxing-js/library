@@ -1,4 +1,4 @@
-import InvertedLuminanceSource from '../core/InvertedLuminanceSource';
+﻿import InvertedLuminanceSource from '../core/InvertedLuminanceSource';
 import LuminanceSource from '../core/LuminanceSource';
 import IllegalArgumentException from '../core/IllegalArgumentException';
 
@@ -10,6 +10,7 @@ export class HTMLCanvasElementLuminanceSource extends LuminanceSource {
     private buffer: Uint8ClampedArray;
 
     private static DEGREE_TO_RADIANS = Math.PI / 180;
+	private static FRAME_INDEX = true;
 
     private tempCanvasElement: HTMLCanvasElement = null;
 
@@ -25,28 +26,57 @@ export class HTMLCanvasElementLuminanceSource extends LuminanceSource {
 
     private static toGrayscaleBuffer(imageBuffer: Uint8ClampedArray, width: number, height: number): Uint8ClampedArray {
         const grayscaleBuffer = new Uint8ClampedArray(width * height);
-        for (let i = 0, j = 0, length = imageBuffer.length; i < length; i += 4, j++) {
-            let gray;
-            const alpha = imageBuffer[i + 3];
-            // The color of fully-transparent pixels is irrelevant. They are often, technically, fully-transparent
-            // black (0 alpha, and then 0 RGB). They are often used, of course as the "white" area in a
-            // barcode image. Force any such pixel to be white:
-            if (alpha === 0) {
-                gray = 0xFF;
-            } else {
-                const pixelR = imageBuffer[i];
-                const pixelG = imageBuffer[i + 1];
-                const pixelB = imageBuffer[i + 2];
-                // .299R + 0.587G + 0.114B (YUV/YIQ for PAL and NTSC),
-                // (306*R) >> 10 is approximately equal to R*0.299, and so on.
-                // 0x200 >> 10 is 0.5, it implements rounding.
-                gray = (306 * pixelR +
-                    601 * pixelG +
-                    117 * pixelB +
-                    0x200) >> 10;
-            }
-            grayscaleBuffer[j] = gray;
-        }
+		HTMLCanvasElementLuminanceSource.FRAME_INDEX = !HTMLCanvasElementLuminanceSource.FRAME_INDEX;
+		if(HTMLCanvasElementLuminanceSource.FRAME_INDEX)
+		{
+			for (let i = 0, j = 0, length = imageBuffer.length; i < length; i += 4, j++) {
+				let gray;
+				const alpha = imageBuffer[i + 3];
+				// The color of fully-transparent pixels is irrelevant. They are often, technically, fully-transparent
+				// black (0 alpha, and then 0 RGB). They are often used, of course as the "white" area in a
+				// barcode image. Force any such pixel to be white:
+				if (alpha === 0) {
+					gray = 0xFF;
+				} else {
+					const pixelR = imageBuffer[i];
+					const pixelG = imageBuffer[i + 1];
+					const pixelB = imageBuffer[i + 2];
+					// .299R + 0.587G + 0.114B (YUV/YIQ for PAL and NTSC),
+					// (306*R) >> 10 is approximately equal to R*0.299, and so on.
+					// 0x200 >> 10 is 0.5, it implements rounding.
+					gray = (306 * pixelR +
+						601 * pixelG +
+						117 * pixelB +
+						0x200) >> 10;
+				}
+				grayscaleBuffer[j] = gray;
+			}
+		}
+		else
+		{
+			for (let i = 0, j = 0, length = imageBuffer.length; i < length; i += 4, j++) {
+				let gray;
+				const alpha = imageBuffer[i + 3];
+				// The color of fully-transparent pixels is irrelevant. They are often, technically, fully-transparent
+				// black (0 alpha, and then 0 RGB). They are often used, of course as the "white" area in a
+				// barcode image. Force any such pixel to be white:
+				if (alpha === 0) {
+					gray = 0xFF;
+				} else {
+					const pixelR = imageBuffer[i];
+					const pixelG = imageBuffer[i + 1];
+					const pixelB = imageBuffer[i + 2];
+					// .299R + 0.587G + 0.114B (YUV/YIQ for PAL and NTSC),
+					// (306*R) >> 10 is approximately equal to R*0.299, and so on.
+					// 0x200 >> 10 is 0.5, it implements rounding.
+					gray = (306 * pixelR +
+						601 * pixelG +
+						117 * pixelB +
+						0x200) >> 10;
+				}
+				grayscaleBuffer[j] = 0xFF - gray;
+			}
+		}
         return grayscaleBuffer;
     }
 
