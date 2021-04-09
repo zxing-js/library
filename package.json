@@ -42,7 +42,6 @@
   "private": false,
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
-  "browser": "dist/index.umd.min.js",
   "unpkg": "dist/index.umd.min.js",
   "typings": "dist/index.d.ts",
   "files": [
