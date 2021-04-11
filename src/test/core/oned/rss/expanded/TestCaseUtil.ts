@@ -1,7 +1,7 @@
-import { BinaryBitmap, GlobalHistogramBinarizer } from "../../../../..";
-import AbstractBlackBoxSpec from "../../../common/AbstractBlackBox";
-import SharpImageLuminanceSource from "../../../SharpImageLuminanceSource";
-import SharpImage from "../../../util/SharpImage";
+import { BinaryBitmap, GlobalHistogramBinarizer } from '@zxing/library';
+import AbstractBlackBoxSpec from '../../../common/AbstractBlackBox';
+import SharpImageLuminanceSource from '../../../SharpImageLuminanceSource';
+import SharpImage from '../../../util/SharpImage';
 
 /*
  * Copyright (C) 2012 ZXing authors
