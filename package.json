@@ -1,6 +1,6 @@
 {
   "name": "@zxing/library",
-  "version": "0.18.3",
+  "version": "0.18.4",
   "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
   "keywords": [
     "reader",
@@ -53,9 +53,10 @@
     "test:build": "tsc --build tsconfig.test.json",
     "test:run": "mocha -r tsconfig-paths/register --timeout 200000 output/tests/**/*.spec.js",
     "cover": "nyc --reporter=lcov --reporter=text yarn test",
-    "build": "yarn clean && yarn build:es2015 && yarn build:esm && yarn build:cjs && yarn build:umd && yarn build:umd:min && yarn build:copy",
+    "build": "yarn clean && yarn build:es2015 && yarn build:esm && yarn build:esnext && yarn build:cjs && yarn build:umd && yarn build:umd:min && yarn build:copy",
     "build:es2015": "tsc --build tsconfig.lib-es2015.json",
     "build:esm": "tsc --build tsconfig.lib-esm.json",
+    "build:esnext": "tsc --build tsconfig.lib-esm.json",
     "build:cjs": "tsc --build tsconfig.lib-cjs.json",
     "build:umd": "rollup -c rollup.config.js",
     "build:umd:min": "cd dist/umd && terser --compress --mangle --source-map --screw-ie8 --comments -o index.min.js -- index.js && gzip index.min.js -c > index.min.js.gz",
