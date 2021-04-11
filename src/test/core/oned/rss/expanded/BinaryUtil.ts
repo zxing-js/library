@@ -1,8 +1,6 @@
-import {
-  BitArray,
-  IllegalStateException
-} from '@zxing/library';
 import StringBuilder from '../../../../../core/util/StringBuilder';
+import { BitArray, IllegalStateException } from '@zxing/library';
+import StringBuilder from 'src/core/util/StringBuilder';
 
 
 /*
