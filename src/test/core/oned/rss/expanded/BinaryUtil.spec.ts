@@ -1,4 +1,4 @@
-import BitArray from '../../../../../core/common/BitArray';
+import { BitArray } from '@zxing/library';
 import { assertEquals } from '../../../util/AssertUtils';
 import BinaryUtil from './BinaryUtil';
 

@@ -1,10 +1,3 @@
-import { BitArray } from '../../../../..';
-import AbstractExpandedDecoder from '../../../../../core/oned/rss/expanded/decoders/AbstractExpandedDecoder';
-import { assertEquals } from '../../../util/AssertUtils';
-import BinaryUtil from './BinaryUtil';
-
-
-
 /*
  * Copyright (C) 2010 ZXing authors
  *
@@ -39,6 +32,10 @@ import BinaryUtil from './BinaryUtil';
 // import org.junit.Assert;
 // import org.junit.Test;
 
+import { BitArray, AbstractExpandedDecoder, createAbstractExpandedDecoder } from '@zxing/library';
+import { assertEquals } from '../../../util/AssertUtils';
+import BinaryUtil from './BinaryUtil';
+
 /**
  * @author Pablo Orduña, University of Deusto (pablo.orduna@deusto.es)
  * @author Eduardo Castillejo, University of Deusto (eduardo.castillejo@deusto.es)
@@ -48,7 +45,7 @@ it('ExpandedInformationDecoderTest', () => {
   it('testNoAi', () => {
     let information: BitArray = BinaryUtil.buildBitArrayFromString(' .......X ..XX..X. X.X....X .......X ....');
 
-    let decoder: AbstractExpandedDecoder = AbstractExpandedDecoder.createDecoder(information);
+    let decoder: AbstractExpandedDecoder = createAbstractExpandedDecoder(information);
     let decoded: String = decoder.parseInformation();
     assertEquals('(10)12A', decoded);
   });
