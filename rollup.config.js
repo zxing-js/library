@@ -27,7 +27,7 @@ export default [
         name: 'ZXing',
         file: pkg.browser,
         format: 'umd',
-        sourcemap: true,
+        sourcemap: false,
         plugins: [
           terser({
             output: {

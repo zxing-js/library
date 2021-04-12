@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import { BarcodeFormat } from '@zxing/library';
-import { MultiFormatReader } from '@zxing/library';
+import { BarcodeFormat, MultiFormatReader } from '@zxing/library';
 import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 
 /**

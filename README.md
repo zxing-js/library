@@ -16,9 +16,9 @@
 
 | 1D product | 1D industrial       | 2D             |
 | ---------- | ------------------- | -------------- |
-| ~~UPC-A~~  | Code 39             | QR Code        |
-| ~~UPC-E~~  | ~~Code 93~~         | Data Matrix    |
-| EAN-8      | Code 128            | ~~Aztec~~ \*   |
+| UPC-A      | Code 39             | QR Code        |
+| UPC-E      | ~~Code 93~~         | Data Matrix    |
+| EAN-8      | Code 128            | Aztec          |
 | EAN-13     | ~~Codabar~~         | PDF 417        |
 |            | ITF                 | ~~MaxiCode~~   |
 |            | RSS-14              |
@@ -50,7 +50,54 @@ This is the base library meant to be run in Node.js or WebWorkers where the HTML
 
 ## Documentation
 
-Installation guide, examples and API reference can be found on the [documentation page](https://zxing-js.github.io/library/).
+`npm i @zxing/library --save`
+
+or
+
+`yarn add @zxing/library`
+
+## Limitations
+
+On iOS-Devices **with iOS < 14.3** camera access works only in native Safari and not in other Browsers (Chrome,...) or Apps that use an UIWebView or WKWebView. This is not a restriction of this library but of the limited WebRTC support by Apple. The behavior might change in iOS 11.3 (Apr 2018?, not tested) as stated [here](https://developer.apple.com/library/content/releasenotes/General/WhatsNewInSafari/Articles/Safari_11_1.html#//apple_ref/doc/uid/TP40014305-CH14-SW1)
+
+> iOS 14.3 (released in december 2020) now supports WebRTC in 3rd party browsers as well 🎉 
+
+### Browser Support
+
+The browser layer is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web API which is not supported by older browsers.
+
+_You can use external polyfills like [WebRTC adapter](https://github.com/webrtc/adapter) to increase browser compatibility._
+
+Also, note that the library is using the [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) (`Int32Array`, `Uint8ClampedArray`, etc.) which are not available in older browsers (e.g. Android 4 default browser).
+
+_You can use [core-js](https://github.com/zloirock/core-js) to add support to these browsers._
+
+In the PDF 417 decoder recent addition, the library now makes use of the new `BigInt` type, which [is not supported by all browsers][2] as well. There's no way to polyfill that and ponyfill libraries are **way to big**, but even if PDF 417 decoding relies on `BigInt` the rest of the library shall work ok in browsers that doesn't support it.
+
+_There's no polyfills for `BigInt` in the way it's coded in here._
+
+## Usage
+
+```javascript
+// use with commonJS
+const { MultiFormatReader, BarcodeFormat } = require('@zxing/library');
+// or with ES6 modules
+import { MultiFormatReader, BarcodeFormat } from '@zxing/library';
+
+const hints = new Map();
+const formats = [BarcodeFormat.QR_CODE, BarcodeFormat.DATA_MATRIX/*, ...*/];
+
+hints.set(DecodeHintType.POSSIBLE_FORMATS, formats);
+
+const reader = new MultiFormatReader();
+
+reader.setHints(hints);
+
+const luminanceSource = new RGBLuminanceSource(imgByteArray, imgWidth, imgHeight);
+const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
+
+reader.decode(binaryBitmap);
+```
 
 ## Contributing
 

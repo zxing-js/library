@@ -1,4 +1,4 @@
-import { float, int } from 'src/customTypings';
+import { float, int } from '../../customTypings';
 
 /**
  * Ponyfill for Java's Float class.

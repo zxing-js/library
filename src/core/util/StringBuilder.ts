@@ -2,7 +2,6 @@ import CharacterSetECI from '../common/CharacterSetECI';
 import { int, char } from '../../customTypings';
 import StringUtils from '../common/StringUtils';
 
-
 export default class StringBuilder {
 
   private encoding: CharacterSetECI;

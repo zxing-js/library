@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { int, List } from 'src/customTypings';
+import { int, List } from '../../../customTypings';
 import BarcodeFormat from '../../BarcodeFormat';
 import BinaryBitmap from '../../BinaryBitmap';
 import DecoderResult from '../../common/DecoderResult';

@@ -113,6 +113,7 @@ export { default as ITFReader } from './core/oned/ITFReader';
 export { default as Code39Reader } from './core/oned/Code39Reader';
 export { default as RSS14Reader } from './core/oned/rss/RSS14Reader';
 export { default as RSSExpandedReader } from './core/oned/rss/expanded/RSSExpandedReader';
+export { createDecoder as createAbstractExpandedDecoder } from './core/oned/rss/expanded/decoders/AbstractExpandedDecoderComplement';
 export { default as MultiFormatOneDReader } from './core/oned/MultiFormatOneDReader';
 
 

@@ -21,17 +21,6 @@ import * as fs from 'fs';
 import * as log from 'loglevel';
 import { assertEquals, assertGreaterThanEquals, assertLessThanEquals } from '../util/AssertUtils';
 import SharpImage from '../util/SharpImage';
-import SharpImageLuminanceSource from '../SharpImageLuminanceSource';
-import { BarcodeFormat } from '@zxing/library';
-import { BinaryBitmap } from '@zxing/library';
-import { DecodeHintType } from '@zxing/library';
-import { LuminanceSource } from '@zxing/library';
-import { Reader } from '@zxing/library';
-import { Result } from '@zxing/library';
-import { ResultMetadataType } from '@zxing/library';
-import TestResult from '../common/TestResult';
-import { HybridBinarizer } from '@zxing/library';
-import { ZXingStringEncoding } from '@zxing/library';
 
 
 /* import javax.imageio.ImageIO; */

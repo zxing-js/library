@@ -1,4 +1,4 @@
-import { int } from "src/customTypings";
+import { int } from "../../customTypings";
 
 /**
  * Ponyfill for Java's Integer class.
