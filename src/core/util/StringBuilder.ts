@@ -1,5 +1,6 @@
+import { char, int } from '../../customTypings';
+import ArgumentException from '../ArgumentException';
 import CharacterSetECI from '../common/CharacterSetECI';
-import { int, char } from '../../customTypings';
 import StringUtils from '../common/StringUtils';
 
 export default class StringBuilder {
@@ -14,20 +15,29 @@ export default class StringBuilder {
   }
 
   public append(s: string | number): StringBuilder {
-    if (typeof s === 'string') {
-      this.value += s.toString();
-    } else if (this.encoding) {
-      // use passed format (fromCharCode will return UTF8 encoding)
-      this.value += StringUtils.castAsNonUtf8Char(s, this.encoding);
-    } else {
-      // correctly converts from UTF-8, but not other encodings
-      this.value += String.fromCharCode(s);
-    }
+    this.value += this.normalizeString(s);
     return this;
   }
 
+  public normalizeString(s: string | number) {
+    if (typeof s === 'string') {
+      return s.toString();
+    }
+
+    if (this.encoding) {
+      // use passed format (fromCharCode will return UTF8 encoding)
+      return StringUtils.castAsNonUtf8Char(s, this.encoding);
+    }
+
+    // correctly converts from UTF-8, but not other encodings
+    return String.fromCharCode(s);
+  }
+
   public appendChars(str: char[] | string[], offset: int, len: int): StringBuilder {
-    for (let i = offset; offset < offset + len; i++) {
+    const strLength = str.length;
+    if (strLength < len) throw new ArgumentException('`str` must be the same size or smaller than `len`');
+    for (let i = offset; i < offset + len; i++) {
+      if (i > strLength) throw new ArgumentException('Index out of bounds!');
       this.append(str[i]);
     }
     return this;
@@ -53,9 +63,6 @@ export default class StringBuilder {
     return this.value.substring(start, end);
   }
 
-  /**
-   * @note helper method for RSS Expanded
-   */
   public setLengthToZero(): void {
     this.value = '';
   }
@@ -64,7 +71,10 @@ export default class StringBuilder {
     return this.value;
   }
 
-  public insert(n: number, c: string) {
-    this.value = this.value.substr(0, n) + c + this.value.substr(n + c.length);
+  public insert(n: number, s: string | number, replace: int = 0) {
+    const c = this.normalizeString(s);
+    const fromLength = !replace && replace !== 0 ? c.length : replace;
+    this.value = this.value.substr(0, n) + c + this.value.substr(n + fromLength);
+    return this;
   }
 }
