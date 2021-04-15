@@ -1,4 +1,5 @@
-import StringBuilder from 'src/core/util/StringBuilder';
+
+import StringBuilder from '../../../core/util/StringBuilder';
 import { assertEquals } from './AssertUtils';
 
 describe('StringBuilder tests', () => {
