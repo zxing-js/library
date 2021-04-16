@@ -29,10 +29,10 @@ import {
 } from '@zxing/library';
 import * as fs from 'fs';
 import * as path from 'path';
+import TestResult from '../util/TestResult';
 import SharpImageLuminanceSource from '../SharpImageLuminanceSource';
 import { assertEquals } from '../util/AssertUtils';
 import SharpImage from '../util/SharpImage';
-import TestResult from './TestResult';
 
 /*import javax.imageio.ImageIO;*/
 /*import java.awt.Graphics;*/
