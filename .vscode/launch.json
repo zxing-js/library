@@ -54,18 +54,22 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "EAN 13 Tests",
-      "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
+      "name": "EAN 13 Tests - ts-node",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "args": [
-        "./src/test/core/oned/Ean13*.spec.ts",
-        "--colors",
+        "--require",
+        "ts-node/register",
+        "--require",
+        "tsconfig-paths/register",
+        "-u",
+        "tdd",
         "--timeout",
         "999999",
-        "--webpack-env",
-        "dbg",
-        "--webpack-config",
-        "webpack.config.test.js"
-      ]
+        "--colors",
+        "--recursive",
+        "./src/test/core/oned/Ean13*.spec.ts"
+      ],
+      "internalConsoleOptions": "openOnSessionStart"
     },
     {
       "type": "node",
