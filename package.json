@@ -1,6 +1,6 @@
 {
   "name": "@zxing/library",
-  "version": "0.18.5",
+  "version": "0.18.6",
   "description": "TypeScript port of ZXing multi-format 1D/2D barcode image processing library.",
   "keywords": [
     "reader",
@@ -44,8 +44,7 @@
   "module": "./esm/index.js",
   "typings": "./esm/index.d.ts",
   "esnext": "./es2015/index.js",
-  "browser": "./umd/index.js",
-  "browser:min": "./umd/index.min.js",
+  "unpkg": "./umd/zxing-browser.min.js",
   "scripts": {
     "lint": "yarn tslint --project .",
     "clean": "yarn shx rm -rf dist output",
