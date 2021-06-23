@@ -44,7 +44,7 @@
   "module": "./esm/index.js",
   "typings": "./esm/index.d.ts",
   "esnext": "./es2015/index.js",
-  "unpkg": "./umd/zxing-browser.min.js",
+  "unpkg": "./umd/index.min.js",
   "scripts": {
     "lint": "yarn tslint --project .",
     "clean": "yarn shx rm -rf dist output",
