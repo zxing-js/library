@@ -16,11 +16,11 @@
 
 /*package com.google.zxing.qrcode;*/
 
-import { BarcodeFormat } from '@zxing/library';
-import { MultiFormatReader } from '@zxing/library';
-import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
+import '@zxing/text-encoding/cjs/encoding-indexes';
+
+import { BarcodeFormat, MultiFormatReader, ZXingStringEncoding } from '@zxing/library';
 import { TextDecoder, TextEncoder } from '@zxing/text-encoding';
-import { ZXingStringEncoding } from '@zxing/library';
+import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 
 ZXingStringEncoding.customDecoder = (b, e) => new TextDecoder(e).decode(b);
 ZXingStringEncoding.customEncoder = (b, e) => new TextEncoder(e, { NONSTANDARD_allowLegacyEncoding: true }).encode(b);

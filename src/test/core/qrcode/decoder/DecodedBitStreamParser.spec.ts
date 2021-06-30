@@ -16,13 +16,13 @@
 
 /*package com.google.zxing.qrcode.decoder;*/
 
-import * as assert from 'assert';
-import { QRCodeDecodedBitStreamParser } from '@zxing/library';
-import BitSourceBuilder from '../../../core/common/BitSourceBuilder';
-import { QRCodeVersion } from '@zxing/library';
-import Random from '../../../core/util/Random';
+import '@zxing/text-encoding/cjs/encoding-indexes';
+
+import { QRCodeDecodedBitStreamParser, QRCodeVersion, ZXingStringEncoding } from '@zxing/library';
 import { TextDecoder } from '@zxing/text-encoding';
-import { ZXingStringEncoding } from '@zxing/library';
+import * as assert from 'assert';
+import BitSourceBuilder from '../../../core/common/BitSourceBuilder';
+import Random from '../../../core/util/Random';
 
 ZXingStringEncoding.customDecoder = (b, e) => new TextDecoder(e).decode(b);
 

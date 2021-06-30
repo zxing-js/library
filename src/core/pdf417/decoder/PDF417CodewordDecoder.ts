@@ -33,8 +33,8 @@ export default /*final*/ class PDF417CodewordDecoder {
   // flag that the table is ready for use
   private static bSymbolTableReady: boolean = false;
 
-  private static /*final float[][]*/ RATIOS_TABLE: number[][] =
-      new Array(PDF417Common.SYMBOL_TABLE.length).map(x => x = new Array(PDF417Common.BARS_IN_MODULE));
+  private static /*final float[][]*/ RATIOS_TABLE: Float32Array[] =
+      new Array(PDF417Common.SYMBOL_TABLE.length).map(x => x = new Float32Array(PDF417Common.BARS_IN_MODULE));
 
   /* @note
    * this action have to be performed before first use of class
@@ -54,7 +54,7 @@ export default /*final*/ class PDF417CodewordDecoder {
         }
         currentBit = currentSymbol & 0x1;
         if (!PDF417CodewordDecoder.RATIOS_TABLE[i]) {
-          PDF417CodewordDecoder.RATIOS_TABLE[i] = new Array(PDF417Common.BARS_IN_MODULE);
+          PDF417CodewordDecoder.RATIOS_TABLE[i] = new Float32Array(PDF417Common.BARS_IN_MODULE);
         }
         PDF417CodewordDecoder.RATIOS_TABLE[i][PDF417Common.BARS_IN_MODULE - j - 1] = Math.fround(size / PDF417Common.MODULES_IN_CODEWORD);
       }
@@ -119,7 +119,7 @@ export default /*final*/ class PDF417CodewordDecoder {
     }
     for (/*int*/ let j = 0; j < PDF417CodewordDecoder.RATIOS_TABLE.length; j++) {
       let error: float = 0.0;
-      let ratioTableRow: float[] = PDF417CodewordDecoder.RATIOS_TABLE[j];
+      let ratioTableRow: Float32Array = PDF417CodewordDecoder.RATIOS_TABLE[j];
       for (/*int*/ let k = 0; k < PDF417Common.BARS_IN_MODULE; k++) {
         let diff: float = Math.fround(ratioTableRow[k] - bitCountRatios[k]);
         error += Math.fround(diff * diff);

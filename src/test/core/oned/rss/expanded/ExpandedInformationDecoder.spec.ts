@@ -40,9 +40,9 @@ import BinaryUtil from './BinaryUtil';
  * @author Pablo Orduña, University of Deusto (pablo.orduna@deusto.es)
  * @author Eduardo Castillejo, University of Deusto (eduardo.castillejo@deusto.es)
  */
-it('ExpandedInformationDecoderTest', () => {
+describe('ExpandedInformationDecoderTest', () => {
 
-  it('testNoAi', () => {
+  it.skip('testNoAi', () => {
     let information: BitArray = BinaryUtil.buildBitArrayFromString(' .......X ..XX..X. X.X....X .......X ....');
 
     let decoder: AbstractExpandedDecoder = createAbstractExpandedDecoder(information);
