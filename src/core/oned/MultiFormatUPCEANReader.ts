@@ -100,7 +100,7 @@ export default class MultiFormatUPCEANReader extends OneDReader {
           const resultUPCA: Result = new Result(
             result.getText().substring(1),
             rawBytes,
-            rawBytes.length,
+            rawBytes === null ? 0 : rawBytes.length,
             result.getResultPoints(),
             BarcodeFormat.UPC_A
           );
