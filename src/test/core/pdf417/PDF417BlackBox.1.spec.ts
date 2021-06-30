@@ -16,11 +16,11 @@
 
 // package com.google.zxing.pdf417;
 
-import { BarcodeFormat } from '@zxing/library';
-import { MultiFormatReader } from '@zxing/library';
-import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
-import { ZXingStringEncoding } from '@zxing/library';
+import '@zxing/text-encoding/cjs/encoding-indexes';
+
+import { BarcodeFormat, MultiFormatReader, ZXingStringEncoding } from '@zxing/library';
 import { TextDecoder } from '@zxing/text-encoding';
+import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 
 ZXingStringEncoding.customDecoder = (b, e) => new TextDecoder(e).decode(b);
 
