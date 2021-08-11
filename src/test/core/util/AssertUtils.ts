@@ -1,4 +1,3 @@
-/** @type {any} */
 import * as assert from 'assert';
 
 export default class AssertUtils {
