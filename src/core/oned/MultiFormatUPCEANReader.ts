@@ -46,7 +46,9 @@ export default class MultiFormatUPCEANReader extends OneDReader {
 
       if (possibleFormats.indexOf(BarcodeFormat.EAN_13) > -1) {
         readers.push(new EAN13Reader());
-      } else if (possibleFormats.indexOf(BarcodeFormat.UPC_A) > -1) {
+      }
+
+      if (possibleFormats.indexOf(BarcodeFormat.UPC_A) > -1) {
         readers.push(new UPCAReader());
       }
 
@@ -61,7 +63,7 @@ export default class MultiFormatUPCEANReader extends OneDReader {
 
     if (readers.length === 0) {
       readers.push(new EAN13Reader());
-      // UPC-A is covered by EAN-13
+      readers.push(new UPCAReader());
       readers.push(new EAN8Reader());
       readers.push(new UPCEReader());
     }
@@ -100,7 +102,7 @@ export default class MultiFormatUPCEANReader extends OneDReader {
           const resultUPCA: Result = new Result(
             result.getText().substring(1),
             rawBytes,
-            rawBytes.length,
+            (rawBytes ? rawBytes.length : null),
             result.getResultPoints(),
             BarcodeFormat.UPC_A
           );
