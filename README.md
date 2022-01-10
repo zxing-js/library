@@ -42,6 +42,10 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/2b9c6ae92412ee8e15a9/test_coverage)](https://codeclimate.com/github/zxing-js/library/test_coverage)
 [![BCH compliance](https://bettercodehub.com/edge/badge/zxing-js/library?branch=master)](https://bettercodehub.com/)
 
+### Attention
+
+>NOTE: While we do not have the time to actively maintain zxing-js anymore, we are open to new maintainers taking the lead.
+
 ## Demo
 
 See [Live Preview](https://zxing-js.github.io/library/) in browser.

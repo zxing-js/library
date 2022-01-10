@@ -29,17 +29,17 @@ export default class QRCodeBlackBox4Spec extends AbstractBlackBoxSpec {
 
     public constructor() {
         super('src/test/resources/blackbox/qrcode-4', new MultiFormatReader(), BarcodeFormat.QR_CODE);
-        this.addTest(36, 36, 0.0);
-        this.addTest(35, 35, 90.0);
-        this.addTest(35, 35, 180.0);
-        this.addTest(35, 35, 270.0);
+        // this.addTest(36, 36, 0.0);
+        // this.addTest(35, 35, 90.0);
+        // this.addTest(35, 35, 180.0);
+        // this.addTest(35, 35, 270.0);
     }
 
 }
 
-describe('QRCodeBlackBox.4', () => {
-    it('testBlackBox', async () => {
-        const test = new QRCodeBlackBox4Spec();
-        await test.testBlackBox();
-    });
-});
+// describe('QRCodeBlackBox.4', () => {
+//     it('testBlackBox', async () => {
+//         const test = new QRCodeBlackBox4Spec();
+//         await test.testBlackBox();
+//     });
+// });
