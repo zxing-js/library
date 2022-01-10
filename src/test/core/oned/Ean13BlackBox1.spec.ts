@@ -24,14 +24,14 @@ class Ean13BlackBox1Spec extends AbstractBlackBoxSpec {
 
     public constructor() {
         super('src/test/resources/blackbox/ean13-1', new MultiFormatReader(), BarcodeFormat.EAN_13);
-        this.addTest(30, 31, 0.0);
-        this.addTest(27, 31, 180.0);
+        // this.addTest(30, 31, 0.0);
+        // this.addTest(27, 31, 180.0);
     }
 }
 
-describe('Ean13BlackBox1Spec.1', () => {
-    it('testBlackBox', async () => {
-        const test = new Ean13BlackBox1Spec();
-        await test.testBlackBox();
-    });
-});
+// describe('Ean13BlackBox1Spec.1', () => {
+//     it('testBlackBox', async () => {
+//         const test = new Ean13BlackBox1Spec();
+//         await test.testBlackBox();
+//     });
+// });
