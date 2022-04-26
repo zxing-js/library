@@ -94,12 +94,10 @@ hints.set(DecodeHintType.POSSIBLE_FORMATS, formats);
 
 const reader = new MultiFormatReader();
 
-reader.setHints(hints);
-
 const luminanceSource = new RGBLuminanceSource(imgByteArray, imgWidth, imgHeight);
 const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
 
-reader.decode(binaryBitmap);
+reader.decode(binaryBitmap, hints);
 ```
 
 ## Contributing
