@@ -48,7 +48,6 @@ export default class AztecReader implements Reader {
      * @throws FormatException if a Data Matrix code cannot be decoded
      */
     public decode(image: BinaryBitmap, hints: Map<DecodeHintType, any> | null = null): Result {
-
         let exception: Exception = null;
         let detector = new Detector(image.getBlackMatrix());
         let points: ResultPoint[] = null;
@@ -58,7 +57,9 @@ export default class AztecReader implements Reader {
             let detectorResult = detector.detectMirror(false);
             points = detectorResult.getPoints();
             this.reportFoundResultPoints(hints, points);
+            console.log("detect", detectorResult);
             decoderResult = new Decoder().decode(detectorResult);
+            console.log("decode", decoderResult);
         } catch (e) {
             exception = e;
         }
@@ -67,6 +68,7 @@ export default class AztecReader implements Reader {
                 let detectorResult = detector.detectMirror(true);
                 points = detectorResult.getPoints();
                 this.reportFoundResultPoints(hints, points);
+                console.log("chuj2", detectorResult);
                 decoderResult = new Decoder().decode(detectorResult);
             } catch (e) {
                 if (exception != null) {
@@ -75,6 +77,8 @@ export default class AztecReader implements Reader {
                 throw e;
             }
         }
+
+        
 
         let result = new Result(decoderResult.getText(),
             decoderResult.getRawBytes(),
@@ -98,6 +102,7 @@ export default class AztecReader implements Reader {
     private reportFoundResultPoints(hints: Map<DecodeHintType, any>, points: ResultPoint[]): void {
         if (hints != null) {
             let rpcb = hints.get(DecodeHintType.NEED_RESULT_POINT_CALLBACK);
+            console.log("rpcb", rpcb);
             if (rpcb != null) {
                 points.forEach((point, idx, arr) => {
                     rpcb.foundPossibleResultPoint(point);
