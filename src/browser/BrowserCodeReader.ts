@@ -839,8 +839,7 @@ export class BrowserCodeReader {
   }
 
   private _isHTMLVideoElement(mediaElement: HTMLVisualMediaElement):boolean {
-    const potentialVideo: HTMLVideoElement = <HTMLVideoElement>mediaElement;
-    return potentialVideo.videoWidth !== 0;
+    return mediaElement instanceof HTMLVideoElement
   }
 
   /**
