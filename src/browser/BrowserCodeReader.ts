@@ -838,10 +838,6 @@ export class BrowserCodeReader {
     return this.decodeBitmap(binaryBitmap);
   }
 
-  private _isHTMLVideoElement(mediaElement: HTMLVisualMediaElement):boolean {
-    return mediaElement instanceof HTMLVideoElement
-  }
-
   /**
    * Creates a binaryBitmap based in some image source.
    *
@@ -850,7 +846,7 @@ export class BrowserCodeReader {
   public createBinaryBitmap(mediaElement: HTMLVisualMediaElement): BinaryBitmap {
 
     const ctx = this.getCaptureCanvasContext(mediaElement);
-    if(this._isHTMLVideoElement(mediaElement)) {
+    if(mediaElement instanceof HTMLVideoElement) {
       this.drawFrameOnCanvas(<HTMLVideoElement>mediaElement);
     } else {
       this.drawImageOnCanvas(<HTMLImageElement>mediaElement);
