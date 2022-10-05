@@ -182,7 +182,7 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
                     }
                     patternStart += counters[0] + counters[1];
 
-                    let slice = counters.slice(2, counters.length - 1);
+                    let slice = counters.slice(2, counters.length);
                     for (let i = 0; i < counterPosition - 1; i++) {
                         counters[i] = slice[i];
                     }
