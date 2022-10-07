@@ -54,6 +54,29 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Code 93 Tests - ts-node",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "env": {
+        "TS_NODE_PROJECT": "${workspaceFolder}/tsconfig.test.json" 
+      },
+      "args": [
+        "--require",
+        "ts-node/register",
+        "--require",
+        "tsconfig-paths/register",
+        "-u",
+        "tdd",
+        "--timeout",
+        "999999",
+        "--colors",
+        "--recursive",
+        "./src/test/core/oned/Code93*.spec.ts"
+      ],
+      "internalConsoleOptions": "openOnSessionStart"
+    },    
+    {
+      "type": "node",
+      "request": "launch",
       "name": "EAN 13 Tests - ts-node",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "args": [
