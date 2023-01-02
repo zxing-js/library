@@ -76,6 +76,7 @@ export { default as DataMatrixErrorCorrection } from './core/datamatrix/encoder/
 export { default as DataMatrixHighLevelEncoder } from './core/datamatrix/encoder/HighLevelEncoder';
 export { default as DataMatrixSymbolInfo } from './core/datamatrix/encoder/SymbolInfo';
 export { SymbolShapeHint as DataMatrixSymbolShapeHint } from './core/datamatrix/encoder/constants';
+export { default as DataMatrixWriter } from './core/datamatrix/DataMatrixWriter';
 
 // core/pdf417
 export { default as PDF417Reader } from './core/pdf417/PDF417Reader';
