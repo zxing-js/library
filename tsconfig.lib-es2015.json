@@ -3,7 +3,8 @@
   "compilerOptions": {
     "module": "es2015",
     "target": "es2015",
-    "outDir": "dist/es2015"
+    "outDir": "dist/es2015",
+    "sourceMap": false
   },
   "exclude": [
     "src/test"
