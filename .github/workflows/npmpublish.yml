@@ -58,9 +58,9 @@ jobs:
         with:
           name: pack-artifact
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: 12
+          node-version: 18
           registry-url: https://registry.npmjs.org/
 
       - run: npm publish ./pack-artifact/package.tgz
@@ -94,9 +94,9 @@ jobs:
           jq -r --arg NAME $PACKAGE_NAME '.name |= $NAME' temp.json > package.json
           rm temp.json
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: 12
+          node-version: 18
           registry-url: https://npm.pkg.github.com/
 
       - run: npm publish ./pack-artifact/package.tgz
