@@ -35,7 +35,6 @@ There is otherwise no active development or roadmap for this project. It is "DIY
 
 ## Status
 
-[![Build Status](https://travis-ci.org/zxing-js/library.svg?branch=master)](https://travis-ci.org/zxing-js/library)
 [![Maintainer wanted](https://img.shields.io/badge/maintained-help%20wanted-red)](https://npmjs.org/package/@zxing/ngx-scanner)
 [![Greenkeeper badge](https://badges.greenkeeper.io/zxing-js/library.svg)](https://greenkeeper.io/)
 
