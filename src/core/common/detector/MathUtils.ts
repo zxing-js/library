@@ -33,7 +33,7 @@ export default class MathUtils {
    * @return nearest {@code int}
    */
   public static round(d: number/*float*/): number /*int*/ {
-    if (NaN === d) return 0;
+    if (isNaN(d)) return 0;
     if (d <= Number.MIN_SAFE_INTEGER) return Number.MIN_SAFE_INTEGER;
     if (d >= Number.MAX_SAFE_INTEGER) return Number.MAX_SAFE_INTEGER;
     return /*(int) */(d + (d < 0.0 ? -0.5 : 0.5)) | 0;
