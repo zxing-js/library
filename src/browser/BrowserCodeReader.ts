@@ -958,7 +958,12 @@ export class BrowserCodeReader {
   protected getCaptureCanvasContext(mediaElement?: HTMLVisualMediaElement) {
     if (!this.captureCanvasContext) {
       const elem = this.getCaptureCanvas(mediaElement);
-      const ctx = elem.getContext('2d');
+      let ctx;
+      try {
+        ctx = elem.getContext('2d', {willReadFrequently: true}) as CanvasRenderingContext2D;
+      } catch (e) {
+        ctx = elem.getContext('2d');
+      }
       this.captureCanvasContext = ctx;
     }
 
