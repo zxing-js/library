@@ -71,13 +71,18 @@ export { default as ReedSolomonEncoder } from './core/common/reedsolomon/ReedSol
 // core/datamatrix
 export { default as DataMatrixReader } from './core/datamatrix/DataMatrixReader';
 export { default as DataMatrixDecodedBitStreamParser } from './core/datamatrix/decoder/DecodedBitStreamParser';
+export { default as DataMatrixDefaultPlacement } from './core/datamatrix/encoder/DefaultPlacement';
+export { default as DataMatrixErrorCorrection } from './core/datamatrix/encoder/ErrorCorrection';
+export { default as DataMatrixHighLevelEncoder } from './core/datamatrix/encoder/HighLevelEncoder';
+export { default as DataMatrixSymbolInfo } from './core/datamatrix/encoder/SymbolInfo';
+export { SymbolShapeHint as DataMatrixSymbolShapeHint } from './core/datamatrix/encoder/constants';
+export { default as DataMatrixWriter } from './core/datamatrix/DataMatrixWriter';
 
 // core/pdf417
 export { default as PDF417Reader } from './core/pdf417/PDF417Reader';
 export { default as PDF417ResultMetadata } from './core/pdf417/PDF417ResultMetadata';
 export { default as PDF417DecodedBitStreamParser } from './core/pdf417/decoder/DecodedBitStreamParser';
 export { default as PDF417DecoderErrorCorrection } from './core/pdf417/decoder/ec/ErrorCorrection';
-
 
 // core/twod/qrcode
 export { default as QRCodeReader } from './core/qrcode/QRCodeReader';
@@ -94,7 +99,6 @@ export { default as QRCodeMatrixUtil } from './core/qrcode/encoder/MatrixUtil';
 export { default as QRCodeByteMatrix } from './core/qrcode/encoder/ByteMatrix';
 export { default as QRCodeMaskUtil } from './core/qrcode/encoder/MaskUtil';
 
-
 // core/twod/aztec
 export { default as AztecCodeReader } from './core/aztec/AztecReader';
 export { default as AztecCodeWriter } from './core/aztec/AztecWriter';
@@ -105,7 +109,6 @@ export { default as AztecCode } from './core/aztec/encoder/AztecCode';
 export { default as AztecDecoder } from './core/aztec/decoder/Decoder';
 export { default as AztecDetector } from './core/aztec/detector/Detector';
 export { Point as AztecPoint } from './core/aztec/detector/Detector';
-
 
 // core/oned
 export { default as OneDReader } from './core/oned/OneDReader';
