@@ -27,7 +27,6 @@ import Code93Reader from './Code93Reader';
 import ITFReader from './ITFReader';
 import MultiFormatUPCEANReader from './MultiFormatUPCEANReader';
 import OneDReader from './OneDReader';
-import Result from '../Result';
 import CodaBarReader from './CodaBarReader';
 import RSSExpandedReader from './rss/expanded/RSSExpandedReader';
 import RSS14Reader from './rss/RSS14Reader';
