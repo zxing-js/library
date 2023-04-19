@@ -17,24 +17,23 @@
 
 // package com.google.zxing.oned;
 
-import BarcodeFormat from '../../../core/BarcodeFormat';
-import MultiFormatReader from '../../../core/MultiFormatReader';
-import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
+import { BarcodeFormat, CodaBarReader } from '@zxing/library';
+import AbstractBlackBoxSpec from './../common/AbstractBlackBox';
 
 /**
  * @author Evan @dodobelieve
  */
 class CodaBarBlackBox1Spec extends AbstractBlackBoxSpec {
     public constructor() {
-        super('src/test/resources/blackbox/codabar-1', new MultiFormatReader(), BarcodeFormat.CODABAR);
+        super('src/test/resources/blackbox/codabar-1', new CodaBarReader(), BarcodeFormat.CODABAR);
         this.addTest(6, 6, 0.0);
         this.addTest(6, 6, 180.0);
     }
 }
 
 describe('CodaBarBlackBox.1', () => {
-    it('testBlackBox', done => {
-        const test = new CodaBarBlackBox1Spec();
-        return test.testBlackBox(done);
-    });
+  it('testBlackBox', async () => {
+    const test = new CodaBarBlackBox1Spec();
+    await test.testBlackBox();
+  });
 });

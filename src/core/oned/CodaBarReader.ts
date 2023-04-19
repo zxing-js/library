@@ -50,8 +50,8 @@ export default class CodaBarReader extends OneDReader {
         wnwnwnn: '.',
         nnwwwww: '+',
         nnwwnwn: 'A',
-        nnnwnww: 'B',
-        nwnwnnw: 'C',
+        nwnwnnw: 'B',
+        nnnwnww: 'C',
         nnnwwwn: 'D'
     };
 

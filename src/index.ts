@@ -122,3 +122,4 @@ export { default as RSSExpandedReader } from './core/oned/rss/expanded/RSSExpand
 export { default as AbstractExpandedDecoder } from './core/oned/rss/expanded/decoders/AbstractExpandedDecoder';
 export { createDecoder as createAbstractExpandedDecoder } from './core/oned/rss/expanded/decoders/AbstractExpandedDecoderComplement';
 export { default as MultiFormatOneDReader } from './core/oned/MultiFormatOneDReader';
+export { default as CodaBarReader } from './core/oned/CodaBarReader';
