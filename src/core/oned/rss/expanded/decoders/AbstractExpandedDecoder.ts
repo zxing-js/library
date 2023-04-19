@@ -4,6 +4,7 @@ import GeneralAppIdDecoder from './GeneralAppIdDecoder';
 export default abstract class AbstractExpandedDecoder {
 
   private readonly information: BitArray;
+
   private readonly generalDecoder: GeneralAppIdDecoder;
 
   constructor(information: BitArray) {

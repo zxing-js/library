@@ -17,11 +17,11 @@
 // package com.google.zxing.aztec;
 
 // import com.google.zxing.BarcodeFormat;
-import BarcodeFormat from '../../../core/BarcodeFormat';
+import { BarcodeFormat } from '@zxing/library';
 // import com.google.zxing.common.AbstractBlackBoxTestCase;
 import AbstractBlackBoxSpec from '../common/AbstractBlackBox';
 
-import AztecReader from '../../../core/aztec/AztecReader';
+import { AztecCodeReader } from '@zxing/library';
 
 /**
  * A test of Aztec barcodes under real world lighting conditions, taken with a mobile phone.
@@ -31,7 +31,7 @@ import AztecReader from '../../../core/aztec/AztecReader';
 export /*public final*/ class AztecBlackBox2TestCase extends AbstractBlackBoxSpec {
 
   public constructor() {
-    super('src/test/resources/blackbox/aztec-2', new AztecReader(), BarcodeFormat.AZTEC);
+    super('src/test/resources/blackbox/aztec-2', new AztecCodeReader(), BarcodeFormat.AZTEC);
     this.addTest(5, 5, 0.0);
     this.addTest(4, 4, 90.0);
     this.addTest(6, 6, 180.0);

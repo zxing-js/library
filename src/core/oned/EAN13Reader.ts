@@ -30,14 +30,14 @@ import NotFoundException from '../NotFoundException';
 export default class EAN13Reader extends UPCEANReader {
     private static FIRST_DIGIT_ENCODINGS: number[] = [0x00, 0x0B, 0x0D, 0xE, 0x13, 0x19, 0x1C, 0x15, 0x16, 0x1A];
 
-    private decodeMiddleCounters: number[];
+  private decodeMiddleCounters: Int32Array;
 
     public constructor() {
         super();
-        this.decodeMiddleCounters = [0, 0, 0, 0];
+      this.decodeMiddleCounters = Int32Array.from([0, 0, 0, 0]);
     }
 
-    public decodeMiddle(row: BitArray, startRange: number[], resultString: string) {
+  public decodeMiddle(row: BitArray, startRange: Int32Array, resultString: string) {
         let counters = this.decodeMiddleCounters;
         counters[0] = 0;
         counters[1] = 0;
@@ -61,7 +61,7 @@ export default class EAN13Reader extends UPCEANReader {
 
         resultString = EAN13Reader.determineFirstDigit(resultString, lgPatternFound);
 
-        let middleRange = UPCEANReader.findGuardPattern(row, rowOffset, true, UPCEANReader.MIDDLE_PATTERN, new Array(UPCEANReader.MIDDLE_PATTERN.length).fill(0));
+        let middleRange = UPCEANReader.findGuardPattern(row, rowOffset, true, UPCEANReader.MIDDLE_PATTERN, new Int32Array(UPCEANReader.MIDDLE_PATTERN.length).fill(0));
         rowOffset = middleRange[1];
 
         for (let x = 0; x < 6 && rowOffset < end; x++) {

@@ -1,7 +1,7 @@
 import * as assert from 'assert';
-import DecodedBitStreamParser from '../../../../core/datamatrix/decoder/DecodedBitStreamParser';
+import { DataMatrixDecodedBitStreamParser } from '@zxing/library';
 
-describe('DecodedBitStreamParser', () => {
+describe('QRCodeDecodedBitStreamParser', () => {
 
     it('testAsciiStandardDecode', () => {
     // ASCII characters 0-127 are encoded as the value + 1
@@ -12,7 +12,7 @@ describe('DecodedBitStreamParser', () => {
         bytes[3] = 'A'.charCodeAt(0) + 1;
         bytes[4] = 'B'.charCodeAt(0) + 1;
         bytes[5] = 'C'.charCodeAt(0) + 1;
-        const decodedString = DecodedBitStreamParser.decode(bytes).getText();
+        const decodedString = DataMatrixDecodedBitStreamParser.decode(bytes).getText();
         assert.strictEqual(decodedString, 'abcABC');
     });
 
@@ -22,7 +22,7 @@ describe('DecodedBitStreamParser', () => {
         bytes[1] = 1 + 130;
         bytes[2] = 98 + 130;
         bytes[3] = 99 + 130;
-        const decodedString = DecodedBitStreamParser.decode(bytes).getText();
+        const decodedString = DataMatrixDecodedBitStreamParser.decode(bytes).getText();
         assert.strictEqual(decodedString, '00019899');
     });
 

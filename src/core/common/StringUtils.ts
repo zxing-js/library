@@ -213,6 +213,7 @@ export default class StringUtils {
     if (canBeUTF8) {
       return StringUtils.UTF8;
     }
+
     // Otherwise, we take a wild guess with platform encoding
     return StringUtils.PLATFORM_DEFAULT_ENCODING;
   }

@@ -18,8 +18,8 @@
 
 import * as assert from 'assert';
 import Random from '../util/Random';
-import BitArray from '../../../core/common/BitArray';
-import Integer from '../../../core/util/Integer';
+import { BitArray } from '@zxing/library';
+import { ZXingInteger } from '@zxing/library';
 import AssertUtils from '../util/AssertUtils';
 
 /**
@@ -171,7 +171,7 @@ describe('BitArray', () => {
         array.set(63);
         const ints = array.getBitArray();
         assert.strictEqual(ints[0], 1);
-        assert.strictEqual(ints[1], Integer.MIN_VALUE_32_BITS); // Integer.MIN_VALUE)
+        assert.strictEqual(ints[1], ZXingInteger.MIN_VALUE_32_BITS); // Integer.MIN_VALUE)
     });
 
 

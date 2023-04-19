@@ -1,11 +1,8 @@
 import CharacterSetECI from '../common/CharacterSetECI';
-import StringEncoding from './StringEncoding';
-import { int } from '../../customTypings';
+import { int, char } from '../../customTypings';
 import StringUtils from '../common/StringUtils';
 
-
 export default class StringBuilder {
-
   private encoding: CharacterSetECI;
 
   public constructor(private value: string = '') {}
@@ -24,6 +21,17 @@ export default class StringBuilder {
     } else {
       // correctly converts from UTF-8, but not other encodings
       this.value += String.fromCharCode(s);
+    }
+    return this;
+  }
+
+  public appendChars(
+    str: char[] | string[],
+    offset: int,
+    len: int
+  ): StringBuilder {
+    for (let i = offset; offset < offset + len; i++) {
+      this.append(str[i]);
     }
     return this;
   }
@@ -52,7 +60,7 @@ export default class StringBuilder {
    * @note helper method for RSS Expanded
    */
   public setLengthToZero(): void {
-      this.value = "";
+    this.value = '';
   }
 
   public toString(): string {
@@ -60,6 +68,6 @@ export default class StringBuilder {
   }
 
   public insert(n: number, c: string) {
-    this.value = this.value.substr(0, n) + c + this.value.substr(n + c.length);
+    this.value = this.value.substring(0, n) + c + this.value.substring(n);
   }
 }

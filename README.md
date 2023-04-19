@@ -2,6 +2,13 @@
 
 # ZXing
 
+## Project in Maintenance Mode Only
+
+The project is in maintenance mode, meaning, changes are driven by contributed patches.
+Only bug fixes and minor enhancements will be considered. The Barcode Scanner app can
+no longer be published, so it's unlikely any changes will be accepted for it.
+There is otherwise no active development or roadmap for this project. It is "DIY".
+
 ### Runs on your favorite ECMAScript ecosystem
 
 > If it doesn't, we gonna make it.
@@ -16,9 +23,9 @@
 
 | 1D product | 1D industrial       | 2D             |
 | ---------- | ------------------- | -------------- |
-| ~~UPC-A~~  | Code 39             | QR Code        |
-| ~~UPC-E~~  | ~~Code 93~~         | Data Matrix    |
-| EAN-8      | Code 128            | ~~Aztec~~ \*   |
+| UPC-A      | Code 39             | QR Code        |
+| UPC-E      | Code 93             | Data Matrix    |
+| EAN-8      | Code 128            | Aztec          |
 | EAN-13     | ~~Codabar~~         | PDF 417        |
 |            | ITF                 | ~~MaxiCode~~   |
 |            | RSS-14              |
@@ -28,8 +35,7 @@
 
 ## Status
 
-[![Build Status](https://travis-ci.org/zxing-js/library.svg?branch=master)](https://travis-ci.org/zxing-js/library)
-![Dependencies](https://david-dm.org/zxing-js/library.svg)
+[![Maintainer wanted](https://img.shields.io/badge/maintained-help%20wanted-red)](https://npmjs.org/package/@zxing/ngx-scanner)
 [![Greenkeeper badge](https://badges.greenkeeper.io/zxing-js/library.svg)](https://greenkeeper.io/)
 
 [![NPM version](https://img.shields.io/npm/v/@zxing/library.svg?&label=npm)][0]
@@ -37,10 +43,12 @@
 [![Contributors](https://img.shields.io/github/contributors/zxing-js/library.svg)](https://github.com/zxing-js/library/graphs/contributors)
 [![Commits to deploy](https://img.shields.io/github/commits-since/zxing-js/library/master.svg?label=commits%20to%20deploy)](https://github.com/zxing-js/library/compare/master...develop)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9aaa5317fcc740af9f25b3c7f832aa1d)](https://www.codacy.com/app/zxing/library?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zxing-js/library&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b9c6ae92412ee8e15a9/maintainability)](https://codeclimate.com/github/zxing-js/library/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/2b9c6ae92412ee8e15a9/test_coverage)](https://codeclimate.com/github/zxing-js/library/test_coverage)
-[![BCH compliance](https://bettercodehub.com/edge/badge/zxing-js/library?branch=master)](https://bettercodehub.com/)
+
+### Attention
+
+>NOTE: While we do not have the time to actively maintain zxing-js anymore, we are open to new maintainers taking the lead.
 
 ## Demo
 
@@ -56,109 +64,13 @@ or
 
 `yarn add @zxing/library`
 
-## Usage
+## Limitations
 
-### Use on browser with ES6 modules:
+On iOS-Devices **with iOS < 14.3** camera access works only in native Safari and not in other Browsers (Chrome,...) or Apps that use an UIWebView or WKWebView. This is not a restriction of this library but of the limited WebRTC support by Apple. The behavior might change in iOS 11.3 (Apr 2018?, not tested) as stated [here](https://developer.apple.com/library/content/releasenotes/General/WhatsNewInSafari/Articles/Safari_11_1.html#//apple_ref/doc/uid/TP40014305-CH14-SW1)
 
-```html
-<script type="module">
-  import { BrowserQRCodeReader } from '@zxing/library';
+> iOS 14.3 (released in december 2020) now supports WebRTC in 3rd party browsers as well 🎉 
 
-  const codeReader = new BrowserQRCodeReader();
-  const img = document.getElementById('img');
-
-  try {
-      const result = await codeReader.decodeFromImage(img);
-  } catch (err) {
-      console.error(err);
-  }
-
-  console.log(result);
-</script>
-```
-
-#### Or asynchronously:
-
-```html
-<script type="module">
-  import('@zxing/library').then({ BrowserQRCodeReader } => {
-
-    const codeReader = new BrowserQRCodeReader();
-    const img = document.getElementById('img');
-
-    try {
-        const result = await codeReader.decodeFromImage(img);
-    } catch (err) {
-        console.error(err);
-    }
-
-    console.log(result);
-
-  });
-</script>
-```
-
-### Use on browser with AMD:
-
-```html
-<script type="text/javascript" src="https://unpkg.com/requirejs"></script>
-<script type="text/javascript">
-  require(['@zxing/library'], ZXing => {
-    const codeReader = new ZXing.BrowserQRCodeReader();
-    const img = document.getElementById('img');
-
-    try {
-        const result = await codeReader.decodeFromImage(img);
-    } catch (err) {
-        console.error(err);
-    }
-
-    console.log(result);
-  });
-</script>
-```
-
-### Use on browser with UMD:
-
-```html
-<script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
-<script type="text/javascript">
-  window.addEventListener('load', () => {
-    const codeReader = new ZXing.BrowserQRCodeReader();
-    const img = document.getElementById('img');
-
-    try {
-        const result = await codeReader.decodeFromImage(img);
-    } catch (err) {
-        console.error(err);
-    }
-
-    console.log(result);
-  });
-</script>
-```
-
-### Use outside the browser with CommonJS:
-
-```javascript
-const { MultiFormatReader, BarcodeFormat } = require('@zxing/library/esm5'); // use this path since v0.5.1
-
-const hints = new Map();
-const formats = [BarcodeFormat.QR_CODE, BarcodeFormat.DATA_MATRIX/*, ...*/];
-
-hints.set(DecodeHintType.POSSIBLE_FORMATS, formats);
-
-const reader = new MultiFormatReader();
-
-reader.setHints(hints);
-
-const luminanceSource = new RGBLuminanceSource(imgByteArray, imgWidth, imgHeight);
-const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
-
-reader.decode(binaryBitmap);
-```
-
-## Browser Support
+### Browser Support
 
 The browser layer is using the [MediaDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices) web API which is not supported by older browsers.
 
@@ -172,171 +84,25 @@ In the PDF 417 decoder recent addition, the library now makes use of the new `Bi
 
 _There's no polyfills for `BigInt` in the way it's coded in here._
 
-### Scanning from Video Camera
-
-To display the input from the video camera you will need to add a video element in the HTML page:
-
-```html
-<video
-  id="video"
-  width="300"
-  height="200"
-  style="border: 1px solid gray"
-></video>
-```
-
-To start decoding, first obtain a list of video input devices with:
+## Usage
 
 ```javascript
-const codeReader = new ZXing.BrowserQRCodeReader();
+// use with commonJS
+const { MultiFormatReader, BarcodeFormat } = require('@zxing/library');
+// or with ES6 modules
+import { MultiFormatReader, BarcodeFormat } from '@zxing/library';
 
-codeReader
-  .listVideoInputDevices()
-  .then(videoInputDevices => {
-    videoInputDevices.forEach(device =>
-      console.log(`${device.label}, ${device.deviceId}`)
-    );
-  })
-  .catch(err => console.error(err));
-```
+const hints = new Map();
+const formats = [BarcodeFormat.QR_CODE, BarcodeFormat.DATA_MATRIX/*, ...*/];
 
-If there is just one input device you can use the first `deviceId` and the video element id (in the example below is also 'video') to decode:
+hints.set(DecodeHintType.POSSIBLE_FORMATS, formats);
 
-```javascript
-const firstDeviceId = videoInputDevices[0].deviceId;
+const reader = new MultiFormatReader();
 
-codeReader
-  .decodeOnceFromVideoDevice(firstDeviceId, 'video')
-  .then(result => console.log(result.text))
-  .catch(err => console.error(err));
-```
+const luminanceSource = new RGBLuminanceSource(imgByteArray, imgWidth, imgHeight);
+const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
 
-If there are more input devices then you will need to chose one for `codeReader.decodeOnceFromVideoDevice` device id parameter.
-
-You can also provide `undefined` for the device id parameter in which case the library will automatically choose the camera, preferring the main (environment facing) camera if more are available:
-
-```javascript
-codeReader
-  .decodeOnceFromVideoDevice(undefined, 'video')
-  .then(result => console.log(result.text))
-  .catch(err => console.error(err));
-```
-
-### Scanning from Video File
-
-Similar as above you can use a video element in the HTML page:
-
-```html
-<video
-  id="video"
-  width="300"
-  height="200"
-  style="border: 1px solid gray"
-></video>
-```
-
-And to decode the video from an url:
-
-```javascript
-const codeReader = new ZXing.BrowserQRCodeReader();
-const videoSrc = 'your url to a video';
-
-codeReader
-  .decodeFromVideo('video', videoSrc)
-  .then(result => console.log(result.text))
-  .catch(err => console.error(err));
-```
-
-You can also decode the video url without showing it in the page, in this case no `video` element is needed in HTML.
-
-```javascript
-codeReader
-  .decodeFromVideoUrl(videoUrl)
-  .then(result => console.log(result.text))
-  .catch(err => console.error(err));
-
-// or alternatively
-
-codeReader
-  .decodeFromVideo(null, videoUrl)
-  .then(result => console.log(result.text))
-  .catch(err => console.error(err));
-```
-
-### Scanning from Image
-
-Similar as above you can use a img element in the HTML page (with src attribute set):
-
-```html
-<img
-  id="img"
-  src="qrcode-image.png"
-  width="200"
-  height="300"
-  style="border: 1px solid gray"
-/>
-```
-
-And to decode the image:
-
-```javascript
-const codeReader = new ZXing.BrowserQRCodeReader();
-const img = document.getElementById('img');
-
-codeReader
-  .decodeFromImage(img)
-  .then(result => console.log(result.text))
-  .catch(err => console.error(err));
-```
-
-You can also decode the image url without showing it in the page, in this case no `img` element is needed in HTML:
-
-```javascript
-const imgSrc = 'url to image';
-
-codeReader
-  .decodeFromImage(undefined, imgSrc)
-  .then(result => console.log(result.text))
-  .catch(err => console.error(err));
-```
-
-Or decode the image url directly from an url, with an `img` element in page (notice no `src` attribute is set for `img` element):
-
-```html
-<img
-  id="img-to-decode"
-  width="200"
-  height="300"
-  style="border: 1px solid gray"
-/>
-```
-
-```javascript
-const imgSrc = 'url to image';
-const imgDomId = 'img-to-decode';
-
-codeReader
-  .decodeFromImage(imgDomId, imgSrc)
-  .then(result => console.log(result.text))
-  .catch(err => console.error(err));
-```
-
-## Barcode generation
-
-To generate a QR Code SVG image include 'zxing.qrcodewriter.min.js' from `build/vanillajs`. You will need to include an element where the SVG element will be appended:
-
-```html
-<div id="result"></div>
-```
-
-And then:
-
-```javascript
-const codeWriter = new ZXing.BrowserQRCodeSvgWriter();
-// you can get a SVG element.
-const svgElement = codeWriter.write(input, 300, 300);
-// or render it directly to DOM.
-codeWriter.writeToDom('#result', input, 300, 300);
+reader.decode(binaryBitmap, hints);
 ```
 
 ## Contributing

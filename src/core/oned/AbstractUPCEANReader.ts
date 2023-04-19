@@ -21,6 +21,7 @@ import Result from '../Result';
 import OneDReader from './OneDReader';
 import NotFoundException from '../NotFoundException';
 import FormatException from '../FormatException';
+import { int } from '../../customTypings';
 
 /**
  * <p>Encapsulates functionality and implementation that is common to UPC and EAN families
@@ -40,36 +41,36 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
     /**
      * Start/end guard pattern.
      */
-    public static START_END_PATTERN: number[] = [1, 1, 1];
+    public static START_END_PATTERN: Int32Array = Int32Array.from([1, 1, 1]);
 
     /**
      * Pattern marking the middle of a UPC/EAN pattern, separating the two halves.
      */
-    public static MIDDLE_PATTERN: number[] = [1, 1, 1, 1, 1];
+    public static MIDDLE_PATTERN: Int32Array = Int32Array.from([1, 1, 1, 1, 1]);
     /**
      * end guard pattern.
      */
-    public static END_PATTERN: number[] = [1, 1, 1, 1, 1, 1];
+    public static END_PATTERN: Int32Array = Int32Array.from([1, 1, 1, 1, 1, 1]);
     /**
      * "Odd", or "L" patterns used to encode UPC/EAN digits.
      */
-    public static L_PATTERNS: number[][] = [
-        [3, 2, 1, 1], // 0
-        [2, 2, 2, 1], // 1
-        [2, 1, 2, 2], // 2
-        [1, 4, 1, 1], // 3
-        [1, 1, 3, 2], // 4
-        [1, 2, 3, 1], // 5
-        [1, 1, 1, 4], // 6
-        [1, 3, 1, 2], // 7
-        [1, 2, 1, 3], // 8
-        [3, 1, 1, 2], // 9
+    public static L_PATTERNS: Int32Array[] = [
+        Int32Array.from([3, 2, 1, 1]), // 0
+        Int32Array.from([2, 2, 2, 1]), // 1
+        Int32Array.from([2, 1, 2, 2]), // 2
+        Int32Array.from([1, 4, 1, 1]), // 3
+        Int32Array.from([1, 1, 3, 2]), // 4
+        Int32Array.from([1, 2, 3, 1]), // 5
+        Int32Array.from([1, 1, 1, 4]), // 6
+        Int32Array.from([1, 3, 1, 2]), // 7
+        Int32Array.from([1, 2, 1, 3]), // 8
+        Int32Array.from([3, 1, 1, 2]), // 9
     ];
 
     /**
      * As above but also including the "even", or "G" patterns used to encode UPC/EAN digits.
      */
-    public static L_AND_G_PATTERNS: number[][];
+    public static L_AND_G_PATTERNS: Int32Array[];
 
     protected decodeRowStringBuffer = '';
     // private final UPCEANExtensionSupport extensionReader;
@@ -84,13 +85,13 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
     }
     */
 
-    static findStartGuardPattern(row: BitArray): number[] {
+    static findStartGuardPattern(row: BitArray): Int32Array {
         let foundStart = false;
-        let startRange: number[] = null;
+        let startRange: Int32Array;
         let nextStart = 0;
-        let counters = [0, 0, 0];
+        let counters = Int32Array.from([0, 0, 0]);
         while (!foundStart) {
-            counters = [0, 0, 0];
+            counters = Int32Array.from([0, 0, 0]);
             startRange = AbstractUPCEANReader.findGuardPattern(row, nextStart, false, this.START_END_PATTERN, counters);
             let start = startRange[0];
             nextStart = startRange[1];
@@ -122,7 +123,7 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
         for (let i = length - 1; i >= 0; i -= 2) {
             let digit = s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
             if (digit < 0 || digit > 9) {
-                throw new FormatException();
+                 throw new FormatException();
             }
             sum += digit;
         }
@@ -137,11 +138,34 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
         return (1000 - sum) % 10;
     }
 
-    static decodeEnd(row: BitArray, endStart: number): number[] {
-        return AbstractUPCEANReader.findGuardPattern(row, endStart, false, AbstractUPCEANReader.START_END_PATTERN, new Array(AbstractUPCEANReader.START_END_PATTERN.length).fill(0));
+    static decodeEnd(row: BitArray, endStart: number): Int32Array {
+      return AbstractUPCEANReader.findGuardPattern(row, endStart, false, AbstractUPCEANReader.START_END_PATTERN, new Int32Array(AbstractUPCEANReader.START_END_PATTERN.length).fill(0));
     }
 
-    static findGuardPattern(row: BitArray, rowOffset: number, whiteFirst: boolean, pattern: number[], counters: number[]) {
+    /**
+     * @throws NotFoundException
+     */
+    static findGuardPatternWithoutCounters(
+      row: BitArray,
+      rowOffset: int,
+      whiteFirst: boolean,
+      pattern: Int32Array,
+    ): Int32Array {
+      return this.findGuardPattern(row, rowOffset, whiteFirst, pattern, new Int32Array(pattern.length));
+    }
+
+    /**
+     * @param row row of black/white values to search
+     * @param rowOffset position to start search
+     * @param whiteFirst if true, indicates that the pattern specifies white/black/white/...
+     * pixel counts, otherwise, it is interpreted as black/white/black/...
+     * @param pattern pattern of counts of number of black and white pixels that are being
+     * searched for as a pattern
+     * @param counters array of counters, as long as pattern, to re-use
+     * @return start/end horizontal offset of guard pattern, as an array of two ints
+     * @throws NotFoundException if pattern is not found
+     */
+    static findGuardPattern(row: BitArray, rowOffset: number, whiteFirst: boolean, pattern: Int32Array, counters: Int32Array): Int32Array {
         let width = row.getSize();
         rowOffset = whiteFirst ? row.getNextUnset(rowOffset) : row.getNextSet(rowOffset);
         let counterPosition = 0;
@@ -154,7 +178,7 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
             } else {
                 if (counterPosition === patternLength - 1) {
                     if (OneDReader.patternMatchVariance(counters, pattern, AbstractUPCEANReader.MAX_INDIVIDUAL_VARIANCE) < AbstractUPCEANReader.MAX_AVG_VARIANCE) {
-                        return [patternStart, x];
+                        return Int32Array.from([patternStart, x]);
                     }
                     patternStart += counters[0] + counters[1];
 
@@ -176,7 +200,7 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
         throw new NotFoundException();
     }
 
-    static decodeDigit(row: BitArray, counters: number[], rowOffset: number, patterns: number[][]) {
+    static decodeDigit(row: BitArray, counters: Int32Array, rowOffset: int, patterns: Int32Array[]) {
         this.recordPattern(row, rowOffset, counters);
         let bestVariance = this.MAX_AVG_VARIANCE;
         let bestMatch = -1;
@@ -213,5 +237,5 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
      * @return horizontal offset of first pixel after the "middle" that was decoded
      * @throws NotFoundException if decoding could not complete successfully
      */
-    public abstract decodeMiddle(row: BitArray, startRange: number[], resultString: string);
+    public abstract decodeMiddle(row: BitArray, startRange: Int32Array, resultString: /*StringBuilder*/string);
 }
