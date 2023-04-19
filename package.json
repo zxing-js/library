@@ -65,7 +65,7 @@
     "tslint": "./node_modules/.bin/tslint \"./src/**/*.ts\""
   },
   "dependencies": {
-    "ts-custom-error": "^3.0.0"
+    "ts-custom-error": "^3.2.1"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^7.1.3",
