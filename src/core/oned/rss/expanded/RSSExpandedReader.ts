@@ -1,4 +1,3 @@
-
 import BarcodeFormat from '../../../BarcodeFormat';
 // import ResultPoint from '../../../ResultPoint';
 import BitArray from '../../../common/BitArray';
@@ -18,7 +17,6 @@ import { createDecoder } from './decoders/AbstractExpandedDecoderComplement';
 import ExpandedPair from './ExpandedPair';
 import ExpandedRow from './ExpandedRow';
 
-
 // import java.util.ArrayList;
 // import java.util.Iterator;
 // import java.util.List;
@@ -27,18 +25,17 @@ import ExpandedRow from './ExpandedRow';
 
 /** @experimental */
 export default class RSSExpandedReader extends AbstractRSSReader {
-
   private static readonly SYMBOL_WIDEST = [7, 5, 4, 3, 1];
   private static readonly EVEN_TOTAL_SUBSET = [4, 20, 52, 104, 204];
   private static readonly GSUM = [0, 348, 1388, 2948, 3988];
 
-  private static readonly  FINDER_PATTERNS = [
+  private static readonly FINDER_PATTERNS = [
     Int32Array.from([1, 8, 4, 1]), // A
     Int32Array.from([3, 6, 4, 1]), // B
     Int32Array.from([3, 4, 6, 1]), // C
     Int32Array.from([3, 2, 8, 1]), // D
     Int32Array.from([2, 6, 5, 1]), // E
-    Int32Array.from([2, 2, 9, 1])  // F
+    Int32Array.from([2, 2, 9, 1]), // F
   ];
 
   private static readonly WEIGHTS = [
@@ -64,7 +61,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     [103, 98, 83, 38, 114, 131, 182, 124],
     [161, 61, 183, 127, 170, 88, 53, 159],
     [55, 165, 73, 8, 24, 72, 5, 15],
-    [45, 135, 194, 160, 58, 174, 100, 89]
+    [45, 135, 194, 160, 58, 174, 100, 89],
   ];
 
   private static readonly FINDER_PAT_A = 0;
@@ -76,15 +73,87 @@ export default class RSSExpandedReader extends AbstractRSSReader {
 
   private static readonly FINDER_PATTERN_SEQUENCES = [
     [RSSExpandedReader.FINDER_PAT_A, RSSExpandedReader.FINDER_PAT_A],
-    [RSSExpandedReader.FINDER_PAT_A, RSSExpandedReader.FINDER_PAT_B, RSSExpandedReader.FINDER_PAT_B],
-    [RSSExpandedReader.FINDER_PAT_A, RSSExpandedReader.FINDER_PAT_C, RSSExpandedReader.FINDER_PAT_B, RSSExpandedReader.FINDER_PAT_D],
-    [RSSExpandedReader.FINDER_PAT_A, RSSExpandedReader.FINDER_PAT_E, RSSExpandedReader.FINDER_PAT_B, RSSExpandedReader.FINDER_PAT_D, RSSExpandedReader.FINDER_PAT_C],
-    [RSSExpandedReader.FINDER_PAT_A, RSSExpandedReader.FINDER_PAT_E, RSSExpandedReader.FINDER_PAT_B, RSSExpandedReader.FINDER_PAT_D, RSSExpandedReader.FINDER_PAT_D, RSSExpandedReader.FINDER_PAT_F],
-    [RSSExpandedReader.FINDER_PAT_A, RSSExpandedReader.FINDER_PAT_E, RSSExpandedReader.FINDER_PAT_B, RSSExpandedReader.FINDER_PAT_D, RSSExpandedReader.FINDER_PAT_E, RSSExpandedReader.FINDER_PAT_F, RSSExpandedReader.FINDER_PAT_F],
-    [RSSExpandedReader.FINDER_PAT_A, RSSExpandedReader.FINDER_PAT_A, RSSExpandedReader.FINDER_PAT_B, RSSExpandedReader.FINDER_PAT_B, RSSExpandedReader.FINDER_PAT_C, RSSExpandedReader.FINDER_PAT_C, RSSExpandedReader.FINDER_PAT_D, RSSExpandedReader.FINDER_PAT_D],
-    [RSSExpandedReader.FINDER_PAT_A, RSSExpandedReader.FINDER_PAT_A, RSSExpandedReader.FINDER_PAT_B, RSSExpandedReader.FINDER_PAT_B, RSSExpandedReader.FINDER_PAT_C, RSSExpandedReader.FINDER_PAT_C, RSSExpandedReader.FINDER_PAT_D, RSSExpandedReader.FINDER_PAT_E, RSSExpandedReader.FINDER_PAT_E],
-    [RSSExpandedReader.FINDER_PAT_A, RSSExpandedReader.FINDER_PAT_A, RSSExpandedReader.FINDER_PAT_B, RSSExpandedReader.FINDER_PAT_B, RSSExpandedReader.FINDER_PAT_C, RSSExpandedReader.FINDER_PAT_C, RSSExpandedReader.FINDER_PAT_D, RSSExpandedReader.FINDER_PAT_E, RSSExpandedReader.FINDER_PAT_F, RSSExpandedReader.FINDER_PAT_F],
-    [RSSExpandedReader.FINDER_PAT_A, RSSExpandedReader.FINDER_PAT_A, RSSExpandedReader.FINDER_PAT_B, RSSExpandedReader.FINDER_PAT_B, RSSExpandedReader.FINDER_PAT_C, RSSExpandedReader.FINDER_PAT_D, RSSExpandedReader.FINDER_PAT_D, RSSExpandedReader.FINDER_PAT_E, RSSExpandedReader.FINDER_PAT_E, RSSExpandedReader.FINDER_PAT_F, RSSExpandedReader.FINDER_PAT_F],
+    [
+      RSSExpandedReader.FINDER_PAT_A,
+      RSSExpandedReader.FINDER_PAT_B,
+      RSSExpandedReader.FINDER_PAT_B,
+    ],
+    [
+      RSSExpandedReader.FINDER_PAT_A,
+      RSSExpandedReader.FINDER_PAT_C,
+      RSSExpandedReader.FINDER_PAT_B,
+      RSSExpandedReader.FINDER_PAT_D,
+    ],
+    [
+      RSSExpandedReader.FINDER_PAT_A,
+      RSSExpandedReader.FINDER_PAT_E,
+      RSSExpandedReader.FINDER_PAT_B,
+      RSSExpandedReader.FINDER_PAT_D,
+      RSSExpandedReader.FINDER_PAT_C,
+    ],
+    [
+      RSSExpandedReader.FINDER_PAT_A,
+      RSSExpandedReader.FINDER_PAT_E,
+      RSSExpandedReader.FINDER_PAT_B,
+      RSSExpandedReader.FINDER_PAT_D,
+      RSSExpandedReader.FINDER_PAT_D,
+      RSSExpandedReader.FINDER_PAT_F,
+    ],
+    [
+      RSSExpandedReader.FINDER_PAT_A,
+      RSSExpandedReader.FINDER_PAT_E,
+      RSSExpandedReader.FINDER_PAT_B,
+      RSSExpandedReader.FINDER_PAT_D,
+      RSSExpandedReader.FINDER_PAT_E,
+      RSSExpandedReader.FINDER_PAT_F,
+      RSSExpandedReader.FINDER_PAT_F,
+    ],
+    [
+      RSSExpandedReader.FINDER_PAT_A,
+      RSSExpandedReader.FINDER_PAT_A,
+      RSSExpandedReader.FINDER_PAT_B,
+      RSSExpandedReader.FINDER_PAT_B,
+      RSSExpandedReader.FINDER_PAT_C,
+      RSSExpandedReader.FINDER_PAT_C,
+      RSSExpandedReader.FINDER_PAT_D,
+      RSSExpandedReader.FINDER_PAT_D,
+    ],
+    [
+      RSSExpandedReader.FINDER_PAT_A,
+      RSSExpandedReader.FINDER_PAT_A,
+      RSSExpandedReader.FINDER_PAT_B,
+      RSSExpandedReader.FINDER_PAT_B,
+      RSSExpandedReader.FINDER_PAT_C,
+      RSSExpandedReader.FINDER_PAT_C,
+      RSSExpandedReader.FINDER_PAT_D,
+      RSSExpandedReader.FINDER_PAT_E,
+      RSSExpandedReader.FINDER_PAT_E,
+    ],
+    [
+      RSSExpandedReader.FINDER_PAT_A,
+      RSSExpandedReader.FINDER_PAT_A,
+      RSSExpandedReader.FINDER_PAT_B,
+      RSSExpandedReader.FINDER_PAT_B,
+      RSSExpandedReader.FINDER_PAT_C,
+      RSSExpandedReader.FINDER_PAT_C,
+      RSSExpandedReader.FINDER_PAT_D,
+      RSSExpandedReader.FINDER_PAT_E,
+      RSSExpandedReader.FINDER_PAT_F,
+      RSSExpandedReader.FINDER_PAT_F,
+    ],
+    [
+      RSSExpandedReader.FINDER_PAT_A,
+      RSSExpandedReader.FINDER_PAT_A,
+      RSSExpandedReader.FINDER_PAT_B,
+      RSSExpandedReader.FINDER_PAT_B,
+      RSSExpandedReader.FINDER_PAT_C,
+      RSSExpandedReader.FINDER_PAT_D,
+      RSSExpandedReader.FINDER_PAT_D,
+      RSSExpandedReader.FINDER_PAT_E,
+      RSSExpandedReader.FINDER_PAT_E,
+      RSSExpandedReader.FINDER_PAT_F,
+      RSSExpandedReader.FINDER_PAT_F,
+    ],
   ];
 
   private static readonly MAX_PAIRS = 11;
@@ -95,14 +164,20 @@ export default class RSSExpandedReader extends AbstractRSSReader {
   private readonly startEnd = [2];
   private startFromEven: boolean;
 
-  public decodeRow(rowNumber: number, row: BitArray, hints: Map<DecodeHintType, any>): Result {
+  public decodeRow(
+    rowNumber: number,
+    row: BitArray,
+    hints: Map<DecodeHintType, any>
+  ): Result {
     // Rows can start with even pattern in case in prev rows there where odd number of patters.
     // So lets try twice
     // this.pairs.clear();
     this.pairs.length = 0;
     this.startFromEven = false;
     try {
-      return RSSExpandedReader.constructResult(this.decodeRow2pairs(rowNumber, row));
+      return RSSExpandedReader.constructResult(
+        this.decodeRow2pairs(rowNumber, row)
+      );
     } catch (e) {
       // OK
       // console.log(e);
@@ -110,9 +185,10 @@ export default class RSSExpandedReader extends AbstractRSSReader {
 
     this.pairs.length = 0;
     this.startFromEven = true;
-    return RSSExpandedReader.constructResult(this.decodeRow2pairs(rowNumber, row));
+    return RSSExpandedReader.constructResult(
+      this.decodeRow2pairs(rowNumber, row)
+    );
   }
-
 
   public reset(): void {
     this.pairs.length = 0;
@@ -169,7 +245,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     // We use recursive algorithm with pure complexity and don't want it to take forever
     // Stacked barcode can have up to 11 rows, so 25 seems reasonable enough
     if (this.rows.length > 25) {
-      this.rows.length = 0;  // We will never have a chance to get result, so clear it
+      this.rows.length = 0; // We will never have a chance to get result, so clear it
       return null;
     }
 
@@ -196,7 +272,10 @@ export default class RSSExpandedReader extends AbstractRSSReader {
 
   // Try to construct a valid rows sequence
   // Recursion is used to implement backtracking
-  private checkRows(collectedRows: any, currentRow: number): Array<ExpandedPair> {
+  private checkRows(
+    collectedRows: any,
+    currentRow: number
+  ): Array<ExpandedPair> {
     for (let i = currentRow; i < this.rows.length; i++) {
       let row: any = this.rows[i];
       this.pairs.length = 0;
@@ -237,7 +316,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
 
       let stop = true;
       for (let j = 0; j < pairs.length; j++) {
-        if (pairs[j].getFinderPattern().getValue() != sequence[j]) {
+        if (pairs[j].getFinderPattern().getValue() !== sequence[j]) {
           stop = false;
           break;
         }
@@ -278,13 +357,19 @@ export default class RSSExpandedReader extends AbstractRSSReader {
       return;
     }
 
-    this.rows.push(insertPos, new ExpandedRow(this.pairs, rowNumber, wasReversed));
+    this.rows.push(
+      insertPos,
+      new ExpandedRow(this.pairs, rowNumber, wasReversed)
+    );
 
     this.removePartialRows(this.pairs, this.rows);
   }
 
   // Remove all the rows that contains only specified pairs
-  private removePartialRows(pairs: Array<ExpandedPair>, rows: Array<ExpandedRow>): void {
+  private removePartialRows(
+    pairs: Array<ExpandedPair>,
+    rows: Array<ExpandedRow>
+  ): void {
     // for (Iterator<ExpandedRow> iterator = rows.iterator(); iterator.hasNext();) {
     //   ExpandedRow r = iterator.next();
     //   if (r.getPairs().size() == pairs.size()) {
@@ -367,7 +452,9 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     let resultingString = decoder.parseInformation();
 
     let firstPoints = pairs[0].getFinderPattern().getResultPoints();
-    let lastPoints = pairs[pairs.length - 1].getFinderPattern().getResultPoints();
+    let lastPoints = pairs[pairs.length - 1]
+      .getFinderPattern()
+      .getResultPoints();
     let points = [firstPoints[0], firstPoints[1], lastPoints[0], lastPoints[1]];
     return new Result(
       resultingString,
@@ -377,7 +464,6 @@ export default class RSSExpandedReader extends AbstractRSSReader {
       BarcodeFormat.RSS_EXPANDED,
       null
     );
-
   }
 
   private checkChecksum(): boolean {
@@ -385,7 +471,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     let checkCharacter = firstPair.getLeftChar();
     let firstCharacter = firstPair.getRightChar();
 
-    if (firstCharacter == null) {
+    if (firstCharacter === null) {
       return false;
     }
 
@@ -407,7 +493,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
 
     let checkCharacterValue = 211 * (s - 4) + checksum;
 
-    return checkCharacterValue == checkCharacter.getValue();
+    return checkCharacterValue === checkCharacter.getValue();
   }
 
   private static getNextSecondBar(row: BitArray, initialPos: number): number {
@@ -423,8 +509,12 @@ export default class RSSExpandedReader extends AbstractRSSReader {
   }
 
   // not private for testing
-  retrieveNextPair(row: BitArray, previousPairs: Array<ExpandedPair>, rowNumber: number): ExpandedPair {
-    let isOddPattern = previousPairs.length % 2 == 0;
+  retrieveNextPair(
+    row: BitArray,
+    previousPairs: Array<ExpandedPair>,
+    rowNumber: number
+  ): ExpandedPair {
+    let isOddPattern = previousPairs.length % 2 === 0;
     if (this.startFromEven) {
       isOddPattern = !isOddPattern;
     }
@@ -436,8 +526,11 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     do {
       this.findNextPair(row, previousPairs, forcedOffset);
       pattern = this.parseFoundFinderPattern(row, rowNumber, isOddPattern);
-      if (pattern == null) {
-        forcedOffset = RSSExpandedReader.getNextSecondBar(row, this.startEnd[0]);
+      if (pattern === null) {
+        forcedOffset = RSSExpandedReader.getNextSecondBar(
+          row,
+          this.startEnd[0]
+        );
       } else {
         keepFinding = false;
       }
@@ -448,7 +541,10 @@ export default class RSSExpandedReader extends AbstractRSSReader {
 
     let leftChar = this.decodeDataCharacter(row, pattern, isOddPattern, true);
 
-    if (!this.isEmptyPair(previousPairs) && previousPairs[previousPairs.length - 1].mustBeLast()) {
+    if (
+      !this.isEmptyPair(previousPairs) &&
+      previousPairs[previousPairs.length - 1].mustBeLast()
+    ) {
       throw new NotFoundException();
     }
 
@@ -467,7 +563,11 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     }
     return false;
   }
-  private findNextPair(row: BitArray, previousPairs: Array<ExpandedPair>, forcedOffset: number): void {
+  private findNextPair(
+    row: BitArray,
+    previousPairs: Array<ExpandedPair>,
+    forcedOffset: number
+  ): void {
     let counters = this.getDecodeFinderCounters();
     counters[0] = 0;
     counters[1] = 0;
@@ -485,7 +585,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
       let lastPair = previousPairs[previousPairs.length - 1];
       rowOffset = lastPair.getFinderPattern().getStartEnd()[1];
     }
-    let searchingEvenPair = previousPairs.length % 2 != 0;
+    let searchingEvenPair = previousPairs.length % 2 !== 0;
     if (this.startFromEven) {
       searchingEvenPair = !searchingEvenPair;
     }
@@ -502,10 +602,10 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     let counterPosition = 0;
     let patternStart = rowOffset;
     for (let x = rowOffset; x < width; x++) {
-      if (row.get(x) != isWhite) {
+      if (row.get(x) !== isWhite) {
         counters[counterPosition]++;
       } else {
-        if (counterPosition == 3) {
+        if (counterPosition === 3) {
           if (searchingEvenPair) {
             RSSExpandedReader.reverseCounters(counters);
           }
@@ -545,7 +645,11 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     }
   }
 
-  private parseFoundFinderPattern(row: BitArray, rowNumber: number, oddPattern: boolean): FinderPattern {
+  private parseFoundFinderPattern(
+    row: BitArray,
+    rowNumber: number,
+    oddPattern: boolean
+  ): FinderPattern {
     // Actually we found elements 2-5.
     let firstCounter;
     let start;
@@ -564,7 +668,6 @@ export default class RSSExpandedReader extends AbstractRSSReader {
       firstCounter = this.startEnd[0] - firstElementStart;
       start = firstElementStart;
       end = this.startEnd[1];
-
     } else {
       // If pattern number is even, the pattern is reversed, so we need to locate element 1 *after* the current block.
 
@@ -581,27 +684,38 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     counters[0] = firstCounter;
     let value;
     try {
-      value = this.parseFinderValue(counters, RSSExpandedReader.FINDER_PATTERNS);
+      value = this.parseFinderValue(
+        counters,
+        RSSExpandedReader.FINDER_PATTERNS
+      );
     } catch (e) {
       return null;
-      console.log(e);
     }
     // return new FinderPattern(value, new int[] { start, end }, start, end, rowNumber});
     return new FinderPattern(value, [start, end], start, end, rowNumber);
   }
 
-  decodeDataCharacter(row: BitArray, pattern: FinderPattern, isOddPattern: boolean, leftChar: boolean) {
+  decodeDataCharacter(
+    row: BitArray,
+    pattern: FinderPattern,
+    isOddPattern: boolean,
+    leftChar: boolean
+  ) {
     let counters = this.getDataCharacterCounters();
     for (let x = 0; x < counters.length; x++) {
       counters[x] = 0;
     }
 
     if (leftChar) {
-      RSSExpandedReader.recordPatternInReverse(row, pattern.getStartEnd()[0], counters);
+      RSSExpandedReader.recordPatternInReverse(
+        row,
+        pattern.getStartEnd()[0],
+        counters
+      );
     } else {
       RSSExpandedReader.recordPattern(row, pattern.getStartEnd()[1], counters);
       // reverse it
-      for (let i = 0, j = counters.length - 1; i < j; i++ , j--) {
+      for (let i = 0, j = counters.length - 1; i < j; i++, j--) {
         let temp = counters[i];
         counters[i] = counters[j];
         counters[j] = temp;
@@ -612,8 +726,12 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     let elementWidth = MathUtils.sum(new Int32Array(counters)) / numModules;
 
     // Sanity check: element width for pattern and the character should match
-    let expectedElementWidth = (pattern.getStartEnd()[1] - pattern.getStartEnd()[0]) / 15.0;
-    if (Math.abs(elementWidth - expectedElementWidth) / expectedElementWidth > 0.3) {
+    let expectedElementWidth =
+      (pattern.getStartEnd()[1] - pattern.getStartEnd()[0]) / 15.0;
+    if (
+      Math.abs(elementWidth - expectedElementWidth) / expectedElementWidth >
+      0.3
+    ) {
       throw new NotFoundException();
     }
 
@@ -623,7 +741,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     let evenRoundingErrors = this.getEvenRoundingErrors();
 
     for (let i = 0; i < counters.length; i++) {
-      let value = 1.0 * counters[i] / elementWidth;
+      let value = (1.0 * counters[i]) / elementWidth;
       let count = value + 0.5; // Round
       if (count < 1) {
         if (value < 0.3) {
@@ -637,7 +755,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
         count = 8;
       }
       let offset = i / 2;
-      if ((i & 0x01) == 0) {
+      if ((i & 0x01) === 0) {
         oddCounts[offset] = count;
         oddRoundingErrors[offset] = value - count;
       } else {
@@ -648,7 +766,8 @@ export default class RSSExpandedReader extends AbstractRSSReader {
 
     this.adjustOddEvenCounts(numModules);
 
-    let weightRowNumber = 4 * pattern.getValue() + (isOddPattern ? 0 : 2) + (leftChar ? 0 : 1) - 1;
+    let weightRowNumber =
+      4 * pattern.getValue() + (isOddPattern ? 0 : 2) + (leftChar ? 0 : 1) - 1;
 
     let oddSum = 0;
     let oddChecksumPortion = 0;
@@ -670,7 +789,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     }
     let checksumPortion = oddChecksumPortion + evenChecksumPortion;
 
-    if ((oddSum & 0x01) != 0 || oddSum > 13 || oddSum < 4) {
+    if ((oddSum & 0x01) !== 0 || oddSum > 13 || oddSum < 4) {
       throw new NotFoundException();
     }
 
@@ -686,13 +805,16 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     return new DataCharacter(value, checksumPortion);
   }
 
-  private static isNotA1left(pattern: FinderPattern, isOddPattern: boolean, leftChar: boolean): boolean {
+  private static isNotA1left(
+    pattern: FinderPattern,
+    isOddPattern: boolean,
+    leftChar: boolean
+  ): boolean {
     // A1: pattern.getValue is 0 (A), and it's an oddPattern, and it is a left char
-    return !(pattern.getValue() == 0 && isOddPattern && leftChar);
+    return !(pattern.getValue() === 0 && isOddPattern && leftChar);
   }
 
   private adjustOddEvenCounts(numModules) {
-
     let oddSum = MathUtils.sum(new Int32Array(this.getOddCounts()));
     let evenSum = MathUtils.sum(new Int32Array(this.getEvenCounts()));
 
@@ -713,9 +835,9 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     }
 
     let mismatch = oddSum + evenSum - numModules;
-    let oddParityBad = (oddSum & 0x01) == 1;
-    let evenParityBad = (evenSum & 0x01) == 0;
-    if (mismatch == 1) {
+    let oddParityBad = (oddSum & 0x01) === 1;
+    let evenParityBad = (evenSum & 0x01) === 0;
+    if (mismatch === 1) {
       if (oddParityBad) {
         if (evenParityBad) {
           throw new NotFoundException();
@@ -727,7 +849,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
         }
         decrementEven = true;
       }
-    } else if (mismatch == -1) {
+    } else if (mismatch === -1) {
       if (oddParityBad) {
         if (evenParityBad) {
           throw new NotFoundException();
@@ -739,7 +861,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
         }
         incrementEven = true;
       }
-    } else if (mismatch == 0) {
+    } else if (mismatch === 0) {
       if (oddParityBad) {
         if (!evenParityBad) {
           throw new NotFoundException();
@@ -766,19 +888,31 @@ export default class RSSExpandedReader extends AbstractRSSReader {
       if (decrementOdd) {
         throw new NotFoundException();
       }
-      RSSExpandedReader.increment(this.getOddCounts(), this.getOddRoundingErrors());
+      RSSExpandedReader.increment(
+        this.getOddCounts(),
+        this.getOddRoundingErrors()
+      );
     }
     if (decrementOdd) {
-      RSSExpandedReader.decrement(this.getOddCounts(), this.getOddRoundingErrors());
+      RSSExpandedReader.decrement(
+        this.getOddCounts(),
+        this.getOddRoundingErrors()
+      );
     }
     if (incrementEven) {
       if (decrementEven) {
         throw new NotFoundException();
       }
-      RSSExpandedReader.increment(this.getEvenCounts(), this.getOddRoundingErrors());
+      RSSExpandedReader.increment(
+        this.getEvenCounts(),
+        this.getOddRoundingErrors()
+      );
     }
     if (decrementEven) {
-      RSSExpandedReader.decrement(this.getEvenCounts(), this.getEvenRoundingErrors());
+      RSSExpandedReader.decrement(
+        this.getEvenCounts(),
+        this.getEvenRoundingErrors()
+      );
     }
   }
 }

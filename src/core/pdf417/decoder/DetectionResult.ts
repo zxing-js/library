@@ -198,7 +198,7 @@ export default /*final*/ class DetectionResult {
     if (this.detectionResultColumns[barcodeColumn - 1] == null) {
       return;
     }
-    
+
     let codeword: Codeword = codewords[codewordsRow];
     let previousColumnCodewords: Codeword[] = this.detectionResultColumns[barcodeColumn - 1].getCodewords();
     let nextColumnCodewords: Codeword[] = previousColumnCodewords;

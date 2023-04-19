@@ -71,13 +71,18 @@ export { default as ReedSolomonEncoder } from './core/common/reedsolomon/ReedSol
 // core/datamatrix
 export { default as DataMatrixReader } from './core/datamatrix/DataMatrixReader';
 export { default as DataMatrixDecodedBitStreamParser } from './core/datamatrix/decoder/DecodedBitStreamParser';
+export { default as DataMatrixDefaultPlacement } from './core/datamatrix/encoder/DefaultPlacement';
+export { default as DataMatrixErrorCorrection } from './core/datamatrix/encoder/ErrorCorrection';
+export { default as DataMatrixHighLevelEncoder } from './core/datamatrix/encoder/HighLevelEncoder';
+export { default as DataMatrixSymbolInfo } from './core/datamatrix/encoder/SymbolInfo';
+export { SymbolShapeHint as DataMatrixSymbolShapeHint } from './core/datamatrix/encoder/constants';
+export { default as DataMatrixWriter } from './core/datamatrix/DataMatrixWriter';
 
 // core/pdf417
 export { default as PDF417Reader } from './core/pdf417/PDF417Reader';
 export { default as PDF417ResultMetadata } from './core/pdf417/PDF417ResultMetadata';
 export { default as PDF417DecodedBitStreamParser } from './core/pdf417/decoder/DecodedBitStreamParser';
 export { default as PDF417DecoderErrorCorrection } from './core/pdf417/decoder/ec/ErrorCorrection';
-
 
 // core/twod/qrcode
 export { default as QRCodeReader } from './core/qrcode/QRCodeReader';
@@ -94,7 +99,6 @@ export { default as QRCodeMatrixUtil } from './core/qrcode/encoder/MatrixUtil';
 export { default as QRCodeByteMatrix } from './core/qrcode/encoder/ByteMatrix';
 export { default as QRCodeMaskUtil } from './core/qrcode/encoder/MaskUtil';
 
-
 // core/twod/aztec
 export { default as AztecCodeReader } from './core/aztec/AztecReader';
 export { default as AztecCodeWriter } from './core/aztec/AztecWriter';
@@ -106,13 +110,13 @@ export { default as AztecDecoder } from './core/aztec/decoder/Decoder';
 export { default as AztecDetector } from './core/aztec/detector/Detector';
 export { Point as AztecPoint } from './core/aztec/detector/Detector';
 
-
 // core/oned
 export { default as OneDReader } from './core/oned/OneDReader';
 export { default as EAN13Reader } from './core/oned/EAN13Reader';
 export { default as Code128Reader } from './core/oned/Code128Reader';
 export { default as ITFReader } from './core/oned/ITFReader';
 export { default as Code39Reader } from './core/oned/Code39Reader';
+export { default as Code93Reader } from './core/oned/Code93Reader';
 export { default as RSS14Reader } from './core/oned/rss/RSS14Reader';
 export { default as RSSExpandedReader } from './core/oned/rss/expanded/RSSExpandedReader';
 export { default as AbstractExpandedDecoder } from './core/oned/rss/expanded/decoders/AbstractExpandedDecoder';

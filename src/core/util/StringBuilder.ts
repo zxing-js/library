@@ -3,10 +3,9 @@ import { int, char } from '../../customTypings';
 import StringUtils from '../common/StringUtils';
 
 export default class StringBuilder {
-
   private encoding: CharacterSetECI;
 
-  public constructor(private value: string = '') { }
+  public constructor(private value: string = '') {}
 
   public enableDecoding(encoding: CharacterSetECI): StringBuilder {
     this.encoding = encoding;
@@ -26,7 +25,11 @@ export default class StringBuilder {
     return this;
   }
 
-  public appendChars(str: char[] | string[], offset: int, len: int): StringBuilder {
+  public appendChars(
+    str: char[] | string[],
+    offset: int,
+    len: int
+  ): StringBuilder {
     for (let i = offset; offset < offset + len; i++) {
       this.append(str[i]);
     }
@@ -65,6 +68,6 @@ export default class StringBuilder {
   }
 
   public insert(n: number, c: string) {
-    this.value = this.value.substr(0, n) + c + this.value.substr(n + c.length);
+    this.value = this.value.substring(0, n) + c + this.value.substring(n);
   }
 }
