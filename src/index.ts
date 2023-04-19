@@ -116,6 +116,7 @@ export { default as EAN13Reader } from './core/oned/EAN13Reader';
 export { default as Code128Reader } from './core/oned/Code128Reader';
 export { default as ITFReader } from './core/oned/ITFReader';
 export { default as Code39Reader } from './core/oned/Code39Reader';
+export { default as Code93Reader } from './core/oned/Code93Reader';
 export { default as RSS14Reader } from './core/oned/rss/RSS14Reader';
 export { default as RSSExpandedReader } from './core/oned/rss/expanded/RSSExpandedReader';
 export { default as AbstractExpandedDecoder } from './core/oned/rss/expanded/decoders/AbstractExpandedDecoder';

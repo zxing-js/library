@@ -24,7 +24,7 @@ There is otherwise no active development or roadmap for this project. It is "DIY
 | 1D product | 1D industrial       | 2D             |
 | ---------- | ------------------- | -------------- |
 | UPC-A      | Code 39             | QR Code        |
-| UPC-E      | ~~Code 93~~         | Data Matrix    |
+| UPC-E      | Code 93             | Data Matrix    |
 | EAN-8      | Code 128            | Aztec          |
 | EAN-13     | ~~Codabar~~         | PDF 417        |
 |            | ITF                 | ~~MaxiCode~~   |

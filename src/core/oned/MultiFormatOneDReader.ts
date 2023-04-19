@@ -23,6 +23,7 @@ import NotFoundException from '../NotFoundException';
 import Result from '../Result';
 import Code128Reader from './Code128Reader';
 import Code39Reader from './Code39Reader';
+import Code93Reader from './Code93Reader';
 import ITFReader from './ITFReader';
 import MultiFormatUPCEANReader from './MultiFormatUPCEANReader';
 import OneDReader from './OneDReader';
@@ -52,9 +53,9 @@ export default class MultiFormatOneDReader extends OneDReader {
       if (possibleFormats.includes(BarcodeFormat.CODE_39)) {
         this.readers.push(new Code39Reader(useCode39CheckDigit));
       }
-      // if (possibleFormats.includes(BarcodeFormat.CODE_93)) {
-      //    this.readers.push(new Code93Reader());
-      // }
+      if (possibleFormats.includes(BarcodeFormat.CODE_93)) {
+          this.readers.push(new Code93Reader());
+      }
       if (possibleFormats.includes(BarcodeFormat.CODE_128)) {
         this.readers.push(new Code128Reader());
       }
@@ -76,7 +77,7 @@ export default class MultiFormatOneDReader extends OneDReader {
       this.readers.push(new MultiFormatUPCEANReader(hints));
       this.readers.push(new Code39Reader());
       // this.readers.push(new CodaBarReader());
-      // this.readers.push(new Code93Reader());
+      this.readers.push(new Code93Reader());
       this.readers.push(new MultiFormatUPCEANReader(hints));
       this.readers.push(new Code128Reader());
       this.readers.push(new ITFReader());
