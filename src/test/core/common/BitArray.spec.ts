@@ -230,6 +230,22 @@ describe('BitArray', () => {
         assert.strictEqual(a.hashCode(), b.hashCode());
     });
 
+
+    it('testToArray', () => {
+        const array = new BitArray(20);
+        for (let i = 0; i < 10; i++) {
+            array.set(i);
+        }
+        let booleanArr = array.toArray();
+        for (let i = 0; i < 20; i++) {
+            if (i < 10) {
+                assert.strictEqual(booleanArr[i], true);
+            } else {
+                assert.strictEqual(booleanArr[i], false);
+            }
+        }
+    });
+
     function reverseOriginal(oldBits: Int32Array, size: number): Int32Array {
         const newBits = new Int32Array(oldBits.length);
         for (let i = 0; i < size; i++) {

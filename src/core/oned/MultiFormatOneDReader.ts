@@ -27,6 +27,8 @@ import Code93Reader from './Code93Reader';
 import ITFReader from './ITFReader';
 import MultiFormatUPCEANReader from './MultiFormatUPCEANReader';
 import OneDReader from './OneDReader';
+import Result from '../Result';
+import CodaBarReader from './CodaBarReader';
 import RSSExpandedReader from './rss/expanded/RSSExpandedReader';
 import RSS14Reader from './rss/RSS14Reader';
 
@@ -62,9 +64,9 @@ export default class MultiFormatOneDReader extends OneDReader {
       if (possibleFormats.includes(BarcodeFormat.ITF)) {
         this.readers.push(new ITFReader());
       }
-      // if (possibleFormats.includes(BarcodeFormat.CODABAR)) {
-      //    this.readers.push(new CodaBarReader());
-      // }
+      if (possibleFormats.includes(BarcodeFormat.CODABAR)) {
+         this.readers.push(new CodaBarReader());
+      }
       if (possibleFormats.includes(BarcodeFormat.RSS_14)) {
         this.readers.push(new RSS14Reader());
       }
