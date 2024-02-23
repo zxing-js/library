@@ -43,6 +43,7 @@ export default class MultiFormatOneDReader extends OneDReader {
     super();
     const possibleFormats = !hints ? null : <BarcodeFormat[]>hints.get(DecodeHintType.POSSIBLE_FORMATS);
     const useCode39CheckDigit = hints && hints.get(DecodeHintType.ASSUME_CODE_39_CHECK_DIGIT) !== undefined;
+    const useCode39ExtendedMode = hints && hints.get(DecodeHintType.ENABLE_CODE_39_EXTENDED_MODE) !== undefined;
 
     if (possibleFormats) {
       if (possibleFormats.includes(BarcodeFormat.EAN_13) ||
@@ -52,7 +53,7 @@ export default class MultiFormatOneDReader extends OneDReader {
         this.readers.push(new MultiFormatUPCEANReader(hints));
       }
       if (possibleFormats.includes(BarcodeFormat.CODE_39)) {
-        this.readers.push(new Code39Reader(useCode39CheckDigit));
+        this.readers.push(new Code39Reader(useCode39CheckDigit, useCode39ExtendedMode));
       }
       if (possibleFormats.includes(BarcodeFormat.CODE_93)) {
           this.readers.push(new Code93Reader());
