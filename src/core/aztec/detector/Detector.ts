@@ -111,17 +111,19 @@ export default class Detector {
         // 3. Get the size of the matrix and other parameters from the bull's eye
         this.extractParameters(bullsEyeCorners);
 
+        // 4. Get the corners of the matrix.
+        let corners: ResultPoint[] = this.getMatrixCornerPoints(pCenter, bullsEyeCorners, this.getDimension());
+        // let corners: ResultPoint[] = this.getMatrixCornerPoints(bullsEyeCorners);
 
         // 4. Sample the grid
         let bits: BitMatrix = this.sampleGrid(this.image,
-            bullsEyeCorners[this.shift % 4],
-            bullsEyeCorners[(this.shift + 1) % 4],
-            bullsEyeCorners[(this.shift + 2) % 4],
-            bullsEyeCorners[(this.shift + 3) % 4]
+            corners[this.shift % 4],
+            corners[(this.shift + 1) % 4],
+            corners[(this.shift + 2) % 4],
+            corners[(this.shift + 3) % 4]
         );
 
-        // 5. Get the corners of the matrix.
-        let corners: ResultPoint[] = this.getMatrixCornerPoints(bullsEyeCorners);
+        
 
         return new AztecDetectorResult(bits, corners, this.compact, this.nbDataBlocks, this.nbLayers);
     }
@@ -269,6 +271,7 @@ export default class Detector {
      */
     private getBullsEyeCorners(pCenter: Point): ResultPoint[] {
 
+        let corr_factor: number = 1.0;
 
         let pina = pCenter;
         let pinb = pCenter;
@@ -278,6 +281,7 @@ export default class Detector {
         let color = true;
 
         for (this.nbCenterLayers = 1; this.nbCenterLayers < 9; this.nbCenterLayers++) {
+            let corr_tmp: number;
 
             let pouta = this.getFirstDifferent(pina, color, 1, -1);
             let poutb = this.getFirstDifferent(pinb, color, 1, 1);
@@ -289,10 +293,13 @@ export default class Detector {
             // c      b
 
             if (this.nbCenterLayers > 2) {
+                corr_tmp = Math.max(this.distancePoint(poutd, pouta) / (((this.nbCenterLayers * 2) - 1) * 2), 1.0);
                 let q = (this.distancePoint(poutd, pouta) * this.nbCenterLayers) / (this.distancePoint(pind, pina) * (this.nbCenterLayers + 2));
-                if (q < 0.75 || q > 1.25 || !this.isWhiteOrBlackRectangle(pouta, poutb, poutc, poutd)) {
+                if (q < 0.75 || q > 1.25 || !this.isWhiteOrBlackRectangle(pouta, poutb, poutc, poutd, corr_tmp)) {
                     break;
                 }
+            } else {
+                corr_tmp = corr_factor;
             }
 
             pina = pouta;
@@ -301,6 +308,7 @@ export default class Detector {
             pind = poutd;
 
             color = !color;
+            corr_factor = corr_tmp;
         }
 
         if (this.nbCenterLayers !== 5 && this.nbCenterLayers !== 7) {
@@ -392,8 +400,23 @@ export default class Detector {
      * @param bullsEyeCorners the array of bull's eye corners
      * @return the array of aztec code corners
      */
-    private getMatrixCornerPoints(bullsEyeCorners: ResultPoint[]): ResultPoint[] {
-        return this.expandSquare(bullsEyeCorners, 2 * this.nbCenterLayers, this.getDimension());
+    private getMatrixCornerPoints(pCenter: Point , bullsEyeCorners: ResultPoint[], targetMatrixSize: number): ResultPoint[] {
+        let maxX: number = 0.0;
+        let minX: number = this.image.getWidth();
+        bullsEyeCorners.forEach((bullsEyeCorner, idx, arr) => {
+            let tmpX: number = bullsEyeCorner.getX();
+            if(tmpX > maxX) {
+                maxX = tmpX;
+            }
+            if(tmpX < minX) {
+                minX = tmpX;
+            }
+        });
+
+        let initSize: number = <number> (maxX - minX);
+
+        return new CornerDetector(this.image, initSize, pCenter.getX(), pCenter.getY(), targetMatrixSize).detect();
+        // return this.expandSquare(bullsEyeCorners, 2 * this.nbCenterLayers, this.getDimension());
     }
 
     /**
@@ -410,8 +433,10 @@ export default class Detector {
         let sampler = GridSamplerInstance.getInstance();
         let dimension = this.getDimension();
 
-        let low = dimension / 2 - this.nbCenterLayers;
-        let high = dimension / 2 + this.nbCenterLayers;
+        // let low = dimension / 2 - this.nbCenterLayers;
+        // let high = dimension / 2 + this.nbCenterLayers;
+        let low: number = 0.5;
+        let high: number = dimension - 0.5;
 
         return sampler.sampleGrid(image,
             dimension,
@@ -458,9 +483,9 @@ export default class Detector {
     private isWhiteOrBlackRectangle(p1: Point,
         p2: Point,
         p3: Point,
-        p4: Point): boolean {
+        p4: Point,
+        corr: number): boolean {
 
-        let corr = 3;
         p1 = new Point(p1.getX() - corr, p1.getY() + corr);
         p2 = new Point(p2.getX() - corr, p2.getY() - corr);
         p3 = new Point(p3.getX() + corr, p3.getY() - corr);
