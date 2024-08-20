@@ -934,14 +934,17 @@ export class BrowserCodeReader {
     mediaElement: HTMLVisualMediaElement
   ): BinaryBitmap {
     const ctx = this.getCaptureCanvasContext(mediaElement);
-    if(mediaElement instanceof HTMLVideoElement) {
+    // doing a scan with inverted colors on the second scan should only happen for video elements
+    let doAutoInvert = false;
+    if (mediaElement instanceof HTMLVideoElement) {
       this.drawFrameOnCanvas(<HTMLVideoElement>mediaElement);
+      doAutoInvert = true;
     } else {
       this.drawImageOnCanvas(<HTMLImageElement>mediaElement);
     }
     const canvas = this.getCaptureCanvas(mediaElement);
 
-    const luminanceSource = new HTMLCanvasElementLuminanceSource(canvas);
+    const luminanceSource = new HTMLCanvasElementLuminanceSource(canvas, doAutoInvert);
     const hybridBinarizer = new HybridBinarizer(luminanceSource);
 
     return new BinaryBitmap(hybridBinarizer);
