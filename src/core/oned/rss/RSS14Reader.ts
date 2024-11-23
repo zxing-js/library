@@ -141,8 +141,12 @@ export default class RSS14Reader extends AbstractRSSReader {
                 outside.getChecksumPortion() + 4 * inside.getChecksumPortion(),
                 pattern);
         }
-        catch (err) {
-            return null;
+        catch (ex) {
+            if (ex instanceof NotFoundException) {
+                return null;
+            } else {
+                throw ex;
+            }
         }
     }
 
