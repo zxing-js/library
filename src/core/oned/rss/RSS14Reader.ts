@@ -127,7 +127,7 @@ export default class RSS14Reader extends AbstractRSSReader {
             const resultPointCallback = hints == null ? null : <ResultPointCallback>hints.get(DecodeHintType.NEED_RESULT_POINT_CALLBACK);
 
             if (resultPointCallback != null) {
-                let center = (startEnd[0] + startEnd[1]) / 2.0;
+                let center = (startEnd[0] + startEnd[1] - 1) / 2.0;
                 if (right) {
                     // row is actually reversed
                     center = row.getSize() - 1 - center;
@@ -160,7 +160,7 @@ export default class RSS14Reader extends AbstractRSSReader {
         if (outsideChar) {
             OneDReader.recordPatternInReverse(row, pattern.getStartEnd()[0], counters);
         } else {
-            OneDReader.recordPattern(row, pattern.getStartEnd()[1] + 1, counters);
+            OneDReader.recordPattern(row, pattern.getStartEnd()[1], counters);
             // reverse it
             for (let i = 0, j = counters.length - 1; i < j; i++ , j--) {
                 const temp = counters[i];
