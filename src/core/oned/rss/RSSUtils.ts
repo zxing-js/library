@@ -14,7 +14,7 @@ export default class RSSUtils {
     let narrowMask = 0;
     let elements = widths.length;
     for (let bar = 0; bar < elements - 1; bar++) {
-      let elmWidth;
+      let elmWidth: number;
       for (elmWidth = 1, narrowMask |= 1 << bar; elmWidth < widths[bar]; elmWidth++ , narrowMask &= ~(1 << bar)) {
         let subVal = RSSUtils.combins(n - elmWidth - 1, elements - bar - 2);
         if (noNarrow && (narrowMask === 0) && (n - elmWidth - (elements - bar - 1) >= elements - bar - 1)) {
@@ -55,7 +55,7 @@ export default class RSSUtils {
         j++;
       }
     }
-    while ((j <= minDenom)) {
+    while (j <= minDenom) {
       val = Math.trunc(val / j);
       j++;
     }

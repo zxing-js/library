@@ -9,7 +9,9 @@ export default abstract class AbstractRSSReader extends OneDReader {
   private static readonly MAX_AVG_VARIANCE: number = 0.2;
   private static readonly MAX_INDIVIDUAL_VARIANCE: number = 0.45;
 
+  /** Minimum ratio 10:12 (minus 0.5 for variance), from section 7.2.7 of ISO/IEC 24724:2006. */
   private static readonly MIN_FINDER_PATTERN_RATIO: number = 9.5 / 12.0;
+  /** Maximum ratio 12:14 (plus 0.5 for variance), from section 7.2.7 of ISO/IEC 24724:2006. */
   private static readonly MAX_FINDER_PATTERN_RATIO: number = 12.5 / 14.0;
 
     private readonly decodeFinderCounters: Int32Array;
@@ -98,7 +100,7 @@ export default abstract class AbstractRSSReader extends OneDReader {
   protected static isFinderPattern(counters: Int32Array): boolean {
     let firstTwoSum = counters[0] + counters[1];
     let sum = firstTwoSum + counters[2] + counters[3];
-    let ratio = firstTwoSum / sum;
+    const ratio = firstTwoSum / sum;
     if (ratio >= AbstractRSSReader.MIN_FINDER_PATTERN_RATIO && ratio <= AbstractRSSReader.MAX_FINDER_PATTERN_RATIO) {
       // passes ratio test in spec, but see if the counts are unreasonable
       let minCounter = Number.MAX_SAFE_INTEGER;
