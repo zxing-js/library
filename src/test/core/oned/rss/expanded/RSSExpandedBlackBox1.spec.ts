@@ -36,8 +36,8 @@ class RSSExpandedBlackBox1Spec extends AbstractBlackBoxSpec {
 
   public constructor() {
     super('src/test/resources/blackbox/rssexpanded-1', new MultiFormatReader(), BarcodeFormat.RSS_EXPANDED);
-    // this.addTest(32, 32, 0.0);
-    // this.addTest(32, 32, 180.0);
+    // this.addTest(35, 35, 0.0);
+    // this.addTest(35, 35, 180.0);
   }
 }
 

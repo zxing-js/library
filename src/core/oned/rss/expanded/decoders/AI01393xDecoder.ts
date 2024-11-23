@@ -20,11 +20,11 @@ export default class AI01393xDecoder extends AI01decoder {
       throw new NotFoundException();
     }
 
-    let buf = new StringBuilder();
+    const buf = new StringBuilder();
 
     this.encodeCompressedGtin(buf, AI01393xDecoder.HEADER_SIZE);
 
-    let lastAIdigit = this.getGeneralDecoder().extractNumericValueFromBitArray(
+    const lastAIdigit = this.getGeneralDecoder().extractNumericValueFromBitArray(
       AI01393xDecoder.HEADER_SIZE + AI01decoder.GTIN_SIZE,
       AI01393xDecoder.LAST_DIGIT_SIZE
     );
@@ -33,22 +33,23 @@ export default class AI01393xDecoder extends AI01decoder {
     buf.append(lastAIdigit);
     buf.append(')');
 
-    let firstThreeDigits =
+    const firstThreeDigits /* int */ =
       this.getGeneralDecoder().extractNumericValueFromBitArray(
         AI01393xDecoder.HEADER_SIZE +
           AI01decoder.GTIN_SIZE +
           AI01393xDecoder.LAST_DIGIT_SIZE,
         AI01393xDecoder.FIRST_THREE_DIGITS_SIZE
       );
-    if (firstThreeDigits / 100 === 0) {
+    // Pad with leading zeroes.
+    if (firstThreeDigits < 100) {
       buf.append('0');
     }
-    if (firstThreeDigits / 10 === 0) {
+    if (firstThreeDigits < 10) {
       buf.append('0');
     }
     buf.append(firstThreeDigits);
 
-    let generalInformation = this.getGeneralDecoder().decodeGeneralPurposeField(
+    const generalInformation = this.getGeneralDecoder().decodeGeneralPurposeField(
       AI01393xDecoder.HEADER_SIZE +
         AI01decoder.GTIN_SIZE +
         AI01393xDecoder.LAST_DIGIT_SIZE +

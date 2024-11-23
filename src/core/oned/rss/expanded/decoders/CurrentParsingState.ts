@@ -7,16 +7,20 @@ enum State {
 export default class CurrentParsingState {
   private position: number;
   private encoding: State;
+
   constructor() {
     this.position = 0;
     this.encoding = State.NUMERIC;
   }
+
   getPosition(): number {
     return this.position;
   }
+
   setPosition(position: number): void {
     this.position = position;
   }
+
   incrementPosition(delta: number): void {
     this.position += delta;
   }
