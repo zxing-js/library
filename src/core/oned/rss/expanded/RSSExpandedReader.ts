@@ -693,7 +693,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     }
 
     // Make 'counters' hold 1-4
-    let counters = this.getDecodeFinderCounters();
+    const counters = this.getDecodeFinderCounters();
     System.arraycopy(counters, 0, counters, 1, counters.length - 1);
 
     counters[0] = firstCounter;

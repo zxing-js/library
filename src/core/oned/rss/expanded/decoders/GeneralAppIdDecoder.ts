@@ -69,7 +69,7 @@ export default class GeneralAppIdDecoder {
     }
     const numeric = this.extractNumericValueFromBitArray(pos, 7);
 
-    const digit1 = (numeric - 8) / 11;
+    const digit1 = Math.trunc((numeric - 8) / 11);
     const digit2 = (numeric - 8) % 11;
 
     return new DecodedNumeric(pos + 7, digit1, digit2);
@@ -232,7 +232,7 @@ export default class GeneralAppIdDecoder {
       return false;
     }
 
-    let sevenBitValue = this.extractNumericValueFromBitArray(pos, 7);
+    const sevenBitValue = this.extractNumericValueFromBitArray(pos, 7);
     if (sevenBitValue >= 64 && sevenBitValue < 116) {
       return true;
     }
