@@ -147,13 +147,13 @@ export default class GeneralAppIdDecoder {
         }
         return new BlockParsedResult(information, true);
       }
-      this.buffer.append(numeric.getFirstDigit());
+      this.buffer.append('' + numeric.getFirstDigit());
 
       if (numeric.isSecondDigitFNC1()) {
         const information = new DecodedInformation(this.current.getPosition(), this.buffer.toString());
         return new BlockParsedResult(information, true);
       }
-      this.buffer.append(numeric.getSecondDigit());
+      this.buffer.append('' + numeric.getSecondDigit());
     }
 
     if (this.isNumericToAlphaNumericLatch(this.current.getPosition())) {

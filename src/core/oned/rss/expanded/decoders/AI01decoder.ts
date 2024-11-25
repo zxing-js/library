@@ -28,7 +28,7 @@ export default abstract class AI01decoder extends AbstractExpandedDecoder {
       if (currentBlock < 10) {
         buf.append('0');
       }
-      buf.append(currentBlock);
+      buf.append('' + currentBlock);
     }
 
     AI01decoder.appendCheckDigit(buf, initialBufferPosition);
@@ -46,7 +46,7 @@ export default abstract class AI01decoder extends AbstractExpandedDecoder {
       checkDigit = 0;
     }
 
-    buf.append(checkDigit);
+    buf.append('' + checkDigit);
   }
 
 }

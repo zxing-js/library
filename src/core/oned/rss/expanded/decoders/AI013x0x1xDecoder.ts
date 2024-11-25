@@ -60,9 +60,9 @@ export default class AI013x0x1xDecoder extends AI01weightDecoder {
     buf.append(')');
 
     const day /* int */ = numericDate % 32;
-    numericDate /= 32;
+    numericDate = Math.trunc(numericDate / 32);
     const month /* int */ = (numericDate % 12) + 1;
-    numericDate /= 12;
+    numericDate = Math.trunc(numericDate / 12);
     const year /* int */ = numericDate;
 
     // Division of an integer by 10 results in 0.
@@ -70,21 +70,21 @@ export default class AI013x0x1xDecoder extends AI01weightDecoder {
     if (year < 10) {
       buf.append('0');
     }
-    buf.append(year);
+    buf.append('' + year);
     if (month < 10) {
       buf.append('0');
     }
-    buf.append(month);
+    buf.append('' + month);
     if (day < 10) {
       buf.append('0');
     }
-    buf.append(day);
+    buf.append('' + day);
   }
 
   protected addWeightCode(buf: StringBuilder, weight: number /* int */): void {
     buf.append('(');
     buf.append(this.firstAIdigits);
-    buf.append(Math.floor(weight / 100000));
+    buf.append('' + Math.trunc(weight / 100000));
     buf.append(')');
   }
 

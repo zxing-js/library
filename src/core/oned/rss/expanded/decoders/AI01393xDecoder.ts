@@ -30,7 +30,7 @@ export default class AI01393xDecoder extends AI01decoder {
     );
 
     buf.append('(393');
-    buf.append(lastAIdigit);
+    buf.append('' + lastAIdigit);
     buf.append(')');
 
     const firstThreeDigits /* int */ =
@@ -47,7 +47,7 @@ export default class AI01393xDecoder extends AI01decoder {
     if (firstThreeDigits < 10) {
       buf.append('0');
     }
-    buf.append(firstThreeDigits);
+    buf.append('' + firstThreeDigits);
 
     const generalInformation = this.getGeneralDecoder().decodeGeneralPurposeField(
       AI01393xDecoder.HEADER_SIZE +

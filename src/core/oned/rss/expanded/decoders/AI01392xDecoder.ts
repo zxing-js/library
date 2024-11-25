@@ -21,7 +21,7 @@ export default class AI01392xDecoder extends AI01decoder {
 
     const lastAIdigit = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01392xDecoder.HEADER_SIZE + AI01decoder.GTIN_SIZE, AI01392xDecoder.LAST_DIGIT_SIZE);
     buf.append('(392');
-    buf.append(lastAIdigit);
+    buf.append('' + lastAIdigit);
     buf.append(')');
 
     const decodedInformation = this.getGeneralDecoder().decodeGeneralPurposeField(AI01392xDecoder.HEADER_SIZE + AI01decoder.GTIN_SIZE + AI01392xDecoder.LAST_DIGIT_SIZE, null);

@@ -17,7 +17,7 @@ export default class AI01AndOtherAIs extends AI01decoder {
     buff.append('(01)');
     const initialGtinPosition = buff.length();
     const firstGtinDigit = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01AndOtherAIs.HEADER_SIZE, 4);
-    buff.append(firstGtinDigit);
+    buff.append('' + firstGtinDigit);
 
     this.encodeCompressedGtinWithoutAI(buff, AI01AndOtherAIs.HEADER_SIZE + 4, initialGtinPosition);
 

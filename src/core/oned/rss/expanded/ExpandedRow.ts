@@ -5,7 +5,7 @@ export default class ExpandedRow {
   private readonly rowNumber: number;
 
   constructor(pairs: Array<ExpandedPair>, rowNumber: number) {
-    this.pairs = pairs;
+    this.pairs = [...pairs];
     this.rowNumber = rowNumber;
   }
 
@@ -38,7 +38,6 @@ export default class ExpandedRow {
   }
 
   static listEquals(pairs1: Array<ExpandedPair>, pairs2: Array<ExpandedPair>): boolean {
-    if (!pairs1 || !pairs2) return false;
     if (pairs1.length !== pairs2.length) return false;
     return pairs1.every((pair1, index) => {
       const pair2 = pairs2[index];

@@ -20,9 +20,9 @@ export default abstract class AI01weightDecoder extends AI01decoder {
       if (weightNumeric < currentDivisor) {
         buf.append('0');
       }
-      currentDivisor /= 10;
+      currentDivisor = Math.trunc(currentDivisor / 10);
     }
-    buf.append(weightNumeric);
+    buf.append('' + weightNumeric);
   }
 
   protected abstract addWeightCode(buf: StringBuilder, weight: number): void;

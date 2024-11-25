@@ -164,7 +164,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
   private pairs = new Array<ExpandedPair>(RSSExpandedReader.MAX_PAIRS);
   private rows = new Array<ExpandedRow>();
 
-  private readonly startEnd = new Array<number>(2);
+  private readonly startEnd: [number, number] = [0, 0];
   private startFromEven: boolean = false;
 
   public decodeRow(
@@ -208,7 +208,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
       } catch (error) {
         if (error instanceof NotFoundException) {
           if (this.pairs.length === 0) {
-            throw new NotFoundException();
+            throw error;
           }
           // exit this loop when retrieveNextPair() fails and throws
           done = true;
@@ -240,7 +240,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
 
     throw new NotFoundException();
   }
-  // Need to Verify
+
   private checkRowsBoolean(reverse: boolean): Array<ExpandedPair> | null {
     // Limit number of rows we are checking
     // We use recursive algorithm with pure complexity and don't want it to take forever
@@ -281,7 +281,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     currentRow: number
   ): Array<ExpandedPair> {
     for (let i = currentRow; i < this.rows.length; i++) {
-      let row = this.rows[i];
+      const row = this.rows[i];
       this.pairs.push(...row.getPairs());
       const addSize = row.getPairs().length;
 
@@ -302,6 +302,8 @@ export default class RSSExpandedReader extends AbstractRSSReader {
             throw ex;
           }
         }
+      } else {
+        this.pairs.splice(this.pairs.length - addSize, addSize);
       }
     }
 
@@ -310,8 +312,8 @@ export default class RSSExpandedReader extends AbstractRSSReader {
 
   // Whether the pairs form a valid finder pattern sequence, either complete or a prefix
   private static isValidSequence(pairs: Array<ExpandedPair>, complete: boolean): boolean {
-    for (let sequence of RSSExpandedReader.FINDER_PATTERN_SEQUENCES) {
-      const sizeOk: boolean = (complete ? pairs.length === sequence.length : pairs.length <= sequence.length);
+    for (const sequence of RSSExpandedReader.FINDER_PATTERN_SEQUENCES) {
+      const sizeOk = (complete ? pairs.length === sequence.length : pairs.length <= sequence.length);
       if (sizeOk) {
         let stop = true;
         for (let j = 0; j < pairs.length; j++) {
@@ -337,9 +339,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
       return true;
     }
 
-    for (let sequenceIndex = 0; sequenceIndex < this.FINDER_PATTERN_SEQUENCES.length; sequenceIndex++) {
-      const sequence = this.FINDER_PATTERN_SEQUENCES[sequenceIndex];
-
+    for (const sequence of this.FINDER_PATTERN_SEQUENCES) {
       if (pairs.length + 1 <= sequence.length) {
         // the proposed sequence (i.e. pairs + value) would fit in this allowed sequence
         for (let i = pairs.length; i < sequence.length; i++) {
@@ -399,65 +399,41 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     this.removePartialRows(this.pairs, this.rows);
   }
 
-  // TODO: check if this implementation is equivalent -- opl
   // Remove all the rows that contains only specified pairs
   private removePartialRows(
     pairs: Array<ExpandedPair>,
     rows: Array<ExpandedRow>
   ): void {
-    // for (Iterator<ExpandedRow> iterator = rows.iterator(); iterator.hasNext();) {
-    //   ExpandedRow r = iterator.next();
-    //   if (r.getPairs().size() == pairs.size()) {
-    //     continue;
-    //   }
-    //   boolean allFound = true;
-    //   for (ExpandedPair p : r.getPairs()) {
-    //     boolean found = false;
-    //     for (ExpandedPair pp : pairs) {
-    //       if (p.equals(pp)) {
-    //         found = true;
-    //         break;
-    //       }
-    //     }
-    //     if (!found) {
-    //       allFound = false;
-    //       break;
-    //     }
-    //   }
-    //   if (allFound) {
-    //     // 'pairs' contains all the pairs from the row 'r'
-    //     iterator.remove();
-    //   }
-    // }
-    for (let row of rows) {
-      if (row.getPairs().length === pairs.length) {
-        continue;
-      }
-      let allFound = true;
-      for (let p of row.getPairs()) {
-        let found = false;
-        for (let pp of pairs) {
-          if (ExpandedPair.equals(p, pp)) {
-            found = true;
+    // Iterate backwards to prevent shifting indices.
+    for (let rowsIndex = rows.length - 1; rowsIndex >= 0; rowsIndex--) {
+      const r = rows[rowsIndex];
+      if (r.getPairs().length !== pairs.length) {
+        let allFound = true;
+        for (const p of r.getPairs()) {
+          if (!pairs.some((otherPair) => ExpandedPair.equals(p, otherPair))) {
+            allFound = false;
             break;
           }
         }
-        if (!found) {
-          allFound = false;
+        if (allFound) {
+          // 'pairs' contains all the pairs from the row 'r'
+          rows.splice(rowsIndex, 1);
         }
       }
     }
   }
 
-  // TODO: check if this implementation is equivalent -- opl
   // Returns true when one of the rows already contains all the pairs
-  private static isPartialRow(pairs: any, rows: any): boolean {
-    for (let r of rows) {
+  private static isPartialRow(
+    pairs: Array<ExpandedPair>,
+    rows: Array<ExpandedRow>,
+  ): boolean {
+    for (const r of rows) {
       let allFound = true;
-      for (let p of pairs) {
+      for (const p of pairs) {
         let found = false;
-        for (let pp of r.getPairs()) {
-          if (p.equals(pp)) {
+        for (const pp of r.getPairs()) {
+          if (ExpandedPair.equals(p, pp)) {
             found = true;
             break;
           }
@@ -674,9 +650,9 @@ export default class RSSExpandedReader extends AbstractRSSReader {
   }
 
   private static reverseCounters(counters: Int32Array): void {
-    let length = counters.length;
-    for (let i = 0; i < length / 2; ++i) {
-      let tmp = counters[i];
+    const length = counters.length;
+    for (let i = 0; i < Math.trunc(length / 2); ++i) {
+      const tmp = counters[i];
       counters[i] = counters[length - i - 1];
       counters[length - i - 1] = tmp;
     }
@@ -744,7 +720,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
       const prevStart = prev.getFinderPattern().getStartEnd()[0];
       const prevEnd = prev.getFinderPattern().getStartEnd()[1];
       const prevWidth = prevEnd - prevStart;
-      const charWidth = (prevWidth / RSSExpandedReader.FINDER_PATTERN_MODULES) * RSSExpandedReader.DATA_CHARACTER_MODULES;
+      const charWidth /* float */ = (prevWidth / /* float */ RSSExpandedReader.FINDER_PATTERN_MODULES) * RSSExpandedReader.DATA_CHARACTER_MODULES;
       const minX = prevEnd + (2 * charWidth * (1 - RSSExpandedReader.MAX_FINDER_PATTERN_DISTANCE_VARIANCE));
       const maxX = prevEnd + (2 * charWidth * (1 + RSSExpandedReader.MAX_FINDER_PATTERN_DISTANCE_VARIANCE));
       if (start < minX || start > maxX) {
@@ -776,17 +752,17 @@ export default class RSSExpandedReader extends AbstractRSSReader {
       RSSExpandedReader.recordPattern(row, pattern.getStartEnd()[1], counters);
       // reverse it
       for (let i = 0, j = counters.length - 1; i < j; i++, j--) {
-        let temp = counters[i];
+        const temp = counters[i];
         counters[i] = counters[j];
         counters[j] = temp;
       }
     } // counters[] has the pixels of the module
 
     let numModules = 17; // left and right data characters have all the same length
-    let elementWidth = MathUtils.sum(new Int32Array(counters)) / numModules;
+    let elementWidth /* float */ = MathUtils.sum(new Int32Array(counters)) / numModules;
 
     // Sanity check: element width for pattern and the character should match
-    let expectedElementWidth = (pattern.getStartEnd()[1] - pattern.getStartEnd()[0]) / 15.0;
+    let expectedElementWidth /* float */ = (pattern.getStartEnd()[1] - pattern.getStartEnd()[0]) / 15.0;
     if (
       Math.abs(elementWidth - expectedElementWidth) / expectedElementWidth > 0.3
     ) {
@@ -799,8 +775,8 @@ export default class RSSExpandedReader extends AbstractRSSReader {
     const evenRoundingErrors = this.getEvenRoundingErrors();
 
     for (let i = 0; i < counters.length; i++) {
-      const value = (1.0 * counters[i]) / elementWidth;
-      let count = Math.floor(value + 0.5); // Round
+      const value /* float */ = (1.0 * counters[i]) / elementWidth;
+      let count = Math.trunc(value + 0.5); // Round
       if (count < 1) {
         if (value < 0.3) {
           throw new NotFoundException();
@@ -812,7 +788,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
         }
         count = 8;
       }
-      let offset = i / 2;
+      const offset /* int */ = Math.trunc(i / 2);
       if ((i & 0x01) === 0) {
         oddCounts[offset] = count;
         oddRoundingErrors[offset] = value - count;
@@ -848,7 +824,7 @@ export default class RSSExpandedReader extends AbstractRSSReader {
       throw new NotFoundException();
     }
 
-    const group = (13 - oddSum) / 2;
+    const group /* int */ = Math.trunc((13 - oddSum) / 2);
     const oddWidest = RSSExpandedReader.SYMBOL_WIDEST[group];
     const evenWidest = 9 - oddWidest;
     const vOdd = RSSUtils.getRSSvalue(oddCounts, oddWidest, true);
