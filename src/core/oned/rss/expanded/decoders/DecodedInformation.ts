@@ -9,7 +9,7 @@ export default class DecodedInformation extends DecodedObject {
   constructor(newPosition: number, newString: string, remainingValue?: number) {
     super(newPosition);
     this.newString = newString;
-    if (remainingValue !== undefined) {
+    if (remainingValue === undefined) {
       this.remaining = false;
       this.remainingValue = 0;
     } else {

@@ -25,7 +25,7 @@ export default class GeneralAppIdDecoder {
     do {
       const info = this.decodeGeneralPurposeField(currentPosition, remaining);
       const parsedFields = FieldParser.parseFieldsInGeneralPurpose(info.getNewString());
-      if (parsedFields != null) {
+      if (parsedFields !== null) {
         buff.append(parsedFields);
       }
       if (info.isRemaining()) {
