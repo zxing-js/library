@@ -8,6 +8,13 @@ export class BrowserMultiFormatReader extends BrowserCodeReader {
 
   protected readonly reader: MultiFormatReader;
 
+  set hints(hints: Map<DecodeHintType, any>) {
+    this._hints = hints || null;
+
+    // Since we don't pass the hints in `decodeBitmap` as other Browser readers do, we need to set them here.
+    this.reader.setHints(hints);
+  }
+
   public constructor(
     hints: Map<DecodeHintType, any> = null,
     timeBetweenScansMillis: number = 500
