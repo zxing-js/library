@@ -1046,7 +1046,12 @@ export class BrowserCodeReader {
    * Call the encapsulated readers decode
    */
   public decodeBitmap(binaryBitmap: BinaryBitmap): Result {
-    return this.reader.decode(binaryBitmap, this._hints);
+    try {
+      return this.reader.decode(binaryBitmap, this._hints);
+    } finally {
+      // Readers need to be reset before being reused on another bitmap.
+      this.reader.reset();
+    }
   }
 
   /**
