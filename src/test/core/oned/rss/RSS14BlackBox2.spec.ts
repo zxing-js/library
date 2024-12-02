@@ -30,7 +30,7 @@ class RSS14BlackBox2Spec extends AbstractBlackBoxSpec {
     public constructor() {
         super('src/test/resources/blackbox/rss14-2', new MultiFormatReader(), BarcodeFormat.RSS_14);
         this.addTestWithMax(4, 8, 1, 1, 0.0);
-        this.addTestWithMax(2, 8, 0, 1, 180.0);
+        this.addTestWithMax(3, 8, 0, 1, 180.0);
     }
 }
 
