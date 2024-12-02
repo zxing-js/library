@@ -41,16 +41,15 @@ class RSSExpandedStackedBlackBox1TestCase extends AbstractBlackBoxSpec {
 
   public constructor() {
     super('src/test/resources/blackbox/rssexpandedstacked-1', new MultiFormatReader(), BarcodeFormat.RSS_EXPANDED);
-    // this.addTest(59, 64, 0.0);
-    // this.addTest(59, 64, 180.0);
+    this.addTest(60, 65, 0.0);
+    this.addTest(60, 65, 180.0);
   }
 
 }
-//
-// describe('RSSExpandedStackedBlackBox1TestCase', () => {
-//   it('testBlackBox', async () => {
-//     const test = new RSSExpandedStackedBlackBox1TestCase();
-//     await test.testBlackBox();
-//   });
-// });
 
+describe('RSSExpandedStackedBlackBox1TestCase', () => {
+  it('testBlackBox', async () => {
+    const test = new RSSExpandedStackedBlackBox1TestCase();
+    await test.testBlackBox();
+  });
+});

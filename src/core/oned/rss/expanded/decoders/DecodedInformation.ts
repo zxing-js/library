@@ -8,14 +8,14 @@ export default class DecodedInformation extends DecodedObject {
 
   constructor(newPosition: number, newString: string, remainingValue?: number) {
     super(newPosition);
-    if (remainingValue) {
-      this.remaining = true;
-      this.remainingValue = this.remainingValue;
-    } else {
+    this.newString = newString;
+    if (remainingValue === undefined) {
       this.remaining = false;
       this.remainingValue = 0;
+    } else {
+      this.remaining = true;
+      this.remainingValue = remainingValue;
     }
-    this.newString = newString;
   }
 
   getNewString(): string {
@@ -25,6 +25,7 @@ export default class DecodedInformation extends DecodedObject {
   isRemaining(): boolean {
     return this.remaining;
   }
+
   getRemainingValue() {
     return this.remainingValue;
   }

@@ -3,9 +3,11 @@ import ResultPoint from '../../ResultPoint';
 
 export default class FinderPattern {
 
+    private value: number;
+    private startEnd: number[];
     private resultPoints: Array<ResultPoint>;
 
-    public constructor(private value: number, private startEnd: number[], start: number, end: number, rowNumber: number) {
+    public constructor(value: number, startEnd: number[], start: number, end: number, rowNumber: number) {
         this.value = value;
         this.startEnd = startEnd;
         this.resultPoints = new Array<ResultPoint>();

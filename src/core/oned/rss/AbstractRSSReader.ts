@@ -25,8 +25,8 @@ export default abstract class AbstractRSSReader extends OneDReader {
         this.dataCharacterCounters = new Int32Array(8);
         this.oddRoundingErrors = new Array<number>(4);
         this.evenRoundingErrors = new Array<number>(4);
-        this.oddCounts = new Array<number>(this.dataCharacterCounters.length / 2);
-        this.evenCounts = new Array<number>(this.dataCharacterCounters.length / 2);
+        this.oddCounts = new Array<number>(Math.trunc(this.dataCharacterCounters.length / 2));
+        this.evenCounts = new Array<number>(Math.trunc(this.dataCharacterCounters.length / 2));
     }
 
     protected getDecodeFinderCounters(): Int32Array {

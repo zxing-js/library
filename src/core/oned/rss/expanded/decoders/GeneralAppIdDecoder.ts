@@ -12,7 +12,7 @@ import FieldParser from './FieldParser';
 export default class GeneralAppIdDecoder {
 
   private readonly information: BitArray;
-  private readonly current: CurrentParsingState;
+  private readonly current = new CurrentParsingState();
   private readonly buffer = new StringBuilder();
 
   constructor(information: BitArray) {
@@ -21,11 +21,11 @@ export default class GeneralAppIdDecoder {
 
   decodeAllCodes(buff: StringBuilder, initialPosition: number): string {
     let currentPosition = initialPosition;
-    let remaining = null;
+    let remaining: string | null = null;
     do {
-      let info = this.decodeGeneralPurposeField(currentPosition, remaining);
-      let parsedFields = FieldParser.parseFieldsInGeneralPurpose(info.getNewString());
-      if (parsedFields != null) {
+      const info = this.decodeGeneralPurposeField(currentPosition, remaining);
+      const parsedFields = FieldParser.parseFieldsInGeneralPurpose(info.getNewString());
+      if (parsedFields !== null) {
         buff.append(parsedFields);
       }
       if (info.isRemaining()) {
@@ -61,16 +61,16 @@ export default class GeneralAppIdDecoder {
 
   private decodeNumeric(pos: number): DecodedNumeric {
     if (pos + 7 > this.information.getSize()) {
-      let numeric = this.extractNumericValueFromBitArray(pos, 4);
+      const numeric = this.extractNumericValueFromBitArray(pos, 4);
       if (numeric === 0) {
         return new DecodedNumeric(this.information.getSize(), DecodedNumeric.FNC1, DecodedNumeric.FNC1);
       }
       return new DecodedNumeric(this.information.getSize(), numeric - 1, DecodedNumeric.FNC1);
     }
-    let numeric = this.extractNumericValueFromBitArray(pos, 7);
+    const numeric = this.extractNumericValueFromBitArray(pos, 7);
 
-    let digit1 = (numeric - 8) / 11;
-    let digit2 = (numeric - 8) % 11;
+    const digit1 = Math.trunc((numeric - 8) / 11);
+    const digit2 = (numeric - 8) % 11;
 
     return new DecodedNumeric(pos + 7, digit1, digit2);
   }
@@ -94,24 +94,24 @@ export default class GeneralAppIdDecoder {
     // this.buffer.setLength(0);
     this.buffer.setLengthToZero();
 
-    if (remaining != null) {
+    if (remaining !== null) {
       this.buffer.append(remaining);
     }
 
     this.current.setPosition(pos);
 
-    let lastDecoded = this.parseBlocks();
-    if (lastDecoded != null && lastDecoded.isRemaining()) {
+    const lastDecoded = this.parseBlocks();
+    if (lastDecoded !== null && lastDecoded.isRemaining()) {
       return new DecodedInformation(this.current.getPosition(), this.buffer.toString(), lastDecoded.getRemainingValue());
     }
     return new DecodedInformation(this.current.getPosition(), this.buffer.toString());
   }
 
   private parseBlocks(): DecodedInformation {
-    let isFinished: boolean;
+    let isFinished = false;
     let result: BlockParsedResult;
     do {
-      let initialPosition = this.current.getPosition();
+      const initialPosition = this.current.getPosition();
 
       if (this.current.isAlpha()) {
         result = this.parseAlphaBlock();
@@ -124,7 +124,7 @@ export default class GeneralAppIdDecoder {
         isFinished = result.isFinished();
       }
 
-      let positionChanged: boolean = initialPosition !== this.current.getPosition();
+      const positionChanged: boolean = initialPosition !== this.current.getPosition();
       if (!positionChanged && !isFinished) {
         break;
       }
@@ -135,7 +135,7 @@ export default class GeneralAppIdDecoder {
 
   private parseNumericBlock(): BlockParsedResult {
     while (this.isStillNumeric(this.current.getPosition())) {
-      let numeric: DecodedNumeric = this.decodeNumeric(this.current.getPosition());
+      const numeric = this.decodeNumeric(this.current.getPosition());
       this.current.setPosition(numeric.getNewPosition());
 
       if (numeric.isFirstDigitFNC1()) {
@@ -145,32 +145,32 @@ export default class GeneralAppIdDecoder {
         } else {
           information = new DecodedInformation(this.current.getPosition(), this.buffer.toString(), numeric.getSecondDigit());
         }
-        return new BlockParsedResult(true, information);
+        return new BlockParsedResult(information, true);
       }
-      this.buffer.append(numeric.getFirstDigit());
+      this.buffer.append('' + numeric.getFirstDigit());
 
       if (numeric.isSecondDigitFNC1()) {
-        let information = new DecodedInformation(this.current.getPosition(), this.buffer.toString());
-        return new BlockParsedResult(true, information);
+        const information = new DecodedInformation(this.current.getPosition(), this.buffer.toString());
+        return new BlockParsedResult(information, true);
       }
-      this.buffer.append(numeric.getSecondDigit());
+      this.buffer.append('' + numeric.getSecondDigit());
     }
 
     if (this.isNumericToAlphaNumericLatch(this.current.getPosition())) {
       this.current.setAlpha();
       this.current.incrementPosition(4);
     }
-    return new BlockParsedResult(false);
+    return new BlockParsedResult();
   }
 
   private parseIsoIec646Block(): BlockParsedResult {
     while (this.isStillIsoIec646(this.current.getPosition())) {
-      let iso = this.decodeIsoIec646(this.current.getPosition());
+      const iso = this.decodeIsoIec646(this.current.getPosition());
       this.current.setPosition(iso.getNewPosition());
 
       if (iso.isFNC1()) {
-        let information = new DecodedInformation(this.current.getPosition(), this.buffer.toString());
-        return new BlockParsedResult(true, information);
+        const information = new DecodedInformation(this.current.getPosition(), this.buffer.toString());
+        return new BlockParsedResult(information, true);
       }
       this.buffer.append(iso.getValue());
     }
@@ -187,17 +187,17 @@ export default class GeneralAppIdDecoder {
 
       this.current.setAlpha();
     }
-    return new BlockParsedResult(false);
+    return new BlockParsedResult();
   }
 
   private parseAlphaBlock(): BlockParsedResult {
     while (this.isStillAlpha(this.current.getPosition())) {
-      let alpha = this.decodeAlphanumeric(this.current.getPosition());
+      const alpha = this.decodeAlphanumeric(this.current.getPosition());
       this.current.setPosition(alpha.getNewPosition());
 
       if (alpha.isFNC1()) {
-        let information = new DecodedInformation(this.current.getPosition(), this.buffer.toString());
-        return new BlockParsedResult(true, information); // end of the char block
+        const information = new DecodedInformation(this.current.getPosition(), this.buffer.toString());
+        return new BlockParsedResult(information, true); // end of the char block
       }
 
       this.buffer.append(alpha.getValue());
@@ -215,7 +215,7 @@ export default class GeneralAppIdDecoder {
 
       this.current.setIsoIec646();
     }
-    return new BlockParsedResult(false);
+    return new BlockParsedResult();
   }
 
   private isStillIsoIec646(pos: number): boolean {
@@ -223,7 +223,7 @@ export default class GeneralAppIdDecoder {
       return false;
     }
 
-    let fiveBitValue = this.extractNumericValueFromBitArray(pos, 5);
+    const fiveBitValue = this.extractNumericValueFromBitArray(pos, 5);
     if (fiveBitValue >= 5 && fiveBitValue < 16) {
       return true;
     }
@@ -232,7 +232,7 @@ export default class GeneralAppIdDecoder {
       return false;
     }
 
-    let sevenBitValue = this.extractNumericValueFromBitArray(pos, 7);
+    const sevenBitValue = this.extractNumericValueFromBitArray(pos, 7);
     if (sevenBitValue >= 64 && sevenBitValue < 116) {
       return true;
     }
@@ -241,33 +241,33 @@ export default class GeneralAppIdDecoder {
       return false;
     }
 
-    let eightBitValue = this.extractNumericValueFromBitArray(pos, 8);
+    const eightBitValue = this.extractNumericValueFromBitArray(pos, 8);
     return eightBitValue >= 232 && eightBitValue < 253;
 
   }
 
   private decodeIsoIec646(pos: number): DecodedChar {
-    let fiveBitValue = this.extractNumericValueFromBitArray(pos, 5);
+    const fiveBitValue = this.extractNumericValueFromBitArray(pos, 5);
     if (fiveBitValue === 15) {
       return new DecodedChar(pos + 5, DecodedChar.FNC1);
     }
 
     if (fiveBitValue >= 5 && fiveBitValue < 15) {
-      return new DecodedChar(pos + 5, ('0' + (fiveBitValue - 5)));
+      return new DecodedChar(pos + 5, String.fromCharCode('0'.charCodeAt(0) + fiveBitValue - 5));
     }
 
-    let sevenBitValue = this.extractNumericValueFromBitArray(pos, 7);
+    const sevenBitValue = this.extractNumericValueFromBitArray(pos, 7);
 
     if (sevenBitValue >= 64 && sevenBitValue < 90) {
-      return new DecodedChar(pos + 7, ('' + (sevenBitValue + 1)));
+      return new DecodedChar(pos + 7, String.fromCharCode(sevenBitValue + 1));
     }
 
     if (sevenBitValue >= 90 && sevenBitValue < 116) {
-      return new DecodedChar(pos + 7, ('' + (sevenBitValue + 7)));
+      return new DecodedChar(pos + 7, String.fromCharCode(sevenBitValue + 7));
     }
 
-    let eightBitValue = this.extractNumericValueFromBitArray(pos, 8);
-    let c;
+    const eightBitValue = this.extractNumericValueFromBitArray(pos, 8);
+    let c: string;
     switch (eightBitValue) {
       case 232:
         c = '!';
@@ -344,7 +344,7 @@ export default class GeneralAppIdDecoder {
     }
 
     // We now check if it's a valid 5-bit value (0..9 and FNC1)
-    let fiveBitValue = this.extractNumericValueFromBitArray(pos, 5);
+    const fiveBitValue = this.extractNumericValueFromBitArray(pos, 5);
     if (fiveBitValue >= 5 && fiveBitValue < 16) {
       return true;
     }
@@ -353,27 +353,27 @@ export default class GeneralAppIdDecoder {
       return false;
     }
 
-    let sixBitValue = this.extractNumericValueFromBitArray(pos, 6);
+    const sixBitValue = this.extractNumericValueFromBitArray(pos, 6);
     return sixBitValue >= 16 && sixBitValue < 63; // 63 not included
   }
 
   private decodeAlphanumeric(pos: number): DecodedChar {
-    let fiveBitValue = this.extractNumericValueFromBitArray(pos, 5);
+    const fiveBitValue = this.extractNumericValueFromBitArray(pos, 5);
     if (fiveBitValue === 15) {
       return new DecodedChar(pos + 5, DecodedChar.FNC1);
     }
 
     if (fiveBitValue >= 5 && fiveBitValue < 15) {
-      return new DecodedChar(pos + 5, ('0' + (fiveBitValue - 5)));
+      return new DecodedChar(pos + 5, String.fromCharCode('0'.charCodeAt(0) + fiveBitValue - 5));
     }
 
     let sixBitValue = this.extractNumericValueFromBitArray(pos, 6);
 
     if (sixBitValue >= 32 && sixBitValue < 58) {
-      return new DecodedChar(pos + 6, ('' + (sixBitValue + 33)));
+      return new DecodedChar(pos + 6, String.fromCharCode((sixBitValue + 33)));
     }
 
-    let c;
+    let c: string;
     switch (sixBitValue) {
       case 58:
         c = '*';

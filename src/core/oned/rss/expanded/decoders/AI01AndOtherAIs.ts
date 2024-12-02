@@ -12,13 +12,15 @@ export default class AI01AndOtherAIs extends AI01decoder {
   }
 
   public parseInformation(): string {
+    const buff = new StringBuilder();
 
-    let buff = new StringBuilder();
     buff.append('(01)');
-    let initialGtinPosition = buff.length();
-    let firstGtinDigit = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01AndOtherAIs.HEADER_SIZE, 4);
-    buff.append(firstGtinDigit);
+    const initialGtinPosition = buff.length();
+    const firstGtinDigit = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01AndOtherAIs.HEADER_SIZE, 4);
+    buff.append('' + firstGtinDigit);
+
     this.encodeCompressedGtinWithoutAI(buff, AI01AndOtherAIs.HEADER_SIZE + 4, initialGtinPosition);
+
     return this.getGeneralDecoder().decodeAllCodes(buff, AI01AndOtherAIs.HEADER_SIZE + 44);
   }
 

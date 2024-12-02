@@ -28,7 +28,7 @@ export default class AI013x0x1xDecoder extends AI01weightDecoder {
       throw new NotFoundException();
     }
 
-    let buf = new StringBuilder();
+    const buf = new StringBuilder();
 
     this.encodeCompressedGtin(buf, AI013x0x1xDecoder.HEADER_SIZE);
     this.encodeCompressedWeight(
@@ -59,30 +59,32 @@ export default class AI013x0x1xDecoder extends AI01weightDecoder {
     buf.append(this.dateCode);
     buf.append(')');
 
-    let day = numericDate % 32;
-    numericDate /= 32;
-    let month = (numericDate % 12) + 1;
-    numericDate /= 12;
-    let year = numericDate;
+    const day /* int */ = numericDate % 32;
+    numericDate = Math.trunc(numericDate / 32);
+    const month /* int */ = (numericDate % 12) + 1;
+    numericDate = Math.trunc(numericDate / 12);
+    const year /* int */ = numericDate;
 
-    if (year / 10 === 0) {
+    // Division of an integer by 10 results in 0.
+    // The checks exist to add a leading 0.
+    if (year < 10) {
       buf.append('0');
     }
-    buf.append(year);
-    if (month / 10 === 0) {
+    buf.append('' + year);
+    if (month < 10) {
       buf.append('0');
     }
-    buf.append(month);
-    if (day / 10 === 0) {
+    buf.append('' + month);
+    if (day < 10) {
       buf.append('0');
     }
-    buf.append(day);
+    buf.append('' + day);
   }
 
-  protected addWeightCode(buf: StringBuilder, weight: number): void {
+  protected addWeightCode(buf: StringBuilder, weight: number /* int */): void {
     buf.append('(');
     buf.append(this.firstAIdigits);
-    buf.append(weight / 100000);
+    buf.append('' + Math.trunc(weight / 100000));
     buf.append(')');
   }
 

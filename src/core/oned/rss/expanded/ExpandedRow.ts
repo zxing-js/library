@@ -1,15 +1,12 @@
 import ExpandedPair from './ExpandedPair';
 
-
 export default class ExpandedRow {
   private readonly pairs: Array<ExpandedPair>;
   private readonly rowNumber: number;
-  private readonly wasReversed: boolean;
 
-  constructor(pairs: Array<ExpandedPair>, rowNumber: number, wasReversed: boolean) {
-    this.pairs = pairs;
+  constructor(pairs: Array<ExpandedPair>, rowNumber: number) {
+    this.pairs = [...pairs];
     this.rowNumber = rowNumber;
-    this.wasReversed = wasReversed;
   }
 
   getPairs(): Array<ExpandedPair> {
@@ -20,15 +17,9 @@ export default class ExpandedRow {
     return this.rowNumber;
   }
 
-  isReversed(): boolean {
-    return this.wasReversed;
-  }
-  // check implementation
-
   isEquivalent(otherPairs: Array<ExpandedPair>): boolean {
-    return this.checkEqualitity(this, otherPairs);
+    return ExpandedRow.listEquals(this.getPairs(), otherPairs);
   }
-  // @Override
 
   public toString(): String {
     return '{ ' + this.pairs + ' }';
@@ -38,31 +29,19 @@ export default class ExpandedRow {
    * Two rows are equal if they contain the same pairs in the same order.
    */
   // @Override
-  // check implementation
-  public equals(o1: ExpandedRow, o2: ExpandedRow): boolean {
-    if (!(o1 instanceof ExpandedRow)) {
+  public static equals(o1: ExpandedRow | null, o2: any): boolean {
+    if (o1 === null) return o2 === null;
+    if (!(o2 instanceof ExpandedRow)) {
       return false;
     }
-    return this.checkEqualitity(o1, o2) && o1.wasReversed === o2.wasReversed;
+    return ExpandedRow.listEquals(o1.pairs, o2.getPairs());
   }
-  checkEqualitity(pair1: any, pair2: any): boolean {
-    if (!pair1 || !pair2) return;
-    let result;
-    pair1.forEach((e1, i) => {
-      pair2.forEach(e2 => {
-        if (e1.getLeftChar().getValue() === e2.getLeftChar().getValue() && e1.getRightChar().getValue() === e2.getRightChar().getValue() && e1.getFinderPatter().getValue() === e2.getFinderPatter().getValue()) {
-          result = true;
-        }
-      });
+
+  static listEquals(pairs1: Array<ExpandedPair>, pairs2: Array<ExpandedPair>): boolean {
+    if (pairs1.length !== pairs2.length) return false;
+    return pairs1.every((pair1, index) => {
+      const pair2 = pairs2[index];
+      return ExpandedPair.equals(pair1, pair2);
     });
-    return result;
   }
-
-  // @Override
-  // check implementation
-  // public int hashCode(): number {
-  //   let hash = this.pairs.values ^ this.wasReversed
-  //   //return pairs.hashCode() ^ Boolean.valueOf(wasReversed).hashCode();
-  // }
-
 }
