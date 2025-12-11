@@ -116,6 +116,8 @@ export default class Encoder {
         this.appendBytes(content, mode, dataBits, encoding);
 
         let version: Version;
+        let effectiveEcLevel: ErrorCorrectionLevel = ecLevel;
+        
         if (hints !== null && undefined !== hints.get(EncodeHintType.QR_VERSION)) {
             const versionNumber = Number.parseInt(hints.get(EncodeHintType.QR_VERSION).toString(), 10);
             version = Version.getVersionForNumber(versionNumber);
@@ -124,7 +126,28 @@ export default class Encoder {
                 throw new WriterException('Data too big for requested version');
             }
         } else {
-            version = this.recommendVersion(ecLevel, mode, headerBits, dataBits);
+            // Try to find a version with the requested error correction level
+            // If it doesn't fit, try lower error correction levels (which have more capacity)
+            // This ensures large data (like 2000+ characters) can still be encoded
+            const ecLevels = [ErrorCorrectionLevel.L, ErrorCorrectionLevel.M, ErrorCorrectionLevel.Q, ErrorCorrectionLevel.H];
+            const requestedIndex = ecLevels.indexOf(ecLevel);
+            let versionFound = false;
+            
+            // Try error correction levels from requested level downward (toward L, which has more capacity)
+            for (let i = requestedIndex; i >= 0; i--) {
+                try {
+                    effectiveEcLevel = ecLevels[i];
+                    version = this.recommendVersion(effectiveEcLevel, mode, headerBits, dataBits);
+                    versionFound = true;
+                    break;
+                } catch (e) {
+                    // Continue to next error correction level (with more capacity)
+                }
+            }
+            
+            if (!versionFound) {
+                throw new WriterException('Data too big for QR code (maximum capacity exceeded, even with lowest error correction)');
+            }
         }
 
         const headerAndDataBits = new BitArray();
@@ -135,7 +158,7 @@ export default class Encoder {
         // Put data together into the overall payload
         headerAndDataBits.appendBitArray(dataBits);
 
-        const ecBlocks: ECBlocks = version.getECBlocksForLevel(ecLevel);
+        const ecBlocks: ECBlocks = version.getECBlocksForLevel(effectiveEcLevel);
         const numDataBytes = version.getTotalCodewords() - ecBlocks.getTotalECCodewords();
 
         // Terminate the bits properly.
@@ -149,18 +172,18 @@ export default class Encoder {
 
         const qrCode = new QRCode();
 
-        qrCode.setECLevel(ecLevel);
+        qrCode.setECLevel(effectiveEcLevel);
         qrCode.setMode(mode);
         qrCode.setVersion(version);
 
         //  Choose the mask pattern and set to "qrCode".
         const dimension = version.getDimensionForVersion();
         const matrix: ByteMatrix = new ByteMatrix(dimension, dimension);
-        const maskPattern = this.chooseMaskPattern(finalBits, ecLevel, version, matrix);
+        const maskPattern = this.chooseMaskPattern(finalBits, effectiveEcLevel, version, matrix);
         qrCode.setMaskPattern(maskPattern);
 
         // Build the matrix and set it to "qrCode".
-        MatrixUtil.buildMatrix(finalBits, ecLevel, version, maskPattern, matrix);
+        MatrixUtil.buildMatrix(finalBits, effectiveEcLevel, version, maskPattern, matrix);
         qrCode.setMatrix(matrix);
 
         return qrCode;

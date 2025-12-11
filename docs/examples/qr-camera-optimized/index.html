@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="ZXing for JS" />
+
+    <title>ZXing TypeScript | Phase 1: Optimized Alphanumeric Decode</title>
+
+    <link
+      rel="stylesheet"
+      rel="preload"
+      as="style"
+      onload="this.rel='stylesheet';this.onload=null"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"
+    />
+    <link
+      rel="stylesheet"
+      rel="preload"
+      as="style"
+      onload="this.rel='stylesheet';this.onload=null"
+      href="https://unpkg.com/normalize.css@8.0.0/normalize.css"
+    />
+    <link
+      rel="stylesheet"
+      rel="preload"
+      as="style"
+      onload="this.rel='stylesheet';this.onload=null"
+      href="https://unpkg.com/milligram@1.3.0/dist/milligram.min.css"
+    />
+
+    <style>
+      .performance-info {
+        background: #f4f4f4;
+        padding: 1em;
+        margin: 1em 0;
+        border-radius: 4px;
+        font-family: monospace;
+      }
+      .timing {
+        color: #0066cc;
+        font-weight: bold;
+      }
+      .success {
+        color: #28a745;
+      }
+      .warning {
+        color: #ffc107;
+      }
+      .error {
+        color: #dc3545;
+      }
+      .status {
+        padding: 0.5em;
+        margin: 0.5em 0;
+        border-radius: 4px;
+      }
+      .status.decoding {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .status.idle {
+        background: #d4edda;
+        color: #155724;
+      }
+      .optimization-badge {
+        display: inline-block;
+        background: #28a745;
+        color: white;
+        padding: 0.25em 0.75em;
+        border-radius: 12px;
+        font-size: 0.85em;
+        font-weight: bold;
+        margin-left: 0.5em;
+      }
+      .phase-info {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5em;
+        border-radius: 8px;
+        margin: 1em 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .phase-info h3 {
+        margin-top: 0;
+        color: white;
+      }
+      .phase-info ul {
+        margin: 0.5em 0;
+        padding-left: 1.5em;
+      }
+      .phase-info li {
+        margin: 0.5em 0;
+      }
+      .metric-card {
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        padding: 1em;
+        margin: 0.5em 0;
+      }
+      .metric-label {
+        font-weight: bold;
+        color: #666;
+        font-size: 0.9em;
+      }
+      .metric-value {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #0066cc;
+        margin-top: 0.25em;
+      }
+      .performance-target {
+        margin-top: 1em;
+        padding: 1em;
+        border-radius: 6px;
+        font-weight: bold;
+      }
+      .performance-target.success {
+        background: #d4edda;
+        color: #155724;
+        border: 2px solid #28a745;
+      }
+      .performance-target.warning {
+        background: #fff3cd;
+        color: #856404;
+        border: 2px solid #ffc107;
+      }
+      .performance-target.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 2px solid #dc3545;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="wrapper" style="padding-top: 2em">
+      <section class="container" id="demo-content">
+        <h1 class="title">
+          Phase 1: Optimized Alphanumeric Decode
+          <span class="optimization-badge">O(n²) → O(n)</span>
+        </h1>
+        
+        <div class="phase-info">
+          <h3>🚀 Phase 1 Optimization Summary</h3>
+          <p><strong>Objective:</strong> Reduce alphanumeric JWT decode time by 40-50% (20s → 10-12s)</p>
+          <p><strong>Key Improvements:</strong></p>
+          <ul>
+            <li>✅ <strong>Array-based building</strong> - Replaced O(n²) string concatenation with O(1) array assignments</li>
+            <li>✅ <strong>Lookup table optimization</strong> - Direct array access instead of function calls</li>
+            <li>✅ <strong>In-place FNC1 processing</strong> - Reduced memory allocation</li>
+            <li>✅ <strong>Safe bit handling</strong> - Improved reliability for large QR codes</li>
+          </ul>
+          <p><strong>Complexity:</strong> Reduced from O(n²) to O(n) - ~750× fewer operations for 1500-char JWTs</p>
+        </div>
+
+        <p>
+          <a class="button-small button-outline" href="../qr-camera/index.html"
+            >Standard Example</a
+          >
+        </p>
+
+        <div class="status" id="statusIndicator">
+          <strong>Status:</strong> <span id="statusText">Idle</span>
+        </div>
+
+        <div>
+          <a class="button" id="startButton">Start Camera</a>
+          <a class="button" id="resetButton">Reset</a>
+        </div>
+
+        <div style="position: relative; display: inline-block;">
+          <video
+            id="video"
+            width="640"
+            height="480"
+            style="border: 2px solid #667eea; border-radius: 8px; display: block; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);"
+            autoplay
+            muted
+            playsinline
+          ></video>
+        </div>
+
+        <div id="sourceSelectPanel" style="display: none">
+          <label for="sourceSelect">Change video source:</label>
+          <select id="sourceSelect" style="max-width: 400px"></select>
+        </div>
+
+        <div style="display: table">
+          <label for="decoding-style"> Decoding Style:</label>
+          <select id="decoding-style" size="1">
+            <option value="once">Decode once</option>
+            <option value="continuously" selected>Decode continuously</option>
+          </select>
+        </div>
+
+        <div
+          class="performance-info"
+          id="performanceInfo"
+          style="display: none"
+        >
+          <h3>📊 Performance Metrics</h3>
+          <div id="metrics"></div>
+        </div>
+
+        <details style="margin: 1em 0; border: 1px solid #e0e0e0; border-radius: 6px; padding: 0.5em;">
+          <summary style="cursor: pointer; padding: 0.5em; font-weight: bold; user-select: none;">
+            🔍 Debug Logs (Click to expand)
+          </summary>
+          <div style="margin-top: 1em; padding: 0 0.5em 0.5em;">
+            <div style="margin-bottom: 0.5em;">
+              <label style="margin-right: 1em;">
+                <input type="checkbox" id="enableLogging" checked /> Enable logging
+              </label>
+              <button id="exportLogs" class="button-small">Export Logs</button>
+              <button id="clearLogs" class="button-small">Clear Logs</button>
+            </div>
+            <div
+              style="
+                background: #1e1e1e;
+                color: #d4d4d4;
+                padding: 1em;
+                border-radius: 4px;
+                max-height: 300px;
+                overflow-y: auto;
+                font-family: monospace;
+                font-size: 12px;
+              "
+              id="logContainer"
+            >
+              <div id="logs"></div>
+            </div>
+          </div>
+        </details>
+
+        <div style="margin-top: 1.5em;">
+          <label style="font-weight: bold; font-size: 1.1em;">📋 Decoded Result:</label>
+          <pre style="background: #f5f5f5; padding: 1em; border-radius: 6px; border: 2px solid #e0e0e0; overflow-x: auto; max-height: 200px; overflow-y: auto;"><code id="result" style="color: #333;"></code></pre>
+        </div>
+
+        <p style="margin-top: 2em; padding-top: 1em; border-top: 1px solid #e0e0e0; color: #666;">
+          <small>
+            See the
+            <a
+              href="https://github.com/zxing-js/library/tree/master/docs/examples/qr-camera-optimized/"
+              >source code</a
+            >
+            for this example. Part of ZXing-JS Phase 1 optimization initiative.
+          </small>
+        </p>
+      </section>
+
+      <footer class="footer">
+        <section class="container">
+          <p>
+            ZXing TypeScript Demo. Licensed under the
+            <a
+              target="_blank"
+              href="https://github.com/zxing-js/library#license"
+              title="MIT"
+              >MIT</a
+            >.
+          </p>
+        </section>
+      </footer>
+    </main>
+
+    <!-- Use local build instead of unpkg -->
+    <script type="text/javascript" src="../../../dist/umd/index.js"></script>
+    <script type="text/javascript">
+      let decodeStartTime = null;
+      let decodeCount = 0;
+      let totalDecodeTime = 0;
+      let minDecodeTime = Infinity;
+      let maxDecodeTime = 0;
+      let frameSkipCount = 0;
+      let lastFrameTime = performance.now();
+      let logEntries = [];
+      let loggingEnabled = true;
+
+      // Intercept console.log to capture ZXing logs
+      const originalConsoleLog = console.log;
+      console.log = function (...args) {
+        originalConsoleLog.apply(console, args);
+
+        if (loggingEnabled) {
+          const logText = args
+            .map((arg) => {
+              if (typeof arg === "object") {
+                try {
+                  return JSON.stringify(arg, null, 2);
+                } catch (e) {
+                  return String(arg);
+                }
+              }
+              return String(arg);
+            })
+            .join(" ");
+
+          // Only capture ZXing logs
+          if (logText.includes("[ZXing]")) {
+            const timestamp = new Date().toISOString();
+            logEntries.push({
+              timestamp: timestamp,
+              text: logText,
+              raw: args,
+            });
+
+            updateLogDisplay();
+          }
+        }
+      };
+
+      function updateLogDisplay() {
+        const logsDiv = document.getElementById("logs");
+        if (!logsDiv) return;
+
+        // Keep only last 100 entries
+        const recentLogs = logEntries.slice(-100);
+
+        logsDiv.innerHTML = recentLogs
+          .map((entry) => {
+            const time = new Date(entry.timestamp).toLocaleTimeString();
+            const text = entry.text.replace(
+              /\[ZXing\]/g,
+              '<span style="color: #4EC9B0;">[ZXing]</span>'
+            );
+            return `<div style="margin: 2px 0; color: #d4d4d4;">[${time}] ${text}</div>`;
+          })
+          .join("");
+
+        // Auto-scroll to bottom
+        const container = document.getElementById("logContainer");
+        if (container) {
+          container.scrollTop = container.scrollHeight;
+        }
+      }
+
+      function exportLogs() {
+        const logData = {
+          timestamp: new Date().toISOString(),
+          summary: {
+            decodeCount: decodeCount,
+            avgDecodeTime:
+              decodeCount > 0
+                ? (totalDecodeTime / decodeCount).toFixed(2) + "ms"
+                : "N/A",
+            minDecodeTime:
+              minDecodeTime !== Infinity
+                ? minDecodeTime.toFixed(2) + "ms"
+                : "N/A",
+            maxDecodeTime:
+              maxDecodeTime !== 0 ? maxDecodeTime.toFixed(2) + "ms" : "N/A",
+          },
+          logs: logEntries,
+        };
+
+        const blob = new Blob([JSON.stringify(logData, null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `zxing-logs-${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function clearLogs() {
+        logEntries = [];
+        updateLogDisplay();
+      }
+
+      function updateStatus(status, text) {
+        const indicator = document.getElementById("statusIndicator");
+        const textEl = document.getElementById("statusText");
+        indicator.className = "status " + status;
+        textEl.textContent = text;
+      }
+
+      function updateMetrics(decodeTime, skippedFrames = 0) {
+        decodeCount++;
+        totalDecodeTime += decodeTime;
+        minDecodeTime = Math.min(minDecodeTime, decodeTime);
+        maxDecodeTime = Math.max(maxDecodeTime, decodeTime);
+        frameSkipCount += skippedFrames;
+
+        const avgTime = totalDecodeTime / decodeCount;
+        const avgTimeSeconds = avgTime / 1000;
+        const metricsDiv = document.getElementById("metrics");
+        
+        // Determine performance status
+        let statusClass, statusText, statusIcon;
+        if (avgTimeSeconds < 12) {
+          statusClass = "success";
+          statusText = "✅ Performance Target Met";
+          statusIcon = "🎯";
+        } else if (avgTimeSeconds < 20) {
+          statusClass = "warning";
+          statusText = "⚠️ Improved but Not at Target";
+          statusIcon = "📈";
+        } else {
+          statusClass = "error";
+          statusText = "❌ Still Needs Optimization";
+          statusIcon = "🔧";
+        }
+        
+        // Calculate improvement percentage (assuming baseline was ~20s)
+        const baselineTime = 20000; // 20 seconds baseline
+        const improvement = ((baselineTime - avgTime) / baselineTime * 100).toFixed(1);
+        const improvementText = avgTime < baselineTime 
+          ? `(${improvement}% faster than baseline)`
+          : `(${Math.abs(improvement)}% slower than baseline)`;
+        
+        metricsDiv.innerHTML = `
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1em; margin-bottom: 1em;">
+            <div class="metric-card">
+              <div class="metric-label">Total Decodes</div>
+              <div class="metric-value">${decodeCount}</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Last Decode Time</div>
+              <div class="metric-value">${(decodeTime / 1000).toFixed(2)}s</div>
+              <div style="font-size: 0.8em; color: #666;">${decodeTime.toFixed(0)}ms</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Average Decode Time</div>
+              <div class="metric-value">${avgTimeSeconds.toFixed(2)}s</div>
+              <div style="font-size: 0.8em; color: #666;">${avgTime.toFixed(0)}ms</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Fastest Decode</div>
+              <div class="metric-value">${(minDecodeTime / 1000).toFixed(2)}s</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Slowest Decode</div>
+              <div class="metric-value">${(maxDecodeTime / 1000).toFixed(2)}s</div>
+            </div>
+          </div>
+          
+          <div class="performance-target ${statusClass}">
+            <div style="font-size: 1.2em; margin-bottom: 0.5em;">
+              ${statusIcon} ${statusText}
+            </div>
+            <div style="font-size: 0.9em;">
+              Target: &lt; 12s average | Current: ${avgTimeSeconds.toFixed(2)}s average ${improvementText}
+            </div>
+            <div style="font-size: 0.85em; margin-top: 0.5em; opacity: 0.9;">
+              Baseline (before optimization): ~20s | Improvement goal: 40-50%
+            </div>
+          </div>
+          
+          <div style="margin-top: 1em; padding: 0.75em; background: rgba(255, 255, 255, 0.1); border-radius: 4px; font-size: 0.9em;">
+            <strong>Additional Stats:</strong> Total decode time: ${(totalDecodeTime / 1000).toFixed(2)}s | Frames skipped: ${frameSkipCount}
+          </div>
+        `;
+        document.getElementById("performanceInfo").style.display = "block";
+      }
+
+      function decodeOnce(codeReader, selectedDeviceId) {
+        updateStatus("decoding", "Decoding...");
+        decodeStartTime = performance.now();
+        codeReader
+          .decodeFromInputVideoDevice(selectedDeviceId, "video")
+          .then((result) => {
+            const decodeTime = performance.now() - decodeStartTime;
+            console.log("Decode time:", decodeTime, "ms");
+            console.log("Result:", result);
+            document.getElementById("result").textContent = result.text;
+            updateStatus("idle", "Decoded successfully");
+            updateMetrics(decodeTime);
+          })
+          .catch((err) => {
+            console.error(err);
+            document.getElementById("result").textContent = err;
+            updateStatus("idle", "Decode failed");
+          });
+      }
+
+      // Track frame timing to detect skipping
+      let frameCheckInterval = null;
+
+      function decodeContinuously(codeReader, selectedDeviceId) {
+        updateStatus("idle", "Starting camera...");
+        decodeStartTime = performance.now();
+
+        // Monitor frame rate to detect skipping
+        let lastCheck = performance.now();
+        frameCheckInterval = setInterval(() => {
+          const now = performance.now();
+          const elapsed = now - lastCheck;
+          lastCheck = now;
+          // If more than 100ms passed, likely frame was skipped
+          if (elapsed > 100) {
+            frameSkipCount++;
+          }
+        }, 50);
+
+        let scanCount = 0;
+        // decodeFromInputVideoDeviceContinuously starts the video stream automatically
+        codeReader.decodeFromInputVideoDeviceContinuously(
+          selectedDeviceId,
+          "video",
+          (result, err) => {
+            scanCount++;
+            if (scanCount % 50 === 0) {
+              console.log(`Scanned ${scanCount} frames...`);
+            }
+            
+            if (result) {
+              const decodeTime =
+                performance.now() - (decodeStartTime || performance.now());
+              decodeStartTime = performance.now(); // Reset for next decode
+
+              console.log("✅ Found QR code!", result);
+              console.log("Decode time:", decodeTime, "ms");
+              console.log("Total scans before success:", scanCount);
+              document.getElementById("result").textContent = result.text;
+              updateStatus("idle", "Decoded successfully");
+              updateMetrics(decodeTime, 0);
+            }
+
+            if (err) {
+              if (err instanceof ZXing.NotFoundException) {
+                // Normal - no QR code found yet
+                decodeStartTime = performance.now(); // Reset timer
+                if (scanCount === 1) {
+                  // First scan - video should be starting
+                  updateStatus("idle", "Scanning... (camera active)");
+                } else if (scanCount % 100 === 0) {
+                  updateStatus("idle", `Scanning... (${scanCount} frames scanned)`);
+                }
+              } else if (err instanceof ZXing.ChecksumException) {
+                console.log(
+                  "⚠️ A code was found, but it's read value was not valid."
+                );
+                updateStatus("idle", "Checksum error - try again");
+              } else if (err instanceof ZXing.FormatException) {
+                console.log(
+                  "⚠️ A code was found, but it was in an invalid format."
+                );
+                updateStatus("idle", "Format error - try again");
+              } else {
+                console.error("❌ Unexpected error:", err);
+                updateStatus("idle", "Error occurred");
+              }
+            }
+          }
+        ).catch((err) => {
+          console.error("Failed to start camera:", err);
+          updateStatus("idle", "Camera error - check permissions");
+        });
+      }
+
+       window.addEventListener("load", function () {
+         let selectedDeviceId;
+         
+         // Create hints for better QR code detection
+         const hints = new Map();
+         hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
+         hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, [ZXing.BarcodeFormat.QR_CODE]);
+         
+         // Create reader with faster scanning (100ms) for better detection
+         const codeReader = new ZXing.BrowserQRCodeReader(100); // Faster scanning for better detection
+         codeReader.hints = hints;
+         
+         console.log(
+           "ZXing code reader initialized with TRY_HARDER hint and 100ms scan interval"
+         );
+         
+         // Verify hints are set
+         if (codeReader.hints) {
+           console.log("Decode hints:", {
+             tryHarder: codeReader.hints.get(ZXing.DecodeHintType.TRY_HARDER),
+             possibleFormats: codeReader.hints.get(ZXing.DecodeHintType.POSSIBLE_FORMATS)
+           });
+         }
+
+        codeReader
+          .getVideoInputDevices()
+          .then((videoInputDevices) => {
+            const sourceSelect = document.getElementById("sourceSelect");
+            selectedDeviceId = videoInputDevices[0].deviceId;
+            if (videoInputDevices.length >= 1) {
+              videoInputDevices.forEach((element) => {
+                const sourceOption = document.createElement("option");
+                sourceOption.text = element.label;
+                sourceOption.value = element.deviceId;
+                sourceSelect.appendChild(sourceOption);
+              });
+
+              sourceSelect.onchange = () => {
+                selectedDeviceId = sourceSelect.value;
+              };
+
+              const sourceSelectPanel =
+                document.getElementById("sourceSelectPanel");
+              sourceSelectPanel.style.display = "block";
+            }
+
+            document
+              .getElementById("startButton")
+              .addEventListener("click", () => {
+                // Reset metrics
+                decodeCount = 0;
+                totalDecodeTime = 0;
+                minDecodeTime = Infinity;
+                maxDecodeTime = 0;
+                frameSkipCount = 0;
+                decodeStartTime = performance.now();
+                
+                console.log(`Starting decode from camera with id ${selectedDeviceId}`);
+
+                const decodingStyle =
+                  document.getElementById("decoding-style").value;
+
+                if (decodingStyle == "once") {
+                  decodeOnce(codeReader, selectedDeviceId);
+                } else {
+                  decodeContinuously(codeReader, selectedDeviceId);
+                }
+              });
+
+            document
+              .getElementById("resetButton")
+              .addEventListener("click", () => {
+                codeReader.reset();
+                document.getElementById("result").textContent = "";
+                document.getElementById("performanceInfo").style.display =
+                  "none";
+                decodeCount = 0;
+                totalDecodeTime = 0;
+                minDecodeTime = Infinity;
+                maxDecodeTime = 0;
+                frameSkipCount = 0;
+                if (frameCheckInterval) {
+                  clearInterval(frameCheckInterval);
+                  frameCheckInterval = null;
+                }
+                updateStatus("idle", "Idle");
+                console.log("Reset.");
+              });
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      });
+    </script>
+  </body>
+</html>

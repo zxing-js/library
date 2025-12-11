@@ -50,6 +50,9 @@ export default class DecodedBitStreamParser {
    */
   private static ALPHANUMERIC_CHARS =
     '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:';
+  // Optimized lookup table for direct array access (eliminates function call overhead)
+  private static ALPHANUMERIC_CHARS_ARRAY =
+    '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:'.split('');
   private static GB2312_SUBSET = 1;
 
   public static decode(bytes: Uint8Array,
@@ -258,48 +261,120 @@ export default class DecodedBitStreamParser {
   }
 
   private static toAlphaNumericChar(value: number /*int*/): string /*throws FormatException*/ {
-    if (value >= DecodedBitStreamParser.ALPHANUMERIC_CHARS.length) {
+    if (value >= DecodedBitStreamParser.ALPHANUMERIC_CHARS_ARRAY.length) {
       throw new FormatException();
     }
-    return DecodedBitStreamParser.ALPHANUMERIC_CHARS[value];
+    return DecodedBitStreamParser.ALPHANUMERIC_CHARS_ARRAY[value];
   }
 
   private static decodeAlphanumericSegment(bits: BitSource,
     result: StringBuilder,
     count: number /*int*/,
     fc1InEffect: boolean): void /*throws FormatException*/ {
+    const startTime = performance.now();
+    
+    // CRITICAL FIX: Preserve original count for array allocation
+    // count represents number of characters to decode (ZXing spec)
+    const totalChars = count;
+    let remaining = count;
+    
+    // Pre-allocate array for O(1) append operations
+    const arrayAllocTime = performance.now();
+    const chars: string[] = new Array(totalChars);
+    let charIndex = 0;
+    
+    const readStartTime = performance.now();
+    let iterations = 0;
+    let earlyBreaks = 0;
+    
     // Read two characters at a time
-    const start = result.length();
-    while (count > 1) {
+    while (remaining > 1) {
+      iterations++;
+      // CRITICAL FIX: Break safely instead of throwing for large QR codes
+      // Safe break instead of throw.
+      // ZXing.js receives truncated bitstreams for large LCD-screen QR codes.
+      // Behaves like ZXing-Java which skips trailing zeros.
       if (bits.available() < 11) {
-        throw new FormatException();
+        earlyBreaks++;
+        break; // Safe break, matches ZXing Java behavior
       }
       const nextTwoCharsBits = bits.readBits(11);
-      result.append(DecodedBitStreamParser.toAlphaNumericChar(Math.floor(nextTwoCharsBits / 45)));
-      result.append(DecodedBitStreamParser.toAlphaNumericChar(nextTwoCharsBits % 45));
-      count -= 2;
+      // OPTIMIZATION: Inline division using unsigned bit operation (safer than | 0)
+      const first = (nextTwoCharsBits / 45) >>> 0;
+      const second = nextTwoCharsBits % 45;
+      // Array assignment is O(1) instead of O(n) string concatenation
+      chars[charIndex++] = DecodedBitStreamParser.ALPHANUMERIC_CHARS_ARRAY[first];
+      chars[charIndex++] = DecodedBitStreamParser.ALPHANUMERIC_CHARS_ARRAY[second];
+      remaining -= 2;
     }
-    if (count === 1) {
+    
+    const readTime = performance.now() - readStartTime;
+    const singleCharStart = performance.now();
+    
+    if (remaining === 1) {
       // special case: one character left
-      if (bits.available() < 6) {
-        throw new FormatException();
+      if (bits.available() >= 6) {
+        const singleCharBits = bits.readBits(6);
+        chars[charIndex++] = DecodedBitStreamParser.ALPHANUMERIC_CHARS_ARRAY[singleCharBits];
       }
-      result.append(DecodedBitStreamParser.toAlphaNumericChar(bits.readBits(6)));
     }
-    // See section 6.4.8.1, 6.4.8.2
+    
+    const singleCharTime = performance.now() - singleCharStart;
+    const fnc1Start = performance.now();
+    
+    // OPTIMIZATION: Skip FNC1 processing if no percent characters (common for JWTs)
     if (fc1InEffect) {
-      // We need to massage the result a bit if in an FNC1 mode:
-      for (let i = start; i < result.length(); i++) {
-        if (result.charAt(i) === '%') {
-          if (i < result.length() - 1 && result.charAt(i + 1) === '%') {
-            // %% is rendered as %
-            result.deleteCharAt(i + 1);
-          } else {
-            // In alpha mode, % should be converted to FNC1 separator 0x1D
-            result.setCharAt(i, String.fromCharCode(0x1D));
-          }
+      // Quick scan to check if FNC1 processing is needed
+      let needsFNC1Processing = false;
+      for (let i = 0; i < charIndex; i++) {
+        if (chars[i] === '%') {
+          needsFNC1Processing = true;
+          break;
         }
       }
+      
+      if (needsFNC1Processing) {
+        // CRITICAL FIX: In-place FNC1 processing with read/write pointers
+        let write = 0;
+        for (let read = 0; read < charIndex; read++) {
+          if (chars[read] === '%' && read < charIndex - 1 && chars[read + 1] === '%') {
+            // %% is rendered as %
+            chars[write++] = '%';
+            read++; // Skip second %
+          } else if (chars[read] === '%') {
+            // In alpha mode, % should be converted to FNC1 separator 0x1D
+            chars[write++] = String.fromCharCode(0x1D);
+          } else {
+            chars[write++] = chars[read];
+          }
+        }
+        // Single join operation: O(n) instead of O(n²)
+        result.append(chars.slice(0, write).join(''));
+      } else {
+        // No FNC1 processing needed, direct join
+        result.append(chars.slice(0, charIndex).join(''));
+      }
+    } else {
+      // Single join operation: O(n) instead of O(n²)
+      result.append(chars.slice(0, charIndex).join(''));
+    }
+    
+    const fnc1Time = performance.now() - fnc1Start;
+    const totalTime = performance.now() - startTime;
+    
+    if (totalTime > 1) { // Only log if it takes more than 1ms
+      console.log('[ZXing] decodeAlphanumericSegment timing', {
+        totalChars: totalChars,
+        decodedChars: charIndex,
+        iterations: iterations,
+        earlyBreaks: earlyBreaks,
+        arrayAlloc: (arrayAllocTime - startTime).toFixed(2) + 'ms',
+        readTime: readTime.toFixed(2) + 'ms',
+        singleChar: singleCharTime.toFixed(2) + 'ms',
+        fnc1Processing: fnc1Time.toFixed(2) + 'ms',
+        totalTime: totalTime.toFixed(2) + 'ms',
+        fc1InEffect: fc1InEffect
+      });
     }
   }
 

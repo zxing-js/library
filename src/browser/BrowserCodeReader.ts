@@ -888,16 +888,30 @@ export class BrowserCodeReader {
   ): void {
     this._stopContinuousDecode = false;
 
+    // Use requestAnimationFrame for faster, smoother scanning when possible
+    // Falls back to setTimeout for longer delays
+    const useRAF = this.timeBetweenScansMillis < 100 && this._timeBetweenDecodingAttempts < 100;
+    let rafId: number | null = null;
+
     const loop = () => {
       if (this._stopContinuousDecode) {
         this._stopContinuousDecode = undefined;
+        if (rafId !== null) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
         return;
       }
 
       try {
         const result = this.decode(element);
         callbackFn(result, null);
-        setTimeout(loop, this.timeBetweenScansMillis);
+        // Use setTimeout for longer delays, RAF for short ones
+        if (useRAF && this.timeBetweenScansMillis < 16) {
+          rafId = requestAnimationFrame(loop);
+        } else {
+          setTimeout(loop, this.timeBetweenScansMillis);
+        }
       } catch (e) {
         callbackFn(null, e);
 
@@ -906,13 +920,21 @@ export class BrowserCodeReader {
         const isNotFound = e instanceof NotFoundException;
 
         if (isChecksumOrFormatError || isNotFound) {
-          // trying again
-          setTimeout(loop, this._timeBetweenDecodingAttempts);
+          // trying again - use faster retry delay
+          if (useRAF && this._timeBetweenDecodingAttempts < 16) {
+            rafId = requestAnimationFrame(loop);
+          } else {
+            setTimeout(loop, this._timeBetweenDecodingAttempts);
+          }
         }
       }
     };
 
-    loop();
+    if (useRAF && this.timeBetweenScansMillis < 16) {
+      rafId = requestAnimationFrame(loop);
+    } else {
+      loop();
+    }
   }
 
   /**

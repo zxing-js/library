@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZXing TypeScript | BarcodeDetector QR Scanner</title>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/normalize.css@8.0.0/normalize.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/milligram@1.3.0/dist/milligram.min.css"
+    />
+
+    <style>
+      .status {
+        padding: 0.5em;
+        margin: 0.5em 0;
+        border-radius: 4px;
+      }
+      .status.decoding {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .status.idle {
+        background: #d4edda;
+        color: #155724;
+      }
+      .video-container {
+        position: relative;
+        display: inline-block;
+      }
+      #qr-tracking-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 10;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="wrapper" style="padding-top: 2em">
+      <section class="container" id="demo-content">
+        <h1 class="title">QR Code Scanner - BarcodeDetector</h1>
+        <div class="status" id="statusIndicator">
+          <strong>Status:</strong> <span id="statusText">Idle</span>
+        </div>
+
+
+        <div>
+          <a class="button" id="startButton">Start Camera</a>
+          <a class="button" id="resetButton">Reset</a>
+        </div>
+
+        <div class="video-container">
+          <video
+            id="video"
+            width="640"
+            height="480"
+            style="border: 1px solid gray; display: block;"
+            autoplay
+            muted
+            playsinline
+          ></video>
+          <canvas
+            id="qr-tracking-canvas"
+          ></canvas>
+        </div>
+
+        <div id="sourceSelectPanel" style="display: none">
+          <label for="sourceSelect">Change video source:</label>
+          <select id="sourceSelect" style="max-width: 400px"></select>
+        </div>
+
+        <div>
+          <h3>Result:</h3>
+          <div id="result" style="word-break: break-all; padding: 1em; background: #f4f4f4; border-radius: 4px;"></div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      // Import BarcodeDetector - same as working scanner
+      import { BarcodeDetector } from 'https://cdn.skypack.dev/barcode-detector@2.2.2/pure';
+
+      let barcodeDetector = null;
+      let isScanning = false;
+      let lastScanned = 0;
+      let contentBefore = [];
+      let lastScanHadContent = false;
+      let animationFrameId = null;
+      let videoElement = null;
+      let stream = null;
+
+      // Initialize BarcodeDetector
+      barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
+      console.log('BarcodeDetector initialized (using same engine as working scanner)');
+
+      // Get video input devices
+      async function getVideoInputDevices() {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        return devices.filter(device => device.kind === 'videoinput');
+      }
+
+      // Start camera
+      async function startCamera(deviceId) {
+        const constraints = deviceId
+          ? { video: { deviceId: { exact: deviceId } } }
+          : { video: { facingMode: 'environment' } };
+
+        stream = await navigator.mediaDevices.getUserMedia(constraints);
+        videoElement = document.getElementById('video');
+        videoElement.srcObject = stream;
+        
+        await new Promise((resolve) => {
+          videoElement.addEventListener('loadedmetadata', resolve, { once: true });
+        });
+        
+        await videoElement.play();
+        console.log('Camera started', {
+          videoWidth: videoElement.videoWidth,
+          videoHeight: videoElement.videoHeight
+        });
+      }
+
+      // Stop camera
+      function stopCamera() {
+        if (stream) {
+          stream.getTracks().forEach(track => track.stop());
+          stream = null;
+        }
+        if (videoElement) {
+          videoElement.srcObject = null;
+        }
+      }
+
+      // Draw QR boundary (like working scanner)
+      function drawQRBoundary(detectedCodes) {
+        const canvas = document.getElementById('qr-tracking-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        if (!videoElement || !ctx) return;
+
+        // Match video display dimensions
+        const displayWidth = videoElement.offsetWidth || videoElement.videoWidth;
+        const displayHeight = videoElement.offsetHeight || videoElement.videoHeight;
+        const resolutionWidth = videoElement.videoWidth;
+        const resolutionHeight = videoElement.videoHeight;
+
+        canvas.width = displayWidth;
+        canvas.height = displayHeight;
+
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (detectedCodes.length === 0) {
+          return;
+        }
+
+        // Calculate scaling (matches working scanner logic)
+        const largerRatio = Math.max(displayWidth / resolutionWidth, displayHeight / resolutionHeight);
+        const uncutWidth = resolutionWidth * largerRatio;
+        const uncutHeight = resolutionHeight * largerRatio;
+
+        const xScalar = uncutWidth / resolutionWidth;
+        const yScalar = uncutHeight / resolutionHeight;
+        const xOffset = (displayWidth - uncutWidth) / 2;
+        const yOffset = (displayHeight - uncutHeight) / 2;
+
+        const scale = ({ x, y }) => ({
+          x: Math.floor(x * xScalar),
+          y: Math.floor(y * yScalar)
+        });
+
+        const translate = ({ x, y }) => ({
+          x: Math.floor(x + xOffset),
+          y: Math.floor(y + yOffset)
+        });
+
+        // Draw boundary for each detected QR code
+        detectedCodes.forEach((code) => {
+          const { cornerPoints } = code;
+
+          // Scale and translate corner points
+          const adjustedPoints = cornerPoints.map((point) => translate(scale(point)));
+
+          // Draw green boundary (like working scanner)
+          ctx.strokeStyle = '#00ff00';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(adjustedPoints[0].x, adjustedPoints[0].y);
+          for (let i = 1; i < adjustedPoints.length; i++) {
+            ctx.lineTo(adjustedPoints[i].x, adjustedPoints[i].y);
+          }
+          ctx.closePath();
+          ctx.stroke();
+        });
+      }
+
+      // Continuous scanning (matches working scanner's keepScanning)
+      function startScanning() {
+        if (isScanning || !videoElement) return;
+
+        isScanning = true;
+        lastScanned = performance.now();
+        contentBefore = [];
+        lastScanHadContent = false;
+        const minDelay = 40; // ~25fps like working scanner
+
+        const processFrame = async (timeNow) => {
+          if (!isScanning) return;
+
+          if (videoElement.readyState === 0) {
+            console.debug('Stop scanning: video element readyState is 0');
+            stopScanning();
+            return;
+          }
+
+          const timeSinceLastScan = timeNow - lastScanned;
+
+          // Skip if minDelay hasn't passed yet
+          if (timeSinceLastScan < minDelay) {
+            animationFrameId = requestAnimationFrame(processFrame);
+            return;
+          }
+
+          try {
+            // CORE: Use BarcodeDetector.detect(videoElement) - same as working scanner
+            const detectedCodes = await barcodeDetector.detect(videoElement);
+
+            // Only emit detect event if at least one code is new
+            const anyNewCodesDetected = detectedCodes.some((code) => {
+              return !contentBefore.includes(code.rawValue);
+            });
+
+            if (anyNewCodesDetected) {
+              const firstCode = detectedCodes[0];
+              console.log('Found QR code!', firstCode);
+              document.getElementById('result').textContent = firstCode.rawValue;
+              updateStatus('idle', 'Decoded successfully');
+            }
+
+            const currentScanHasContent = detectedCodes.length > 0;
+
+            // Draw boundary on every detection (like working scanner)
+            drawQRBoundary(detectedCodes);
+
+            // Update state
+            lastScanned = timeNow;
+            lastScanHadContent = currentScanHasContent;
+            contentBefore = anyNewCodesDetected
+              ? detectedCodes.map((code) => code.rawValue)
+              : contentBefore;
+
+          } catch (error) {
+            console.error('Error during detection:', error);
+          }
+
+          // Continue scanning
+          animationFrameId = requestAnimationFrame(processFrame);
+        };
+
+        // Start the scanning loop
+        animationFrameId = requestAnimationFrame(processFrame);
+      }
+
+      function stopScanning() {
+        isScanning = false;
+        if (animationFrameId !== null) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+        drawQRBoundary([]); // Clear boundary
+      }
+
+      function updateStatus(className, text) {
+        const indicator = document.getElementById('statusIndicator');
+        const statusText = document.getElementById('statusText');
+        indicator.className = 'status ' + className;
+        statusText.textContent = text;
+      }
+
+      // Initialize UI
+      window.addEventListener('load', async function () {
+        let selectedDeviceId = null;
+
+        try {
+          const devices = await getVideoInputDevices();
+          const sourceSelect = document.getElementById('sourceSelect');
+          
+          if (devices.length > 0) {
+            selectedDeviceId = devices[0].deviceId;
+            devices.forEach((device) => {
+              const option = document.createElement('option');
+              option.text = device.label || `Camera ${devices.indexOf(device) + 1}`;
+              option.value = device.deviceId;
+              sourceSelect.appendChild(option);
+            });
+
+            sourceSelect.onchange = () => {
+              selectedDeviceId = sourceSelect.value;
+            };
+
+            document.getElementById('sourceSelectPanel').style.display = 'block';
+          }
+
+          document.getElementById('startButton').addEventListener('click', async () => {
+            try {
+              stopScanning();
+              stopCamera();
+              
+              await startCamera(selectedDeviceId);
+              updateStatus('decoding', 'Scanning...');
+              startScanning();
+            } catch (error) {
+              console.error('Error starting camera:', error);
+              updateStatus('idle', 'Error: ' + error.message);
+            }
+          });
+
+          document.getElementById('resetButton').addEventListener('click', () => {
+            stopScanning();
+            stopCamera();
+            document.getElementById('result').textContent = '';
+            updateStatus('idle', 'Idle');
+          });
+        } catch (error) {
+          console.error('Error initializing:', error);
+          updateStatus('idle', 'Error: ' + error.message);
+        }
+      });
+    </script>
+  </body>
+</html>
+
