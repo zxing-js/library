@@ -659,7 +659,7 @@ export default class FinderPatternFinder {
 
     let distortion: double = Double.MAX_VALUE;
     const squares: Float64Array = Float64Array.from({ length: 3 });
-    const bestPatterns: FinderPattern[] = new FinderPattern[3];
+    const bestPatterns: FinderPattern[] = new Array<FinderPattern>(3);
 
     for (let i /*int*/ = 0; i < this.possibleCenters.length - 2; i++) {
       const fpi: FinderPattern = this.possibleCenters[i];

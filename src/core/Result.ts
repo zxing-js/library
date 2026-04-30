@@ -69,7 +69,7 @@ export default class Result {
       // checks overloading order from most to least params
 
       // check overload 3
-      if (numBits_resultPoints instanceof Number && Array.isArray(resultPoints_format) && isBarcodeFormatValue(format_timestamp)) {
+      if (typeof numBits_resultPoints === 'number' && Array.isArray(resultPoints_format) && isBarcodeFormatValue(format_timestamp)) {
         numBits_resultPoints = rawBytes == null ? 0 : 8 * rawBytes.length;
         this.constructorImpl(text, rawBytes, numBits_resultPoints, resultPoints_format, format_timestamp, timestamp);
         return;
@@ -82,7 +82,7 @@ export default class Result {
       }
 
       // check overload 1
-      if (typeof text === 'string' && rawBytes instanceof Uint8Array && Array.isArray(numBits_resultPoints) && isBarcodeFormatValue(resultPoints_format)) {
+      if (Array.isArray(numBits_resultPoints) && isBarcodeFormatValue(resultPoints_format)) {
         this.constructorOverload1(text, rawBytes, numBits_resultPoints, resultPoints_format);
         return;
       }

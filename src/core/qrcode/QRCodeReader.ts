@@ -63,24 +63,7 @@ export default class QRCodeReader implements Reader {
    * @override
    */
   public decode(image: BinaryBitmap, hints?: Map<DecodeHintType, any>): Result {
-
-    if (!hints) {
-      this.decodeOverload1(image);
-    }
-
     return this.decodeImpl(image, hints);
-  }
-
-  /**
-   * Locates and decodes a QR code in an image.
-   *
-   * @return a representing: string the content encoded by the QR code
-   * @throws NotFoundException if a QR code cannot be found
-   * @throws FormatException if a QR code cannot be decoded
-   * @throws ChecksumException if error correction fails
-   */
-  public decodeOverload1(image: BinaryBitmap): Result /*throws NotFoundException, ChecksumException, FormatException */ {
-    return this.decodeImpl(image, null);
   }
 
   /**
