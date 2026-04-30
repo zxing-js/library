@@ -114,9 +114,9 @@ describe('MultiQRCodeTestCase', () => {
       barcodeContents.push(result.getText());
     }
     const expectedContents: Collection<String> = [];
-    // TYPESCRIPTPORT: following lines are in different order from Java because JavaScript's push works in a different way HashSet<>.add, but the results are actually the same
-    expectedContents.push('NotSA');
+    // Java inserts the combined SA result at index 0 via results.add(0, newResult)
     expectedContents.push('SA1SA2SA3');
+    expectedContents.push('NotSA');
     assertArrayEquals(expectedContents, barcodeContents);
   });
 });

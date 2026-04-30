@@ -68,22 +68,22 @@ export default class Result {
     ) {
       // checks overloading order from most to least params
 
-      // check overload 3
-      if (typeof numBits_resultPoints === 'number' && Array.isArray(resultPoints_format) && isBarcodeFormatValue(format_timestamp)) {
-        numBits_resultPoints = rawBytes == null ? 0 : 8 * rawBytes.length;
-        this.constructorImpl(text, rawBytes, numBits_resultPoints, resultPoints_format, format_timestamp, timestamp);
+      // check overload 3 (6 params: text, rawBytes, numBits, resultPoints, format, timestamp)
+      // numBits may be undefined/null (callers passing explicit undefined to use default)
+      if ((typeof numBits_resultPoints === 'number' || numBits_resultPoints == null) && Array.isArray(resultPoints_format) && isBarcodeFormatValue(format_timestamp)) {
+        this.constructorImpl(text, rawBytes, numBits_resultPoints as number, resultPoints_format, format_timestamp, timestamp);
         return;
       }
 
-      // check overload 2
-      if (Array.isArray(resultPoints_format) && isBarcodeFormatValue(format_timestamp)) {
-        this.constructorOverload2(text, rawBytes, resultPoints_format, format_timestamp, timestamp);
+      // check overload 2 (5 params: text, rawBytes, resultPoints, format, timestamp)
+      if (Array.isArray(numBits_resultPoints) && isBarcodeFormatValue(resultPoints_format) && typeof format_timestamp === 'number') {
+        this.constructorOverload2(text, rawBytes, numBits_resultPoints as any as ResultPoint[], resultPoints_format as any as BarcodeFormat, format_timestamp);
         return;
       }
 
-      // check overload 1
+      // check overload 1 (4 params: text, rawBytes, resultPoints, format)
       if (Array.isArray(numBits_resultPoints) && isBarcodeFormatValue(resultPoints_format)) {
-        this.constructorOverload1(text, rawBytes, numBits_resultPoints, resultPoints_format);
+        this.constructorOverload1(text, rawBytes, numBits_resultPoints as any as ResultPoint[], resultPoints_format as any as BarcodeFormat);
         return;
       }
 

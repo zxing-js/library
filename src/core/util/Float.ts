@@ -25,8 +25,13 @@ export default class Float {
   }
 
   public static compare(x: float, y: float): int {
-    if (x === y) return 0;
     if (x < y) return -1;
     if (x > y) return 1;
+    if (x === y) return 0;
+    // NaN handling: match Java's Float.compare semantics
+    if (isNaN(x)) {
+      return isNaN(y) ? 0 : 1;
+    }
+    return -1;
   }
 }

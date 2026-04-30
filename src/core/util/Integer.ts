@@ -18,9 +18,9 @@ export default class Integer {
    * and if (x > y) then it returns a value greater than zero.
    */
   static compare(x: int, y: int): number {
-    if (x === y) return 0;
     if (x < y) return -1;
     if (x > y) return 1;
+    return 0;
   }
 
   public static numberOfTrailingZeros(i: number): number {

@@ -142,7 +142,8 @@ export default /*public final*/ class QRCodeMultiReader extends QRCodeReader imp
     const newResults: List<Result> = [];
     const saResults: List<Result> = [];
     for (const result of results) {
-      if (result.getResultMetadata().has(ResultMetadataType.STRUCTURED_APPEND_SEQUENCE)) {
+      const metadata = result.getResultMetadata();
+      if (metadata != null && metadata.has(ResultMetadataType.STRUCTURED_APPEND_SEQUENCE)) {
         saResults.push(result);
       } else {
         newResults.push(result);
@@ -175,7 +176,7 @@ export default /*public final*/ class QRCodeMultiReader extends QRCodeReader imp
     if (newByteSegment.size() > 0) {
       newResult.putMetadata(ResultMetadataType.BYTE_SEGMENTS, Collections.singletonList(newByteSegment.toByteArray()));
     }
-    newResults.push(newResult); // TYPESCRIPTPORT: inserted element at the start of the array because it seems the Java version does that as well.
+    newResults.unshift(newResult); // TYPESCRIPTPORT: inserted element at the start of the array to match Java's results.add(0, newResult).
     return newResults;
   }
 

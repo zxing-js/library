@@ -17,7 +17,7 @@ export default class Collections {
     list: List<TToBeCompared> | Array<TToBeCompared> | TToBeCompared[],
     comparator: Comparator<TToBeCompared>,
   ) {
-    list.sort(comparator.compare);
+    list.sort((a, b) => comparator.compare(a, b));
   }
 
   /**

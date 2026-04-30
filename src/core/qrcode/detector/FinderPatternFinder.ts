@@ -655,7 +655,7 @@ export default class FinderPatternFinder {
       throw NotFoundException.getNotFoundInstance();
     }
 
-    this.possibleCenters.sort(FinderPatternFinder.moduleComparator.compare);
+    this.possibleCenters.sort((a, b) => FinderPatternFinder.moduleComparator.compare(a, b));
 
     let distortion: double = Double.MAX_VALUE;
     const squares: Float64Array = Float64Array.from({ length: 3 });
