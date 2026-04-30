@@ -46,8 +46,9 @@ interface Reader {
      * @throws NotFoundException if no potential barcode is found
      * @throws ChecksumException if a potential barcode is found but does not pass its checksum
      * @throws FormatException if a potential barcode is found but format is invalid
+     * @override decode
      */
-    // decode(image: BinaryBitmap): Result /*throws NotFoundException, ChecksumException, FormatException*/
+    decode(image: BinaryBitmap): Result;
 
     /**
      * Locates and decodes a barcode in some format within an image. This method also accepts

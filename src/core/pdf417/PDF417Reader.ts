@@ -72,8 +72,8 @@ export default /*public final*/ class PDF417Reader implements Reader, MultipleBa
    * @throws NotFoundException if a PDF417 code cannot be found,
    * @throws FormatException if a PDF417 cannot be decoded
    * @throws ChecksumException
+   * @override decode
    */
-  // @Override
   public decode(image: BinaryBitmap, hints: Map<DecodeHintType, any> = null): Result {
     let result = PDF417Reader.decode(image, hints, false);
     if (result == null || result.length === 0 || result[0] == null) {
@@ -84,12 +84,41 @@ export default /*public final*/ class PDF417Reader implements Reader, MultipleBa
 
   /**
    *
+   * @override decodeMultiple
+   */
+  public decodeMultiple(image: BinaryBitmap): Result[];
+  /**
+   *
    * @param BinaryBitmap
    * @param image
    * @throws NotFoundException
+   * @override
    */
-  //   @Override
   public decodeMultiple(image: BinaryBitmap, hints: Map<DecodeHintType, any> = null): Result[] {
+
+    if (!hints) {
+      return this.decodeMultipleOverload1(image);
+    }
+
+    return this.decodeMultipleImpl(image, hints);
+  }
+
+  /**
+   *
+   * @override decodeMultiple
+   */
+  private decodeMultipleOverload1(image: BinaryBitmap): Result[] {
+    return this.decodeMultipleImpl(image, null);
+  }
+
+  /**
+   *
+   * @param BinaryBitmap
+   * @param image
+   * @throws NotFoundException
+   * @override
+   */
+  private decodeMultipleImpl(image: BinaryBitmap, hints: Map<DecodeHintType, any> = null): Result[] {
     try {
       return PDF417Reader.decode(image, hints, true);
     } catch (ignored) {
@@ -117,7 +146,7 @@ export default /*public final*/ class PDF417Reader implements Reader, MultipleBa
     for (const points of detectorResult.getPoints()) {
       const decoderResult = PDF417ScanningDecoder.decode(detectorResult.getBits(), points[4], points[5],
         points[6], points[7], PDF417Reader.getMinCodewordWidth(points), PDF417Reader.getMaxCodewordWidth(points));
-      const result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), undefined, points, BarcodeFormat.PDF_417);
+      const result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), points, BarcodeFormat.PDF_417);
       result.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, decoderResult.getECLevel());
       const pdf417ResultMetadata: PDF417ResultMetadata = decoderResult.getOther();
       if (pdf417ResultMetadata != null) {

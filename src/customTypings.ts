@@ -11,7 +11,9 @@
 export declare type byte = number;
 export declare type short = number;
 export declare type int = number;
+export declare type long = number;
 export declare type float = number;
+export declare type double = number;
 
 // special formats
 export type char = number;

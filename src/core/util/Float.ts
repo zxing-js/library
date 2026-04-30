@@ -1,3 +1,5 @@
+import { float, int } from 'src/customTypings';
+
 /**
  * Ponyfill for Java's Float class.
  */
@@ -8,11 +10,28 @@ export default class Float {
    */
   static MAX_VALUE: number = Number.MAX_SAFE_INTEGER;
 
+  static NaN = NaN;
+
   /**
    * SincTS has no difference between int and float, there's all numbers,
    * this is used only to polyfill Java code.
    */
   public static floatToIntBits(f: number): number {
     return f;
+  }
+
+  public static isNaN(num: number) {
+    return isNaN(num);
+  }
+
+  public static compare(x: float, y: float): int {
+    if (x < y) return -1;
+    if (x > y) return 1;
+    if (x === y) return 0;
+    // NaN handling: match Java's Float.compare semantics
+    if (isNaN(x)) {
+      return isNaN(y) ? 0 : 1;
+    }
+    return -1;
   }
 }

@@ -42,7 +42,7 @@ import Detector from './detector/Detector';
  */
 export default class QRCodeReader implements Reader {
 
-  private static NO_POINTS = new Array<ResultPoint>();
+  protected static NO_POINTS = new Array<ResultPoint>();
 
   private decoder = new Decoder();
 
@@ -58,13 +58,18 @@ export default class QRCodeReader implements Reader {
    * @throws FormatException if a QR code cannot be decoded
    * @throws ChecksumException if error correction fails
    */
-  /*@Override*/
-  // public decode(image: BinaryBitmap): Result /*throws NotFoundException, ChecksumException, FormatException */ {
-  //   return this.decode(image, null)
-  // }
-
-  /*@Override*/
+  public decode(image: BinaryBitmap): Result /*throws NotFoundException, ChecksumException, FormatException */;
+  /**
+   * @override
+   */
   public decode(image: BinaryBitmap, hints?: Map<DecodeHintType, any>): Result {
+    return this.decodeImpl(image, hints);
+  }
+
+  /**
+   * @override
+   */
+  public decodeImpl(image: BinaryBitmap, hints?: Map<DecodeHintType, any>): Result {
     let decoderResult: DecoderResult;
     let points: Array<ResultPoint>;
     if (hints !== undefined && hints !== null && undefined !== hints.get(DecodeHintType.PURE_BARCODE)) {

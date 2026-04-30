@@ -135,3 +135,11 @@ export { createDecoder as createAbstractExpandedDecoder } from './core/oned/rss/
 export { default as MultiFormatOneDReader } from './core/oned/MultiFormatOneDReader';
 export { default as CodaBarReader } from './core/oned/CodaBarReader';
 export { default as FinderPattern } from './core/oned/rss/FinderPattern';
+
+// core/multi
+export { default as MultipleBarcodeReader } from './core/multi/MultipleBarcodeReader';
+
+// core/multi/qrcode
+export { default as QRCodeMultiReader } from './core/multi/qrcode/QRCodeMultiReader';
+export { default as MultiDetector } from './core/multi/qrcode/detector/MultiDetector';
+export { default as MultiFinderPatternFinder } from './core/multi/qrcode/detector/MultiFinderPatternFinder';

@@ -176,4 +176,8 @@ export default class Arrays {
   public static numberComparator(a: number, b: number) {
     return a - b;
   }
+
+  public static sort(squares: Array<any> | Float64Array) {
+    return squares.sort();
+  }
 }
