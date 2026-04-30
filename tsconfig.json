@@ -1,15 +1,19 @@
 {
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "baseUrl": "./",
     "module": "commonjs",
     "target": "es5",
     "moduleResolution": "node",
     "lib": [
-      "es7",
+      "es2020",
       "dom"
     ],
     "alwaysStrict": true,
     "noImplicitAny": false,
+    "strictNullChecks": false,
+    "useUnknownInCatchVariables": false,
+    "rootDir": "./src",
     "sourceMap": true,
     "declaration": true,
     "preserveConstEnums": true,

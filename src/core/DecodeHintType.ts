@@ -67,6 +67,12 @@ enum DecodeHintType {
     ASSUME_CODE_39_CHECK_DIGIT/*(Void.class)*/,
 
     /**
+     * Enable extended mode for Code 39 codes. Doesn't matter what it maps to;
+     * use {@link Boolean#TRUE}.
+     */
+    ENABLE_CODE_39_EXTENDED_MODE/*(Void.class)*/,
+
+    /**
      * Assume the barcode is being processed as a GS1 barcode, and modify behavior as needed.
      * For example this affects FNC1 handling for Code 128 (aka GS1-128). Doesn't matter what it maps to;
      * use {@link Boolean#TRUE}.

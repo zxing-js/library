@@ -1,9 +1,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "module": "commonjs",
     "target": "es5",
-    "outDir": "dist/cjs"
+    "outDir": "dist/cjs",
+    "sourceMap": false
   },
   "exclude": [
     "src/test"

@@ -62,8 +62,8 @@ function getBigIntConstructor(): BigIntConstructor {
     return window['BigInt'] || null;
   }
 
-  if (typeof global !== 'undefined') {
-    return global['BigInt'] || null;
+  if (typeof globalThis !== 'undefined') {
+    return globalThis['BigInt'] || null;
   }
 
   if (typeof self !== 'undefined') {

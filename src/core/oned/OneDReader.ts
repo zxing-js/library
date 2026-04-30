@@ -106,7 +106,7 @@ export default abstract class OneDReader implements Reader {
         if (tryHarder) {
             maxLines = height; // Look at the whole image, not just the center
         } else {
-            maxLines = 15; // 15 rows spaced 1/32 apart is roughly the middle half of the image
+            maxLines = 25; // 25 rows spaced 1/32 apart covers roughly 78% of image height
         }
 
         const middle = Math.trunc(height / 2);

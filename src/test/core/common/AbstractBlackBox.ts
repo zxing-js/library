@@ -397,6 +397,7 @@ abstract class AbstractBlackBoxSpec {
       case 'PDF417_EXTRA_METADATA': return ResultMetadataType.PDF417_EXTRA_METADATA;
       case 'STRUCTURED_APPEND_SEQUENCE': return ResultMetadataType.STRUCTURED_APPEND_SEQUENCE;
       case 'STRUCTURED_APPEND_PARITY': return ResultMetadataType.STRUCTURED_APPEND_PARITY;
+      case 'ERRORS_CORRECTED': return ResultMetadataType.ERRORS_CORRECTED;
       default: throw value + ' not a ResultMetadataType';
     }
   }

@@ -216,7 +216,7 @@ export default /*public*/ /*final*/ class Detector {
     // Last row of the current symbol that contains pattern
     if (found) {
       let skippedRowCount = 0;
-      let previousRowLoc = Int32Array.from([<int> Math.trunc(result[0].getX()), <int> Math.trunc(result[1].getX())]);
+      let previousRowLoc: Int32Array = Int32Array.from([<int> Math.trunc(result[0].getX()), <int> Math.trunc(result[1].getX())]);
       for (; stopRow < height; stopRow++) {
         const loc = Detector.findGuardPattern(matrix, previousRowLoc[0], stopRow, width, false, pattern, counters);
         // a found pattern is only considered to belong to the same barcode if the start and end positions

@@ -94,6 +94,12 @@ enum ResultMetadataType {
      */
     STRUCTURED_APPEND_PARITY,
 
+    /**
+     * For some formats, the number of errors corrected during decode.
+     * Maps to a {@link Number}.
+     */
+    ERRORS_CORRECTED,
+
 }
 
 export default ResultMetadataType;

@@ -71,7 +71,7 @@
             })
 
             document.getElementById('saveButton').addEventListener('click', () => {
-                const svgData = (new XMLSerializer()).serializeToString(svgElement)
+                const svgData = (new XMLSerializer()).serializeToString(document.getElementById('result'))
                 const blob = new Blob([svgData])
                 saveAs(blob, 'zxing-qrcode-example.svg')
             })

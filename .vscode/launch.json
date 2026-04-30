@@ -5,121 +5,167 @@
       "type": "node",
       "request": "launch",
       "name": "Unit Tests",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
       "args": [
-        "--require",
-        "ts-node/register",
-        "--require",
-        "tsconfig-paths/register",
-        "-u",
-        "tdd",
+        "./src/**/*.spec.ts",
+        "--colors",
         "--timeout",
         "999999",
-        "--colors",
-        "--recursive",
-        "./src/**/*.spec.ts"
+        "--webpack-env",
+        "dbg",
+        "--webpack-config",
+        "webpack.config.test.js"
       ]
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "Code 39 Tests",
+      "name": "Unit Tests - ts-node",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "args": [
         "--require",
         "ts-node/register",
-        "--require",
-        "tsconfig-paths/register",
         "-u",
         "tdd",
         "--timeout",
         "999999",
         "--colors",
         "--recursive",
-        "./src/test/core/oned/Code39*.spec.ts",
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "EAN 13 Tests",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-      "args": [
-        "--require",
-        "ts-node/register",
-        "--require",
-        "tsconfig-paths/register",
-        "-u",
-        "tdd",
-        "--timeout",
-        "999999",
-        "--colors",
-        "--recursive",
-        "./src/test/core/oned/Ean13*.spec.ts",
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "PDF417 Tests",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-      "args": [
-        "--require",
-        "ts-node/register",
-        "--require",
-        "tsconfig-paths/register",
-        "-u",
-        "tdd",
-        "--timeout",
-        "999999",
-        "--colors",
-        "--recursive",
-        "./src/test/core/pdf417/**/*.spec.ts"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "QR Code Tests",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-      "args": [
-        "--require",
-        "ts-node/register",
-        "--require",
-        "tsconfig-paths/register",
-        "-u",
-        "tdd",
-        "--timeout",
-        "999999",
-        "--colors",
-        "--recursive",
-        "./src/test/core/qrcode/**/*.spec.ts"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Data Matrix Tests",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-      "args": [
-        "--require",
-        "ts-node/register",
-        "--require",
-        "tsconfig-paths/register",
-        "-u",
-        "tdd",
-        "--timeout",
-        "999999",
-        "--colors",
-        "--recursive",
-        "./src/test/core/datamatrix/**/*.spec.ts"
+        "./src/test/**/*.spec.ts"
       ],
       "internalConsoleOptions": "openOnSessionStart"
     },
     {
       "type": "node",
       "request": "launch",
+      "name": "Code 39 Tests",
+      "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
+      "args": [
+        "./src/test/core/oned/Code39*.spec.ts",
+        "--colors",
+        "--timeout",
+        "999999",
+        "--webpack-env",
+        "dbg",
+        "--webpack-config",
+        "webpack.config.test.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Code 93 Tests - ts-node",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "env": {
+        "TS_NODE_PROJECT": "${workspaceFolder}/tsconfig.test.json" 
+      },
+      "args": [
+        "--require",
+        "ts-node/register",
+        "--require",
+        "tsconfig-paths/register",
+        "-u",
+        "tdd",
+        "--timeout",
+        "999999",
+        "--colors",
+        "--recursive",
+        "./src/test/core/oned/Code93*.spec.ts"
+      ],
+      "internalConsoleOptions": "openOnSessionStart"
+    },    
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "EAN 13 Tests - ts-node",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "args": [
+        "--require",
+        "ts-node/register",
+        "--require",
+        "tsconfig-paths/register",
+        "-u",
+        "tdd",
+        "--timeout",
+        "999999",
+        "--colors",
+        "--recursive",
+        "./src/test/core/oned/Ean13*.spec.ts"
+      ],
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "PDF417 Tests",
+      "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
+      "args": [
+        "./src/test/core/pdf417/",
+        "--recursive",
+        "--colors",
+        "--timeout",
+        "999999",
+        "--webpack-env",
+        "dbg",
+        "--webpack-config",
+        "webpack.config.test.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "QR Code Tests",
+      "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
+      "args": [
+        "./src/test/core/qrcode/",
+        "--recursive",
+        "--colors",
+        "--timeout",
+        "999999",
+        "--webpack-env",
+        "dbg",
+        "--webpack-config",
+        "webpack.config.test.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Data Matrix Tests",
+      "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
+      "args": [
+        "./src/test/core/datamatrix/",
+        "--recursive",
+        "--colors",
+        "--timeout",
+        "999999",
+        "--webpack-env",
+        "dbg",
+        "--webpack-config",
+        "webpack.config.test.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Aztec 2D Tests",
+      "program": "${workspaceFolder}/node_modules/mocha-webpack/bin/mocha-webpack",
+      "args": [
+        "./src/test/core/aztec/",
+        "--recursive",
+        "--colors",
+        "--timeout",
+        "999999",
+        "--webpack-env",
+        "dbg",
+        "--webpack-config",
+        "webpack.config.test.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Aztec 2D Tests - ts-node",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "args": [
         "--require",
@@ -131,46 +177,6 @@
         "--colors",
         "--recursive",
         "./src/test/core/aztec/**/*.spec.ts"
-      ],
-      "internalConsoleOptions": "openOnSessionStart"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "StringBuilder tests",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-      "args": [
-        "--require",
-        "ts-node/register",
-        "--require",
-        "tsconfig-paths/register",
-        "-u",
-        "tdd",
-        "--timeout",
-        "999999",
-        "--colors",
-        "--recursive",
-        "./src/test/core/util/StringBuilder.spec.ts"
-      ],
-      "internalConsoleOptions": "openOnSessionStart"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Result tests",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-      "args": [
-        "--require",
-        "ts-node/register",
-        "--require",
-        "tsconfig-paths/register",
-        "-u",
-        "tdd",
-        "--timeout",
-        "999999",
-        "--colors",
-        "--recursive",
-        "./src/test/core/Result.spec.ts"
       ],
       "internalConsoleOptions": "openOnSessionStart"
     }

@@ -49,16 +49,16 @@ export default class TestCaseUtil {
   /**
    * @throws IOException
    */
-  private static getBufferedImage(path: string): SharpImage {
+  private static getBufferedImage(path: string): Promise<SharpImage> {
     let file = AbstractBlackBoxSpec.buildTestBase(path);
-    return SharpImage.load(file, 0);
+    return SharpImage.loadWithRotation(file, 0);
   }
 
   /**
    * @throws IOException
    */
-  static getBinaryBitmap(path: string): BinaryBitmap {
-    let bufferedImage: SharpImage = TestCaseUtil.getBufferedImage(path);
+  static async getBinaryBitmap(path: string): Promise<BinaryBitmap> {
+    let bufferedImage: SharpImage = await TestCaseUtil.getBufferedImage(path);
     let luminanceSource: SharpImageLuminanceSource = new SharpImageLuminanceSource(bufferedImage);
     return new BinaryBitmap(new GlobalHistogramBinarizer(luminanceSource));
   }

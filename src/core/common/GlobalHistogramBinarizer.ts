@@ -141,10 +141,7 @@ export default class GlobalHistogramBinarizer extends Binarizer {
         if (this.luminances.length < luminanceSize) {
             this.luminances = new Uint8ClampedArray(luminanceSize);
         }
-        const buckets = this.buckets;
-        for (let x = 0; x < GlobalHistogramBinarizer.LUMINANCE_BUCKETS; x++) {
-            buckets[x] = 0;
-        }
+        this.buckets.fill(0);
     }
 
     private static estimateBlackPoint(buckets: Int32Array): number /*int*/ /*throws NotFoundException*/ {

@@ -75,8 +75,10 @@ enum BarcodeFormat {
     UPC_E,
 
     /** UPC/EAN extension format. Not a stand-alone format. */
-    UPC_EAN_EXTENSION
+    UPC_EAN_EXTENSION,
 
+    /** Micro QR Code 2D barcode format. */
+    MICRO_QR_CODE
 }
 
 export default BarcodeFormat;

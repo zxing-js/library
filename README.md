@@ -2,9 +2,21 @@
 
 # ZXing
 
-### Runs on your favorite ECMAScript ecosystem
+Looking for an actively maintained barcode scanning library with commercial support? 
+Check out [STRICH](https://strich.io/) – Barcode Scanning for Web Apps.
 
-> If it doesn't, we gonna make it.
+## Project in Maintenance Mode Only
+
+> [!WARNING]
+> The project is in maintenance mode, meaning, changes are driven by contributed patches.
+> Only bug fixes and minor enhancements will be considered.
+> There is otherwise no active development or roadmap for this project. It is "DIY".
+
+### Attention
+
+>NOTE: While we do not have the time to actively maintain zxing-js anymore, we are open to new maintainers taking the lead.
+
+
 
 ## What is ZXing?
 
@@ -14,22 +26,21 @@
 
 > See [Projects](https://github.com/zxing-js/library/projects) and [Milestones](https://github.com/zxing-js/library/milestones) for what is currently done and what's planned next. 👀
 
-| 1D product | 1D industrial       | 2D             |
-| ---------- | ------------------- | -------------- |
-| UPC-A      | Code 39             | QR Code        |
-| UPC-E      | ~~Code 93~~         | Data Matrix    |
-| EAN-8      | Code 128            | Aztec          |
-| EAN-13     | ~~Codabar~~         | PDF 417        |
-|            | ITF                 | ~~MaxiCode~~   |
-|            | RSS-14              |
-|            | ~~RSS-Expanded~~ \* |
 
-**\*** In progress, may have open PR.
+| 1D product | 1D industrial | 2D                                   |
+|:-----------|:--------------|:-------------------------------------|
+| UPC-A      | Code 39       | QR Code                              |
+| UPC-E      | Code 93       | Data Matrix                          |
+| EAN-8      | Code 128      | Aztec                                |
+| EAN-13     | Codabar       | PDF 417                              |
+|            | ITF           | MaxiCode (needs testing!)            |
+|            |               | RSS-14                               |
+|            |               | RSS-Expanded (not production ready!) |
+|            |               | Micro-QR (needs testing!)            |
 
 ## Status
 
-[![Build Status](https://travis-ci.org/zxing-js/library.svg?branch=master)](https://travis-ci.org/zxing-js/library)
-![Dependencies](https://david-dm.org/zxing-js/library.svg)
+[![Maintainer wanted](https://img.shields.io/badge/maintained-help%20wanted-red)](https://npmjs.org/package/@zxing/ngx-scanner)
 [![Greenkeeper badge](https://badges.greenkeeper.io/zxing-js/library.svg)](https://greenkeeper.io/)
 
 [![NPM version](https://img.shields.io/npm/v/@zxing/library.svg?&label=npm)][0]
@@ -37,10 +48,9 @@
 [![Contributors](https://img.shields.io/github/contributors/zxing-js/library.svg)](https://github.com/zxing-js/library/graphs/contributors)
 [![Commits to deploy](https://img.shields.io/github/commits-since/zxing-js/library/master.svg?label=commits%20to%20deploy)](https://github.com/zxing-js/library/compare/master...develop)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9aaa5317fcc740af9f25b3c7f832aa1d)](https://www.codacy.com/app/zxing/library?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zxing-js/library&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b9c6ae92412ee8e15a9/maintainability)](https://codeclimate.com/github/zxing-js/library/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/2b9c6ae92412ee8e15a9/test_coverage)](https://codeclimate.com/github/zxing-js/library/test_coverage)
-[![BCH compliance](https://bettercodehub.com/edge/badge/zxing-js/library?branch=master)](https://bettercodehub.com/)
+
 
 ## Demo
 
@@ -91,12 +101,10 @@ hints.set(DecodeHintType.POSSIBLE_FORMATS, formats);
 
 const reader = new MultiFormatReader();
 
-reader.setHints(hints);
-
 const luminanceSource = new RGBLuminanceSource(imgByteArray, imgWidth, imgHeight);
 const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
 
-reader.decode(binaryBitmap);
+reader.decode(binaryBitmap, hints);
 ```
 
 ## Contributing
@@ -112,8 +120,6 @@ Special thanks to all the contributors who have contributed for this project. We
 And a special thanks to [@aleris][3] who created the project itself and made available the initial QR code port.
 
 ---
-
-[![Bless](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/alpaca.svg)](http://lunagao.github.io/BlessYourCodeTag/)
 
 [0]: https://www.npmjs.com/package/@zxing/library
 [1]: https://github.com/zxing/zxing

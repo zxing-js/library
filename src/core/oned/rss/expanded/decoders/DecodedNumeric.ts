@@ -35,8 +35,4 @@ export default class DecodedNumeric extends DecodedObject {
     return this.secondDigit === DecodedNumeric.FNC1;
   }
 
-  isAnyFNC1(): boolean {
-    return this.firstDigit === DecodedNumeric.FNC1 || this.secondDigit === DecodedNumeric.FNC1;
-  }
-
 }

@@ -386,4 +386,15 @@ export default class BitArray /*implements Cloneable*/ {
     return new BitArray(this.size, this.bits.slice());
   }
 
+    /**
+     * converts to boolean array.
+     */
+    public toArray(): Array<boolean> {
+        let result = [];
+        for (let i = 0, size = this.size; i < size; i++) {
+            result.push(this.get(i));
+        }
+        return result;
+    }
+
 }

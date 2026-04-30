@@ -1,4 +1,4 @@
-import * as sharp from 'sharp';
+import sharp = require('sharp');
 
 import { BitMatrix } from '@zxing/library';
 
@@ -44,6 +44,7 @@ export default class SharpImage {
   }
 
   public static load(path: string, rotation: number): SharpImage {
+    // FIXME: this returns a SharpImage which has no data nor size. Replaced with loadWithRotation where it caused problems.
 
     const wrapper = sharp(path).raw();
 

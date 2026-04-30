@@ -72,7 +72,7 @@ export default class DefaultGridSampler extends GridSampler {
             GridSampler.checkAndNudgePoints(image, points);
             try {
                 for (let x = 0; x < max; x += 2) {
-                    if (image.get(Math.floor(points[x]), Math.floor(points[x + 1]))) {
+                    if (image.get(points[x] | 0, points[x + 1] | 0)) {
                         // Black(-ish) pixel
                         bits.set(x / 2, y);
                     }

@@ -15,16 +15,16 @@ export default class AI01392xDecoder extends AI01decoder {
     if (this.getInformation().getSize() < AI01392xDecoder.HEADER_SIZE + AI01decoder.GTIN_SIZE) {
       throw new NotFoundException();
     }
-    let buf = new StringBuilder();
+    const buf = new StringBuilder();
 
     this.encodeCompressedGtin(buf, AI01392xDecoder.HEADER_SIZE);
 
-    let lastAIdigit = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01392xDecoder.HEADER_SIZE + AI01decoder.GTIN_SIZE, AI01392xDecoder.LAST_DIGIT_SIZE);
+    const lastAIdigit = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01392xDecoder.HEADER_SIZE + AI01decoder.GTIN_SIZE, AI01392xDecoder.LAST_DIGIT_SIZE);
     buf.append('(392');
-    buf.append(lastAIdigit);
+    buf.append('' + lastAIdigit);
     buf.append(')');
 
-    let decodedInformation = this.getGeneralDecoder().decodeGeneralPurposeField(AI01392xDecoder.HEADER_SIZE + AI01decoder.GTIN_SIZE + AI01392xDecoder.LAST_DIGIT_SIZE, null);
+    const decodedInformation = this.getGeneralDecoder().decodeGeneralPurposeField(AI01392xDecoder.HEADER_SIZE + AI01decoder.GTIN_SIZE + AI01392xDecoder.LAST_DIGIT_SIZE, null);
     buf.append(decodedInformation.getNewString());
 
     return buf.toString();

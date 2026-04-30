@@ -58,6 +58,19 @@ export default class ReedSolomonDecoder {
      * @throws ReedSolomonException if decoding fails for any reason
      */
     public decode(received: Int32Array, twoS: number /*int*/): void /*throws ReedSolomonException*/ {
+        this.decodeWithECCount(received, twoS);
+    }
+
+    /**
+     * <p>Decodes given set of received codewords, which include both data and error-correction
+     * codewords, and returns the number of errors corrected.</p>
+     *
+     * @param received data and error-correction codewords
+     * @param twoS number of error-correction codewords available
+     * @return number of errors corrected
+     * @throws ReedSolomonException if decoding fails for any reason
+     */
+    public decodeWithECCount(received: Int32Array, twoS: number /*int*/): number /*throws ReedSolomonException*/ {
         const field = this.field;
         const poly = new GenericGFPoly(field, received);
         const syndromeCoefficients = new Int32Array(twoS);
@@ -70,7 +83,7 @@ export default class ReedSolomonDecoder {
             }
         }
         if (noError) {
-            return;
+            return 0;
         }
         const syndrome = new GenericGFPoly(field, syndromeCoefficients);
         const sigmaOmega = this.runEuclideanAlgorithm(field.buildMonomial(twoS, 1), syndrome, twoS);
@@ -85,6 +98,7 @@ export default class ReedSolomonDecoder {
             }
             received[position] = GenericGF.addOrSubtract(received[position], errorMagnitudes[i]);
         }
+        return errorLocations.length;
     }
 
     private runEuclideanAlgorithm(a: GenericGFPoly, b: GenericGFPoly, R: number /*int*/): GenericGFPoly[] {

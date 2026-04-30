@@ -199,7 +199,7 @@ export default class Code128Reader extends OneDReader {
           }
           patternStart += counters[0] + counters[1];
 
-          counters = counters.slice(2, counters.length - 1);
+          counters = counters.slice(2, counters.length);
           counters[counterPosition - 1] = 0;
           counters[counterPosition] = 0;
           counterPosition--;

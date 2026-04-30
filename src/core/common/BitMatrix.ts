@@ -78,7 +78,7 @@ export default class BitMatrix /*implements Cloneable*/ {
             throw new IllegalArgumentException('Both dimensions must be greater than 0');
         }
         if (undefined === rowSize || null === rowSize) {
-            rowSize = Math.floor((width + 31) / 32);
+            rowSize = (width + 31) >> 5;
         }
         this.rowSize = rowSize;
         if (undefined === bits || null === bits) {
@@ -180,7 +180,7 @@ export default class BitMatrix /*implements Cloneable*/ {
      * @return value of given bit in matrix
      */
     public get(x: number /*int*/, y: number /*int*/): boolean {
-        const offset = y * this.rowSize + Math.floor(x / 32);
+        const offset = y * this.rowSize + (x >> 5);
         return ((this.bits[offset] >>> (x & 0x1f)) & 1) !== 0;
     }
 
@@ -191,12 +191,12 @@ export default class BitMatrix /*implements Cloneable*/ {
      * @param y The vertical component (i.e. which row)
      */
     public set(x: number /*int*/, y: number /*int*/): void {
-        const offset = y * this.rowSize + Math.floor(x / 32);
+        const offset = y * this.rowSize + (x >> 5);
         this.bits[offset] |= (1 << (x & 0x1f)) & 0xFFFFFFFF;
     }
 
     public unset(x: number /*int*/, y: number /*int*/): void {
-        const offset = y * this.rowSize + Math.floor(x / 32);
+        const offset = y * this.rowSize + (x >> 5);
         this.bits[offset] &= ~((1 << (x & 0x1f)) & 0xFFFFFFFF);
     }
 
@@ -207,7 +207,7 @@ export default class BitMatrix /*implements Cloneable*/ {
      * @param y The vertical component (i.e. which row)
      */
     public flip(x: number /*int*/, y: number /*int*/): void {
-        const offset = y * this.rowSize + Math.floor(x / 32);
+        const offset = y * this.rowSize + (x >> 5);
         this.bits[offset] ^= ((1 << (x & 0x1f)) & 0xFFFFFFFF);
     }
 
@@ -222,7 +222,7 @@ export default class BitMatrix /*implements Cloneable*/ {
             || this.rowSize !== mask.getRowSize()) {
             throw new IllegalArgumentException('input matrix dimensions do not match');
         }
-        const rowArray = new BitArray(Math.floor(this.width / 32) + 1);
+        const rowArray = new BitArray((this.width >> 5) + 1);
         const rowSize = this.rowSize;
         const bits = this.bits;
         for (let y = 0, height = this.height; y < height; y++) {
@@ -238,11 +238,7 @@ export default class BitMatrix /*implements Cloneable*/ {
      * Clears all bits (sets to false).
      */
     public clear(): void {
-        const bits = this.bits;
-        const max = bits.length;
-        for (let i = 0; i < max; i++) {
-            bits[i] = 0;
-        }
+        this.bits.fill(0);
     }
 
     /**
@@ -270,7 +266,7 @@ export default class BitMatrix /*implements Cloneable*/ {
         for (let y = top; y < bottom; y++) {
             const offset = y * rowSize;
             for (let x = left; x < right; x++) {
-                bits[offset + Math.floor(x / 32)] |= ((1 << (x & 0x1f)) & 0xFFFFFFFF);
+                bits[offset + (x >> 5)] |= ((1 << (x & 0x1f)) & 0xFFFFFFFF);
             }
         }
     }

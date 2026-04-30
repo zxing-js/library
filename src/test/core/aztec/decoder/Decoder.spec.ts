@@ -158,6 +158,38 @@ describe('DecoderTest', () => {
     /**
      * @Test
      */
+    it('testDecodeSpecialCharacters', () => {
+        const matrix = BitMatrix.parseFromString(
+            'X X . . . X X . X X . X . . . . . . X \n' +
+            'X . . X X . X . . X . . . X . X X X . \n' +
+            'X . X . X X X X . . . X . . . . X . X \n' +
+            '. . . X X . X . . . . X . X X . X . X \n' +
+            'X . X . X X . X . . X X . . X . . . . \n' +
+            '. . . X X X X X X X X X X X X X . X X \n' +
+            '. X X X . X . . . . . . . X . X X . X \n' +
+            'X . X . X X . X X X X X . X X . . . . \n' +
+            '. X . X X X . X . . . X . X X . . X . \n' +
+            '. . . . . X . X . X . X . X . . . . X \n' +
+            '. . . X . X . X . . . X . X . . X X . \n' +
+            'X . . . . X . X X X X X . X . X X X . \n' +
+            'X . X . . X . . . . . . . X . X X . . \n' +
+            '. X X . . X X X X X X X X X X X . . . \n' +
+            'X . X . . . X X X X X . . . . X . X X \n' +
+            '. . . X X X . . . X X X . X X . X X X \n' +
+            'X X X . X X X X . X . X X . X X X X . \n' +
+            '. . . X . . X X . . X . X . X X . X X \n' +
+            'X X . . X . X X X . . . . X . . . X X \n',
+            'X ', '. ');
+        const r = new AztecDetectorResult(matrix, NO_POINTS, true, 14, 2);
+        const result = new AztecDecoder().decode(r);
+        assertEquals(
+            '\x01\x02\x03\x04\x05\x06\x07\x0b\x1b\x1c\x1d\x1e\x1f\x7f',
+            result.getText());
+  });
+
+    /**
+     * @Test
+     */
     it('testRawBytes', () => {
         let bool0: boolean[] = [];
         let bool1: boolean[] = [true];

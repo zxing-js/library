@@ -1,9 +1,9 @@
-import * as seedrandom from 'seedrandom';
+import seedrandom = require('seedrandom');
 
 import { int } from '../../../customTypings';
 
 export default class Random {
-  private r: seedrandom.prng;
+  private r: seedrandom.PRNG;
   public constructor(seed: string | number) {
     this.r = seedrandom('' + seed);
   }

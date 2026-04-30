@@ -13,30 +13,49 @@ export default class AI01393xDecoder extends AI01decoder {
   }
 
   public parseInformation(): string {
-    if (this.getInformation().getSize() < AI01393xDecoder.HEADER_SIZE + AI01decoder.GTIN_SIZE) {
+    if (
+      this.getInformation().getSize() <
+      AI01393xDecoder.HEADER_SIZE + AI01decoder.GTIN_SIZE
+    ) {
       throw new NotFoundException();
     }
 
-    let buf = new StringBuilder();
+    const buf = new StringBuilder();
 
     this.encodeCompressedGtin(buf, AI01393xDecoder.HEADER_SIZE);
 
-    let lastAIdigit = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01393xDecoder.HEADER_SIZE + AI01decoder.GTIN_SIZE, AI01393xDecoder.LAST_DIGIT_SIZE);
+    const lastAIdigit = this.getGeneralDecoder().extractNumericValueFromBitArray(
+      AI01393xDecoder.HEADER_SIZE + AI01decoder.GTIN_SIZE,
+      AI01393xDecoder.LAST_DIGIT_SIZE
+    );
 
     buf.append('(393');
-    buf.append(lastAIdigit);
+    buf.append('' + lastAIdigit);
     buf.append(')');
 
-    let firstThreeDigits = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01393xDecoder.HEADER_SIZE + AI01decoder.GTIN_SIZE + AI01393xDecoder.LAST_DIGIT_SIZE, AI01393xDecoder.FIRST_THREE_DIGITS_SIZE);
-    if (firstThreeDigits / 100 == 0) {
+    const firstThreeDigits /* int */ =
+      this.getGeneralDecoder().extractNumericValueFromBitArray(
+        AI01393xDecoder.HEADER_SIZE +
+          AI01decoder.GTIN_SIZE +
+          AI01393xDecoder.LAST_DIGIT_SIZE,
+        AI01393xDecoder.FIRST_THREE_DIGITS_SIZE
+      );
+    // Pad with leading zeroes.
+    if (firstThreeDigits < 100) {
       buf.append('0');
     }
-    if (firstThreeDigits / 10 == 0) {
+    if (firstThreeDigits < 10) {
       buf.append('0');
     }
-    buf.append(firstThreeDigits);
+    buf.append('' + firstThreeDigits);
 
-    let generalInformation = this.getGeneralDecoder().decodeGeneralPurposeField(AI01393xDecoder.HEADER_SIZE + AI01decoder.GTIN_SIZE + AI01393xDecoder.LAST_DIGIT_SIZE + AI01393xDecoder.FIRST_THREE_DIGITS_SIZE, null);
+    const generalInformation = this.getGeneralDecoder().decodeGeneralPurposeField(
+      AI01393xDecoder.HEADER_SIZE +
+        AI01decoder.GTIN_SIZE +
+        AI01393xDecoder.LAST_DIGIT_SIZE +
+        AI01393xDecoder.FIRST_THREE_DIGITS_SIZE,
+      null
+    );
     buf.append(generalInformation.getNewString());
 
     return buf.toString();

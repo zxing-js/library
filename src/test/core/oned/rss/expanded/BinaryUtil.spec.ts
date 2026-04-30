@@ -40,7 +40,7 @@ import BinaryUtil from './BinaryUtil';
 /**
  * @author Pablo Orduña, University of Deusto (pablo.orduna@deusto.es)
  */
-it('BinaryUtilTest', () => {
+describe('BinaryUtilTest', () => {
 
   it('testBuildBitArrayFromString', () => {
 
@@ -78,7 +78,7 @@ it('BinaryUtilTest', () => {
   });
 });
 
-const SPACE: RegExp = /\s/;
+const SPACE: RegExp = /\s/g;
 
 function check(data: string): void {
   const binary: BitArray = BinaryUtil.buildBitArrayFromString(data);

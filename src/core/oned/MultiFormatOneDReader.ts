@@ -23,9 +23,11 @@ import NotFoundException from '../NotFoundException';
 import Result from '../Result';
 import Code128Reader from './Code128Reader';
 import Code39Reader from './Code39Reader';
+import Code93Reader from './Code93Reader';
 import ITFReader from './ITFReader';
 import MultiFormatUPCEANReader from './MultiFormatUPCEANReader';
 import OneDReader from './OneDReader';
+import CodaBarReader from './CodaBarReader';
 import RSSExpandedReader from './rss/expanded/RSSExpandedReader';
 import RSS14Reader from './rss/RSS14Reader';
 
@@ -41,6 +43,7 @@ export default class MultiFormatOneDReader extends OneDReader {
     super();
     const possibleFormats = !hints ? null : <BarcodeFormat[]>hints.get(DecodeHintType.POSSIBLE_FORMATS);
     const useCode39CheckDigit = hints && hints.get(DecodeHintType.ASSUME_CODE_39_CHECK_DIGIT) !== undefined;
+    const useCode39ExtendedMode = hints && hints.get(DecodeHintType.ENABLE_CODE_39_EXTENDED_MODE) !== undefined;
 
     if (possibleFormats) {
       if (possibleFormats.includes(BarcodeFormat.EAN_13) ||
@@ -50,24 +53,25 @@ export default class MultiFormatOneDReader extends OneDReader {
         this.readers.push(new MultiFormatUPCEANReader(hints));
       }
       if (possibleFormats.includes(BarcodeFormat.CODE_39)) {
-        this.readers.push(new Code39Reader(useCode39CheckDigit));
+        this.readers.push(new Code39Reader(useCode39CheckDigit, useCode39ExtendedMode));
       }
-      // if (possibleFormats.includes(BarcodeFormat.CODE_93)) {
-      //    this.readers.push(new Code93Reader());
-      // }
+      if (possibleFormats.includes(BarcodeFormat.CODE_93)) {
+          this.readers.push(new Code93Reader());
+      }
       if (possibleFormats.includes(BarcodeFormat.CODE_128)) {
         this.readers.push(new Code128Reader());
       }
       if (possibleFormats.includes(BarcodeFormat.ITF)) {
         this.readers.push(new ITFReader());
       }
-      // if (possibleFormats.includes(BarcodeFormat.CODABAR)) {
-      //    this.readers.push(new CodaBarReader());
-      // }
+      if (possibleFormats.includes(BarcodeFormat.CODABAR)) {
+         this.readers.push(new CodaBarReader());
+      }
       if (possibleFormats.includes(BarcodeFormat.RSS_14)) {
         this.readers.push(new RSS14Reader());
       }
       if (possibleFormats.includes(BarcodeFormat.RSS_EXPANDED)) {
+        // XXX
         console.warn('RSS Expanded reader IS NOT ready for production yet! use at your own risk.');
         this.readers.push(new RSSExpandedReader());
       }
@@ -76,12 +80,12 @@ export default class MultiFormatOneDReader extends OneDReader {
       this.readers.push(new MultiFormatUPCEANReader(hints));
       this.readers.push(new Code39Reader());
       // this.readers.push(new CodaBarReader());
-      // this.readers.push(new Code93Reader());
+      this.readers.push(new Code93Reader());
       this.readers.push(new MultiFormatUPCEANReader(hints));
       this.readers.push(new Code128Reader());
       this.readers.push(new ITFReader());
       this.readers.push(new RSS14Reader());
-      // this.readers.push(new RSSExpandedReader());
+      this.readers.push(new RSSExpandedReader());
     }
   }
 

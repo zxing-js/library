@@ -34,9 +34,9 @@ import StringBuilder from '../../../../../core/util/StringBuilder';
 // import java.util.regex.Pattern;
 
 
-const /*private static /*final*/ ONE: RegExp = RegExp('1');
-const /*private static /*final*/ ZERO: RegExp = RegExp('0');
-const /*private static /*final*/ SPACE: RegExp = RegExp(' ');
+const /*private static /*final*/ ONE: RegExp = RegExp('1', 'g');
+const /*private static /*final*/ ZERO: RegExp = RegExp('0', 'g');
+const /*private static /*final*/ SPACE: RegExp = RegExp(' ', 'g');
 
 /**
  * @author Pablo Orduña, University of Deusto (pablo.orduna@deusto.es)

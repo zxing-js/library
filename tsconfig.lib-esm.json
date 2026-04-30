@@ -1,9 +1,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "module": "es2015",
     "target": "es5",
-    "outDir": "dist/esm"
+    "outDir": "dist/esm",
+    "sourceMap": false
   },
   "exclude": [
     "src/test"
