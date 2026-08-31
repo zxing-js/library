@@ -204,12 +204,12 @@ export default class DataMatrixWriter implements Writer {
     const outputHeight = Math.max(reqHeight, matrixHeight);
 
     const multiple = Math.min(
-      outputWidth / matrixWidth,
-      outputHeight / matrixHeight
+      Math.floor(outputWidth / matrixWidth),
+      Math.floor(outputHeight / matrixHeight)
     );
 
-    let leftPadding = (outputWidth - matrixWidth * multiple) / 2;
-    let topPadding = (outputHeight - matrixHeight * multiple) / 2;
+    let leftPadding = Math.floor((outputWidth - matrixWidth * multiple) / 2);
+    let topPadding = Math.floor((outputHeight - matrixHeight * multiple) / 2);
 
     let output: BitMatrix;
 

@@ -118,6 +118,20 @@ export default class BinaryBitmap {
     }
 
     /**
+     * Returns a new object with inverted image data -- black becomes white and vice versa.
+     *
+     * This re-binarizes an inverted {@link LuminanceSource} rather than flipping the cached black
+     * matrix, so 1D readers -- which read rows straight from the binarizer and never look at that
+     * matrix -- see the inversion too.
+     *
+     * @return An inverted version of this object.
+     */
+    public invert(): BinaryBitmap {
+        const newSource: LuminanceSource = this.binarizer.getLuminanceSource().invert();
+        return new BinaryBitmap(this.binarizer.createBinarizer(newSource));
+    }
+
+    /**
      * Returns a new object with rotated image data by 90 degrees counterclockwise.
      * Only callable if {@link #isRotateSupported()} is true.
      *

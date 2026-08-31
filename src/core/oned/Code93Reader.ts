@@ -37,13 +37,14 @@ import ResultPoint from '../ResultPoint';
  export default class Code93Reader extends OneDReader {
 
   // Note that 'abcd' are dummy characters in place of control characters.
-  private static readonly ALPHABET_STRING = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%abcd*";
+  // Package-private in Java; Code93Writer needs these.
+  public static readonly ALPHABET_STRING = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%abcd*";
 
   /**
    * These represent the encodings of characters, as patterns of wide and narrow bars.
    * The 9 least-significant bits of each int correspond to the pattern of wide and narrow.
    */
-  private static readonly CHARACTER_ENCODINGS: number[] = [
+  public static readonly CHARACTER_ENCODINGS: number[] = [
       0x114, 0x148, 0x144, 0x142, 0x128, 0x124, 0x122, 0x150, 0x112, 0x10A, // 0-9
       0x1A8, 0x1A4, 0x1A2, 0x194, 0x192, 0x18A, 0x168, 0x164, 0x162, 0x134, // A-J
       0x11A, 0x158, 0x14C, 0x146, 0x12C, 0x116, 0x1B4, 0x1B2, 0x1AC, 0x1A6, // K-T
@@ -51,7 +52,7 @@ import ResultPoint from '../ResultPoint';
       0x12E, 0x1D4, 0x1D2, 0x1CA, 0x16E, 0x176, 0x1AE, // - - %
       0x126, 0x1DA, 0x1D6, 0x132, 0x15E, // Control chars? $-*
   ];
-  private static readonly ASTERISK_ENCODING = Code93Reader.CHARACTER_ENCODINGS[47];
+  public static readonly ASTERISK_ENCODING = Code93Reader.CHARACTER_ENCODINGS[47];
 
   private decodeRowResult: string;
   private counters: Int32Array;

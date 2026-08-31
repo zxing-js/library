@@ -83,6 +83,20 @@ export { default as PDF417Reader } from './core/pdf417/PDF417Reader';
 export { default as PDF417ResultMetadata } from './core/pdf417/PDF417ResultMetadata';
 export { default as PDF417DecodedBitStreamParser } from './core/pdf417/decoder/DecodedBitStreamParser';
 export { default as PDF417DecoderErrorCorrection } from './core/pdf417/decoder/ec/ErrorCorrection';
+export { default as PDF417Writer } from './core/pdf417/PDF417Writer';
+export { default as PDF417Compaction } from './core/pdf417/encoder/Compaction';
+export { default as PDF417Dimensions } from './core/pdf417/encoder/Dimensions';
+export { default as PDF417HighLevelEncoder } from './core/pdf417/encoder/PDF417HighLevelEncoder';
+export { default as PDF417EncoderErrorCorrection } from './core/pdf417/encoder/PDF417ErrorCorrection';
+export { default as PDF417Encoder } from './core/pdf417/encoder/PDF417';
+
+// core/multi
+export { default as MultipleBarcodeReader } from './core/multi/MultipleBarcodeReader';
+export { default as GenericMultipleBarcodeReader } from './core/multi/GenericMultipleBarcodeReader';
+export { default as ByQuadrantReader } from './core/multi/ByQuadrantReader';
+export { default as QRCodeMultiReader } from './core/multi/qrcode/QRCodeMultiReader';
+export { default as QRCodeMultiDetector } from './core/multi/qrcode/detector/MultiDetector';
+export { default as QRCodeMultiFinderPatternFinder } from './core/multi/qrcode/detector/MultiFinderPatternFinder';
 
 // core/twod/qrcode
 export { default as QRCodeReader } from './core/qrcode/QRCodeReader';
@@ -135,3 +149,15 @@ export { createDecoder as createAbstractExpandedDecoder } from './core/oned/rss/
 export { default as MultiFormatOneDReader } from './core/oned/MultiFormatOneDReader';
 export { default as CodaBarReader } from './core/oned/CodaBarReader';
 export { default as FinderPattern } from './core/oned/rss/FinderPattern';
+
+export { default as OneDimensionalCodeWriter } from './core/oned/OneDimensionalCodeWriter';
+export { default as UPCEANWriter } from './core/oned/UPCEANWriter';
+export { default as CodaBarWriter } from './core/oned/CodaBarWriter';
+export { default as Code39Writer } from './core/oned/Code39Writer';
+export { default as Code93Writer } from './core/oned/Code93Writer';
+export { default as Code128Writer } from './core/oned/Code128Writer';
+export { default as EAN8Writer } from './core/oned/EAN8Writer';
+export { default as EAN13Writer } from './core/oned/EAN13Writer';
+export { default as ITFWriter } from './core/oned/ITFWriter';
+export { default as UPCAWriter } from './core/oned/UPCAWriter';
+export { default as UPCEWriter } from './core/oned/UPCEWriter';

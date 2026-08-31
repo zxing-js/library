@@ -29,6 +29,7 @@ import MaxiCodeReader from './maxicode/MaxiCodeReader';
 import NotFoundException from './NotFoundException';
 import PDF417Reader from './pdf417/PDF417Reader';
 import ReaderException from './ReaderException';
+import isReaderException from './util/isReaderException';
 
 /*namespace com.google.zxing {*/
 
@@ -190,12 +191,43 @@ export default class MultiFormatReader implements Reader {
             throw new ReaderException('No readers where selected, nothing can be read.');
         }
 
+        const result = this.tryReaders(image);
+        if (result !== null) {
+            return result;
+        }
+
+        if (this.hints !== null && this.hints !== undefined && this.hints.has(DecodeHintType.ALSO_INVERTED)) {
+            // Call all readers again with an inverted image.
+            //
+            // Java inverts by flipping the cached black matrix in place. That has two problems:
+            // it leaves the caller's bitmap inverted afterwards, and 1D readers never consult that
+            // matrix -- they pull rows from the binarizer -- so the hint quietly does nothing for
+            // linear symbologies. Deriving an inverted bitmap instead fixes both, and matches what
+            // zxing-cpp's tryInvert option does.
+            const invertedResult = this.tryReaders(image.invert());
+            if (invertedResult !== null) {
+                return invertedResult;
+            }
+        }
+
+        throw new NotFoundException('No MultiFormat Readers were able to detect the code.');
+    }
+
+    /**
+     * Runs every configured reader over the image once.
+     *
+     * @return the first result found, or null if no reader recognised the image
+     */
+    private tryReaders(image: BinaryBitmap): Result {
         for (const reader of this.readers) {
 
             try {
                 return reader.decode(image, this.hints);
             } catch (ex) {
-                if (ex instanceof ReaderException) {
+                // A reader that cannot see its format in the image is the normal case, not a
+                // problem worth logging. `instanceof ReaderException` alone does not cover it:
+                // unlike Java, NotFoundException and friends do not extend ReaderException here.
+                if (isReaderException(ex)) {
                     continue;
                 }
 
@@ -205,7 +237,7 @@ export default class MultiFormatReader implements Reader {
             }
         }
 
-        throw new NotFoundException('No MultiFormat Readers were able to detect the code.');
+        return null;
     }
 
 }

@@ -48,8 +48,8 @@ import { int } from '../../customTypings';
 export default /*public final*/ class AztecWriter implements Writer {
 
   // @Override
-  public encode(contents: string, format: BarcodeFormat, width: int, height: int): BitMatrix {
-    return this.encodeWithHints(contents, format, width, height, null);
+  public encode(contents: string, format: BarcodeFormat, width: int, height: int, hints: Map<EncodeHintType, any> = null): BitMatrix {
+    return this.encodeWithHints(contents, format, width, height, hints);
   }
 
   // @Override
@@ -91,9 +91,9 @@ export default /*public final*/ class AztecWriter implements Writer {
     let outputWidth: int = Math.max(width, inputWidth);
     let outputHeight: int = Math.max(height, inputHeight);
 
-    let multiple: int = Math.min(outputWidth / inputWidth, outputHeight / inputHeight);
-    let leftPadding: int = (outputWidth - (inputWidth * multiple)) / 2;
-    let topPadding: int = (outputHeight - (inputHeight * multiple)) / 2;
+    let multiple: int = Math.min(Math.floor(outputWidth / inputWidth), Math.floor(outputHeight / inputHeight));
+    let leftPadding: int = Math.floor((outputWidth - (inputWidth * multiple)) / 2);
+    let topPadding: int = Math.floor((outputHeight - (inputHeight * multiple)) / 2);
 
     let output: BitMatrix = new BitMatrix(outputWidth, outputHeight);
 

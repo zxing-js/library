@@ -37,7 +37,8 @@ import OneDReader from './OneDReader';
  */
 export default class Code128Reader extends OneDReader {
 
-    private static CODE_PATTERNS: Int32Array[] = [
+    // Package-private in Java; Code128Writer needs it.
+    public static CODE_PATTERNS: Int32Array[] = [
         Int32Array.from([2, 1, 2, 2, 2, 2]),
         Int32Array.from([2, 2, 2, 1, 2, 2]),
         Int32Array.from([2, 2, 2, 2, 2, 1]),

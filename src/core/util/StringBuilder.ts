@@ -30,7 +30,7 @@ export default class StringBuilder {
     offset: int,
     len: int
   ): StringBuilder {
-    for (let i = offset; offset < offset + len; i++) {
+    for (let i = offset; i < offset + len; i++) {
       this.append(str[i]);
     }
     return this;

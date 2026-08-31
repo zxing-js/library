@@ -78,7 +78,7 @@ export default /* final */ class UPCEReader extends UPCEANReader {
    */
   static /*final*/  NUMSYS_AND_CHECK_DIGIT_PATTERNS: Int32Array[] = [
     Int32Array.from([0x38, 0x34, 0x32, 0x31, 0x2C, 0x26, 0x23, 0x2A, 0x29, 0x25]),
-    Int32Array.from([0x07, 0x0B, 0x0D, 0x0E, 0x13, 0x19, 0x1C, 0x15, 0x16, 0x1]),
+    Int32Array.from([0x07, 0x0B, 0x0D, 0x0E, 0x13, 0x19, 0x1C, 0x15, 0x16, 0x1A]),
   ];
 
   private /*final*/  decodeMiddleCounters: Int32Array;
@@ -169,21 +169,22 @@ export default /* final */ class UPCEReader extends UPCEANReader {
     const result: StringBuilder = new StringBuilder(/*12*/);
     result.append(upce.charAt(0));
     let lastChar: char = upceChars[5];
+    // upceChars holds character codes, so the Java cases '0'..'4' become their code points.
     switch (lastChar) {
-      case 0:
-      case 1:
-      case 2:
+      case '0'.charCodeAt(0):
+      case '1'.charCodeAt(0):
+      case '2'.charCodeAt(0):
         result.appendChars(upceChars, 0, 2);
         result.append(lastChar);
         result.append('0000');
         result.appendChars(upceChars, 2, 3);
         break;
-      case 3:
+      case '3'.charCodeAt(0):
         result.appendChars(upceChars, 0, 3);
         result.append('00000');
         result.appendChars(upceChars, 3, 2);
         break;
-      case 4:
+      case '4'.charCodeAt(0):
         result.appendChars(upceChars, 0, 4);
         result.append('00000');
         result.append(upceChars[4]);
