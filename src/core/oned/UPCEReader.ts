@@ -19,7 +19,7 @@ import BitArray from '../common/BitArray';
 import StringBuilder from '../util/StringBuilder';
 import NotFoundException from '../NotFoundException';
 import BarcodeFormat from '../BarcodeFormat';
-import { int, char } from 'src/customTypings';
+import { int } from 'src/customTypings';
 
 // package com.google.zxing.oned;
 
@@ -165,25 +165,25 @@ export default /* final */ class UPCEReader extends UPCEANReader {
    */
   public static convertUPCEtoUPCA(upce: string): string {
     // the following line is equivalent to upce.getChars(1, 7, upceChars, 0);
-    const upceChars = upce.slice(1, 7).split('').map(x => x.charCodeAt(0));
+    const upceChars = upce.slice(1, 7).split('');
     const result: StringBuilder = new StringBuilder(/*12*/);
     result.append(upce.charAt(0));
-    let lastChar: char = upceChars[5];
+    const lastChar = upceChars[5];
     switch (lastChar) {
-      case 0:
-      case 1:
-      case 2:
+      case '0':
+      case '1':
+      case '2':
         result.appendChars(upceChars, 0, 2);
         result.append(lastChar);
         result.append('0000');
         result.appendChars(upceChars, 2, 3);
         break;
-      case 3:
+      case '3':
         result.appendChars(upceChars, 0, 3);
         result.append('00000');
         result.appendChars(upceChars, 3, 2);
         break;
-      case 4:
+      case '4':
         result.appendChars(upceChars, 0, 4);
         result.append('00000');
         result.append(upceChars[4]);
