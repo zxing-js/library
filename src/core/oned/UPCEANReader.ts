@@ -40,17 +40,7 @@ export default abstract class UPCEANReader extends AbstractUPCEANReader {
     public constructor() {
         super();
         this.decodeRowStringBuffer = '';
-
-        UPCEANReader.L_AND_G_PATTERNS = UPCEANReader.L_PATTERNS.map(arr => Int32Array.from(arr));
-
-        for (let i = 10; i < 20; i++) {
-            let widths = UPCEANReader.L_PATTERNS[i - 10];
-            let reversedWidths = new Int32Array(widths.length);
-            for (let j = 0; j < widths.length; j++) {
-                reversedWidths[j] = widths[widths.length - j - 1];
-            }
-            UPCEANReader.L_AND_G_PATTERNS[i] = reversedWidths;
-        }
+        // L_AND_G_PATTERNS is built once, statically, in AbstractUPCEANReader.
     }
 
     public decodeRow(rowNumber: number, row: BitArray, hints?: Map<DecodeHintType, any>): Result {

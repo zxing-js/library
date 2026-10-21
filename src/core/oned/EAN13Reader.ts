@@ -28,7 +28,8 @@ import NotFoundException from '../NotFoundException';
  * @author alasdair@google.com (Alasdair Mackintosh)
  */
 export default class EAN13Reader extends UPCEANReader {
-    private static FIRST_DIGIT_ENCODINGS: number[] = [0x00, 0x0B, 0x0D, 0xE, 0x13, 0x19, 0x1C, 0x15, 0x16, 0x1A];
+    // Package-private in Java; EAN13Writer needs it.
+    public static FIRST_DIGIT_ENCODINGS: number[] = [0x00, 0x0B, 0x0D, 0xE, 0x13, 0x19, 0x1C, 0x15, 0x16, 0x1A];
 
   private decodeMiddleCounters: Int32Array;
 

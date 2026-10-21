@@ -69,8 +69,25 @@ export default abstract class AbstractUPCEANReader extends OneDReader {
 
     /**
      * As above but also including the "even", or "G" patterns used to encode UPC/EAN digits.
+     *
+     * Java builds this in a `static {}` block. It used to be built in the UPCEANReader
+     * constructor here, which left it undefined for any caller that had not yet instantiated a
+     * reader - notably the writers.
      */
-    public static L_AND_G_PATTERNS: Int32Array[];
+    public static L_AND_G_PATTERNS: Int32Array[] = (() => {
+        const patterns = AbstractUPCEANReader.L_PATTERNS.map(arr => Int32Array.from(arr));
+
+        for (let i = 10; i < 20; i++) {
+            const widths = AbstractUPCEANReader.L_PATTERNS[i - 10];
+            const reversedWidths = new Int32Array(widths.length);
+            for (let j = 0; j < widths.length; j++) {
+                reversedWidths[j] = widths[widths.length - j - 1];
+            }
+            patterns[i] = reversedWidths;
+        }
+
+        return patterns;
+    })();
 
     protected decodeRowStringBuffer = '';
     // private final UPCEANExtensionSupport extensionReader;

@@ -201,12 +201,23 @@ export default class BitMatrix /*implements Cloneable*/ {
     }
 
     /**
-     * <p>Flips the given bit.</p>
+     * <p>Flips the given bit, or every bit in the matrix when called with no arguments.</p>
+     *
+     * Java declares these as two overloads of {@code flip}; TypeScript cannot, so the no-argument
+     * form is expressed by leaving the coordinates undefined.
      *
      * @param x The horizontal component (i.e. which column)
      * @param y The vertical component (i.e. which row)
      */
-    public flip(x: number /*int*/, y: number /*int*/): void {
+    public flip(x?: number /*int*/, y?: number /*int*/): void {
+        if (x === undefined || y === undefined) {
+            // Flips every bit in the matrix. Bits past `width` in the last word of each row are
+            // flipped too, exactly as in Java; nothing reads them.
+            for (let i = 0, length = this.bits.length; i < length; i++) {
+                this.bits[i] = ~this.bits[i];
+            }
+            return;
+        }
         const offset = y * this.rowSize + (x >> 5);
         this.bits[offset] ^= ((1 << (x & 0x1f)) & 0xFFFFFFFF);
     }
