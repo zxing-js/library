@@ -56,7 +56,7 @@ export class TextEncoder extends C40Encoder {
       sb.append(c - 123 + 27);
       return 2;
     }
-    sb.append(`${0o1}\u001e`); // Shift 2, Upper Shift
+    sb.append('\u0001\u001e'); // Shift 2, Upper Shift
     let len = 2;
     len += this.encodeChar(c - 128, sb);
     return len;
