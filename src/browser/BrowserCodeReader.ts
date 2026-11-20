@@ -13,6 +13,19 @@ import { HTMLCanvasElementLuminanceSource } from './HTMLCanvasElementLuminanceSo
 import { HTMLVisualMediaElement } from './HTMLVisualMediaElement';
 import { VideoInputDevice } from './VideoInputDevice';
 
+function fullSourceDimensions(width: number, height: number) {
+  return {
+    sx: 0,
+    sy: 0,
+    sWidth: width,
+    sHeight: height,
+    dx: 0,
+    dy: 0,
+    dWidth: width,
+    dHeight: height,
+  };
+}
+
 /**
  * @deprecated Moving to @zxing/browser
  *
@@ -958,10 +971,18 @@ export class BrowserCodeReader {
     // doing a scan with inverted colors on the second scan should only happen for video elements
     let doAutoInvert = false;
     if (mediaElement instanceof HTMLVideoElement) {
-      this.drawFrameOnCanvas(<HTMLVideoElement>mediaElement);
+      this.drawFrameOnCanvas(
+        mediaElement,
+        fullSourceDimensions(mediaElement.videoWidth, mediaElement.videoHeight),
+        ctx
+      );
       doAutoInvert = true;
     } else {
-      this.drawImageOnCanvas(<HTMLImageElement>mediaElement);
+      this.drawImageOnCanvas(
+        mediaElement,
+        fullSourceDimensions(mediaElement.naturalWidth, mediaElement.naturalHeight),
+        ctx
+      );
     }
     const canvas = this.getCaptureCanvas(mediaElement);
 
@@ -1009,16 +1030,7 @@ export class BrowserCodeReader {
    */
   public drawFrameOnCanvas(
     srcElement: HTMLVideoElement,
-    dimensions = {
-      sx: 0,
-      sy: 0,
-      sWidth: srcElement.videoWidth,
-      sHeight: srcElement.videoHeight,
-      dx: 0,
-      dy: 0,
-      dWidth: srcElement.videoWidth,
-      dHeight: srcElement.videoHeight,
-    },
+    dimensions = fullSourceDimensions(srcElement.videoWidth, srcElement.videoHeight),
     canvasElementContext = this.captureCanvasContext
   ) {
     canvasElementContext.drawImage(
@@ -1039,16 +1051,7 @@ export class BrowserCodeReader {
    */
   public drawImageOnCanvas(
     srcElement: HTMLImageElement,
-    dimensions = {
-      sx: 0,
-      sy: 0,
-      sWidth: srcElement.naturalWidth,
-      sHeight: srcElement.naturalHeight,
-      dx: 0,
-      dy: 0,
-      dWidth: srcElement.naturalWidth,
-      dHeight: srcElement.naturalHeight,
-    },
+    dimensions = fullSourceDimensions(srcElement.naturalWidth, srcElement.naturalHeight),
     canvasElementContext = this.captureCanvasContext
   ) {
     canvasElementContext.drawImage(
