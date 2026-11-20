@@ -1,7 +1,13 @@
 import {
+  BarcodeFormat,
+  DataMatrixDecodedBitStreamParser,
+  DataMatrixSymbolShapeHint,
+  DataMatrixWriter,
+  EncodeHintType,
   ZXingStringBuilder as StringBuilder,
   DataMatrixHighLevelEncoder as HighLevelEncoder,
 } from '@zxing/library';
+import Decoder from '@zxing/library/core/datamatrix/decoder/Decoder';
 import {
   assertEndsWith,
   assertEquals,
@@ -30,6 +36,45 @@ const createBinaryMessage = (len: number): string => {
 };
 
 describe('HighLevelEncoderTest', () => {
+  it.each([
+    'A',
+    'AB',
+    'k',
+    '87',
+    '1Y',
+    'ABC123',
+    'ABC1234',
+    'ABC12345',
+    'R..#CJB2+T',
+    'AIMAIMAIMAIMAIMAIMAI',
+  ])('round-trips %s with forced C40', message => {
+    const encoded = HighLevelEncoder.encodeHighLevel(
+      message,
+      DataMatrixSymbolShapeHint.FORCE_NONE,
+      null,
+      null,
+      true
+    );
+    const codewords = Uint8Array.from(encoded, c => c.charCodeAt(0));
+    expect(DataMatrixDecodedBitStreamParser.decode(codewords).getText()).toBe(message);
+  });
+
+  it.each([false, true])(
+    'round-trips a Data Matrix symbol with FORCE_C40=%s',
+    forceC40 => {
+      const message = 'R..#CJB2+T';
+      const hints = forceC40 ? new Map([[EncodeHintType.FORCE_C40, true]]) : undefined;
+      const symbol = new DataMatrixWriter().encode(
+        message,
+        BarcodeFormat.DATA_MATRIX,
+        0,
+        0,
+        hints
+      );
+      expect(new Decoder().decode(symbol).getText()).toBe(message);
+    }
+  );
+
   it('testASCIIEncoding', () => {
     let visualized = encodeHighLevel('123456');
     assertEquals(visualized, '142 164 186');

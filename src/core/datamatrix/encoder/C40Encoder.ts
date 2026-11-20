@@ -30,27 +30,30 @@ export class C40Encoder implements Encoder {
       }
     }
     if (backtrackBufferLength !== buffer.length()) {
-      const unwritten = Math.floor((buffer.length() / 3) * 2);
+      const unwritten = Math.floor(buffer.length() / 3) * 2;
 
-      const curCodewordCount = Math.floor(
-        context.getCodewordCount() + unwritten + 1
-      ); // +1 for the latch to C40
+      const curCodewordCount = context.getCodewordCount() + unwritten + 1; // +1 for the latch to C40
       context.updateSymbolInfo(curCodewordCount);
       const available =
         context.getSymbolInfo().getDataCapacity() - curCodewordCount;
-      const rest = Math.floor(buffer.length() % 3);
+      const rest = buffer.length() % 3;
       if (
         (rest === 2 && available !== 2) ||
         (rest === 1 && (lastCharSize > 3 || available !== 1))
       ) {
-        // buffer.setLength(backtrackBufferLength);
+        const completeTriplets = buffer.substring(0, backtrackBufferLength);
+        buffer.setLengthToZero();
+        buffer.append(completeTriplets);
         context.pos = backtrackStartPosition;
       }
     }
-    if (buffer.length() > 0) {
-      context.writeCodeword(LATCH_TO_C40);
+    if (buffer.length() === 0) {
+      // Stay in ASCII when backtracking left nothing to write in C40.
+      context.signalEncoderChange(ASCII_ENCODATION);
+      return;
     }
 
+    context.writeCodeword(LATCH_TO_C40);
     this.handleEOD(context, buffer);
   }
 
@@ -156,7 +159,7 @@ export class C40Encoder implements Encoder {
    * @param buffer  the buffer with the remaining encoded characters
    */
   handleEOD(context: EncoderContext, buffer: StringBuilder): void {
-    const unwritten = Math.floor((buffer.length() / 3) * 2);
+    const unwritten = Math.floor(buffer.length() / 3) * 2;
     const rest = buffer.length() % 3;
 
     const curCodewordCount = context.getCodewordCount() + unwritten;
