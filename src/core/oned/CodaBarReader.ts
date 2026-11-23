@@ -24,6 +24,11 @@ import OneDReader from './OneDReader';
 import Result from '../Result';
 import ResultPoint from '../ResultPoint';
 
+type CodaBarWidthSplit = {
+    threshold: number;
+    fit: number;
+};
+
 /**
  * <p>Decodes CodaBar barcodes. </p>
  *
@@ -48,7 +53,7 @@ export default class CodaBarReader extends OneDReader {
         wnnnwnw: ':',
         wnwnnnw: '/',
         wnwnwnn: '.',
-        nnwwwww: '+',
+        nnwnwnw: '+',
         nnwwnwn: 'A',
         nwnwnnw: 'B',
         nnnwnww: 'C',
@@ -96,30 +101,106 @@ export default class CodaBarReader extends OneDReader {
         }
         result.push(bitLength);
         // CodaBar code data valid
-        if (result.length < 23 && (result.length + 1) % 8 !== 0)
+        if (result.length < 23 || result.length % 8 !== 7)
             return null;
         return { row: result, left: startIndex, right: lastIndex };
     }
 
     /**
      * decode codabar code
-     * @param row row to cecode
+     * @param row alternating bar and space widths, starting with a bar
      */
     private codaBarDecodeRow(row: Array<number>): string {
-        const code = [];
-        const barThreshold = Math.ceil(
-            row.reduce((pre, item) => (pre + item) / 2, 0)
-        );
-        // Read one encoded character at a time.
-        while (row.length > 0) {
-            const seg = row.splice(0, 8).splice(0, 7);
-            const key = seg.map(len => (len < barThreshold ? 'n' : 'w')).join('');
-            if (this.CODA_BAR_CHAR_SET[key] === undefined) return null;
-            code.push(this.CODA_BAR_CHAR_SET[key]);
+        // Each start or stop pattern has three narrow bars and one narrow space.
+        const barFits = new Map(this.getWidthSplits(row, 0, 3).map(split => [split.threshold, split.fit]));
+        const spaceSplits = this.getWidthSplits(row, 1, 1);
+        let bestCode = null;
+        let bestFit = -Infinity;
+        let bestHasStandardPayload = false;
+
+        for (const spaces of spaceSplits) {
+            const decoded = this.decodeWithSpaceThreshold(row, spaces.threshold);
+            if (!decoded) continue;
+            const barFit = barFits.get(decoded.barThreshold);
+            if (barFit === undefined) continue;
+
+            const { text } = decoded;
+            // Prefer a payload without start/stop characters when the widths admit both.
+            const hasStandardPayload = !/[A-D]/.test(text.slice(1, -1));
+            if (bestHasStandardPayload && !hasStandardPayload) continue;
+
+            const fit = barFit + spaces.fit;
+            if ((hasStandardPayload && !bestHasStandardPayload) || fit > bestFit) {
+                bestCode = text;
+                bestFit = fit;
+                bestHasStandardPayload = hasStandardPayload;
+            } else if (fit === bestFit) {
+                bestCode = null;
+            }
         }
-        let strCode = code.join('');
-        if (this.validCodaBarString(strCode)) return strCode;
-        return null;
+        return bestCode;
+    }
+
+    private getWidthSplits(row: number[], color: number, narrowGuardCount: number): CodaBarWidthSplit[] {
+        let longestNarrow = 0;
+        let shortestWide = Infinity;
+        for (const start of [0, row.length - 7]) {
+            const guardWidths = [];
+            for (let i = color; i < 7; i += 2) guardWidths.push(row[start + i]);
+            guardWidths.sort((left, right) => left - right);
+            longestNarrow = Math.max(longestNarrow, guardWidths[narrowGuardCount - 1]);
+            shortestWide = Math.min(shortestWide, guardWidths[narrowGuardCount]);
+        }
+        if (longestNarrow >= shortestWide) return [];
+
+        const widths = [];
+        for (let i = color; i < row.length; i += 2) {
+            if (i % 8 !== 7) widths.push(row[i]); // Skip the inter-character gaps.
+        }
+        widths.sort((left, right) => left - right);
+
+        const splits: CodaBarWidthSplit[] = [];
+        const total = widths.reduce((sum, width) => sum + width, 0);
+        let narrowTotal = 0;
+        for (let i = 1; i < widths.length; i++) {
+            narrowTotal += widths[i - 1];
+            const threshold = widths[i];
+            if (threshold === widths[i - 1] || threshold <= longestNarrow || threshold > shortestWide) continue;
+            const wideTotal = total - narrowTotal;
+            // Maximizing this score minimizes squared deviations from each class mean.
+            const fit = narrowTotal ** 2 / i + wideTotal ** 2 / (widths.length - i);
+            splits.push({ threshold, fit });
+        }
+        return splits;
+    }
+
+    private decodeWithSpaceThreshold(row: number[], spaceThreshold: number): { text: string; barThreshold: number } {
+        let longestNarrowBar = 0;
+        let shortestWideBar = Infinity;
+        const code = [];
+        for (let start = 0; start < row.length; start += 8) {
+            // The four patterns with no wide spaces have three wide bars.
+            // Every other pattern has one wide bar.
+            const allSpacesNarrow = row[start + 1] < spaceThreshold &&
+                row[start + 3] < spaceThreshold && row[start + 5] < spaceThreshold;
+            const narrowBarCount = allSpacesNarrow ? 1 : 3;
+            const bars = [row[start], row[start + 2], row[start + 4], row[start + 6]]
+                .sort((left, right) => left - right);
+            const barThreshold = bars[narrowBarCount];
+            longestNarrowBar = Math.max(longestNarrowBar, bars[narrowBarCount - 1]);
+            shortestWideBar = Math.min(shortestWideBar, barThreshold);
+            if (longestNarrowBar >= shortestWideBar) return null;
+
+            const thresholds = [barThreshold, spaceThreshold];
+            const key = row.slice(start, start + 7)
+                .map((width, index) => (width >= thresholds[index % 2] ? 'w' : 'n'))
+                .join('');
+            const character = this.CODA_BAR_CHAR_SET[key];
+            if (character === undefined) return null;
+            code.push(character);
+        }
+        const text = code.join('');
+        return this.validCodaBarString(text) ? { text, barThreshold: shortestWideBar } : null;
     }
 
     /**
