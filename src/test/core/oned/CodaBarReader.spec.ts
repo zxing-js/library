@@ -32,7 +32,7 @@ const encodeWidths = (text: string): number[] => {
     return widths;
 };
 
-const toBitArray = (widths: number[], quietZone: number = 0): BitArray => {
+const toBitArray = (widths: number[], quietZone = 0): BitArray => {
     const bits = new BitArray();
     for (let i = 0; i < quietZone; i++) bits.appendBit(false);
     let isBar = true;
@@ -106,7 +106,12 @@ describe('CodaBarReader', () => {
     const secondStopGuardWideSpace = 29;
     it.each([
         ['wide bars', [startGuardWideBar, stopGuardWideBar]],
-        ['wide spaces', [firstStartGuardWideSpace, secondStartGuardWideSpace, firstStopGuardWideSpace, secondStopGuardWideSpace]],
+        ['wide spaces', [
+            firstStartGuardWideSpace,
+            secondStartGuardWideSpace,
+            firstStopGuardWideSpace,
+            secondStopGuardWideSpace,
+        ]],
     ] as const)('decodes the payload when both guards have oversized %s', (_element, indices) => {
         const widths = encodeWidths('A12D');
         for (const index of indices) {
