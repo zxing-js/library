@@ -6,6 +6,21 @@ import CharacterSetECI from '../common/CharacterSetECI';
  */
 export default class StringEncoding {
 
+  private static readonly ISO_8859_1_LABELS = new Set([
+    'cp819',
+    'csisolatin1',
+    'ibm819',
+    'iso-8859-1',
+    'iso-ir-100',
+    'iso8859-1',
+    'iso88591',
+    'iso8859_1',
+    'iso_8859-1',
+    'iso_8859-1:1987',
+    'l1',
+    'latin1',
+  ]);
+
   /**
    * Allows the user to set a custom decoding function
    * so more encoding formats the native ones can be supported.
@@ -29,23 +44,21 @@ export default class StringEncoding {
       return this.customDecoder(bytes, encodingName);
     }
 
+    // TextDecoder treats ISO-8859-1 labels as Windows-1252.
+    if (this.ISO_8859_1_LABELS.has(encodingName.trim().toLowerCase())) {
+      let result = '';
+      for (let index = 0; index < bytes.length; index++) {
+        result += String.fromCharCode(bytes[index]);
+      }
+      return result;
+    }
+
     // Increases browser support.
-    if (typeof TextDecoder === 'undefined' || this.shouldDecodeOnFallback(encodingName)) {
+    if (typeof TextDecoder === 'undefined') {
       return this.decodeFallback(bytes, encodingName);
     }
 
     return new TextDecoder(encodingName).decode(bytes);
-  }
-
-  /**
-   * Checks if the decoding method should use the fallback for decoding.
-   * Node.js 18+ supports ISO-8859-1 natively via TextDecoder, so no fallback
-   * is needed for supported Node versions.
-   *
-   * @param encodingName
-   */
-  private static shouldDecodeOnFallback(encodingName: string): boolean {
-    return false;
   }
 
   /**
@@ -127,7 +140,6 @@ export default class StringEncoding {
 
   private static isDecodeFallbackSupported(characterSet: CharacterSetECI) {
     return characterSet.equals(CharacterSetECI.UTF8) ||
-      characterSet.equals(CharacterSetECI.ISO8859_1) ||
       characterSet.equals(CharacterSetECI.ASCII);
   }
 
