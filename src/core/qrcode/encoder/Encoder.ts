@@ -101,7 +101,12 @@ export default class Encoder {
 
         // Append ECI segment if applicable
         if (mode === Mode.BYTE && (hasEncodingHint || Encoder.DEFAULT_BYTE_MODE_ENCODING !== encoding)) {
-            const eci = CharacterSetECI.getCharacterSetECIByName(encoding);
+            let eci: CharacterSetECI;
+            try {
+                eci = CharacterSetECI.getCharacterSetECIByName(encoding);
+            } catch (ignored) {
+                throw new WriterException('Unsupported character set: ' + encoding);
+            }
             if (eci !== undefined) {
                 this.appendECI(eci, headerBits);
             }
@@ -241,7 +246,7 @@ export default class Encoder {
     private static isOnlyDoubleByteKanji(content: string): boolean {
         let bytes: Uint8Array;
         try {
-            bytes = StringEncoding.encode(content, CharacterSetECI.SJIS); // content.getBytes("Shift_JIS"))
+            bytes = this.encodeBytes(content, CharacterSetECI.SJIS); // content.getBytes("Shift_JIS"))
         } catch (ignored/*: UnsupportedEncodingException*/) {
             return false;
         }
@@ -582,14 +587,55 @@ export default class Encoder {
     public static append8BitBytes(content: string, bits: BitArray, encoding: string): void {
         let bytes: Uint8Array;
         try {
-            bytes = StringEncoding.encode(content, encoding);
+            bytes = this.encodeBytes(content, encoding);
         } catch (uee/*: UnsupportedEncodingException*/) {
+            if (uee instanceof WriterException) {
+                throw uee;
+            }
             throw new WriterException(uee);
         }
         for (let i = 0, length = bytes.length; i !== length; i++) {
             const b = bytes[i];
             bits.appendBits(b, 8);
         }
+    }
+
+    private static encodeBytes(content: string, encoding: string | CharacterSetECI): Uint8Array {
+        // Custom encoders may support additional character sets and must retain precedence.
+        if (StringEncoding.customEncoder) {
+            return StringEncoding.encode(content, encoding);
+        }
+
+        const encodingName = StringEncoding.encodingName(encoding);
+        let characterSet: CharacterSetECI;
+        try {
+            characterSet = StringEncoding.encodingCharacterSet(encoding);
+        } catch (ignored) {
+            throw new WriterException('Unsupported character set: ' + encodingName);
+        }
+        if (characterSet.equals(CharacterSetECI.UTF8)) {
+            return StringEncoding.encode(content, encoding);
+        }
+
+        let maxCodePoint: number;
+        if (characterSet.equals(CharacterSetECI.ISO8859_1)) {
+            maxCodePoint = 0xff;
+        } else if (characterSet.equals(CharacterSetECI.ASCII)) {
+            maxCodePoint = 0x7f;
+        } else {
+            // Native TextEncoder always emits UTF-8, regardless of the requested ECI.
+            throw new WriterException('Character set ' + encodingName + ' requires a custom encoder');
+        }
+
+        const bytes = new Uint8Array(content.length);
+        for (let i = 0; i < content.length; i++) {
+            const codePoint = content.charCodeAt(i);
+            if (codePoint > maxCodePoint) {
+                throw new WriterException('Content cannot be encoded in ' + encodingName);
+            }
+            bytes[i] = codePoint;
+        }
+        return bytes;
     }
 
     /**
@@ -600,8 +646,11 @@ export default class Encoder {
         let bytes: Uint8Array;
 
         try {
-            bytes = StringEncoding.encode(content, CharacterSetECI.SJIS);
+            bytes = this.encodeBytes(content, CharacterSetECI.SJIS);
         } catch (uee/*: UnsupportedEncodingException*/) {
+            if (uee instanceof WriterException) {
+                throw uee;
+            }
             throw new WriterException(uee);
         }
 
