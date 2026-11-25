@@ -107,7 +107,7 @@ export class BrowserCodeReader {
   protected videoElement: HTMLVideoElement;
 
   /**
-   * Should contain the current registered listener for video loaded-metadata,
+   * Should contain the current registered listener for video can-play,
    * used to unregister that listener when needed.
    */
   protected videoCanPlayListener: EventListener;
@@ -449,10 +449,11 @@ export class BrowserCodeReader {
   ): void {
     this.videoEndedListener = () => this.stopStreams();
     this.videoCanPlayListener = () => this.tryPlayVideo(element);
+    this.videoPlayingEventListener = callbackFn;
 
     element.addEventListener('ended', this.videoEndedListener);
     element.addEventListener('canplay', this.videoCanPlayListener);
-    element.addEventListener('playing', callbackFn);
+    element.addEventListener('playing', this.videoPlayingEventListener);
 
     // if canplay was already fired, we won't know when to play, so just give it a try
     this.tryPlayVideo(element);
@@ -1163,7 +1164,7 @@ export class BrowserCodeReader {
 
     if (typeof this.videoCanPlayListener !== 'undefined') {
       this.videoElement.removeEventListener(
-        'loadedmetadata',
+        'canplay',
         this.videoCanPlayListener
       );
     }
