@@ -2,8 +2,8 @@ import * as assert from 'assert';
 
 import {
     BarcodeFormat, BinaryBitmap, BitArray, EncodeHintType, HybridBinarizer,
-    PlanarYUVLuminanceSource, QRCodeEncoder, QRCodeMode, QRCodeReader,
-    QRCodeWriter, ResultMetadataType, WriterException, ZXingStringEncoding
+    PlanarYUVLuminanceSource, QRCodeEncoder, QRCodeMode, QRCodeReader, Result,
+    QRCodeWriter, ResultMetadataType, WriterException, ZXingStringEncoding,
 } from '@zxing/library';
 import { createCustomEncoder } from '../util/textEncodingFactory';
 
@@ -18,27 +18,38 @@ describe('QRCodeWriter character encoding', () => {
         ZXingStringEncoding.customEncoder = originalEncoder;
     });
 
-    function roundtrip(content: string, encoding?: string) {
+    const roundtrip = (content: string, encoding?: string): Result => {
+        const automaticDimension = 0;
+        const cropOffset = 0;
+        const blackLuminance = 0;
+        const whiteLuminance = 255;
         const hints = encoding === undefined ? null : new Map([[EncodeHintType.CHARACTER_SET, encoding]]);
-        const matrix = new QRCodeWriter().encode(content, BarcodeFormat.QR_CODE, 0, 0, hints);
+        const matrix = new QRCodeWriter().encode(content, BarcodeFormat.QR_CODE,
+            automaticDimension, automaticDimension, hints);
         const width = matrix.getWidth();
         const height = matrix.getHeight();
         const luminances = new Uint8ClampedArray(width * height);
         for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {
-                luminances[y * width + x] = matrix.get(x, y) ? 0 : 255;
+                luminances[y * width + x] = matrix.get(x, y) ? blackLuminance : whiteLuminance;
             }
         }
-        const source = new PlanarYUVLuminanceSource(luminances, width, height, 0, 0, width, height, false);
+        const source = new PlanarYUVLuminanceSource(luminances, width, height,
+            cropOffset, cropOffset, width, height, false);
         return new QRCodeReader().decode(new BinaryBitmap(new HybridBinarizer(source)));
-    }
+    };
 
     it.each(['ISO-8859-1', 'ISO88591', 'ISO8859_1'])('writes Latin-1 bytes and ECI for %s', encoding => {
+        const nulByte = 0x00;
+        const deleteByte = 0x7f;
+        const noBreakSpaceByte = 0xa0;
+        const eAcuteByte = 0xe9;
+        const lastLatin1Byte = 0xff;
         const content = '\u0000\u007f\u00a0\u00e9\u00ff';
         const result = roundtrip(content, encoding);
         assert.strictEqual(result.getText(), content);
         assert.deepStrictEqual(result.getResultMetadata().get(ResultMetadataType.BYTE_SEGMENTS),
-            [Uint8Array.from([0x00, 0x7f, 0xa0, 0xe9, 0xff])]);
+            [Uint8Array.from([nulByte, deleteByte, noBreakSpaceByte, eAcuteByte, lastLatin1Byte])]);
     });
 
     it('encodes every Latin-1 code point as one byte', () => {
@@ -48,7 +59,9 @@ describe('QRCodeWriter character encoding', () => {
         QRCodeEncoder.append8BitBytes(content, bits, 'ISO-8859-1');
         assert.strictEqual(bits.getSizeInBytes(), bytes.length);
         const actual = new Uint8Array(bytes.length);
-        bits.toBytes(0, actual, 0, actual.length);
+        const firstBit = 0;
+        const firstByte = 0;
+        bits.toBytes(firstBit, actual, firstByte, actual.length);
         assert.deepStrictEqual(actual, bytes);
     });
 
@@ -71,11 +84,12 @@ describe('QRCodeWriter character encoding', () => {
     it.each(['windows-1252', 'ISO-8859-7', 'Shift_JIS', 'SJIS', 'UTF-16BE', 'unknown-charset'])(
         'rejects unsupported %s instead of emitting UTF-8 bytes', encoding => {
             assert.throws(() => roundtrip('\u00e9', encoding), (error: Error) =>
-                error instanceof WriterException && error.message.indexOf(encoding) !== -1);
+                error instanceof WriterException && error.message.includes(encoding));
         });
 
     it('gives a custom encoder precedence over built-in Latin-1 encoding', () => {
-        const encoder = jest.fn(() => Uint8Array.from([0x61]));
+        const customOutputByte = 0x61;
+        const encoder = jest.fn(() => Uint8Array.from([customOutputByte]));
         ZXingStringEncoding.customEncoder = encoder;
         assert.strictEqual(roundtrip('\u00e9', 'ISO8859_1').getText(), 'a');
         expect(encoder).toHaveBeenCalledTimes(1);
